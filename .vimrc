@@ -8,8 +8,9 @@ set nocompatible
  execute pathogen#infect()
  call pathogen#helptags()
 
-let delimitMate_expand_cr=1"
-       
+let delimitMate_expand_cr=1
+set guifont=Sauce_Code_Powerline:h9:cANSI
+
 "location for this file
 
 "why isn't this default?
@@ -36,9 +37,7 @@ let $MYVIMRC='~/vimfiles/.vimrc'
 nnoremap j gj
 nnoremap k gk
 
-"für vernünftiges regex, nicht sicher ob nötig
-nnoremap / /\v
-vnoremap / /\v
+
 "tab um zwichen klammern zu springen
 nnoremap <tab> %
 vnoremap <tab> %
@@ -62,20 +61,30 @@ set switchbuf=useopen,usetab
 "because most keys are already taken and , is easier that \ to press
 let mapleader = "\<Space>" 
 "quickly edit this very file
-nmap <silent> <leader>ö :e $MYVIMRC<CR> 
+nmap <silent> <leader>ü :e $MYVIMRC<CR> 
 nmap <silent> <leader>ä :so $MYVIMRC<CR>
 ",v to selected just pasted text
 nnoremap <leader>v V`]
 ",w split window vertically and switch
 nnoremap <leader>s <C-w>v<C-w>l
 nnoremap <leader>c <C-w>c
-nnoremap <leader>q <C-w>s<C-w>T
+nnoremap <leader>q :tab sp<CR>
 nnoremap <leader>a :vert ball<CR>
 nnoremap <leader>d :bnext 1<CR>
 nnoremap <leader>e :redraw<CR>:ls<CR>
 nnoremap <leader>w :only<CR>
 nnoremap <leader>r <C-w>r
 nnoremap <leader>n <C-w>n
+nnoremap <leader>o :w<CR>
+vnoremap <Leader>y "+y
+nnoremap <Leader>p "+p
+nnoremap <Leader>P "+P
+vnoremap <Leader>p "+p
+vnoremap <Leader>P "+PP
+nnoremap <Leader>ö  '
+nnoremap <leader>v :bd<CR>
+nnoremap <leader>u :tabprevious<CR>
+nnoremap <leader>i :tabnext<CR>
 
 "numbers to swtich between buffers quickly
 nnoremap <leader>1 :buffer 1 <CR>
@@ -129,8 +138,7 @@ imap <F11> <Esc><F11>
 nnoremap <F8> :sbnext<CR>
 nnoremap <S-F8> :sbprevious<CR>
 
-nnoremap <leader>j :tabprevious<CR>
-nnoremap <leader>k :tabnext<CR>
+
 "save in two keypresses
 :nmap <c-s> :w<CR>
 :imap <c-s> <Esc>:w<CR>a"
@@ -139,6 +147,10 @@ nnoremap <leader>k :tabnext<CR>
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
+
+"Airline
+let g:airline_theme='powerlineish'
+let g:airline_powerline_fonts = 1
 
 "NERDtree toggles
 map <Leader>g :NERDTree %:p:h<CR>
