@@ -1,4 +1,4 @@
-" @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
+ @Author:      Tom Link (mailto:micathom AT gmail com?subject=[vim])
 " @License:     GPL (see http://www.gnu.org/licenses/gpl.txt)
 " @Created:     2012-08-28.
 " @Last Change: 2012-09-10.
@@ -27,13 +27,15 @@ call tinykeymap#Map('buffers', 'H', '<count>wincmd h', {'desc': 'Left window'})
 call tinykeymap#Map('buffers', 'J', '<count>wincmd j', {'desc': 'Window below'})
 call tinykeymap#Map('buffers', 'K', '<count>wincmd k', {'desc': 'Window above'})
 call tinykeymap#Map('buffers', 'L', '<count>wincmd l', {'desc': 'Right window'})
-call tinykeymap#Map('buffers', 'n', 'vnew')
+call tinykeymap#Map('buffers', 'n', 'vnew', {'desc': 'New buffer'})
 call tinykeymap#Map('buffers', 'w', 'wincmd o', {'desc': 'Make the only window'})
 call tinykeymap#Map('buffers', '<Space>', 'ls! | call tinykeymap#PressEnter()')
-call tinykeymap#Map('buffers', 'C', 'bdelete! <count>')
-call tinykeymap#Map('buffers', 'c', ':close')
+call tinykeymap#Map('buffers', 'C', 'bdelete! <count>', {'desc': 'Close current window'})
+call tinykeymap#Map('buffers', 'c', ':close', {'desc': 'Close current window'})
 call tinykeymap#Map('buffers', 'a', ':vert ball', {'desc': 'Open all buffers'})
- call tinykeymap#Map('buffers', 'q', ':tab sp', {'desc': 'Move to new Tab'})
+call tinykeymap#Map('buffers', 'q', ':<count>tab sp', {'desc': 'Move to right tab'})
+call tinykeymap#Map('buffers', "i", 'norm! gt', {'desc': 'Move to left tab'})
+call tinykeymap#Map('buffers', "u", 'norm! gT', {'desc': 'Move to new Tab'})
 call tinykeymap#Map('buffers', '<Left>', 'call tinykeymap#buffers#Shift(-<count1>)',
             \ {'desc': 'Rotate list to the right'})
 call tinykeymap#Map('buffers', '<Right>', 'call tinykeymap#buffers#Shift(<count1>)',

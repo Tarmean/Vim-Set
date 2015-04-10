@@ -71,7 +71,7 @@ nnoremap <leader>v V`]
 ",w split window vertically and switch
 "nnoremap <leader>s <C-w>v<C-w>l
 "nnoremap <leader>S <C-w>s
-"nnoremap <leader>c <C-w>c
+nnoremap <leader>c <C-w>c
 "nnoremap <leader>q :tab sp<CR>
 "nnoremap <leader>a :vert ball<CR>
 "nnoremap <leader>d :bnext 1<CR>
@@ -158,8 +158,8 @@ set statusline+=%*
 "Airline
 let g:airline_theme='powerlineish'
 let g:airline_powerline_fonts = 1
-let g:airline#extensions#eclim#enabled = 1
-let g:airline#extensions#syntastic#enabled = 1
+"let g:airline#extensions#eclim#enabled = 1
+"let g:airline#extensions#syntastic#enabled = 1
 
 "make supertab work with eclim auto completion
 let g:SuperTabDefaultCompletionType = 'context'
