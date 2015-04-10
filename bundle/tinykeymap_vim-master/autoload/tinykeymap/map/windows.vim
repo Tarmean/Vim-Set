@@ -7,7 +7,7 @@
 
 if !exists('g:tinykeymap#map#windows#map')
     " Map leader for the "windows" tinykeymap.
-    let g:tinykeymap#map#windows#map = g:tinykeymap#mapleader ."d"   "{{{2
+    let g:tinykeymap#map#windows#map = g:tinykeymap#mapleader ."s"   "{{{2
 endif
 
 
@@ -23,7 +23,7 @@ call tinykeymap#Map('windows', '<C-j>', 'resize +<count1>', {'desc': 'Increase h
 call tinykeymap#Map('windows', '<C-k>', 'resize -<count1>', {'desc': 'Decrease height'})
 call tinykeymap#Map('windows', '_', 'resize <count>', {'desc': 'Set height'})
 call tinykeymap#Map('windows', '=', 'wincmd =', {'desc': 'Make equally high and wide'})
-" call tinykeymap#Map('windows', 'r', 'wincmd r', {'desc': 'Rotate window downwards/rightwards'})
+call tinykeymap#Map('windows', 'r', 'wincmd r', {'desc': 'Rotate window downwards/rightwards'})
 " call tinykeymap#Map('windows', 'R', 'wincmd R', {'desc': 'Rotate window upwards/leftwards'})
 " call tinykeymap#Map('windows', 'x', '<count>wincmd x', {'desc': 'Exchange windows'})
  call tinykeymap#Map('windows', 'K', 'wincmd K', {'desc': 'Move current window to the top'})
@@ -33,9 +33,9 @@ call tinykeymap#Map('windows', '=', 'wincmd =', {'desc': 'Make equally high and 
 " call tinykeymap#Map('windows', 'T', 'wincmd T', {'desc': 'Move current window to a new tab page'})
 " call tinykeymap#Map('windows', 'w', '<count>wincmd w', {'desc': 'Below-right window'})
 " call tinykeymap#Map('windows', 'W', '<count>wincmd W', {'desc': 'Above-left window'})
- call tinykeymap#Map('windows', 'h', '<count>wincmd h', {'desc': 'Window above'})
+ call tinykeymap#Map('windows', 'k', '<count>wincmd k', {'desc': 'Window above'})
  call tinykeymap#Map('windows', 'j', '<count>wincmd j', {'desc': 'Window below'})
- call tinykeymap#Map('windows', 'k', '<count>wincmd k', {'desc': 'Left window'})
+ call tinykeymap#Map('windows', 'h', '<count>wincmd h', {'desc': 'Left window'})
  call tinykeymap#Map('windows', 'l', '<count>wincmd l', {'desc': 'Right window'})
 " call tinykeymap#Map('windows', 't', 'wincmd t', {'desc': 'Top-left window'})
 " call tinykeymap#Map('windows', 'b', 'wincmd b', {'desc': 'Bottom-right window'})
@@ -44,8 +44,9 @@ call tinykeymap#Map('windows', '=', 'wincmd =', {'desc': 'Make equally high and 
 " call tinykeymap#Map('windows', 'c', 'wincmd c', {'desc': 'Close window'})
  call tinykeymap#Map('windows', 'w', 'wincmd o', {'desc': 'Make the only window', 'exit': 1})
  call tinykeymap#Map('windows', 'c', 'wincmd c', {'desc': 'Close current window'})
- call tinykeymap#Map('windows', 'q', 'wincmd s|wincmd T', {'desc': 'Move to new Tab'})
- call tinykeymap#Map('windows', 'a', 'ball', {'desc': 'Open all buffers'})
+call tinykeymap#Map('windows', 'C', 'bdelete! <count>')
+ call tinykeymap#Map('windows', 'q', ':tab sp', {'desc': 'Move to new Tab'})
+ call tinykeymap#Map('windows', 'a', ':vert ball', {'desc': 'Open all buffers'})
 call tinykeymap#Map('windows', 's', 'split')
 call tinykeymap#Map('windows', 'v', 'vert split')
 call tinykeymap#Map('windows', "<Up>", 'wincmd W', {'exit': 1})
