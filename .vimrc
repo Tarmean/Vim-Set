@@ -67,6 +67,7 @@ nmap <silent> <leader>ä :so $MYVIMRC<CR>
 nnoremap <leader>v V`]
 ",w split window vertically and switch
 nnoremap <leader>s <C-w>v<C-w>l
+nnoremap <leader>S <C-w>s
 nnoremap <leader>c <C-w>c
 nnoremap <leader>q :tab sp<CR>
 nnoremap <leader>a :vert ball<CR>
@@ -76,6 +77,7 @@ nnoremap <leader>w :only<CR>
 nnoremap <leader>r <C-w>r
 nnoremap <leader>n <C-w>n
 nnoremap <leader>o :w<CR>
+nnoremap <leader>O :edit!<CR>
 vnoremap <Leader>y "+y
 nnoremap <Leader>p "+p
 nnoremap <Leader>P "+P
@@ -85,6 +87,8 @@ nnoremap <Leader>ö  '
 nnoremap <leader>v :bd<CR>
 nnoremap <leader>u :tabprevious<CR>
 nnoremap <leader>i :tabnext<CR>
+nnoremap <leader>, <C-o>
+nnoremap <leader>. <C-l>
 
 "numbers to swtich between buffers quickly
 nnoremap <leader>1 :buffer 1 <CR>
@@ -100,10 +104,10 @@ nnoremap <leader>0 :buffer 0 <CR>
                               
 
 
-nmap <leader>bm :CtrlP<cr>
-nmap <leader>bb :CtrlPBuffer<cr>
-nmap <leader>f :CtrlPMixed<cr>
-nmap <leader>bs :CtrlPMRU<cr>
+nmap <leader>fm :CtrlP<cr>
+nmap <leader>fb :CtrlPBuffer<cr>
+nmap <leader>ff :CtrlPMixed<cr>
+nmap <leader>fs :CtrlPMRU<cr>
 
 "move windows around:
 nnoremap <leader>h <C-w>h
@@ -115,7 +119,7 @@ nnoremap <leader>l <C-w>l
 nmap <silent> <Up> :wincmd k<CR>
 nmap <silent> <Down> :wincmd j<CR>
 nmap <silent> <Left> :wincmd h<CR>
-map <silent> <Right> :wincmd l<CR>
+nmap <silent> <Right> :wincmd l<CR>
 
 "session stuff
 set ssop-=options    " do not store global and local values in a session
@@ -151,6 +155,12 @@ set statusline+=%*
 "Airline
 let g:airline_theme='powerlineish'
 let g:airline_powerline_fonts = 1
+let g:airline#extensions#eclim#enabled = 1
+let g:airline#extensions#syntastic#enabled = 1
+
+"make supertab work with eclim auto completion
+let g:SuperTabDefaultCompletionType = 'context'
+"":h ins-completion
 
 "NERDtree toggles
 map <Leader>g :NERDTree %:p:h<CR>
