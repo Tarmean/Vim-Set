@@ -32,6 +32,8 @@ set showmode
 set scrolloff=3
 set gdefault
 set wrap
+set splitbelow
+set splitright
 
 let $MYVIMRC='~/vimfiles/.vimrc'
 nnoremap j gj
@@ -57,7 +59,7 @@ endif
 
 "This throws new buffers into their own tabs because that is totally how vim
 "uses tabs, right?...
-set switchbuf=useopen,usetab
+"set switchbuf=useopen,usetab
 
 "because most keys are already taken and , is easier that \ to press
 let mapleader = "\<Space>" 
@@ -162,8 +164,8 @@ let g:airline#extensions#syntastic#enabled = 1
 "make supertab work with eclim auto completion
 let g:SuperTabDefaultCompletionType = 'context'
 "":h ins-completion
-let g:tinykeymap#mapleader = <space> 
-NERDtree toggles
+let g:tinykeymap#mapleader = "<leader>" 
+"NERDtree toggles
 map <Leader>g :NERDTree %:p:h<CR>
 map <F3> :NERDTreeToggle<CR>
 
