@@ -37,8 +37,8 @@ set splitright
 set noerrorbells
 set visualbell
 set noerrorbells visualbell t_vb=
-set guioptions -=mTLlRr
 set guioptions=e
+"set █
 if has('autocmd')
   autocmd GUIEnter * set visualbell t_vb=
 endif
