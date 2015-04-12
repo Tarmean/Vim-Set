@@ -34,6 +34,13 @@ set gdefault
 set wrap
 set splitbelow
 set splitright
+set noerrorbells
+set visualbell
+set noerrorbells visualbell t_vb=
+if has('autocmd')
+  autocmd GUIEnter * set visualbell t_vb=
+endif
+set virtualedit=block
 
 let $MYVIMRC='~/vimfiles/.vimrc'
 nnoremap j gj
@@ -56,16 +63,19 @@ command! -count=1 TabNext call RelativeNext(<count>)
 "totes stole this from ctrlspace. Sorry, but not keeping the entire thing for one feature :P
 function! Copy_or_move_selected_buffer_into_tab(move, tab)
 "this should work vor the current buffer
-  let l:tab =a:tab
-  let l:move = a:move
   let l:cur_buffer = bufnr('%')
   let l:total_tabs = tabpagenr('$')
+  "if the new tab has the current buffer in a different view that one would be
+  "used once the buffer gets reopened. there is probably some way it's
+  "supposed to be done but yay workarounds
+  let l:winview = winsaveview() 
+ "" let l:lines = 
 "not sure if these are all necessary but better save than sorry I guess
-  if !getbufvar(str2nr(l:cur_buffer), '&modifiable') || !getbufvar(str2nr(l:cur_buffer), '&buflisted') || empty(bufname(str2nr(l:cur_buffer))) || l:tab == tabpagenr()
+  if !getbufvar(str2nr(l:cur_buffer), '&modifiable') || !getbufvar(str2nr(l:cur_buffer), '&buflisted') || empty(bufname(str2nr(l:cur_buffer))) || (a:tab == tabpagenr() && a:move == 1)
     return
   endif
   let l:selected_buffer_window = bufwinnr(l:cur_buffer)
-  if l:move
+  if a:move > 0
         if selected_buffer_window != -1 
       if bufexists(l:cur_buffer) && (!empty(getbufvar(l:cur_buffer, "&buftype")) || filereadable(bufname(l:cur_buffer)))
         silent! exe l:selected_buffer_window . "wincmd c" 
@@ -74,13 +84,18 @@ function! Copy_or_move_selected_buffer_into_tab(move, tab)
       endif
     endif
   endif
-  if l:tab  > l:total_tabs
+  if a:tab  > l:total_tabs
     "let l:total_tabs = (l:total_tabs + 1)
     silent! exe l:total_tabs . "tab  sb" . l:cur_buffer
   else
-    silent! exe "normal! " . l:tab . "gt"
+    if (a:move == 2 || a:move == -1) && a:tab == 0
+      silent! exe "normal! gT"
+    else
+      silent! exe "normal! " . a:tab . "gt"
+    endif
     silent! exe ":vert sbuffer " . l:cur_buffer
   endif
+  call winrestview(l:winview)
 endfunction
 function! Clone_rel_tab_forwards(move, ...)
   let l:distance = (a:0>0 && a:1>0) ? a:1 : 1
@@ -145,16 +160,25 @@ vnoremap <Leader>p "+p
 vnoremap <Leader>P "+PP
 nnoremap <Leader>ö :w<CR> 
 "nnoremap <leader>v :bd<CR>
-nnoremap <leader>i gt
+nnoremap <leader>U :<C-U>call Clone_rel_tab_backwards(1, v:count)<CR>
+nnoremap <leader><c-u> :<C-U>call Clone_rel_tab_backwards(0, v:count)<CR>
+nnoremap <leader>I :<C-U>call Clone_rel_tab_forwards(1, v:count)<CR>
+nnoremap <leader><c-I> :<C-U>call Clone_rel_tab_forwards(0, v:count)<CR>
 nnoremap <leader>u gT
-nnoremap <leader>U <C-i>
-nnoremap <leader>I <C-o>
-nnoremap <leader>w :<C-U>CloneToTab 1, v:count<CR>
-nnoremap <leader>W :<C-U>CloneToTab 0, v:count<CR>
+nnoremap <leader>i :<C-U>call RelativeNext(v:count1)<CR>
+nnoremap <leader>Z <c-i>
+nnoremap <leader>z <c-o>
+nnoremap <leader>e :<C-U>call Copy_or_move_selected_buffer_into_tab(1, v:count)<CR>
+nnoremap <leader>E :<C-U>call Copy_or_move_selected_buffer_into_tab(0, v:count)<CR>
+inoremap <c-u> <c-g>u<c-u>
+inoremap <c-w> <c-g>u<c-w>
+"nnoremap <leader>w :<C-U>call Copy_or_move_selected_buffer_into_tab(2, v:count)<CR>
+"nnoremap <leader>W :<C-U>call Copy_or_move_selected_buffer_into_tab(-1, v:count)<CR>
 "nnoremap <leader><c-u> :<C-U>call Clone_rel_tab_backwards(0, v:count)
-nnoremap <leader><c-U> :<C-U>call Clone_rel_tab_backwards(1, v:count)<CR>
-nnoremap <leader><c-i> :<C-U>call Clone_rel_tab_forwards(0, v:count)<CR>
+"nnoremap <leader><c-U> :<C-U>call Clone_rel_tab_backwards(1, v:count)<CR>
+"nnoremap <leader><c-i> :<C-U>call Clone_rel_tab_forwards(0, v:count)<CR>
 "nnoremap <leader><c-I> :<C-U>call Clone_rel_tab_forwards(1, v:count)
+nnoremap Y y$
 
 "nnoremap <leader>, <C-o>
 "nnoremap <leader>. <C-l>
