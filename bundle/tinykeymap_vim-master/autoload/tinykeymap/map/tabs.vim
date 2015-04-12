@@ -5,7 +5,7 @@
 
 if !exists('g:tinykeymap#map#tabs#map')
     " Map leader for the "tabs" tinykeymap.
-    let g:tinykeymap#map#tabs#map = "t"   "{{{2
+    let g:tinykeymap#map#tabs#map = g:tinykeymap#mapleader ."t" "{{{2
 endif
 
 augroup TinyKeyMapTabs
@@ -17,10 +17,10 @@ augroup END
 " Based on Andy Wokulas's tabs mode for tinymode.
 call tinykeymap#EnterMap('tabs', g:tinykeymap#map#tabs#map, {'name': 'tabs mode'})
 call tinykeymap#Map('tabs', 'n', 'tabnew') 
-call tinykeymap#Map('tabs', 't', 'norm! gt') 
-call tinykeymap#Map('tabs', 'T', 'norm! gT') 
-call tinykeymap#Map('tabs', "l", 'norm! gt')
-call tinykeymap#Map('tabs', "h", 'norm! gT')
+call tinykeymap#Map('tabs', 't', ':TabNext <count>') 
+call tinykeymap#Map('tabs', 'T', ':tabp <count>') 
+call tinykeymap#Map('tabs', "l", ':TabNext <count>')
+call tinykeymap#Map('tabs', "h", ':tabp <count>')
 call tinykeymap#Map('tabs', "j", 'exec "tabmove" (max([1, tabpagenr() - 1]) - 1)')
 call tinykeymap#Map('tabs', "k", 'exec "tabmove" (max([0, tabpagenr() - 1]) + 1)')
 call tinykeymap#Map("tabs", "^", "tabfirst")
@@ -35,6 +35,12 @@ call tinykeymap#Map('tabs', 'H', '<count>wincmd h', {'desc': 'Left window'})
 call tinykeymap#Map('tabs', 'J', '<count>wincmd j', {'desc': 'Window below'})
 call tinykeymap#Map('tabs', 'K', '<count>wincmd k', {'desc': 'Window above'})
 call tinykeymap#Map('tabs', 'L', '<count>wincmd l', {'desc': 'Right window'})
+call tinykeymap#Map('tabs', "u", 'call Clone_rel_tab_backwards(1, <count>)', {'desc': 'Move window to left tab'})
+call tinykeymap#Map('tabs', "i", 'call Clone_rel_tab_forwards(1, <count>)', {'desc': 'Move window to right tab'})
+call tinykeymap#Map('tabs', "U", 'call Clone_rel_tab_backwards(0, <count>)', {'desc': 'Open window to left tab'})
+call tinykeymap#Map('tabs', "I", 'call Clone_rel_tab_forwards(0, <count>)', {'desc': 'Open window to right tab'})
+call tinykeymap#Map('tabs', 'w', ':CloneToTab 1 <count>', {'desc': 'Clone to tab'})
+call tinykeymap#Map('tabs', 'W', ':CloneToTab 0 <count>', {'desc': 'Copy to tab'})
 
 if exists('g:loaded_tlib') && g:loaded_tlib > 0
     call tinykeymap#Map("tabs", "s", "tabnew +TScratch!", {'desc': 'Scratch tab', 'exit': 1})

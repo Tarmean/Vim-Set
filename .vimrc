@@ -39,6 +39,64 @@ let $MYVIMRC='~/vimfiles/.vimrc'
 nnoremap j gj
 nnoremap k gk
 
+function! RelativeNext(count) 	
+
+    let total_tabs = tabpagenr("$") 	
+
+    let cur_tab = tabpagenr() 	
+
+    let next_tab = (cur_tab + a:count -1) % total_tabs + 1 	
+
+    exec "tabnext" .  next_tab
+
+endfunction  
+command! -count=1 TabNext call RelativeNext(<count>) 
+
+
+"totes stole this from ctrlspace. Sorry, but not keeping the entire thing for one feature :P
+function! Copy_or_move_selected_buffer_into_tab(move, tab)
+"this should work vor the current buffer
+  let l:tab =a:tab
+  let l:move = a:move
+  let l:cur_buffer = bufnr('%')
+  let l:total_tabs = tabpagenr('$')
+"not sure if these are all necessary but better save than sorry I guess
+  if !getbufvar(str2nr(l:cur_buffer), '&modifiable') || !getbufvar(str2nr(l:cur_buffer), '&buflisted') || empty(bufname(str2nr(l:cur_buffer))) || l:tab == tabpagenr()
+    return
+  endif
+  let l:selected_buffer_window = bufwinnr(l:cur_buffer)
+  if l:move
+        if selected_buffer_window != -1 
+      if bufexists(l:cur_buffer) && (!empty(getbufvar(l:cur_buffer, "&buftype")) || filereadable(bufname(l:cur_buffer)))
+        silent! exe l:selected_buffer_window . "wincmd c" 
+      else
+        return
+      endif
+    endif
+  endif
+  if l:tab  > l:total_tabs
+    "let l:total_tabs = (l:total_tabs + 1)
+    silent! exe l:total_tabs . "tab  sb" . l:cur_buffer
+  else
+    silent! exe "normal! " . l:tab . "gt"
+    silent! exe ":vert sbuffer " . l:cur_buffer
+  endif
+endfunction
+function! Clone_rel_tab_forwards(move, ...)
+  let l:distance = (a:0>0 && a:1>0) ? a:1 : 1
+  let l:cur_tab = tabpagenr()
+  let l:goal_tab = (l:cur_tab + l:distance)
+  call Copy_or_move_selected_buffer_into_tab(a:move, l:goal_tab)
+endfunction	
+
+function! Clone_rel_tab_backwards(move, ...)
+  let l:distance = (a:0>0 && a:1>0) ? a:1 : 1
+  let l:cur_tab = tabpagenr()
+  let l:goal_tab = (l:cur_tab - l:distance)
+  call Copy_or_move_selected_buffer_into_tab(a:move, l:goal_tab)
+endfunction	
+
+command!  -narg=* CloneToTab exec Copy_or_move_selected_buffer_into_tab(<args>)
 
 "tab um zwichen klammern zu springen
 nnoremap <tab> %
@@ -66,32 +124,41 @@ let mapleader = "\<Space>"
 "quickly edit this very file
 nmap <silent> <leader>ü :e $MYVIMRC<CR> 
 nmap <silent> <leader>ä :so $MYVIMRC<CR>
-",v to selected just pasted text
-nnoremap <leader>v V`]
 ",w split window vertically and switch
-"nnoremap <leader>s <C-w>v<C-w>l
-"nnoremap <leader>S <C-w>s
+nnoremap <leader>v <C-w>v
+nnoremap <leader>V <C-w>s
 nnoremap <leader>c <C-w>c
+nnoremap <leader>C :bd!<CR>
 "nnoremap <leader>q :tab sp<CR>
 "nnoremap <leader>a :vert ball<CR>
 "nnoremap <leader>d :bnext 1<CR>
 "nnoremap <leader>e :redraw<CR>:ls<CR>
-"nnoremap <leader>w :only<CR>
+"nnoremap <leader>w:only<CR>
 "nnoremap <leader>r <C-w>r
 "nnoremap <leader>n <C-w>n
-nnoremap <leader>i :w<CR>
+"nnoremap <leader>i :w<CR>
 "nnoremap <leader>O :edit!<CR>
 vnoremap <Leader>y "+y
 nnoremap <Leader>p "+p
 nnoremap <Leader>P "+P
 vnoremap <Leader>p "+p
 vnoremap <Leader>P "+PP
-"nnoremap <Leader>ö  '
+nnoremap <Leader>ö :w<CR> 
 "nnoremap <leader>v :bd<CR>
-"nnoremap <leader>u :tabprevious<CR>
-"nnoremap <leader>i :tabnext<CR>
+nnoremap <leader>i gt
+nnoremap <leader>u gT
+nnoremap <leader>U <C-i>
+nnoremap <leader>I <C-o>
+nnoremap <leader>w :<C-U>CloneToTab 1, v:count<CR>
+nnoremap <leader>W :<C-U>CloneToTab 0, v:count<CR>
+"nnoremap <leader><c-u> :<C-U>call Clone_rel_tab_backwards(0, v:count)
+nnoremap <leader><c-U> :<C-U>call Clone_rel_tab_backwards(1, v:count)<CR>
+nnoremap <leader><c-i> :<C-U>call Clone_rel_tab_forwards(0, v:count)<CR>
+"nnoremap <leader><c-I> :<C-U>call Clone_rel_tab_forwards(1, v:count)
+
 "nnoremap <leader>, <C-o>
 "nnoremap <leader>. <C-l>
+
 
 "numbers to swtich between buffers quickly
 nnoremap <leader>1 :buffer 1 <CR>
@@ -107,8 +174,8 @@ nnoremap <leader>0 :buffer 0 <CR>
                               
 
 
-nmap <leader>fm :CtrlP<cr>
-nmap <leader>fb :CtrlPBuffer<cr>
+nmap <leader>fj :CtrlP<cr>
+nmap <leader>fk :CtrlPBuffer<cr>
 nmap <leader>ff :CtrlPMixed<cr>
 nmap <leader>fs :CtrlPMRU<cr>
 
@@ -145,11 +212,10 @@ imap <F11> <Esc><F11>
 nnoremap <F8> :sbnext<CR>
 nnoremap <S-F8> :sbprevious<CR>
 
-
 "save in two keypresses
-:nmap <c-s> :w<CR>
-:imap <c-s> <Esc>:w<CR>a"
-
+nmap <c-s> :w<CR>
+imap <c-s> <Esc>:w<CR>a
+ 
 "Syntastic
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -173,6 +239,13 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+
+"hi CtrlSpaceSelected term=reverse ctermfg=187  ctermbg=23  cterm=bold
+"hi CtrlSpaceNormal   term=NONE    ctermfg=244  ctermbg=232 cterm=NONE
+"hi CtrlSpaceSearch   ctermfg=220  ctermbg=NONE cterm=bold
+"hi CtrlSpaceStatus   ctermfg=230  ctermbg=234  cterm=NONE
+let g:airline_exclude_preview=1
+
 "unicode when available
 if has("multi_byte")
   if &termencoding == ""
