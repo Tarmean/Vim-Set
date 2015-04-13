@@ -16,3 +16,6 @@
 [submodule "bundle/eclim"]
 	path = bundle/eclim
 	url = https://github.com/ervandew/eclim
+[submodule "bundle/tabular"]
+	path = bundle/tabular
+	url = https://github.com/godlygeek/tabular
