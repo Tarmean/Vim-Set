@@ -10,7 +10,7 @@ set nocompatible
 
 let delimitMate_expand_cr=1
 set guifont=Sauce_Code_Powerline:h9:cANSI
-
+"set glöjklasödf = aösdfjö
 "location for this file
 
 "why isn't this default?
@@ -118,8 +118,8 @@ endfunction
 command!  -narg=* CloneToTab exec Copy_or_move_selected_buffer_into_tab(<args>)
 
 "tab um zwichen klammern zu springen
-nnoremap <s-tab> %
-vnoremap <tab> %
+"nnoremap <s-tab> %
+"vnoremap <tab> %
 "set number
 "set relativenumber
 
@@ -175,6 +175,8 @@ nnoremap <leader>Z <c-i>
 nnoremap <leader>z <c-o>
 nnoremap <leader>e :<C-U>call Copy_or_move_selected_buffer_into_tab(1, v:count)<CR>
 nnoremap <leader>E :<C-U>call Copy_or_move_selected_buffer_into_tab(0, v:count)<CR>
+vnoremap <leader>r :<c-u>execute ":'<,'>Tabular /"nr2char(getchar())<cr>
+vnoremap <leader>R :Tabular<space>/
 "nnoremap <leader><c-u> :<C-U>call Clone_rel_tab_backwards(0, v:count)
 "nnoremap <leader><c-U> :<C-U>call Clone_rel_tab_backwards(1, v:count)<CR>
 "nnoremap <leader><c-i> :<C-U>call Clone_rel_tab_forwards(0, v:count)<CR>
