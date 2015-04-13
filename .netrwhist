@@ -1,4 +1,10 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =2
-let g:netrw_dirhist_1='C:\TestProject'
-let g:netrw_dirhist_2='C:/TestProject/src'
+let g:netrw_dirhist_cnt =8
+let g:netrw_dirhist_1='C:/Users/Cyril/vimfiles/bundle/tinykeymap_vim-master/autoload/tinykeymap/map'
+let g:netrw_dirhist_2='C:/Users/Cyril/vimfiles/bundle'
+let g:netrw_dirhist_3='C:/Users/Cyril/vimfiles/bundle/tinykeymap_vim-master/autoload/tinykeymap/map'
+let g:netrw_dirhist_4='C:/Users/Cyril/vimfiles/bundle/tinykeymap_vim-master/autoload/tinykeymap'
+let g:netrw_dirhist_5='C:/Users/Cyril/vimfiles/bundle'
+let g:netrw_dirhist_6='C:/Users/Cyril/vimfiles/bundle/ag.vim-master'
+let g:netrw_dirhist_7='C:/Users/Cyril/vimfiles/bundle/ag.vim-master/autoload'
+let g:netrw_dirhist_8='C:/Users/Cyril/vimfiles/bundle/ag.vim-master'

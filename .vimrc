@@ -48,18 +48,20 @@ let $MYVIMRC='~/vimfiles/.vimrc'
 nnoremap j gj
 nnoremap k gk
 
-function! RelativeNext(count) 	
+function! RelativeNext(count)
 
-    let total_tabs = tabpagenr("$") 	
+    let total_tabs = tabpagenr("$")
 
-    let cur_tab = tabpagenr() 	
+    let cur_tab = tabpagenr()
 
-    let next_tab = (cur_tab + a:count -1) % total_tabs + 1 	
+    let next_tab = (cur_tab + a:count -1) % total_tabs + 1
 
     exec "tabnext" .  next_tab
 
-endfunction  
-command! -count=1 TabNext call RelativeNext(<count>) 
+endfunction
+command! -count=1 TabNext call RelativeNext(<count>)
+command! -count JumpBackward norm! <count><C-O>
+command! -count JumpForward norm! <count><C-i>
 
 
 "totes stole this from ctrlspace. Sorry, but not keeping the entire thing for one feature :P
@@ -70,17 +72,17 @@ function! Copy_or_move_selected_buffer_into_tab(move, tab)
   "if the new tab has the current buffer in a different view that one would be
   "used once the buffer gets reopened. there is probably some way it's
   "supposed to be done but yay workarounds
-  let l:winview = winsaveview() 
- "" let l:lines = 
+  let l:winview = winsaveview()
+ "" let l:lines =
 "not sure if these are all necessary but better save than sorry I guess
   if !getbufvar(str2nr(l:cur_buffer), '&modifiable') || !getbufvar(str2nr(l:cur_buffer), '&buflisted') || empty(bufname(str2nr(l:cur_buffer))) || (a:tab == tabpagenr() && a:move == 1)
     return
   endif
   let l:selected_buffer_window = bufwinnr(l:cur_buffer)
   if a:move > 0
-        if selected_buffer_window != -1 
+        if selected_buffer_window != -1
       if bufexists(l:cur_buffer) && (!empty(getbufvar(l:cur_buffer, "&buftype")) || filereadable(bufname(l:cur_buffer)))
-        silent! exe l:selected_buffer_window . "wincmd c" 
+        silent! exe l:selected_buffer_window . "wincmd c"
       else
         return
       endif
@@ -104,19 +106,19 @@ function! Clone_rel_tab_forwards(move, ...)
   let l:cur_tab = tabpagenr()
   let l:goal_tab = (l:cur_tab + l:distance)
   call Copy_or_move_selected_buffer_into_tab(a:move, l:goal_tab)
-endfunction	
+endfunction
 
 function! Clone_rel_tab_backwards(move, ...)
   let l:distance = (a:0>0 && a:1>0) ? a:1 : 1
   let l:cur_tab = tabpagenr()
   let l:goal_tab = (l:cur_tab - l:distance)
   call Copy_or_move_selected_buffer_into_tab(a:move, l:goal_tab)
-endfunction	
+endfunction
 
 command!  -narg=* CloneToTab exec Copy_or_move_selected_buffer_into_tab(<args>)
 
 "tab um zwichen klammern zu springen
-nnoremap <tab> %
+nnoremap <s-tab> %
 vnoremap <tab> %
 "set number
 "set relativenumber
@@ -137,9 +139,9 @@ endif
 "set switchbuf=useopen,usetab
 
 "because most keys are already taken and , is easier that \ to press
-let mapleader = "\<Space>" 
+let mapleader = "\<Space>"
 "quickly edit this very file
-nmap <silent> <leader>ü :e $MYVIMRC<CR> 
+nmap <silent> <leader>ü :e $MYVIMRC<CR>
 nmap <silent> <leader>ä :so $MYVIMRC<CR>
 ",w split window vertically and switch
 nnoremap <leader>v <C-w>v
@@ -160,7 +162,7 @@ nnoremap <Leader>p "+p
 nnoremap <Leader>P "+P
 vnoremap <Leader>p "+p
 vnoremap <Leader>P "+PP
-nnoremap <Leader>ö :w<CR> 
+nnoremap <Leader>ö :w<CR>
 "nnoremap <leader>v :bd<CR>
 nnoremap <leader>U :<C-U>call Clone_rel_tab_backwards(1, v:count)<CR>
 nnoremap <leader><c-u> :<C-U>call Clone_rel_tab_backwards(0, v:count)<CR>
@@ -173,7 +175,7 @@ nnoremap <leader>z <c-o>
 nnoremap <leader>e :<C-U>call Copy_or_move_selected_buffer_into_tab(1, v:count)<CR>
 nnoremap <leader>E :<C-U>call Copy_or_move_selected_buffer_into_tab(0, v:count)<CR>
 inoremap <c-u> <c-g>u<c-u>
-inoremap <c-w> <c-g>u<c-w>
+nnoremap <c-w> <c-g>u<c-w>
 nnoremap <leader>^ :set cul! cul?<CR>
 "nnoremap <leader>w :<C-U>call Copy_or_move_selected_buffer_into_tab(2, v:count)<CR>
 "nnoremap <leader>W :<C-U>call Copy_or_move_selected_buffer_into_tab(-1, v:count)<CR>
@@ -198,13 +200,37 @@ nnoremap <leader>7 :buffer 7 <CR>
 nnoremap <leader>8 :buffer 8 <CR>
 nnoremap <leader>9 :buffer 9 <CR>
 nnoremap <leader>0 :buffer 0 <CR>
-                              
 
 
-nmap <leader>fj :CtrlP<cr>
-nmap <leader>fk :CtrlPBuffer<cr>
-nmap <leader>ff :CtrlPMixed<cr>
-nmap <leader>fs :CtrlPMRU<cr>
+" Unite
+let g:unite_source_history_yank_enable = 1
+call unite#filters#matcher_default#use(['matcher_fuzzy'])
+nnoremap <leader>fJ :<C-u>Unite -buffer-name=files   -start-insert file_rec:!<cr>
+nnoremap <leader>fj :<C-u>Unite -buffer-name=files   -start-insert file<cr>
+nnoremap <leader>fs :<C-u>Unite -buffer-name=mru     -start-insert file_mru<cr>
+nnoremap <leader>fk :<C-u>Unite -buffer-name=outline -start-insert outline<cr>
+nnoremap <leader>fy :<C-u>Unite -buffer-name=yank    history/yank<cr>
+nnoremap <leader>ff :<C-u>Unite -buffer-name=buffer  buffer<cr>
+nnoremap <leader>fl :<C-u>Unite -buffer-name=buffer -start-insert -no-split line<cr>
+
+" Custom mappings for the unite buffer
+autocmd FileType unite call s:unite_settings()
+function! s:unite_settings()
+  " Play nice with supertab
+  let b:SuperTabDisabled=1
+  " Enable navigation with control-j and control-k in insert mode
+  imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+  imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+  nmap <buffer> <esc>   <Plug>(unite_exit)
+  map <buffer> <leader><c>   <Plug>(unite_exit)
+endfunction
+
+
+
+"nmap <leader>fj :CtrlP<cr>
+"nmap <leader>fk :CtrlPBuffer<cr>
+"nmap <leader>ff :CtrlPMixed<cr>
+"nmap <leader>fs :CtrlPMRU<cr>
 
 "move windows around:
 nnoremap <leader>h <C-w>h
@@ -224,7 +250,7 @@ set ssop-=folds      " do not store folds
 
 
 "F2 for paste mode so pasted stuff isn't indented
-set pastetoggle=<F2>           
+set pastetoggle=<F2>
 
 "complete current word with first matching one, repeat to toggle between
 "options. Ctrl-P to search backwards, Ctrl-N to look forwards
@@ -242,7 +268,7 @@ nnoremap <S-F8> :sbprevious<CR>
 "save in two keypresses
 nmap <c-s> :w<CR>
 imap <c-s> <Esc>:w<CR>a
- 
+
 "Syntastic
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -257,10 +283,10 @@ let g:airline_powerline_fonts = 1
 "make supertab work with eclim auto completion
 let g:SuperTabDefaultCompletionType = 'context'
 "":h ins-completion
-let g:tinykeymap#mapleader = "<leader>" 
-"NERDtree toggles
-map <Leader>g :NERDTree %:p:h<CR>
-map <F3> :NERDTreeToggle<CR>
+let g:tinykeymap#mapleader = "<leader>"
+" "NERDtree toggles
+" map <Leader>g :NERDTree %:p:h<CR>
+" map <F3> :NERDTreeToggle<CR>
 
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
@@ -304,7 +330,7 @@ if has("autocmd")
   " When editing a file, always jump to the last known cursor position.
   " Don't do it when the position is invalid or when inside an event handler
   " (happens when dropping a file on gvim).
-  autocmd BufReadPost *
+  autocmd BufReadPost
     \ if line("'\"") > 0 && line("'\"") <= line("$") |
     \   exe "normal g`\"" |
     \ endif
@@ -313,7 +339,7 @@ if has("autocmd")
 
 else
 
-  set autoindent		" always set autoindenting on
+  set autoindent" always set autoindenting on
 
 endif " has("autocmd")
 " Convenient command to see the difference between the current buffer and the
@@ -321,5 +347,5 @@ endif " has("autocmd")
 " Only define it when not defined already.
 if !exists(":DiffOrig")
   command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
-		  \ | wincmd p | diffthis
+  \ | wincmd p | diffthis
 endif

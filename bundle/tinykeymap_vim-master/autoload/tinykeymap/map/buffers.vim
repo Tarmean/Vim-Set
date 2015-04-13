@@ -44,6 +44,8 @@ call tinykeymap#Map('buffers', "fs", ':ctrlP', {'desc': 'Move to new Tab'})
 call tinykeymap#Map('buffers', "y", 'call Clone_rel_tab_backwards(1, <count>)', {'desc': 'Move window to left tab'})
 call tinykeymap#Map('buffers', "x", 'call Clone_rel_tab_forwards(1, <count>)', {'desc': 'Move window to right tab'})
 call tinykeymap#Map('buffers', "Y", 'call Clone_rel_tab_backwards(0, <count>)', {'desc': 'Move window to left tab'})
+call tinykeymap#Map('buffers', "z", ':<count>JumpBackward', {'desc': 'Move window to left tab'})
+call tinykeymap#Map('buffers', "Z", ':<count>JumpForward', {'desc': 'Move window to left tab'})
 call tinykeymap#Map('buffers', "X", 'call Clone_rel_tab_forwards(0, <count>)', {'desc': 'Move window to right tab'})
 call tinykeymap#Map('buffers', '<Left>', 'call tinykeymap#buffers#Shift(-<count1>)',
             \ {'desc': 'Rotate list to the right'})
@@ -51,5 +53,6 @@ call tinykeymap#Map('buffers', '<Right>', 'call tinykeymap#buffers#Shift(<count1
             \ {'desc': 'Rotate list to the left'})
 call tinykeymap#Map('buffers', '/', 'let g:tinykeymap#buffers#filter = input("Filter regexp: ")',
             \ {'desc': 'Prioritize buffers matching a regexp'})
+
 
 
