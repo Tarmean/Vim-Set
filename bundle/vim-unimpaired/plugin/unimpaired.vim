@@ -18,15 +18,15 @@ function! s:MapNextFamily(map,cmd)
   execute 'nnoremap <silent> '.map.'Next     :<C-U>exe "'.cmd.'next'.end
   execute 'nnoremap <silent> '.map.'First    :<C-U>exe "'.cmd.'first'.end
   execute 'nnoremap <silent> '.map.'Last     :<C-U>exe "'.cmd.'last'.end
-  execute 'nmap <silent> ['.        a:map .' '.map.'Previous'
-  execute 'nmap <silent> ]'.        a:map .' '.map.'Next'
-  execute 'nmap <silent> ['.toupper(a:map).' '.map.'First'
-  execute 'nmap <silent> ]'.toupper(a:map).' '.map.'Last'
+  execute 'nmap <silent> ü'.        a:map .' '.map.'Previous'
+  execute 'nmap <silent> ä'.        a:map .' '.map.'Next'
+  execute 'nmap <silent> ü'.toupper(a:map).' '.map.'First'
+  execute 'nmap <silent> ä'.toupper(a:map).' '.map.'Last'
   if exists(':'.a:cmd.'nfile')
     execute 'nnoremap <silent> '.map.'PFile :<C-U>exe "'.cmd.'pfile'.end
     execute 'nnoremap <silent> '.map.'NFile :<C-U>exe "'.cmd.'nfile'.end
-    execute 'nmap <silent> [<C-'.a:map.'> '.map.'PFile'
-    execute 'nmap <silent> ]<C-'.a:map.'> '.map.'NFile'
+    execute 'nmap <silent> ü<C-'.a:map.'> '.map.'PFile'
+    execute 'nmap <silent> ä<C-'.a:map.'> '.map.'NFile'
   endif
 endfunction
 
@@ -88,21 +88,21 @@ endfunction
 
 nnoremap <silent> <Plug>unimpairedDirectoryNext     :<C-U>edit <C-R>=fnamemodify(<SID>fnameescape(<SID>FileByOffset(v:count1)), ':.')<CR><CR>
 nnoremap <silent> <Plug>unimpairedDirectoryPrevious :<C-U>edit <C-R>=fnamemodify(<SID>fnameescape(<SID>FileByOffset(-v:count1)), ':.')<CR><CR>
-nmap ]f <Plug>unimpairedDirectoryNext
-nmap [f <Plug>unimpairedDirectoryPrevious
+nmap äf <Plug>unimpairedDirectoryNext
+nmap üf <Plug>unimpairedDirectoryPrevious
 
 nmap <silent> <Plug>unimpairedONext     <Plug>unimpairedDirectoryNext:echohl WarningMSG<Bar>echo "]o is deprecated. Use ]f"<Bar>echohl NONE<CR>
-nmap <silent> <Plug>unimpairedOPrevious <Plug>unimpairedDirectoryPrevious:echohl WarningMSG<Bar>echo "[o is deprecated. Use [f"<Bar>echohl NONE<CR>
-nmap ]o <Plug>unimpairedONext
-nmap [o <Plug>unimpairedOPrevious
+nmap <silent> <Plug>unimpairedOPrevious <Plug>unimpairedDirectoryPrevious:echohl WarningMSG<Bar>echo "üo is deprecated. Use üf"<Bar>echohl NONE<CR>
+nmap äo <Plug>unimpairedONext
+nmap üo <Plug>unimpairedOPrevious
 
 " }}}1
 " Diff {{{1
 
-nmap [n <Plug>unimpairedContextPrevious
-nmap ]n <Plug>unimpairedContextNext
-omap [n <Plug>unimpairedContextPrevious
-omap ]n <Plug>unimpairedContextNext
+nmap ün <Plug>unimpairedContextPrevious
+nmap än <Plug>unimpairedContextNext
+omap ün <Plug>unimpairedContextPrevious
+omap än <Plug>unimpairedContextNext
 
 nnoremap <silent> <Plug>unimpairedContextPrevious :call <SID>Context(1)<CR>
 nnoremap <silent> <Plug>unimpairedContextNext     :call <SID>Context(0)<CR>
@@ -161,8 +161,8 @@ endfunction
 nnoremap <silent> <Plug>unimpairedBlankUp   :<C-U>call <SID>BlankUp(v:count1)<CR>
 nnoremap <silent> <Plug>unimpairedBlankDown :<C-U>call <SID>BlankDown(v:count1)<CR>
 
-nmap [<Space> <Plug>unimpairedBlankUp
-nmap ]<Space> <Plug>unimpairedBlankDown
+nmap ü<Space> <Plug>unimpairedBlankUp
+nmap ä<Space> <Plug>unimpairedBlankDown
 
 function! s:Move(cmd, count, map) abort
   normal! m`
@@ -190,10 +190,10 @@ nnoremap <silent> <Plug>unimpairedMoveDown          :<C-U>call <SID>Move('+',v:c
 noremap  <silent> <Plug>unimpairedMoveSelectionUp   :<C-U>call <SID>MoveSelectionUp(v:count1)<CR>
 noremap  <silent> <Plug>unimpairedMoveSelectionDown :<C-U>call <SID>MoveSelectionDown(v:count1)<CR>
 
-nmap [e <Plug>unimpairedMoveUp
-nmap ]e <Plug>unimpairedMoveDown
-xmap [e <Plug>unimpairedMoveSelectionUp
-xmap ]e <Plug>unimpairedMoveSelectionDown
+nmap üe <Plug>unimpairedMoveUp
+nmap äe <Plug>unimpairedMoveDown
+xmap üe <Plug>unimpairedMoveSelectionUp
+xmap äe <Plug>unimpairedMoveSelectionDown
 
 " }}}1
 " Option toggling {{{1
@@ -203,18 +203,18 @@ function! s:toggle(op)
 endfunction
 
 function! s:option_map(letter, option)
-  exe 'nnoremap [o'.a:letter.' :set '.a:option.'<CR>'
-  exe 'nnoremap ]o'.a:letter.' :set no'.a:option.'<CR>'
+  exe 'nnoremap üo'.a:letter.' :set '.a:option.'<CR>'
+  exe 'nnoremap äo'.a:letter.' :set no'.a:option.'<CR>'
   exe 'nnoremap co'.a:letter.' :set <C-R>=<SID>toggle("'.a:option.'")<CR><CR>'
 endfunction
 
-nnoremap [ob :set background=light<CR>
-nnoremap ]ob :set background=dark<CR>
+nnoremap üob :set background=light<CR>
+nnoremap äob :set background=dark<CR>
 nnoremap cob :set background=<C-R>=&background == 'dark' ? 'light' : 'dark'<CR><CR>
 call s:option_map('c', 'cursorline')
 call s:option_map('u', 'cursorcolumn')
-nnoremap [od :diffthis<CR>
-nnoremap ]od :diffoff<CR>
+nnoremap üod :diffthis<CR>
+nnoremap äod :diffoff<CR>
 nnoremap cod :<C-R>=&diff ? 'diffoff' : 'diffthis'<CR><CR>
 call s:option_map('h', 'hlsearch')
 call s:option_map('i', 'ignorecase')
@@ -223,11 +223,12 @@ call s:option_map('n', 'number')
 call s:option_map('r', 'relativenumber')
 call s:option_map('s', 'spell')
 call s:option_map('w', 'wrap')
-nnoremap [ox :set cursorline cursorcolumn<CR>
-nnoremap ]ox :set nocursorline nocursorcolumn<CR>
+call s:option_map('f', 'autochdir')
+nnoremap üox :set cursorline cursorcolumn<CR>
+nnoremap äox :set nocursorline nocursorcolumn<CR>
 nnoremap cox :set <C-R>=&cursorline && &cursorcolumn ? 'nocursorline nocursorcolumn' : 'cursorline cursorcolumn'<CR><CR>
-nnoremap [ov :set virtualedit+=all<CR>
-nnoremap ]ov :set virtualedit-=all<CR>
+nnoremap üov :set virtualedit+=all<CR>
+nnoremap äov :set virtualedit-=all<CR>
 nnoremap cov :set <C-R>=(&virtualedit =~# "all") ? 'virtualedit-=all' : 'virtualedit+=all'<CR><CR>
 
 function! s:setup_paste() abort
@@ -269,14 +270,14 @@ endfunction
 nnoremap <silent> <Plug>unimpairedPutAbove :call <SID>putline('[p', 'Above')<CR>
 nnoremap <silent> <Plug>unimpairedPutBelow :call <SID>putline(']p', 'Below')<CR>
 
-nmap [p <Plug>unimpairedPutAbove
-nmap ]p <Plug>unimpairedPutBelow
-nnoremap <silent> >P :call <SID>putline('[p', 'Above')<CR>>']
-nnoremap <silent> >p :call <SID>putline(']p', 'Below')<CR>>']
-nnoremap <silent> <P :call <SID>putline('[p', 'Above')<CR><']
-nnoremap <silent> <p :call <SID>putline(']p', 'Below')<CR><']
-nnoremap <silent> =P :call <SID>putline('[p', 'Above')<CR>=']
-nnoremap <silent> =p :call <SID>putline(']p', 'Below')<CR>=']
+nmap üp <Plug>unimpairedPutAbove
+nmap äp <Plug>unimpairedPutBelow
+nnoremap <silent> >P :call <SID>putline('üp', 'Above')<CR>>']
+nnoremap <silent> >p :call <SID>putline('äp', 'Below')<CR>>']
+nnoremap <silent> <P :call <SID>putline('üp', 'Above')<CR><']
+nnoremap <silent> <p :call <SID>putline('äp', 'Below')<CR><']
+nnoremap <silent> =P :call <SID>putline('üp', 'Above')<CR>=']
+nnoremap <silent> =p :call <SID>putline('äp', 'Below')<CR>=']
 
 " }}}1
 " Encoding and decoding {{{1

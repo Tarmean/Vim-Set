@@ -75,7 +75,7 @@ function! Copy_or_move_selected_buffer_into_tab(move, tab)
   let l:winview = winsaveview()
  "" let l:lines =
 "not sure if these are all necessary but better save than sorry I guess
-  if !getbufvar(str2nr(l:cur_buffer), '&modifiable') || !getbufvar(str2nr(l:cur_buffer), '&buflisted') || empty(bufname(str2nr(l:cur_buffer))) || (a:tab == tabpagenr() && a:move == 1)
+      if !getbufvar(str2nr(l:cur_buffer), '&modifiable') || !getbufvar(str2nr(l:cur_buffer), '&buflisted') || empty(bufname(str2nr(l:cur_buffer))) || (a:tab == tabpagenr() && a:move == 1)
     return
   endif
   let l:selected_buffer_window = bufwinnr(l:cur_buffer)
@@ -140,9 +140,11 @@ endif
 
 "because most keys are already taken and , is easier that \ to press
 let mapleader = "\<Space>"
+"this makes a \ come up instead of <20>.
+"map <space> <leader>
 "quickly edit this very file
-nmap <silent> <leader>ü :e $MYVIMRC<CR>
-nmap <silent> <leader>ä :so $MYVIMRC<CR>
+noremap <silent> <leader>ü :e $MYVIMRC<CR>
+noremap <silent> <leader>ä :so $MYVIMRC<CR>
 ",w split window vertically and switch
 nnoremap <leader>v <C-w>v
 nnoremap <leader>V <C-w>s
@@ -163,7 +165,7 @@ nnoremap <Leader>P "+P
 vnoremap <Leader>p "+p
 vnoremap <Leader>P "+PP
 nnoremap <Leader>ö :w<CR>
-nnoremap ,, ,
+"nnoremap ,, ,
 "nnoremap <leader>v :bd<CR>
 nnoremap <leader>U :<C-U>call Clone_rel_tab_backwards(1, v:count)<CR>
 nnoremap <leader><c-u> :<C-U>call Clone_rel_tab_backwards(0, v:count)<CR>
@@ -177,6 +179,8 @@ nnoremap <leader>e :<C-U>call Copy_or_move_selected_buffer_into_tab(1, v:count)<
 nnoremap <leader>E :<C-U>call Copy_or_move_selected_buffer_into_tab(0, v:count)<CR>
 vnoremap <leader>r :<c-u>execute ":'<,'>Tabular /"nr2char(getchar())<cr>
 vnoremap <leader>R :Tabular<space>/
+nnoremap <cr> o<esc>
+nnoremap <s-cr> O<esc>
 "nnoremap <leader><c-u> :<C-U>call Clone_rel_tab_backwards(0, v:count)
 "nnoremap <leader><c-U> :<C-U>call Clone_rel_tab_backwards(1, v:count)<CR>
 "nnoremap <leader><c-i> :<C-U>call Clone_rel_tab_forwards(0, v:count)<CR>
@@ -231,16 +235,29 @@ endfunction
 "nmap <leader>fs :CtrlPMRU<cr>
 
 "move windows around:
-nnoremap <leader>h <C-w>h
-nnoremap <leader>j <C-w>j
-nnoremap <leader>k <C-w>k
-nnoremap <leader>l <C-w>l
+function! WinMove(key)
+  let t:curwin = winnr()
+  exec "wincmd ".a:key
+  if (t:curwin == winnr()) "we havent moved
+    if (match(a:key,'[jk]')) "were we going up/down
+      wincmd v
+    else
+      wincmd s
+    endif
+    exec "wincmd ".a:key
+  endif
+endfunction
+
+map <leader>h              :call WinMove('h')<cr>
+map <leader>k              :call WinMove('k')<cr>
+map <leader>l              :call WinMove('l')<cr>
+map <leader>j              :call WinMove('j')<cr>
 
 "switch between windows easily
-nmap <silent> <Up> :wincmd k<CR>
-nmap <silent> <Down> :wincmd j<CR>
-nmap <silent> <Left> :wincmd h<CR>
-nmap <silent> <Right> :wincmd l<CR>
+nmap <left>  :3wincmd <<cr>
+nmap <right> :3wincmd ><cr>
+nmap <up>    :3wincmd +<cr>
+nmap <down>  :3wincmd -<cr>
 
 "session stuff
 set ssop-=options    " do not store global and local values in a session

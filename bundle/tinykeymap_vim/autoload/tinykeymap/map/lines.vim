@@ -8,7 +8,7 @@
 " maps.
 
 if !exists('g:tinykeymap#map#lines#map')
-    let g:tinykeymap#map#lines#map = g:tinykeymap#mapleader .'l'   "{{{2
+    let g:tinykeymap#map#lines#map = g:tinykeymap#mapleader ."r"   "{{{2
 endif
 
 
@@ -30,26 +30,21 @@ call tinykeymap#EnterMap("lines", g:tinykeymap#map#lines#map, g:tinykeymap#map#l
 
 call tinykeymap#Map('lines', 'O', 'norm! <count>O')
 call tinykeymap#Map('lines', 'o', 'norm! <count>o')
-call tinykeymap#Map('lines', 'dk', 'norm! dd<count>kp')
-call tinykeymap#Map('lines', 'dj', 'norm! dd<count>jp')
-call tinykeymap#Map('lines', 'yk', 'norm! yy<count>kp')
-call tinykeymap#Map('lines', 'yj', 'norm! yy<count>jp')
 
-call tinykeymap#Map('lines', 'gk', 'norm! <count>k')
-call tinykeymap#Map('lines', 'gj', 'norm! <count>j')
-call tinykeymap#Map('lines', '<Up>', 'norm! <count>k')
-call tinykeymap#Map('lines', '<Down>', 'norm! <count>j')
-
+call tinykeymap#Map('lines', 'k', 'norm! <count>k')
+call tinykeymap#Map('lines', 'j', 'norm! <count>j')
+call tinykeymap#Map('lines', '<Up>', 'norm! <count>gk')
+call tinykeymap#Map('lines', '<Down>', 'norm! <count>gj')
 call tinykeymap#Map('lines', '<C-Up>', 'norm! dd<count>kP')
 call tinykeymap#Map('lines', '<C-Down>', 'norm! dd<count>jP')
 call tinykeymap#Map('lines', '<S-Up>', 'norm! yy<count>kp')
 call tinykeymap#Map('lines', '<S-Down>', 'norm! yy<count>jP')
 
 " Modelled after LineJuggler plugin:
-call tinykeymap#Map('lines', '[<Space>', 'norm! <count>O')
-call tinykeymap#Map('lines', ']<Space>', 'norm! <count>o')
-call tinykeymap#Map('lines', '[e', 'norm! dd<count>kp')
-call tinykeymap#Map('lines', ']e', 'norm! dd<count>jp')
-call tinykeymap#Map('lines', '[d', 'norm! yy<count>kp')
-call tinykeymap#Map('lines', ']d', 'norm! yy<count>jp')
+call tinykeymap#Map('lines', '<Space>', 'norm! <count>O')
+call tinykeymap#Map('lines', '<s-Space>', 'norm! <count>o')
+call tinykeymap#Map('lines', 'y', 'norm! yy<count>jp')
+call tinykeymap#Map('lines', 'Y', 'norm! yy<count>kp')
+call tinykeymap#Map('lines', 'd', 'norm! dd<count>jp')
+call tinykeymap#Map('lines', 'D', 'norm! dd<count>kp')
 
