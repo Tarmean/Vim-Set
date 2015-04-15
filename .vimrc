@@ -39,6 +39,8 @@ set visualbell
 set noerrorbells visualbell t_vb=
 set guioptions=e
 set fillchars+=vert:\ "█
+set backupdir=./.backup,.,/tmp
+set directory=.,./.backup,/tmp
 "EclimDisable
 if has('autocmd')
   autocmd GUIEnter * set visualbell t_vb=
@@ -253,10 +255,10 @@ function! WinMove(key)
   endif
 endfunction
 
-map <leader>h              :call WinMove('h')<cr>
-map <leader>k              :call WinMove('k')<cr>
-map <leader>l              :call WinMove('l')<cr>
-map <leader>j              :call WinMove('j')<cr>
+map <silent><leader>h              :call WinMove('h')<cr>
+map <silent><leader>k              :call WinMove('k')<cr>
+map <silent><leader>l              :call WinMove('l')<cr>
+map <silent><leader>j              :call WinMove('j')<cr>
 
 "switch between windows easily
 nmap <left>  :3wincmd <<cr>
@@ -297,6 +299,7 @@ set statusline+=%*
 "Airline
 let g:airline_theme='powerlineish'
 let g:airline_powerline_fonts = 1
+let g:airline_section_y = ''
 "let g:airline#extensions#eclim#enabled = 1
 "let g:airline#extensions#syntastic#enabled = 1
 
