@@ -209,7 +209,7 @@ let g:unite_source_history_yank_enable = 1
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 let g:unite_source_rec_async_command =
             \ 'ag --follow --nocolor --nogroup --hidden -g ""'
-nnoremap <leader>fJ :Unite -buffer-name=files   -start-insert file_rec/async:!<cr>
+nnoremap <leader>fJ :Unite -buffer-name=files   -start-insert file_rec:!<cr>
 "C-u>Unite -buffer-name=files   -start-insert file_rec:!<cr>
 nnoremap <leader>fj :<C-u>Unite -buffer-name=files   -start-insert file<cr>
 nnoremap <leader>fs :<C-u>Unite -buffer-name=mru     -start-insert file_mru<cr>
