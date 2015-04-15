@@ -41,6 +41,9 @@ set guioptions=e
 set fillchars+=vert:\ "█
 set backupdir=./.backup,.,/tmp
 set directory=.,./.backup,/tmp
+set foldmethod=syntax
+set foldlevel=1
+set foldclose=all
 "EclimDisable
 if has('autocmd')
   autocmd GUIEnter * set visualbell t_vb=
@@ -91,9 +94,9 @@ function! Copy_or_move_selected_buffer_into_tab(move, tab)
       endif
     endif
   endif
-  if a:tab  > l:total_tabs
+  if a:tab  > l:total_tabs || a:tab == 0
     "let l:total_tabs = (l:total_tabs + 1)
-    silent! exe l:total_tabs . "tab  sb" . l:cur_buffer
+    silent! exe a:tab . "tab  sb" . l:cur_buffer
   else
     if (a:move == 2 || a:move == -1) && a:tab == 0
       silent! exe "normal! gT"
@@ -178,8 +181,9 @@ nnoremap <leader>i gT
 nnoremap <silent><leader>o :<C-U>call RelativeNext(v:count1)<CR>
 nnoremap <leader>Z <c-i>
 nnoremap <leader>z <c-o>
-nnoremap <leader>e :<C-U>call Copy_or_move_selected_buffer_into_tab(1, v:count)<CR>
-nnoremap <leader>E :<C-U>call Copy_or_move_selected_buffer_into_tab(0, v:count)<CR>
+nnoremap <leader>e za
+"nnoremap <leader>e :<C-U>call Copy_or_move_selected_buffer_into_tab(1, v:count)<CR>
+"nnoremap <leader>E :<C-U>call Copy_or_move_selected_buffer_into_tab(0, v:count)<CR>
 vnoremap <leader>r :<c-u>execute ":'<,'>Tabular /"nr2char(getchar())<cr>
 vnoremap <leader>R :Tabular<space>/
 nnoremap <cr> :
