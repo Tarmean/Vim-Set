@@ -1,4 +1,5 @@
 "gotta be first
+
 set nocompatible
 
 "pathogen for easier plugins
@@ -241,6 +242,9 @@ nnoremap <space>gb :Git branch<Space>
 nnoremap <space>go :Git checkout<Space>
 nnoremap <space>gps :Dispatch! git push<CR>
 nnoremap <space>gpl :Dispatch! git pull<CR>
+" same bindings for merging diffs as in normal mode
+xnoremap dp :diffput<cr>
+xnoremap do :diffget<cr>
 
 
 " Custom mappings for the unite buffer
