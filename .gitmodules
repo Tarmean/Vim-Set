@@ -19,9 +19,6 @@
 [submodule "bundle/vim-fugitive"]
 	path = bundle/vim-fugitive
 	url = http://github.com/tpope/vim-fugitive
-[submodule "tlib_vim"]
-	path = tlib_vim
-	url = https://github.com/tomtom/tlib_vim
 [submodule "bundle/tlib_vim"]
 	path = bundle/tlib_vim
 	url = https://github.com/tomtom/tlib_vim

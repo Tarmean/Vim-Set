@@ -167,12 +167,12 @@ vnoremap <Leader>P "+PP
 nnoremap <Leader>ö :w<CR>
 "nnoremap ,, ,
 "nnoremap <leader>v :bd<CR>
-nnoremap <leader>U :<C-U>call Clone_rel_tab_backwards(1, v:count)<CR>
-nnoremap <leader><c-u> :<C-U>call Clone_rel_tab_backwards(0, v:count)<CR>
-nnoremap <leader>I :<C-U>call Clone_rel_tab_forwards(1, v:count)<CR>
-nnoremap <leader><c-I> :<C-U>call Clone_rel_tab_forwards(0, v:count)<CR>
-nnoremap <leader>u gT
-nnoremap <silent><leader>i :<C-U>call RelativeNext(v:count1)<CR>
+nnoremap <leader>I :<C-U>call Clone_rel_tab_backwards(1, v:count)<CR>
+nnoremap <leader><c-I> :<C-U>call Clone_rel_tab_backwards(0, v:count)<CR>
+nnoremap <leader>O :<C-U>call Clone_rel_tab_forwards(1, v:count)<CR>
+nnoremap <leader><c-O> :<C-U>call Clone_rel_tab_forwards(0, v:count)<CR>
+nnoremap <leader>i gT
+nnoremap <silent><leader>o :<C-U>call RelativeNext(v:count1)<CR>
 nnoremap <leader>Z <c-i>
 nnoremap <leader>z <c-o>
 nnoremap <leader>e :<C-U>call Copy_or_move_selected_buffer_into_tab(1, v:count)<CR>
