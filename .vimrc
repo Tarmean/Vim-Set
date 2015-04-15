@@ -280,10 +280,14 @@ function! WinMove(key)
   endif
 endfunction
 
-map <silent><leader>h              :call WinMove('h')<cr>
-map <silent><leader>k              :call WinMove('k')<cr>
-map <silent><leader>l              :call WinMove('l')<cr>
-map <silent><leader>j              :call WinMove('j')<cr>
+map <silent><leader>h  : call WinMove('h')<cr>
+map <silent><leader>k  : call WinMove('k')<cr>
+map <silent><leader>l  : call WinMove('l')<cr>
+map <silent><leader>j  : call WinMove('j')<cr>
+map <silent><c-H>      : 3wincmd <<cr>
+map <silent><c-K>      : 3wincmd ><cr>
+map <silent><c-L>      : 3wincmd +<cr>
+map <silent><c-J>      : 3wincmd -<cr>
 
 "switch between windows easily
 nmap <left>  :3wincmd <<cr>
