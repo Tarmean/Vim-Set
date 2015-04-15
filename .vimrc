@@ -207,13 +207,17 @@ nnoremap <leader>0 :buffer 0 <CR>
 " Unite
 let g:unite_source_history_yank_enable = 1
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
-nnoremap <leader>fJ :<C-u>Unite -buffer-name=files   -start-insert file_rec:!<cr>
+let g:unite_source_rec_async_command =
+            \ 'ag --follow --nocolor --nogroup --hidden -g ""'
+nnoremap <leader>fJ :Unite -buffer-name=files   -start-insert file_rec/async:!<cr>
+"C-u>Unite -buffer-name=files   -start-insert file_rec:!<cr>
 nnoremap <leader>fj :<C-u>Unite -buffer-name=files   -start-insert file<cr>
 nnoremap <leader>fs :<C-u>Unite -buffer-name=mru     -start-insert file_mru<cr>
 nnoremap <leader>fk :<C-u>Unite -buffer-name=outline -start-insert outline<cr>
 nnoremap <leader>fy :<C-u>Unite -buffer-name=yank    history/yank<cr>
 nnoremap <leader>ff :<C-u>Unite -buffer-name=buffer  buffer<cr>
 nnoremap <leader>fl :<C-u>Unite -buffer-name=buffer -start-insert -no-split line<cr>
+
 
 " Custom mappings for the unite buffer
 autocmd FileType unite call s:unite_settings()
