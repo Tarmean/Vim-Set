@@ -16,11 +16,11 @@ call tinykeymap#EnterMap("windows", g:tinykeymap#map#windows#map, {
             \ 'name': 'windows mode',
             \ 'message': 'winnr() .": ". bufname("%")'
             \ })
-call tinykeymap#Map('windows', '<C-l>', '<count1> wincmd >', {'desc': 'Increase width'})
-call tinykeymap#Map('windows', '<C-h>', '<count1> wincmd <', {'desc': 'Decrease width'})
+call tinykeymap#Map('windows', '<C-l>', (winwidth(0) * 1/4) . 'wincmd <', {'desc': 'Increase width'})
+call tinykeymap#Map('windows', '<C-h>', (winwidth(0) * 1/4) . 'wincmd >', {'desc': 'Decrease width'})
 call tinykeymap#Map('windows', '|', 'vertical resize <count>', {'desc': 'Set width'})
-call tinykeymap#Map('windows', '<C-j>', 'resize +<count3>', {'desc': 'Increase height'})
-call tinykeymap#Map('windows', '<C-k>', 'resize -<count3>', {'desc': 'Decrease height'})
+call tinykeymap#Map('windows', '<C-j>', 'resize' . (winheight(0) * 4/3), {'desc': 'Increase height'})
+call tinykeymap#Map('windows', '<C-k>', 'resize' . (winheight(0) * 3/4), {'desc': 'Decrease height'})
 call tinykeymap#Map('windows', '_', 'resize <count>', {'desc': 'Set height'})
 call tinykeymap#Map('windows', '=', 'wincmd =', {'desc': 'Make equally high and wide'})
 call tinykeymap#Map('windows', 'r', 'wincmd r', {'desc': 'Rotate window downwards/rightwards'})
