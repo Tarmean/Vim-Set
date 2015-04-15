@@ -39,6 +39,7 @@ set visualbell
 set noerrorbells visualbell t_vb=
 set guioptions=e
 set fillchars+=vert:\ "█
+"EclimDisable
 if has('autocmd')
   autocmd GUIEnter * set visualbell t_vb=
 endif
@@ -179,8 +180,8 @@ nnoremap <leader>e :<C-U>call Copy_or_move_selected_buffer_into_tab(1, v:count)<
 nnoremap <leader>E :<C-U>call Copy_or_move_selected_buffer_into_tab(0, v:count)<CR>
 vnoremap <leader>r :<c-u>execute ":'<,'>Tabular /"nr2char(getchar())<cr>
 vnoremap <leader>R :Tabular<space>/
-nnoremap <cr> o<esc>
-nnoremap <s-cr> O<esc>
+nnoremap <cr> :
+"nnoremap <s-cr> O<esc>
 "nnoremap <leader><c-u> :<C-U>call Clone_rel_tab_backwards(0, v:count)
 "nnoremap <leader><c-U> :<C-U>call Clone_rel_tab_backwards(1, v:count)<CR>
 "nnoremap <leader><c-i> :<C-U>call Clone_rel_tab_forwards(0, v:count)<CR>

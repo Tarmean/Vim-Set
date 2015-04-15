@@ -16,8 +16,8 @@ call tinykeymap#EnterMap("windows", g:tinykeymap#map#windows#map, {
             \ 'name': 'windows mode',
             \ 'message': 'winnr() .": ". bufname("%")'
             \ })
-call tinykeymap#Map('windows', '<C-l>', '<count3>wincmd >', {'desc': 'Increase width'})
-call tinykeymap#Map('windows', '<C-h>', '<count3>wincmd <', {'desc': 'Decrease width'})
+call tinykeymap#Map('windows', '<C-l>', '<count1> wincmd >', {'desc': 'Increase width'})
+call tinykeymap#Map('windows', '<C-h>', '<count1> wincmd <', {'desc': 'Decrease width'})
 call tinykeymap#Map('windows', '|', 'vertical resize <count>', {'desc': 'Set width'})
 call tinykeymap#Map('windows', '<C-j>', 'resize +<count3>', {'desc': 'Increase height'})
 call tinykeymap#Map('windows', '<C-k>', 'resize -<count3>', {'desc': 'Decrease height'})
