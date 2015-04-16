@@ -40,16 +40,12 @@ set visualbell
 set noerrorbells visualbell t_vb=
 set guioptions=e
 set fillchars+=vert:\ "█
-<<<<<<< Updated upstream
 set backupdir=./.backup,.,/tmp
 set directory=.,./.backup,/tmp
 set foldmethod=syntax
 set foldlevel=1
 set foldclose=all
 "EclimDisable
-=======
-set tildeop
->>>>>>> Stashed changes
 if has('autocmd')
   autocmd GUIEnter * set visualbell t_vb=
 endif
@@ -197,24 +193,6 @@ nnoremap <cr> :
 "nnoremap <leader><c-U> :<C-U>call Clone_rel_tab_backwards(1, v:count)<CR>
 "nnoremap <leader><c-i> :<C-U>call Clone_rel_tab_forwards(0, v:count)<CR>
 "nnoremap <leader><c-I> :<C-U>call Clone_rel_tab_forwards(1, v:count)
-"nnoremap .w <Plug>CamelCaseMotion_w
-"vnoremap .w <Plug>CamelCaseMotion_w
-"onoremap .w <Plug>CamelCaseMotion_w
-"nnoremap .e <Plug>CamelCaseMotion_e
-"vnoremap .e <Plug>CamelCaseMotion_e
-"onoremap .e <Plug>CamelCaseMotion_e
-"nnoremap .b <Plug>CamelCaseMotion_b
-"vnoremap .b <Plug>CamelCaseMotion_b
-"onoremap .b <Plug>CamelCaseMotion_b
-"nnoremap .iw <Plug>CamelCaseMotion_iw
-"nnoremap .iw <Plug>CamelCaseMotion_iw
-"vnoremap .iw <Plug>CamelCaseMotion_iw
-"onoremap .ie <Plug>CamelCaseMotion_ie
-"vnoremap .ie <Plug>CamelCaseMotion_ie
-"onoremap .ie <Plug>CamelCaseMotion_ie
-"nnoremap .ib <Plug>CamelCaseMotion_ib
-"vnoremap .ib <Plug>CamelCaseMotion_ib
-"onoremap .ib <Plug>CamelCaseMotion_ib
 nnoremap Y y$
 
 "nnoremap <leader>, <C-o>
@@ -351,10 +329,6 @@ set statusline+=%*
 let g:airline_theme='powerlineish'
 let g:airline_powerline_fonts = 1
 let g:airline_section_y = ''
-<<<<<<< Updated upstream
-=======
-let g:airline_exclude_preview=1
->>>>>>> Stashed changes
 "let g:airline#extensions#eclim#enabled = 1
 "let g:airline#extensions#syntastic#enabled = 1
 
@@ -375,6 +349,7 @@ let g:syntastic_check_on_wq = 0
 "hi CtrlSpaceNormal   term=NONE    ctermfg=244  ctermbg=232 cterm=NONE
 "hi CtrlSpaceSearch   ctermfg=220  ctermbg=NONE cterm=bold
 "hi CtrlSpaceStatus   ctermfg=230  ctermbg=234  cterm=NONE
+let g:airline_exclude_preview=1
 
 "unicode when available
 if has("multi_byte")
