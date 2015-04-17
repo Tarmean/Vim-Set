@@ -224,6 +224,7 @@ call s:option_map('r', 'relativenumber')
 call s:option_map('s', 'spell')
 call s:option_map('w', 'wrap')
 call s:option_map('f', 'autochdir')
+call s:option_map('t', 'extendtab')
 nnoremap üox :set cursorline cursorcolumn<CR>
 nnoremap äox :set nocursorline nocursorcolumn<CR>
 nnoremap cox :set <C-R>=&cursorline && &cursorcolumn ? 'nocursorline nocursorcolumn' : 'cursorline cursorcolumn'<CR><CR>
