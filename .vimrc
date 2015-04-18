@@ -243,8 +243,8 @@ nnoremap <space>gm :Gmove<Space>
 nnoremap <space>gb :Git branch<Space>
 nnoremap <space>gB :Gblame<CR>
 nnoremap <space>go :Git checkout<Space>
-nnoremap <space>ggp :Dispatch! git push<CR>
-nnoremap <space>ggo :Dispatch! git pull<CR>
+nnoremap <space>ggP :Dispatch! git push<CR>
+nnoremap <space>ggp :Dispatch! git pull<CR>
 " same bindings for merging diffs as in normal mode
 xnoremap dp :diffput<cr>
 xnoremap do :diffget<cr>
