@@ -193,6 +193,8 @@ nnoremap <cr> :
 "nnoremap <leader><c-U> :<C-U>call Clone_rel_tab_backwards(1, v:count)<CR>
 "nnoremap <leader><c-i> :<C-U>call Clone_rel_tab_forwards(0, v:count)<CR>
 "nnoremap <leader><c-I> :<C-U>call Clone_rel_tab_forwards(1, v:count)
+nnoremap / /\v
+cnoremap %s/ %s/\v
 nnoremap Y y$
 
 "nnoremap <leader>, <C-o>
