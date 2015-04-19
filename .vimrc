@@ -182,7 +182,6 @@ nnoremap <leader>i gT
 nnoremap <silent><leader>o :<C-U>call RelativeNext(v:count1)<CR>
 nnoremap <leader>Z <c-i>
 nnoremap <leader>z <c-o>
-nnoremap <leader>e za
 "nnoremap <leader>e :<C-U>call Copy_or_move_selected_buffer_into_tab(1, v:count)<CR>
 "nnoremap <leader>E :<C-U>call Copy_or_move_selected_buffer_into_tab(0, v:count)<CR>
 vnoremap <leader>r :<c-u>execute ":'<,'>Tabular /"nr2char(getchar())<cr>
@@ -249,7 +248,41 @@ nnoremap <space>ggp :Dispatch! git pull<CR>
 xnoremap dp :diffput<cr>
 xnoremap do :diffget<cr>
 
+let g:netrw_altfile = 1
+"autocmd FileType netrw call s:filer_settings()
+"function! s:filer_settings()
+"  map <esc> TogleVExplorer()
+"  setl bufhidden=wipe
+"endfunction
+map <silent> <leader>e :call ToggleVExplorer()<CR>
 
+" Toggle Vexplore with Ctrl-E
+function! ToggleVExplorer()
+  if exists("t:expl_buf_num")
+      let expl_win_num = bufwinnr(t:expl_buf_num)
+      if expl_win_num != -1
+          let cur_win_nr = winnr()
+          exec expl_win_num . 'wincmd w'
+          close
+          exec cur_win_nr . 'wincmd w'
+          unlet t:expl_buf_num
+      else
+          unlet t:expl_buf_num
+      endif
+  else
+      exec '1wincmd w'
+      Vexplore
+      let t:expl_buf_num = bufnr("%")
+  endif
+endfunction
+
+" Hit enter in the file browser to open the selected
+" file with :vsplit to the right of the browser.
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+
+" Default to tree mode
+let g:netrw_liststyle=3
 " Custom mappings for the unite buffer
 autocmd FileType unite call s:unite_settings()
 function! s:unite_settings()
@@ -261,7 +294,6 @@ function! s:unite_settings()
   nmap <buffer> <esc>   <Plug>(unite_exit)
   map <buffer> <leader><c>   <Plug>(unite_exit)
 endfunction
-
 
 
 "nmap <leader>fj :CtrlP<cr>
