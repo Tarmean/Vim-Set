@@ -40,11 +40,12 @@ set visualbell
 set noerrorbells visualbell t_vb=
 set guioptions=e
 set fillchars+=vert:\ "█
-set backupdir=./.backup,.,/tmp
-set directory=.,./.backup,/tmp
+set backupdir=./.backup,~/.vim/backups,.
+set directory=./.swaps,~/.vim/swaps,.
 set foldmethod=syntax
 set foldlevel=1
 set foldclose=all
+"let g:netrw_silent = 1
 "EclimDisable
 if has('autocmd')
   autocmd GUIEnter * set visualbell t_vb=
@@ -248,41 +249,43 @@ nnoremap <space>ggp :Dispatch! git pull<CR>
 xnoremap dp :diffput<cr>
 xnoremap do :diffget<cr>
 
-let g:netrw_altfile = 1
+"let g:netrw_altfile = 1
 "autocmd FileType netrw call s:filer_settings()
 "function! s:filer_settings()
-"  map <esc> TogleVExplorer()
+"  map  <buffer><esc> ToggleVExplorer()
+"  nmap <buffer> l <cr>
+"  nmap <buffer> h <s-cr>
 "  setl bufhidden=wipe
 "endfunction
-map <silent> <leader>e :call ToggleVExplorer()<CR>
-
-" Toggle Vexplore with Ctrl-E
-function! ToggleVExplorer()
-  if exists("t:expl_buf_num")
-      let expl_win_num = bufwinnr(t:expl_buf_num)
-      if expl_win_num != -1
-          let cur_win_nr = winnr()
-          exec expl_win_num . 'wincmd w'
-          close
-          exec cur_win_nr . 'wincmd w'
-          unlet t:expl_buf_num
-      else
-          unlet t:expl_buf_num
-      endif
-  else
-      exec '1wincmd w'
-      Vexplore
-      let t:expl_buf_num = bufnr("%")
-  endif
-endfunction
-
-" Hit enter in the file browser to open the selected
-" file with :vsplit to the right of the browser.
-let g:netrw_browse_split = 4
-let g:netrw_altv = 1
-
-" Default to tree mode
-let g:netrw_liststyle=3
+"map <silent> <leader>e :call ToggleVExplorer()<CR>
+"
+"" Toggle Vexplore with Ctrl-E
+"function! ToggleVExplorer()
+"  if exists("t:expl_buf_num")
+"      let expl_win_num = bufwinnr(t:expl_buf_num)
+"      if expl_win_num != -1
+"          let cur_win_nr = winnr()
+"          exec expl_win_num . 'wincmd w'
+"          close
+"          exec cur_win_nr . 'wincmd w'
+"          unlet t:expl_buf_num
+"      else
+"          unlet t:expl_buf_num
+"      endif
+"  else
+"      exec '1wincmd w'
+"      Vexplore
+"      let t:expl_buf_num = bufnr("%")
+"  endif
+"endfunction
+"
+"" Hit enter in the file browser to open the selected
+"" file with :vsplit to the right of the browser.
+"let g:netrw_browse_split = 4
+"let g:netrw_altv = 1
+"
+"" Default to tree mode
+"let g:netrw_liststyle=3
 " Custom mappings for the unite buffer
 autocmd FileType unite call s:unite_settings()
 function! s:unite_settings()
@@ -315,14 +318,14 @@ function! WinMove(key)
   endif
 endfunction
 
-map <silent><leader>h  : call WinMove('h')<cr>
-map <silent><leader>k  : call WinMove('k')<cr>
-map <silent><leader>l  : call WinMove('l')<cr>
-map <silent><leader>j  : call WinMove('j')<cr>
-map <silent><c-H>      : 3wincmd <<cr>
-map <silent><c-L>      : 3wincmd ><cr>
-map <silent><c-J>      : 3wincmd +<cr>
-map <silent><c-K>      : 3wincmd -<cr>
+noremap <silent><leader>h  : call WinMove('h')<cr>
+noremap <silent><leader>k  : call WinMove('k')<cr>
+noremap <silent><leader>l  : call WinMove('l')<cr>
+noremap <silent><leader>j  : call WinMove('j')<cr>
+"noremap <silent><c-H>      : 3wincmd <<cr>
+"noremap <silent><c-L>      : 3wincmd ><cr>
+"noremap <silent><c-J>      : 3wincmd +<cr>
+"noremap <silent><c-K>      : 3wincmd -<cr>
 
 "switch between windows easily
 nmap <left>  :3wincmd <<cr>
