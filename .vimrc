@@ -40,8 +40,8 @@ set visualbell
 set noerrorbells visualbell t_vb=
 set guioptions=e
 set fillchars+=vert:\ "█
-set backupdir=./.backup,~/.vim/backups,.
-set directory=./.swaps,~/.vim/swaps,.
+set backupdir=./.backup//,~/.vim/backups//,. 
+set directory=./.swaps//,~/.vim/swaps//,.
 set foldmethod=syntax
 set foldlevel=1
 set foldclose=all
@@ -248,45 +248,6 @@ nnoremap <space>ggp :Dispatch! git pull<CR>
 " same bindings for merging diffs as in normal mode
 xnoremap dp :diffput<cr>
 xnoremap do :diffget<cr>
-
-"let g:netrw_altfile = 1
-"autocmd FileType netrw call s:filer_settings()
-"function! s:filer_settings()
-"  map  <buffer><esc> ToggleVExplorer()
-"  nmap <buffer> l <cr>
-"  nmap <buffer> h <s-cr>
-"  setl bufhidden=wipe
-"endfunction
-"map <silent> <leader>e :call ToggleVExplorer()<CR>
-"
-"" Toggle Vexplore with Ctrl-E
-"function! ToggleVExplorer()
-"  if exists("t:expl_buf_num")
-"      let expl_win_num = bufwinnr(t:expl_buf_num)
-"      if expl_win_num != -1
-"          let cur_win_nr = winnr()
-"          exec expl_win_num . 'wincmd w'
-"          close
-"          exec cur_win_nr . 'wincmd w'
-"          unlet t:expl_buf_num
-"      else
-"          unlet t:expl_buf_num
-"      endif
-"  else
-"      exec '1wincmd w'
-"      Vexplore
-"      let t:expl_buf_num = bufnr("%")
-"  endif
-"endfunction
-"
-"" Hit enter in the file browser to open the selected
-"" file with :vsplit to the right of the browser.
-"let g:netrw_browse_split = 4
-"let g:netrw_altv = 1
-"
-"" Default to tree mode
-"let g:netrw_liststyle=3
-" Custom mappings for the unite buffer
 autocmd FileType unite call s:unite_settings()
 function! s:unite_settings()
   " Play nice with supertab
@@ -298,6 +259,7 @@ function! s:unite_settings()
   map <buffer> <leader><c>   <Plug>(unite_exit)
 endfunction
 
+autocmd FileType FileBeagle map <buffer> <leader><c> q
 
 "nmap <leader>fj :CtrlP<cr>
 "nmap <leader>fk :CtrlPBuffer<cr>
