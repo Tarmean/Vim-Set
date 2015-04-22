@@ -40,7 +40,7 @@ set visualbell
 set noerrorbells visualbell t_vb=
 set guioptions=e
 set fillchars+=vert:\ "█
-set backupdir=./.backup//,~/.vim/backups//,. 
+set backupdir=./.backup//,~/.vim/backups//,.
 set directory=./.swaps//,~/.vim/swaps//,.
 set foldmethod=syntax
 set foldlevel=1
@@ -81,7 +81,6 @@ function! Copy_or_move_selected_buffer_into_tab(move, tab)
   "used once the buffer gets reopened. there is probably some way it's
   "supposed to be done but yay workarounds
   let l:winview = winsaveview()
- "" let l:lines =
 "not sure if these are all necessary but better save than sorry I guess
       if !getbufvar(str2nr(l:cur_buffer), '&modifiable') || !getbufvar(str2nr(l:cur_buffer), '&buflisted') || empty(bufname(str2nr(l:cur_buffer))) || (a:tab == tabpagenr() && a:move == 1)
     return
@@ -173,6 +172,29 @@ nnoremap <Leader>P "+P
 vnoremap <Leader>p "+p
 vnoremap <Leader>P "+PP
 nnoremap <Leader>ö :w<CR>
+map ü [
+map ä ]
+nnoremap üw :Obsession<CR> 
+nnoremap äw :Obsession!<CR> 
+nnoremap <leader>w :Prosession %:p:h<cr>
+"nnoremap ü) [)
+"nnoremap ü( [(
+"nnoremap ä( ](
+"nnoremap ä) ])
+"nnoremap ü{ [{
+"nnoremap ü} [}
+"nnoremap a{ ]{
+"nnoremap ä} ]}
+"nnoremap üm [m
+"nnoremap üM [M
+"nnoremap äm ]m
+"nnoremap äM ]M
+"nnoremap üü [[
+"nnoremap üä []
+"nnoremap äü ][
+"nnoremap ää ]]
+"nnoremap üs [s
+"nnoremap äs ]s
 "nnoremap ,, ,
 "nnoremap <leader>v :bd<CR>
 nnoremap <leader>I :<C-U>call Clone_rel_tab_backwards(1, v:count)<CR>

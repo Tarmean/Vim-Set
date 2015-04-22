@@ -31,3 +31,9 @@
 [submodule "bundle/filebeagle"]
 	path = bundle/filebeagle
 	url = https://github.com/jeetsukumaran/vim-filebeagle
+[submodule "bundle/obsession"]
+	path = bundle/obsession
+	url = https://github.com/tpope/vim-obsession
+[submodule "bundle/prosession"]
+	path = bundle/prosession
+	url = https://github.com/dhruvasagar/vim-prosession
