@@ -282,6 +282,7 @@ function! s:unite_settings()
 endfunction
 
 autocmd FileType FileBeagle map <buffer> <leader><c> q
+let g:filebeagle_show_hidden = 1 
 
 "nmap <leader>fj :CtrlP<cr>
 "nmap <leader>fk :CtrlPBuffer<cr>
