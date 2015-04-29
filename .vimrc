@@ -45,6 +45,8 @@ set directory=./.swaps//,~/.vim/swaps//,.
 set foldmethod=syntax
 set foldlevel=1
 set foldclose=all
+let g:prosession_on_startup = 0
+let g:syntastic_java_javac_classpath = "c:/users/Cyril/ProgramPraktikum/teamf3/out"
 "let g:netrw_silent = 1
 "EclimDisable
 if has('autocmd')
@@ -174,8 +176,8 @@ vnoremap <Leader>P "+PP
 nnoremap <Leader>ö :w<CR>
 map ü [
 map ä ]
-nnoremap üw :Obsession<CR> 
-nnoremap äw :Obsession!<CR> 
+nnoremap üw :Obsession<CR>
+nnoremap äw :Obsession!<CR>
 nnoremap <leader>w :Prosession %:p:h<cr>
 "nnoremap ü) [)
 "nnoremap ü( [(
@@ -189,10 +191,10 @@ nnoremap <leader>w :Prosession %:p:h<cr>
 "nnoremap üM [M
 "nnoremap äm ]m
 "nnoremap äM ]M
-"nnoremap üü [[
-"nnoremap üä []
-"nnoremap äü ][
-"nnoremap ää ]]
+nnoremap üü [[
+nnoremap üä []
+nnoremap äü ][
+nnoremap ää ]]
 "nnoremap üs [s
 "nnoremap äs ]s
 "nnoremap ,, ,
@@ -282,7 +284,7 @@ function! s:unite_settings()
 endfunction
 
 autocmd FileType FileBeagle map <buffer> <leader><c> q
-let g:filebeagle_show_hidden = 1 
+let g:filebeagle_show_hidden = 1
 
 "nmap <leader>fj :CtrlP<cr>
 "nmap <leader>fk :CtrlPBuffer<cr>

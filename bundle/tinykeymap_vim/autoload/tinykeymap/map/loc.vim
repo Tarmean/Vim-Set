@@ -5,7 +5,7 @@
 " @Revision:    56
 
 if !exists('g:tinykeymap#map#loc#map')
-    let g:tinykeymap#map#loc#map = g:tinykeymap#mapleader .'o'   "{{{2
+    let g:tinykeymap#map#loc#map = g:tinykeymap#mapleader .'n'   "{{{2
 endif
 
 
