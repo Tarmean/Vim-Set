@@ -11,7 +11,7 @@ if !exists('g:tinykeymap#map#undo#map')
     " Map leader for the "undo" tinykeymap.
     " If the undotree plugin is available, |:UndotreeToggle| will be 
     " called when entering the undo tinykeymap.
-    let g:tinykeymap#map#undo#map = g:tinykeymap#mapleader ."u"   "{{{2
+    let g:tinykeymap#map#undo#map = g:tinykeymap#mapleader ."U"   "{{{2
 endif
 
 

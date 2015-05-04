@@ -5,7 +5,7 @@
 
 if !exists('g:tinykeymap#map#tabs#map')
     " Map leader for the "tabs" tinykeymap.
-    let g:tinykeymap#map#tabs#map = g:tinykeymap#mapleader ."t" "{{{2
+    let g:tinykeymap#map#tabs#map = g:tinykeymap#mapleader ."T" "{{{2
 endif
 
 augroup TinyKeyMapTabs

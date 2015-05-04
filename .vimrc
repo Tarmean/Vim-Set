@@ -40,13 +40,21 @@ set visualbell
 set noerrorbells visualbell t_vb=
 set guioptions=e
 set fillchars+=vert:\ "█
-set backupdir=./.backup//,~/.vim/backups//,.
-set directory=./.swaps//,~/.vim/swaps//,.
+set backupdir=~/.vim/backups//,.
+set undodir=~/.vim/undodir//,.
+set directory=~/.vim/swaps//,.
 set foldmethod=syntax
 set foldlevel=1
 set foldclose=all
+set tags=~/_vimtags
 let g:prosession_on_startup = 0
-let g:syntastic_java_javac_classpath = "c:/users/Cyril/ProgramPraktikum/teamf3/out"
+let g:syntastic_java_javac_classpath = "C:/Users/Cyril/ProgramPraktikum/teamf3/src/de/hhu/propra/"
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<s-space>"
+let g:UltiSnipsJumpBackwardTrigger="<c-space>"
+let g:tagbar_left=1
+let g:tagbar_autoclose=0
+let g:tagbar_autofocus=1
 "let g:netrw_silent = 1
 "EclimDisable
 if has('autocmd')
@@ -58,73 +66,7 @@ let $MYVIMRC='~/vimfiles/.vimrc'
 nnoremap j gj
 nnoremap k gk
 
-function! RelativeNext(count)
 
-    let total_tabs = tabpagenr("$")
-
-    let cur_tab = tabpagenr()
-
-    let next_tab = (cur_tab + a:count -1) % total_tabs + 1
-
-    exec "tabnext" .  next_tab
-
-endfunction
-command! -count=1 TabNext call RelativeNext(<count>)
-command! -count JumpBackward norm! <count><C-O>
-command! -count JumpForward norm! <count><C-i>
-
-
-"totes stole this from ctrlspace. Sorry, but not keeping the entire thing for one feature :P
-function! Copy_or_move_selected_buffer_into_tab(move, tab)
-"this should work vor the current buffer
-  let l:cur_buffer = bufnr('%')
-  let l:total_tabs = tabpagenr('$')
-  "if the new tab has the current buffer in a different view that one would be
-  "used once the buffer gets reopened. there is probably some way it's
-  "supposed to be done but yay workarounds
-  let l:winview = winsaveview()
-"not sure if these are all necessary but better save than sorry I guess
-      if !getbufvar(str2nr(l:cur_buffer), '&modifiable') || !getbufvar(str2nr(l:cur_buffer), '&buflisted') || empty(bufname(str2nr(l:cur_buffer))) || (a:tab == tabpagenr() && a:move == 1)
-    return
-  endif
-  let l:selected_buffer_window = bufwinnr(l:cur_buffer)
-  if a:move > 0
-        if selected_buffer_window != -1
-      if bufexists(l:cur_buffer) && (!empty(getbufvar(l:cur_buffer, "&buftype")) || filereadable(bufname(l:cur_buffer)))
-        silent! exe l:selected_buffer_window . "wincmd c"
-      else
-        return
-      endif
-    endif
-  endif
-  if a:tab  > l:total_tabs || a:tab == 0
-    "let l:total_tabs = (l:total_tabs + 1)
-    silent! exe a:tab . "tab  sb" . l:cur_buffer
-  else
-    if (a:move == 2 || a:move == -1) && a:tab == 0
-      silent! exe "normal! gT"
-    else
-      silent! exe "normal! " . a:tab . "gt"
-    endif
-    silent! exe ":vert sbuffer " . l:cur_buffer
-  endif
-  call winrestview(l:winview)
-endfunction
-function! Clone_rel_tab_forwards(move, ...)
-  let l:distance = (a:0>0 && a:1>0) ? a:1 : 1
-  let l:cur_tab = tabpagenr()
-  let l:goal_tab = (l:cur_tab + l:distance)
-  call Copy_or_move_selected_buffer_into_tab(a:move, l:goal_tab)
-endfunction
-
-function! Clone_rel_tab_backwards(move, ...)
-  let l:distance = (a:0>0 && a:1>0) ? a:1 : 1
-  let l:cur_tab = tabpagenr()
-  let l:goal_tab = (l:cur_tab - l:distance)
-  call Copy_or_move_selected_buffer_into_tab(a:move, l:goal_tab)
-endfunction
-
-command!  -narg=* CloneToTab exec Copy_or_move_selected_buffer_into_tab(<args>)
 
 "tab um zwichen klammern zu springen
 "nnoremap <s-tab> %
@@ -146,14 +88,13 @@ endif
 "This throws new buffers into their own tabs because that is totally how vim
 "uses tabs, right?...
 "set switchbuf=useopen,usetab
-
 "because most keys are already taken and , is easier that \ to press
 let mapleader = "\<Space>"
 "this makes a \ come up instead of <20>.
 "map <space> <leader>
 "quickly edit this very file
-noremap <silent> <leader>ü :e $MYVIMRC<CR>
-noremap <silent> <leader>ä :so $MYVIMRC<CR>
+map  <leader>Ü :e $MYVIMRC<CR>
+map  <leader>Ä :so $MYVIMRC<CR>
 ",w split window vertically and switch
 nnoremap <leader>v <C-w>v
 nnoremap <leader>V <C-w>s
@@ -176,9 +117,29 @@ vnoremap <Leader>P "+PP
 nnoremap <Leader>ö :w<CR>
 map ü [
 map ä ]
-nnoremap üw :Obsession<CR>
-nnoremap äw :Obsession!<CR>
-nnoremap <leader>w :Prosession %:p:h<cr>
+map Ä }
+map Ü {
+nnoremap <leader>a :Tagbar<cr>
+"nnoremap <c-[> <c-t>
+"noremap <c-ö> <c-]>
+noremap <leader>ä <c-]>
+noremap <leader>ü <c-t>
+inoremap ü [
+inoremap ä ]
+inoremap Ü {
+inoremap Ä }
+inoremap { Ü
+inoremap } Ä
+inoremap [ ü
+inoremap ] ä
+"nnoremap üü [[
+"nnoremap üä []
+"nnoremap äü ][
+"nnoremap ää ]]
+nnoremap [w :Obsession<CR>
+nnoremap ]w :Obsession!<CR>
+nnoremap <leader>w :Prosession 
+nnoremap <leader>W :Createsession 
 "nnoremap ü) [)
 "nnoremap ü( [(
 "nnoremap ä( ](
@@ -191,10 +152,6 @@ nnoremap <leader>w :Prosession %:p:h<cr>
 "nnoremap üM [M
 "nnoremap äm ]m
 "nnoremap äM ]M
-nnoremap üü [[
-nnoremap üä []
-nnoremap äü ][
-nnoremap ää ]]
 "nnoremap üs [s
 "nnoremap äs ]s
 "nnoremap ,, ,
@@ -207,11 +164,13 @@ nnoremap <leader>i gT
 nnoremap <silent><leader>o :<C-U>call RelativeNext(v:count1)<CR>
 nnoremap <leader>Z <c-i>
 nnoremap <leader>z <c-o>
+nnoremap <leader>u :GundoToggle<CR>
 "nnoremap <leader>e :<C-U>call Copy_or_move_selected_buffer_into_tab(1, v:count)<CR>
 "nnoremap <leader>E :<C-U>call Copy_or_move_selected_buffer_into_tab(0, v:count)<CR>
 vnoremap <leader>r :<c-u>execute ":'<,'>Tabular /"nr2char(getchar())<cr>
 vnoremap <leader>R :Tabular<space>/
 nnoremap <cr> :
+vnoremap <cr> :
 "nnoremap <s-cr> O<esc>
 "nnoremap <leader><c-u> :<C-U>call Clone_rel_tab_backwards(0, v:count)
 "nnoremap <leader><c-U> :<C-U>call Clone_rel_tab_backwards(1, v:count)<CR>
@@ -239,7 +198,7 @@ nnoremap <leader>0 :buffer 0 <CR>
 
 
 " Unite
-let g:unite_source_history_yank_enable = 1
+"let g:unite_source_history_yank_enable = 1
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 let g:unite_source_rec_async_command =
             \ 'ag --follow --nocolor --nogroup --hidden -g ""'
@@ -272,6 +231,7 @@ nnoremap <space>ggp :Dispatch! git pull<CR>
 " same bindings for merging diffs as in normal mode
 xnoremap dp :diffput<cr>
 xnoremap do :diffget<cr>
+
 autocmd FileType unite call s:unite_settings()
 function! s:unite_settings()
   " Play nice with supertab
@@ -291,19 +251,6 @@ let g:filebeagle_show_hidden = 1
 "nmap <leader>ff :CtrlPMixed<cr>
 "nmap <leader>fs :CtrlPMRU<cr>
 
-"move windows around:
-function! WinMove(key)
-  let t:curwin = winnr()
-  exec "wincmd ".a:key
-  if (t:curwin == winnr()) "we havent moved
-    if (match(a:key,'[jk]')) "were we going up/down
-      wincmd v
-    else
-      wincmd s
-    endif
-    exec "wincmd ".a:key
-  endif
-endfunction
 
 noremap <silent><leader>h  : call WinMove('h')<cr>
 noremap <silent><leader>k  : call WinMove('k')<cr>
@@ -426,3 +373,7 @@ if !exists(":DiffOrig")
   command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
   \ | wincmd p | diffthis
 endif
+
+
+
+"set langmap=\\ü\\[,\\ä\\]

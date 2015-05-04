@@ -6,7 +6,7 @@
 
 if !exists('g:tinykeymap#map#buffers#map')
     " Map leader for the "buffers" tinykeymap.
-    let g:tinykeymap#map#buffers#map = g:tinykeymap#mapleader ."a"   "{{{2
+    let g:tinykeymap#map#buffers#map = g:tinykeymap#mapleader ."A"   "{{{2
 endif
 
 
@@ -37,7 +37,7 @@ call tinykeymap#Map('buffers', 'q', ':<count> tab sp', {'desc': 'Copy to new tab
 call tinykeymap#Map('buffers', "o", ':TabNext <count>', {'desc': 'Move to left tab'})
 call tinykeymap#Map('buffers', "i", ':tabp <count>', {'desc': 'Move to new Tab'})
 call tinykeymap#Map('buffers', "I", ':call Clone_rel_tab_backwards(1, <count>)', {'desc': 'Next location'})
-call tinykeymap#Map('buffers', "O", ':call Clone_rel_tab_forwards(1, <count>)', {'desc': 'Previous location'})
+call tinykeymap#Map('buffers', "I", ':call Clone_rel_tab_forwards(1, <count>)', {'desc': 'Previous location'})
 call tinykeymap#Map('buffers', "<C-U>", ':call Clone_rel_tab_backwards(0, <count>)', {'desc': 'Next location'})
 call tinykeymap#Map('buffers', "<C-I>", ':call Clone_rel_tab_forwards(0, <count>)', {'desc': 'Previous location'})
 call tinykeymap#Map('buffers', "fs", ':ctrlP', {'desc': 'Move to new Tab'})
