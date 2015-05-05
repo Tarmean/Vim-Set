@@ -37,7 +37,7 @@ set splitbelow
 set splitright
 set noerrorbells
 set visualbell
-set noerrorbells visualbell t_vb=
+set noerrorbells
 set guioptions=e
 set fillchars+=vert:\ "█
 set backupdir=~/.vim/backups//,.
@@ -46,7 +46,7 @@ set directory=~/.vim/swaps//,.
 set foldmethod=syntax
 set foldlevel=1
 set foldclose=all
-set tags=~/_vimtags
+set tags=./tags;_vimtags
 set spelllang=de
 let g:prosession_on_startup = 0
 source ~\pcSpecificVimrc.vim
@@ -57,12 +57,24 @@ let g:UltiSnipsJumpBackwardTrigger="<c-space>"
 let g:tagbar_left=1
 let g:tagbar_autoclose=0
 let g:tagbar_autofocus=1
+let g:tagbar_iconchars = ['▶', '▼']
+set virtualedit=block
 "let g:netrw_silent = 1
 "EclimDisable
 if has('autocmd')
-  autocmd GUIEnter * set visualbell t_vb=
 endif
-set virtualedit=block
+
+
+"unicode when available
+if has("multi_byte")
+  if &termencoding == ""
+    let &termencoding = &encoding
+  endif
+  set encoding=utf-8
+  setglobal fileencoding=utf-8
+  "setglobal bomb
+  set fileencodings=ucs-bom,utf-8,latin1
+endif
 
 let $MYVIMRC='~/vimfiles/.vimrc'
 nnoremap j gj
@@ -121,15 +133,16 @@ map ü [
 map ä ]
 map Ä }
 map Ü {
+set langmap=\\ü\\[,\\ä\\]
 nnoremap <leader>a :Tagbar<cr>
 "nnoremap <c-[> <c-t>
 "noremap <c-ö> <c-]>
 noremap <leader>ä <c-]>
 noremap <leader>ü <c-t>
-noremap üoü :SetCharSwap 1<cr>
-noremap äoä :SetCharSwap 0<cr>
-noremap üoI :set autoindent<cr>
-noremap äoI :set noautoindent<cr>
+noremap [oü :SetCharSwap 1<cr>
+noremap ]oä :SetCharSwap 0<cr>
+noremap [oI :set autoindent<cr>
+noremap ]oI :set noautoindent<cr>
 "nnoremap üü [[
 "nnoremap üä []
 "nnoremap äü ][
@@ -243,7 +256,6 @@ function! s:unite_settings()
   map <buffer> <leader><c>   <Plug>(unite_exit)
 endfunction
 
-autocmd FileType FileBeagle map <buffer> <leader><c> q
 let g:filebeagle_show_hidden = 1
 
 "nmap <leader>fj :CtrlP<cr>
@@ -323,16 +335,6 @@ let g:syntastic_check_on_wq = 0
 "hi CtrlSpaceStatus   ctermfg=230  ctermbg=234  cterm=NONE
 let g:airline_exclude_preview=1
 
-"unicode when available
-if has("multi_byte")
-  if &termencoding == ""
-    let &termencoding = &encoding
-  endif
-  set encoding=utf-8
-  setglobal fileencoding=utf-8
-  "setglobal bomb
-  set fileencodings=ucs-bom,utf-8,latin1
-endif
 
 
 
@@ -348,32 +350,43 @@ if has("autocmd")
   augroup vimrcEx
   au!
 
-  " For all text files set 'textwidth' to 78 characters.
-  autocmd FileType text setlocal textwidth=78
+	  " For all text files set 'textwidth' to 78 characters.
+	  "autocmd FileType text setlocal textwidth=78
+	  "actually don't because that is completly obnoxious when editing tables
 
-  " When editing a file, always jump to the last known cursor position.
-  " Don't do it when the position is invalid or when inside an event handler
-  " (happens when dropping a file on gvim).
-  autocmd BufReadPost
-    \ if line("'\"") > 0 && line("'\"") <= line("$") |
-    \   exe "normal g`\"" |
-    \ endif
+	  " When editing a file, always jump to the last known cursor position.
+	  " Don't do it when the position is invalid or when inside an event handler
+	  " (happens when dropping a file on gvim).
+	  autocmd BufReadPost
+	    \ if line("'\"") > 0 && line("'\"") <= line("$") |
+	    \   exe "normal g`\"" |
+	    \ endif
 
   augroup END
 
+  if !exists('numBlacklist')
+	  let numBlacklist = []
+  endif
+
+  let numBlacklist += ['help', 'filebeagle']
+  " Line numbering relative while in window, otherwise absolute
+  noremap <silent> [oa :call SideLineToggle(1)<cr>
+  noremap <silent> ]oa :call SideLineToggle(0)<cr>
+
+  autocmd GUIEnter * set visualbell t_vb=
+  autocmd FileType FileBeagle map <buffer> <leader><c> q
 else
 
-  set autoindent" always set autoindenting on
+	set autoindent" always set autoindenting on
 
 endif " has("autocmd")
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
 " Only define it when not defined already.
 if !exists(":DiffOrig")
-  command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
-  \ | wincmd p | diffthis
+	command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
+				\ | wincmd p | diffthis
 endif
 
 
 
-"set langmap=\\ü\\[,\\ä\\]

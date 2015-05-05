@@ -109,5 +109,25 @@ endfunction
 function! s:CreateSession(name)
   exec "Obsession ~/.vim/session/" . a:name . ".vim"
 endfunction
+
 command! -bar -nargs=1 Createsession call s:CreateSession(<q-args>)
 
+function! SideLineToggle(bool)
+	if(a:bool)
+		augroup sideLine
+			au!
+			autocmd WinLeave * if index(numBlacklist, &ft) < 0 | setlocal nornu nocursorline
+			autocmd WinEnter * if index(numBlacklist, &ft) < 0 | setlocal rnu cursorline
+		augroup END
+		let g:SideLine=1
+		setlocal rnu cursorline
+	elseif(g:SideLine)
+		augroup sideLine
+			au!
+		augroup END
+		autocmd! sideLine
+		let g:SideLine=0
+		setlocal nornu nocursorline
+	endif
+endfunction
+call SideLineToggle(1)
