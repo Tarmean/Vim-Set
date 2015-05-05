@@ -49,7 +49,8 @@ set foldclose=all
 set tags=~/_vimtags
 set spelllang=de
 let g:prosession_on_startup = 0
-let g:syntastic_java_javac_classpath = "C:/Users/Cyril/ProgramPraktikum/teamf3/src/de/hhu/propra/"
+source ~\pcSpecificVimrc.vim
+"let g:syntastic_java_javac_classpath = "C:/Users/Cyril/ProgramPraktikum/teamf3/src/de/hhu/propra/"
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<s-space>"
 let g:UltiSnipsJumpBackwardTrigger="<c-space>"
