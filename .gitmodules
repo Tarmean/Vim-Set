@@ -28,9 +28,6 @@
 [submodule "bundle/vim-dispatch"]
 	path = bundle/vim-dispatch
 	url = https://github.com/tpope/vim-dispatch
-[submodule "bundle/filebeagle"]
-	path = bundle/filebeagle
-	url = https://github.com/jeetsukumaran/vim-filebeagle
 [submodule "bundle/obsession"]
 	path = bundle/obsession
 	url = https://github.com/tpope/vim-obsession

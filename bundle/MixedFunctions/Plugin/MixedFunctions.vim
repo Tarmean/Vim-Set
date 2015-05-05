@@ -89,6 +89,7 @@ function! SetCharSwap(bool)
 		iunmap ]
 	endif
 endfunction
+execute SetCharSwap(1)
 command!  -narg=1 SetCharSwap exec SetCharSwap(<args>)
 
 "move windows around:

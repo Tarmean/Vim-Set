@@ -58,7 +58,6 @@ let g:tagbar_autoclose=0
 let g:tagbar_autofocus=1
 "let g:netrw_silent = 1
 "EclimDisable
-exec 'SetCharSwap 1'
 if has('autocmd')
   autocmd GUIEnter * set visualbell t_vb=
 endif
