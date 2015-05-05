@@ -1,4 +1,3 @@
-
 function! RelativeNext(count)
 
     let total_tabs = tabpagenr("$")
@@ -69,6 +68,28 @@ command!  -narg=* CloneToTab exec Copy_or_move_selected_buffer_into_tab(<args>)
 
 
 
+function! SetCharSwap(bool)
+	if(a:bool)
+		inoremap ü [
+		inoremap ä ]
+		inoremap Ü {
+		inoremap Ä }
+		inoremap { Ü
+		inoremap } Ä
+		inoremap [ ü
+		inoremap ] ä
+	else
+		iunmap ü
+		iunmap ä
+		iunmap Ü
+		iunmap Ä
+		iunmap {
+		iunmap }
+		iunmap [
+		iunmap ]
+	endif
+endfunction
+command!  -narg=1 SetCharSwap exec SetCharSwap(<args>)
 
 "move windows around:
 function! WinMove(key)

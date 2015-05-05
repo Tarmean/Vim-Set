@@ -47,6 +47,7 @@ set foldmethod=syntax
 set foldlevel=1
 set foldclose=all
 set tags=~/_vimtags
+set spelllang=de
 let g:prosession_on_startup = 0
 let g:syntastic_java_javac_classpath = "C:/Users/Cyril/ProgramPraktikum/teamf3/src/de/hhu/propra/"
 let g:UltiSnipsExpandTrigger="<tab>"
@@ -57,6 +58,7 @@ let g:tagbar_autoclose=0
 let g:tagbar_autofocus=1
 "let g:netrw_silent = 1
 "EclimDisable
+exec 'SetCharSwap 1'
 if has('autocmd')
   autocmd GUIEnter * set visualbell t_vb=
 endif
@@ -124,22 +126,18 @@ nnoremap <leader>a :Tagbar<cr>
 "noremap <c-ö> <c-]>
 noremap <leader>ä <c-]>
 noremap <leader>ü <c-t>
-inoremap ü [
-inoremap ä ]
-inoremap Ü {
-inoremap Ä }
-inoremap { Ü
-inoremap } Ä
-inoremap [ ü
-inoremap ] ä
+noremap üoü :SetCharSwap 1<cr>
+noremap äoä :SetCharSwap 0<cr>
+noremap üoI :set autoindent<cr>
+noremap äoI :set noautoindent<cr>
 "nnoremap üü [[
 "nnoremap üä []
 "nnoremap äü ][
 "nnoremap ää ]]
 nnoremap [w :Obsession<CR>
 nnoremap ]w :Obsession!<CR>
-nnoremap <leader>w :Prosession 
-nnoremap <leader>W :Createsession 
+noremap <leader>w :Prosession 
+noremap <leader>W :Createsession 
 "nnoremap ü) [)
 "nnoremap ü( [(
 "nnoremap ä( ](
@@ -210,6 +208,8 @@ nnoremap <leader>fk :<C-u>Unite -buffer-name=outline -start-insert outline<cr>
 nnoremap <leader>fy :<C-u>Unite -buffer-name=yank    history/yank<cr>
 nnoremap <leader>ff :<C-u>Unite -buffer-name=buffer  buffer<cr>
 nnoremap <leader>fl :<C-u>Unite -buffer-name=buffer -start-insert -no-split line<cr>
+
+nnoremap <leader>fb :FileBeagle<cr>
 
 "Fugitive Git stuff
 nnoremap <space>ga :Git add %:p<CR><CR>
