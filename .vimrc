@@ -50,7 +50,7 @@ set tags=./tags;_vimtags
 set spelllang=de
 let g:prosession_on_startup = 0
 source ~\pcSpecificVimrc.vim
-"let g:syntastic_java_javac_classpath = "C:/Users/Cyril/ProgramPraktikum/teamf3/src/de/hhu/propra/"
+"let g:syntastic_java_javac_classpath = 'C:\Users\Cyril\ProgramPraktikum\teamf3\src'
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<s-space>"
 let g:UltiSnipsJumpBackwardTrigger="<c-space>"
@@ -325,7 +325,7 @@ let g:tinykeymap#mapleader = "<leader>"
 " map <F3> :NERDTreeToggle<CR>
 
 let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 

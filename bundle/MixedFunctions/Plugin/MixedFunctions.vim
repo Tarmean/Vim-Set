@@ -90,7 +90,7 @@ function! SetCharSwap(bool)
 	endif
 endfunction
 execute SetCharSwap(1)
-command!  -narg=1 SetCharSwap exec SetCharSwap(<args>)
+command!  -narg=1 SetCharSwap call SetCharSwap(<args>)
 
 "move windows around:
 function! WinMove(key)
