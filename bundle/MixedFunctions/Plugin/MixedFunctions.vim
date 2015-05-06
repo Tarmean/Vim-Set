@@ -89,7 +89,7 @@ function! SetCharSwap(bool)
 		iunmap ]
 	endif
 endfunction
-execute SetCharSwap(1)
+call SetCharSwap(1)
 command!  -narg=1 SetCharSwap call SetCharSwap(<args>)
 
 "move windows around:
@@ -131,3 +131,33 @@ function! SideLineToggle(bool)
 	endif
 endfunction
 call SideLineToggle(1)
+
+
+function! ApplyPattern(pattern, command, ...)
+	if(a:0>1)
+		let l:doRepeat=a:1
+	else
+		let l:doRepeat=1
+	endif
+	if(search(a:pattern, "cn", line("."))==0)
+		return -1
+	else
+		if(l:doRepeat)
+			redir => l:occurenceString
+			exec "s/" . a:pattern . "//n"
+			redir END
+			let l:Occurences = l:occurenceString[1]
+		else
+			let l:Occurences = 1
+		endif
+		for i in range(l:Occurences)
+			call search(a:pattern, "ce", line("."))
+			let l:column = virtcol(".")
+			exec "norm b" . a:command
+			exec "norm " . l:column . "|w"
+		endfor
+	endif
+endfunction
+
+command! -nargs=+ -range -bar R
+      \ :<line1>,<line2>call ApplyPattern(<f-args>)

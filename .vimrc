@@ -139,6 +139,29 @@ nnoremap <leader>a :Tagbar<cr>
 "noremap <c-ö> <c-]>
 noremap <leader>ä <c-]>
 noremap <leader>ü <c-t>
+let g:SignatureMap = {
+			\ 'Leader'             :  "m",
+			\ 'PlaceNextMark'      :  "m,",
+			\ 'ToggleMarkAtLine'   :  "m.",
+			\ 'PurgeMarksAtLine'   :  "m-",
+			\ 'DeleteMark'         :  "dm",
+			\ 'PurgeMarks'         :  "m<Space>",
+			\ 'PurgeMarkers'       :  "m<BS>",
+			\ 'GotoNextLineAlpha'  :  "']",
+			\ 'GotoPrevLineAlpha'  :  "'[",
+			\ 'GotoNextSpotAlpha'  :  "`]",
+			\ 'GotoPrevSpotAlpha'  :  "`[",
+			\ 'GotoNextLineByPos'  :  "]'",
+			\ 'GotoPrevLineByPos'  :  "['",
+			\ 'GotoNextSpotByPos'  :  "]s",
+			\ 'GotoPrevSpotByPos'  :  "[s",
+			\ 'GotoNextMarker'     :  "[+",
+			\ 'GotoPrevMarker'     :  "[-",
+			\ 'GotoNextMarkerAny'  :  "]=",
+			\ 'GotoPrevMarkerAny'  :  "[=",
+			\ 'ListLocalMarks'     :  "m/",
+			\ 'ListLocalMarkers'   :  "m?"
+			\ }
 noremap [oü :SetCharSwap 1<cr>
 noremap ]oä :SetCharSwap 0<cr>
 noremap [oI :set autoindent<cr>
@@ -340,7 +363,7 @@ let g:airline_exclude_preview=1
 
 if has("autocmd")
 
-  " Enable file type detection.
+  " Enable file type detection.file file file
   " Use the default filetype settings, so that mail gets 'tw' set to 72,
   " 'cindent' is on in C files, etc.
   " Also load indent files, to automatically do language-dependent indenting.
@@ -350,11 +373,9 @@ if has("autocmd")
   augroup vimrcEx
   au!
 
-	  " For all text files set 'textwidth' to 78 characters.
 	  "autocmd FileType text setlocal textwidth=78
 	  "actually don't because that is completly obnoxious when editing tables
-
-	  " When editing a file, always jump to the last known cursor position.
+	  " When    editing a file, always jump to the last known cursor position.
 	  " Don't do it when the position is invalid or when inside an event handler
 	  " (happens when dropping a file on gvim).
 	  autocmd BufReadPost
