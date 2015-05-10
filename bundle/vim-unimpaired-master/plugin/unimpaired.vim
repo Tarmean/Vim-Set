@@ -211,7 +211,7 @@ endfunction
 nnoremap [ob :set background=light<CR>
 nnoremap ]ob :set background=dark<CR>
 nnoremap cob :set background=<C-R>=&background == 'dark' ? 'light' : 'dark'<CR><CR>
-call s:option_map('c', 'cursorline')
+call s:option_map('C', 'cursorline')
 call s:option_map('u', 'cursorcolumn')
 nnoremap [od :diffthis<CR>
 nnoremap ]od :diffoff<CR>
@@ -221,7 +221,7 @@ call s:option_map('i', 'ignorecase')
 call s:option_map('l', 'list')
 call s:option_map('n', 'number')
 call s:option_map('r', 'relativenumber')
-call s:option_map('s', 'spell')
+call s:option_map('S', 'spell')
 call s:option_map('w', 'wrap')
 call s:option_map('f', 'autochdir')
 call s:option_map('e', 'autoread')

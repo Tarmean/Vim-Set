@@ -1,6 +1,3 @@
-[![Build Status](https://travis-ci.org/SirVer/ultisnips.svg?branch=master)](https://travis-ci.org/SirVer/ultisnips)
-[![Stories in Ready](https://badge.waffle.io/SirVer/ultisnips.png?label=ready&title=Ready)](https://waffle.io/SirVer/ultisnips)
-
 UltiSnips
 =========
 
@@ -32,10 +29,10 @@ This assumes you are using [Vundle](https://github.com/gmarik/Vundle.vim). Adapt
 for your plugin manager of choice. Put this into your `.vimrc`.
 
     " Track the engine.
-    Plugin 'SirVer/ultisnips'
+    Bundle 'SirVer/ultisnips'
 
     " Snippets are separated from the engine. Add this if you want them:
-    Plugin 'honza/vim-snippets'
+    Bundle 'honza/vim-snippets'
 
     " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
     let g:UltiSnipsExpandTrigger="<tab>"
@@ -60,3 +57,4 @@ discussed in the videos.
 - [Episode 2: Creating Basic Snippets](http://www.sirver.net/blog/2012/01/08/second-episode-of-ultisnips-screencast/)
 - [Episode 3: What's new in version 2.0](http://www.sirver.net/blog/2012/02/05/third-episode-of-ultisnips-screencast/)
 - [Episode 4: Python Interpolation](http://www.sirver.net/blog/2012/03/31/fourth-episode-of-ultisnips-screencast/)
+

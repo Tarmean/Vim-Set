@@ -11,29 +11,19 @@ function! UltiSnips#bootstrap#Bootstrap()
        if !has("python3")
            if !has("python")
                if !exists("g:UltiSnipsNoPythonWarning")
-                   echohl WarningMsg
-                   echom  "UltiSnips requires py >= 2.7 or any py3"
-                   echohl None
+                   echo  "UltiSnips requires py >= 2.6 or any py3"
                endif
                unlet g:_uspy
-               return
+               finish
            endif
            let g:_uspy=":py "
        endif
        let g:UltiSnipsUsePythonVersion = "<tab>"
    else
-       " Use user-provided value, but check if it's available.
-       " This uses `has()`, because e.g. `exists(":python3")` is always 2.
-       if g:UltiSnipsUsePythonVersion == 2 && has('python')
-           let g:_uspy=":python "
-       elseif g:UltiSnipsUsePythonVersion == 3 && has('python3')
-           let g:_uspy=":python3 "
-       endif
-       if !exists('g:_uspy')
-           echohl WarningMsg
-           echom  "UltiSnips: the Python version from g:UltiSnipsUsePythonVersion (".g:UltiSnipsUsePythonVersion.") is not available."
-           echohl None
-           return
+       if g:UltiSnipsUsePythonVersion == 2
+           let g:_uspy=":py "
+       else
+           let g:_uspy=":py3 "
        endif
    endif
 
@@ -91,9 +81,4 @@ endif
 " A list of directory names that are searched for snippets.
 if !exists("g:UltiSnipsSnippetDirectories")
     let g:UltiSnipsSnippetDirectories = [ "UltiSnips" ]
-endif
-
-" Enable or Disable snipmate snippet expansion.
-if !exists("g:UltiSnipsEnableSnipMate")
-    let g:UltiSnipsEnableSnipMate = 1
 endif

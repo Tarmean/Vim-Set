@@ -5,9 +5,7 @@
 
 from UltiSnips.snippet.source._base import SnippetSource
 
-
 class AddedSnippetsSource(SnippetSource):
-
     """See module docstring."""
 
     def add_snippet(self, ft, snippet):

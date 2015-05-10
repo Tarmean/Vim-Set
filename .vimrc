@@ -63,7 +63,9 @@ set virtualedit=block
 "EclimDisable
 if has('autocmd')
 endif
-
+set tabstop=4
+set shiftwidth=4
+set expandtab
 
 "unicode when available
 if has("multi_byte")
@@ -140,32 +142,45 @@ nnoremap <leader>a :Tagbar<cr>
 noremap <leader>ä <c-]>
 noremap <leader>ü <c-t>
 let g:SignatureMap = {
-			\ 'Leader'             :  "m",
-			\ 'PlaceNextMark'      :  "m,",
-			\ 'ToggleMarkAtLine'   :  "m.",
-			\ 'PurgeMarksAtLine'   :  "m-",
-			\ 'DeleteMark'         :  "dm",
-			\ 'PurgeMarks'         :  "m<Space>",
-			\ 'PurgeMarkers'       :  "m<BS>",
-			\ 'GotoNextLineAlpha'  :  "']",
-			\ 'GotoPrevLineAlpha'  :  "'[",
-			\ 'GotoNextSpotAlpha'  :  "`]",
-			\ 'GotoPrevSpotAlpha'  :  "`[",
-			\ 'GotoNextLineByPos'  :  "]'",
-			\ 'GotoPrevLineByPos'  :  "['",
-			\ 'GotoNextSpotByPos'  :  "]s",
-			\ 'GotoPrevSpotByPos'  :  "[s",
-			\ 'GotoNextMarker'     :  "[+",
-			\ 'GotoPrevMarker'     :  "[-",
-			\ 'GotoNextMarkerAny'  :  "]=",
-			\ 'GotoPrevMarkerAny'  :  "[=",
-			\ 'ListLocalMarks'     :  "m/",
-			\ 'ListLocalMarkers'   :  "m?"
-			\ }
+            \ 'Leader'             :  "m",
+            \ 'PlaceNextMark'      :  "m,",
+            \ 'ToggleMarkAtLine'   :  "m.",
+            \ 'PurgeMarksAtLine'   :  "m-",
+            \ 'DeleteMark'         :  "dm",
+            \ 'PurgeMarks'         :  "m<Space>",
+            \ 'PurgeMarkers'       :  "m<BS>",
+            \ 'GotoNextLineAlpha'  :  "']",
+            \ 'GotoPrevLineAlpha'  :  "'[",
+            \ 'GotoNextSpotAlpha'  :  "`]",
+            \ 'GotoPrevSpotAlpha'  :  "`[",
+            \ 'GotoNextLineByPos'  :  "]'",
+            \ 'GotoPrevLineByPos'  :  "['",
+            \ 'GotoNextSpotByPos'  :  "]s",
+            \ 'GotoPrevSpotByPos'  :  "[s",
+            \ 'GotoNextMarker'     :  "[+",
+            \ 'GotoPrevMarker'     :  "[-",
+            \ 'GotoNextMarkerAny'  :  "]=",
+            \ 'GotoPrevMarkerAny'  :  "[=",
+            \ 'ListLocalMarks'     :  "m/",
+            \ 'ListLocalMarkers'   :  "m?"
+            \ }
 noremap [oü :SetCharSwap 1<cr>
 noremap ]oä :SetCharSwap 0<cr>
 noremap [oI :set autoindent<cr>
 noremap ]oI :set noautoindent<cr>
+noremap [oG :GitGutterEnable<cr>
+noremap ]oG :GitGutterDisable<cr>
+noremap [og :GitGutterEager<cr>
+noremap ]og :GitGutterLazy<cr>
+noremap ]os :SyntasticToggleMode<cr>
+noremap [os :SyntasticCheck<cr>
+noremap ]oa :TagbarTogglePause<cr>
+noremap [oa :TagbarGetTypeConfig<cr>
+noremap ]oc :call SetJavaComplete(0)<cr>
+noremap [oc :call SetJavaComplete(1)<cr>
+noremap <silent> [oA :call SideLineToggle(1)<cr>
+noremap <silent> ]oA :call SideLineToggle(0)<cr>
+"onoremap 
 "nnoremap üü [[
 "nnoremap üä []
 "nnoremap äü ][
@@ -279,7 +294,7 @@ function! s:unite_settings()
   map <buffer> <leader><c>   <Plug>(unite_exit)
 endfunction
 
-let g:filebeagle_show_hidden = 1
+let g:filebeagle_show_hidden =  1
 
 "nmap <leader>fj :CtrlP<cr>
 "nmap <leader>fk :CtrlPBuffer<cr>
@@ -291,9 +306,9 @@ noremap <silent><leader>h  : call WinMove('h')<cr>
 noremap <silent><leader>k  : call WinMove('k')<cr>
 noremap <silent><leader>l  : call WinMove('l')<cr>
 noremap <silent><leader>j  : call WinMove('j')<cr>
-"noremap <silent><c-H>      : 3wincmd <<cr>
-"noremap <silent><c-L>      : 3wincmd ><cr>
-"noremap <silent><c-J>      : 3wincmd +<cr>
+"noremap <silent><c-H>      : (3wincmd) <<cr>
+"noremap <silent><c-L>      : (3wincmd) ><cr>
+"noremap <silent><c-J>      : (3wincmd) +<cr>
 "noremap <silent><c-K>      : 3wincmd -<cr>
 
 "switch between windows easily
@@ -341,6 +356,10 @@ let g:airline_section_y = ''
 
 "make supertab work with eclim auto completion
 let g:SuperTabDefaultCompletionType = 'context'
+let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
+let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', '&completefunc']
+let g:SuperTabContextDiscoverDiscovery =
+			\ ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>"]
 "":h ins-completion
 let g:tinykeymap#mapleader = "<leader>"
 " "NERDtree toggles
@@ -359,6 +378,23 @@ let g:syntastic_check_on_wq = 0
 let g:airline_exclude_preview=1
 
 
+function! SetJavaComplete(bool)
+	augroup JavaComplete
+		au!
+		if(a:bool)
+			au FileType java exec "setlocal omnifunc=javacomplete#Complete"
+		        au FileType java exec "setlocal completefunc=javacomplete#CompleteParamsInfo"
+			if(&ft=="java")
+				setlocal omnifunc=javacomplete#Complete
+				setlocal completefunc=javacomplete#CompleteParamsInfo
+			endif
+		else
+			set omnifunc=
+			set completefunc=
+		endif
+
+	augroup END	
+endfunction
 
 
 if has("autocmd")
@@ -373,41 +409,41 @@ if has("autocmd")
   augroup vimrcEx
   au!
 
-	  "autocmd FileType text setlocal textwidth=78
-	  "actually don't because that is completly obnoxious when editing tables
-	  " When    editing a file, always jump to the last known cursor position.
-	  " Don't do it when the position is invalid or when inside an event handler
-	  " (happens when dropping a file on gvim).
-	  autocmd BufReadPost
-	    \ if line("'\"") > 0 && line("'\"") <= line("$") |
-	    \   exe "normal g`\"" |
-	    \ endif
+      "autocmd FileType text setlocal textwidth=78
+      "actually don't because that is completly obnoxious when editing tables
+      " When    editing a file, always jump to the last known cursor position.
+      " Don't do it when the position is invalid or when inside an event handler
+      " (happens when dropping a file on gvim).
+      autocmd BufReadPost
+        \ if line("'\"") > 0 && line("'\"") <= line("$") |
+        \   exe "normal g`\"" |
+        \ endif
 
   augroup END
 
   if !exists('numBlacklist')
-	  let numBlacklist = []
+      let numBlacklist = []
   endif
 
   let numBlacklist += ['help', 'filebeagle']
-  " Line numbering relative while in window, otherwise absolute
-  noremap <silent> [oa :call SideLineToggle(1)<cr>
-  noremap <silent> ]oa :call SideLineToggle(0)<cr>
+
 
   autocmd GUIEnter * set visualbell t_vb=
   autocmd FileType FileBeagle map <buffer> <leader><c> q
 else
 
-	set autoindent" always set autoindenting on
+    set autoindent" always set autoindenting on
 
 endif " has("autocmd")
+
+
+
 " Convenient command to see the difference between the current buffer and the
 " file it was loaded from, thus the changes you made.
 " Only define it when not defined already.
 if !exists(":DiffOrig")
-	command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
-				\ | wincmd p | diffthis
+    command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
+                \ | wincmd p | diffthis
 endif
-
 
 
