@@ -178,6 +178,8 @@ noremap ]oa :TagbarTogglePause<cr>
 noremap [oa :TagbarGetTypeConfig<cr>
 noremap ]oc :call SetJavaComplete(0)<cr>
 noremap [oc :call SetJavaComplete(1)<cr>
+noremap ]oL :set foldcolumn=0<cr>
+noremap [oL :set foldcolumn=4<cr>
 noremap <silent> [oA :call SideLineToggle(1)<cr>
 noremap <silent> ]oA :call SideLineToggle(0)<cr>
 "onoremap 

@@ -70,32 +70,26 @@ command!  -narg=* CloneToTab exec Copy_or_move_selected_buffer_into_tab(<args>)
 
 function! SetCharSwap(bool)
     if(a:bool)
-        inoremap ü [
-        inoremap ä ]
-        inoremap ö (
-        inoremap Ü {
-        inoremap Ä }
-        inoremap Ö )
-        inoremap { Ü
-        inoremap } Ä
-        inoremap [ ü
-        inoremap ] ä
-        inoremap ) Ö
-        inoremap ( ö
+
+        let g:delimitMate_matchpairs = "(:),[:],{:},<:>,ö:),ü:],ä:}"
+        silent exec "DelimitMateReload"
+        "inoremap { Ü
+        "inoremap } Ä
+        "inoremap [ ü
+        "inoremap ] ä
+        "inoremap ) Ö
+        "inoremap ( ö
     else
-        iunmap ü
-        iunmap ä
-        iunmap ö
-        iunmap Ü
-        iunmap Ä
-        iunmap Ö
-        iunmap {
-        iunmap }
-        iunmap [
-        iunmap ]
-        iunmap (
-        iunmap )
+        let g:delimitMate_matchpairs = "(:),[:],{:},<:>"
+        silent exec "DelimitMateReload"
+        "iunmap {
+        "iunmap }
+        "iunmap [
+        "iunmap ]
+        "iunmap (
+        "iunmap )
     endif
+    silent exec "DelimitMateReload"
 endfunction
 call SetCharSwap(1)
 command!  -narg=1 SetCharSwap call SetCharSwap(<args>)
