@@ -1,7 +1,6 @@
 "============================================================================
-"File:        nasm.vim
-"Description: Syntax checking plugin for syntastic.vim
-"Maintainer:  Håvard Pettersson <haavard.pettersson at gmail dot com>
+"File:        bashate.vim
+"Description: Bash script style checking plugin for syntastic.vim
 "License:     This program is free software. It comes without any warranty,
 "             to the extent permitted by applicable law. You can redistribute
 "             it and/or modify it under the terms of the Do What The Fuck You
@@ -10,30 +9,38 @@
 "
 "============================================================================
 
-if exists('g:loaded_syntastic_nasm_nasm_checker')
+if exists('g:loaded_syntastic_sh_bashate_checker')
     finish
 endif
-let g:loaded_syntastic_nasm_nasm_checker = 1
+let g:loaded_syntastic_sh_bashate_checker = 1
 
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! SyntaxCheckers_nasm_nasm_GetLocList() dict
-    let makeprg = self.makeprgBuild({
-        \ 'args_after': '-X gnu -f elf' .
-        \       ' -I ' . syntastic#util#shescape(expand('%:p:h', 1) . syntastic#util#Slash()) .
-        \       ' ' . syntastic#c#NullOutput() })
+function! SyntaxCheckers_sh_bashate_GetLocList() dict
+    let makeprg = self.makeprgBuild({})
 
-    let errorformat = '%f:%l: %t%*[^:]: %m'
+    let errorformat =
+        \ '%EE%n: %m,' .
+        \ '%Z - %f%\s%\+: L%l,' .
+        \ '%-G%.%#'
 
-    return SyntasticMake({
+    let loclist = SyntasticMake({
         \ 'makeprg': makeprg,
-        \ 'errorformat': errorformat })
+        \ 'errorformat': errorformat,
+        \ 'subtype': 'Style',
+        \ 'returns': [0, 1] })
+
+    for e in loclist
+        let e['text'] = substitute(e['text'], "\\m: '.*", '', '')
+    endfor
+
+    return loclist
 endfunction
 
 call g:SyntasticRegistry.CreateAndRegisterChecker({
-    \ 'filetype': 'nasm',
-    \ 'name': 'nasm'})
+    \ 'filetype': 'sh',
+    \ 'name': 'bashate' })
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

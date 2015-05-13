@@ -61,8 +61,6 @@ let g:tagbar_iconchars = ['▶', '▼']
 set virtualedit=block
 "let g:netrw_silent = 1
 "EclimDisable
-if has('autocmd')
-endif
 set tabstop=4
 set shiftwidth=4
 set expandtab
@@ -432,6 +430,8 @@ if has("autocmd")
 
   autocmd GUIEnter * set visualbell t_vb=
   autocmd FileType FileBeagle map <buffer> <leader><c> q
+  autocmd BufNewFile,BufRead *.nasm set ft=nasm
+  autocmd BufNewFile,BufRead *.asm set ft=nasm
 else
 
     set autoindent" always set autoindenting on
