@@ -138,7 +138,15 @@ function! WhitespaceSpaces()
     silent! %s/\v\s+$//
     silent! %s/	/    /
 endfunction
-map <leader>z :call WhitespaceSpaces()<cr> öfas
+map <leader>z :call WhitespaceSpaces()<cr>
+
+function! ConvertBasesUnderCursor(from, too)
+    norm "iyiw
+    let @i = ConvertBases(@i,  a:from, a:too )
+    norm viw"_"ip
+endfunction
+
+command! -bar -nargs=+ C call ConvertBasesUnderCursor(<f-args>)
 
 let g:runRunning = 0
 function! RunStartOrToggle() range
@@ -276,6 +284,7 @@ function! s:splitCommand()
     endfor
            let g:runCurrentState = "SubLine"
 endfunction
+
 
 
 
