@@ -69,7 +69,9 @@ endif
 Plug '~/vimOld/bundle/vim-gitgutter-master' "Plug 'airblade/vim-gitgutter'
 Plug '~/vimOld/bundle/convertBase/'
 call plug#end()
-
+if(has('nvim'))
+    tnoremap <esc><esc> <C-\><C-n>
+endif
 
 let delimitMate_expand_cr=1
 set guifont=Sauce_Code_Powerline:h9:cANSI
