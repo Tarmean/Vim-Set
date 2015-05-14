@@ -1,4 +1,5 @@
 "gotta be first
+"
 
 set nocompatible
 
@@ -6,8 +7,69 @@ set nocompatible
 " Use pathogen to easily modify the runtime path to include all plugins under
 " the ~/.vim/bundle directory
  filetype off                    " force reloading *after* pathogen loaded
- execute pathogen#infect()
- call pathogen#helptags()
+" execute pathogen#infect()
+" call pathogen#helptags()
+"
+"
+call plug#begin('~/vimfiles/plugged')
+
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'rking/ag.vim'
+Plug 'Konfekt/FastFold'
+Plug 'sjl/gundo.vim'
+Plug 'Shougo/neomru.vim'
+Plug 'tpope/vim-obsession'
+Plug 'dhruvasagar/vim-prosession'
+Plug 'ervandew/supertab'
+Plug 'godlygeek/tabular'
+Plug 'majutsushi/tagbar'
+if(has('python'))
+    Plug 'SirVer/ultisnips'
+    Plug 'honza/vim-snippets'
+endif
+Plug 'Shougo/unite.vim'
+Plug 'bling/vim-airline'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-repeat'
+Plug 'kshenoy/vim-signature'
+Plug 'tpope/vim-surround'
+Plug 'dhruvasagar/vim-table-mode'
+Plug 'tpope/vim-commentary'
+Plug 'glts/vim-textobj-comment'
+Plug 'kana/vim-textobj-fold'
+Plug 'kana/vim-textobj-function'
+Plug 'kana/vim-textobj-indent'
+Plug 'kana/vim-textobj-line'
+Plug 'kana/vim-textobj-entire'
+Plug 'kana/vim-textobj-user'
+Plug 'Julian/vim-textobj-variable-segment'
+Plug 'bruno-/vim-vertical-move'
+
+
+" On-demand loading
+"Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+"Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+
+" Plugin outside ~/vimfiles/plugged with post-update hook
+"Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
+
+" Unmanaged plugin (manually installed and updated)
+Plug '~/vimOld/bundle/vim-unimpaired-master/'
+"Plug '~/vimOld/bundle/tinykeymap_vim/'
+Plug '~/vimOld/bundle/targets.vim/'
+Plug '~/vimOld/bundle/filebeagle/'
+Plug '~/vimOld/bundle/delimitMate/'
+Plug '~/vimOld/bundle/mixedfunctions/'
+
+if(has('nvim'))
+    Plug 'benekastah/neomake'
+else
+    Plug '~/vimOld/bundle/syntastic-master/' 
+endif
+Plug '~/vimOld/bundle/vim-gitgutter-master' "Plug 'airblade/vim-gitgutter'
+Plug '~/vimOld/bundle/convertBase/'
+call plug#end()
+
 
 let delimitMate_expand_cr=1
 set guifont=Sauce_Code_Powerline:h9:cANSI
@@ -178,6 +240,8 @@ noremap ]oc :call SetJavaComplete(0)<cr>
 noremap [oc :call SetJavaComplete(1)<cr>
 noremap ]oL :set foldcolumn=0<cr>
 noremap [oL :set foldcolumn=4<cr>
+noremap ]oV :IndentGuidesDisable<cr>
+noremap [oV :IndentGuidesEnable<cr>
 noremap <silent> [oA :call SideLineToggle(1)<cr>
 noremap <silent> ]oA :call SideLineToggle(0)<cr>
 "onoremap 
@@ -306,6 +370,10 @@ noremap <silent><leader>h  : call WinMove('h')<cr>
 noremap <silent><leader>k  : call WinMove('k')<cr>
 noremap <silent><leader>l  : call WinMove('l')<cr>
 noremap <silent><leader>j  : call WinMove('j')<cr>
+noremap <silent><leader>H  : wincmd H<cr>
+noremap <silent><leader>K  : wincmd K<cr>
+noremap <silent><leader>L  : wincmd L<cr>
+noremap <silent><leader>J  : wincmd J<cr>
 "noremap <silent><c-H>      : (3wincmd) <<cr>
 "noremap <silent><c-L>      : (3wincmd) ><cr>
 "noremap <silent><c-J>      : (3wincmd) +<cr>
@@ -344,7 +412,9 @@ imap <c-s> <Esc>:w<CR>a
 
 "Syntastic
 set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
+if(!has('nvim'))
+    set statusline+=%{SyntasticStatuslineFlag()}
+endif
 set statusline+=%*
 
 "Airline

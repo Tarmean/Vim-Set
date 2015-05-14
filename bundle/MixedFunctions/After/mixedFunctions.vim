@@ -1,1 +1,0 @@
- call SetJavaComplete(1)
