@@ -6,6 +6,7 @@ function! AddPlugins(all)
     Plug 'ervandew/supertab'
     Plug 'bling/vim-airline'
     Plug 'tpope/vim-fugitive'
+    Plug 'gregsexton/gitv'
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-surround'
     Plug 'bruno-/vim-vertical-move'

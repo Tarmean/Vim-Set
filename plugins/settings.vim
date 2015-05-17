@@ -15,6 +15,7 @@ let g:airline_theme='powerlineish'
 let g:airline_powerline_fonts = 1
 let g:airline_section_y = ''
 
+cabbrev git Git
 nnoremap <space>ga :Git add %:p<CR><CR>
 nnoremap <space>gs :Gstatus<CR>
 nnoremap <space>gc :Gcommit -v -q<CR>
@@ -24,7 +25,7 @@ nnoremap <space>ge :Gedit<CR>
 nnoremap <space>gr :Gread<CR>
 nnoremap <space>gw :Gwrite<CR><CR>
 nnoremap <space>gl :silent! Glog<CR>:bot copen<CR>
-nnoremap <space>gp :Ggrep<Space>
+noremap <space>gf :Ggrep<Space>
 nnoremap <space>gm :Gmove<Space>
 nnoremap <space>gb :Git branch<Space>
 nnoremap <space>gB :Gblame<CR>
@@ -33,6 +34,10 @@ nnoremap <space>ggP :Dispatch! git push<CR>
 nnoremap <space>ggp :Dispatch! git pull<CR>
 xnoremap dp :diffput<cr>
 xnoremap do :diffget<cr>
+
+nnoremap <leader>gV :Gitv --all<cr>
+nnoremap <leader>gv :Gitv! --all<cr>
+vnoremap <leader>gv :Gitv! --all<cr>
 
 nnoremap <leader>fb :FileBeagle<cr>
 let g:filebeagle_show_hidden =  1

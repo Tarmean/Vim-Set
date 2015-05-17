@@ -1,5 +1,6 @@
 set guifont=Sauce_Code_Powerline:h9:cANSI
 
+set lazyredraw
 set hidden
 set backspace=indent,eol,start
 set ignorecase
@@ -38,6 +39,11 @@ set virtualedit=block
 set tabstop=4
 set shiftwidth=4
 set expandtab
+
+highlight diffAdded guifg=#00bf00
+highlight diffRemoved guifg=#bf0000
+highlight diffAdded ctermfg=34
+highlight diffRemoved ctermfg=124
 
 if has("multi_byte")
   if &termencoding == ""
