@@ -18,7 +18,6 @@ function! AddPlugins(all)
 
     if(a:all)
         Plug 'nathanaelkane/vim-indent-guides'
-        Plug 'rking/ag.vim'
         Plug 'sjl/gundo.vim'
         Plug 'Shougo/neomru.vim'
         Plug 'godlygeek/tabular'
@@ -59,7 +58,7 @@ function! AddPlugins(all)
 
         Plug 'dhruvasagar/vim-table-mode'
         Plug 'tpope/vim-commentary'
-        Plug 'glts/vim-textobj-comment'
+        "Plug 'glts/vim-textobj-comment'
         Plug 'kana/vim-textobj-fold'
         Plug 'kana/vim-textobj-function'
         Plug 'kana/vim-textobj-indent'
@@ -67,11 +66,13 @@ function! AddPlugins(all)
         Plug 'kana/vim-textobj-entire'
         Plug 'kana/vim-textobj-user'
         Plug 'Julian/vim-textobj-variable-segment'
+        Plug 'mhinz/vim-signify'
 
         Plug '~/vimOld/bundle/targets.vim/'
 
         if(has('nvim'))
             Plug 'benekastah/neomake'
+            Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
         else
             Plug '~/vimOld/bundle/syntastic-master/' 
             let g:syntastic_always_populate_loc_list = 1
@@ -86,7 +87,7 @@ function! AddPlugins(all)
         endif
 
 
-        Plug '~/vimOld/bundle/vim-gitgutter-master' "Plug 'airblade/vim-gitgutter'
+        "Plug '~/vimOld/bundle/vim-gitgutter-master' "Plug 'airblade/vim-gitgutter'
     endif
     call plug#end()
 endfunction
@@ -105,4 +106,3 @@ endif
 "Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 "Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
 " Plugin outside ~/vimfiles/plugged with post-update hook
-"Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
