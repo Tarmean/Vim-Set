@@ -1,5 +1,6 @@
 function! AddPlugins(all)
     call plug#begin('~/vimfiles/plugged')
+    Plug 'tpope/vim-abolish'
     Plug 'Konfekt/FastFold'
     Plug 'tpope/vim-obsession'
     Plug 'dhruvasagar/vim-prosession'
