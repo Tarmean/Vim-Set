@@ -2,6 +2,7 @@ function! AddPlugins(all)
     call plug#begin('~/vimfiles/plugged')
     Plug 'tpope/vim-abolish'
     Plug 'Konfekt/FastFold'
+    Plug 'junegunn/goyo.vim'
     Plug 'tpope/vim-obsession'
     Plug 'dhruvasagar/vim-prosession'
     Plug 'ervandew/supertab'
