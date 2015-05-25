@@ -16,7 +16,7 @@ let g:airline_powerline_fonts = 1
 let g:airline_section_y = ''
 
 cabbrev git Git
-nnoremap <space>ga :Git add %:p<CR><CR>
+nnoremap <space>ga :execute 'Git add ' . expand('%:p')<CR>
 nnoremap <space>gs :Gstatus<CR>
 nnoremap <space>gc :Gcommit -v -q<CR>
 nnoremap <space>gt :Gcommit -v -q %:p<CR>
