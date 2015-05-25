@@ -63,8 +63,8 @@ noremap [oI :set autoindent<cr>
 noremap ]oI :set noautoindent<cr>
 noremap [oü :SetCharSwap 1<cr>
 noremap ]oä :SetCharSwap 0<cr>
-noremap ]oL :set foldcolumn=0<cr>
-noremap [oL :set foldcolumn=4<cr>
+noremap ]oN :set foldcolumn=0<cr>
+noremap [oN :set foldcolumn=4<cr>
 noremap [oc :call SeoulInc()<cr>
 noremap ]oc :call SeoulDec()<cr>
 noremap ]oC :colorscheme molokai<cr>

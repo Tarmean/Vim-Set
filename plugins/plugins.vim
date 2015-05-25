@@ -1,30 +1,32 @@
 function! AddPlugins(all)
     call plug#begin('~/vimfiles/plugged')
-    Plug 'tpope/vim-abolish'
+    Plug 'tpope/vim-abolish', { 'on':  'S' }
+    Plug 'justinmk/vim-sneak' " , { 'on':  'S' }
+    Plug 'kien/rainbow_parentheses.vim'
     Plug 'Konfekt/FastFold'
-    Plug 'junegunn/goyo.vim'
-    Plug 'tpope/vim-obsession'
-    Plug 'dhruvasagar/vim-prosession'
+    Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
+    Plug 'tpope/vim-obsession', { 'on':  'Obsession' }
+    Plug 'dhruvasagar/vim-prosession' " has to be loaded for auto complete on first use
     Plug 'ervandew/supertab'
     Plug 'junegunn/seoul256.vim'
+    Plug 'morhetz/gruvbox'
     Plug 'bling/vim-airline'
     Plug 'tpope/vim-fugitive'
-    Plug 'gregsexton/gitv'
+    Plug 'gregsexton/gitv', { 'on':  'Gitv' }
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-surround'
     Plug 'bruno-/vim-vertical-move'
     Plug '~/vimOld/bundle/vim-unimpaired-master/'
-    Plug '~/vimOld/bundle/filebeagle/'
+    Plug '~/vimOld/bundle/filebeagle/' " Probably would work after switching the mapping to Filebeagle but I use it too often too care.
     Plug '~/vimOld/bundle/delimitMate/'
     Plug '~/vimOld/bundle/mixedfunctions/'
-    Plug '~/vimOld/bundle/convertBase/'
+    Plug '~/vimOld/bundle/convertBase/', { 'on':  'C' }
 
     if(a:all)
-        Plug 'nathanaelkane/vim-indent-guides'
-        Plug 'sjl/gundo.vim'
-        Plug 'Shougo/neomru.vim'
-        Plug 'godlygeek/tabular'
-        Plug 'majutsushi/tagbar'
+        Plug 'Yggdroot/indentLine'
+        Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
+        Plug 'godlygeek/tabular', { 'on':  'Tabular' }
+        Plug 'majutsushi/tagbar', { 'on':  'Tagbar' }
         if(has('python'))
             Plug 'SirVer/ultisnips'
             Plug 'honza/vim-snippets'
@@ -32,7 +34,6 @@ function! AddPlugins(all)
             
             let g:UltiSnipsJumpBackwardTrigger="<c-space>"
         endif
-        Plug 'Shougo/unite.vim'
         Plug 'kshenoy/vim-signature'
         let g:SignatureMap = {
                     \ 'Leader'             :  "m",
@@ -58,7 +59,7 @@ function! AddPlugins(all)
                     \ 'ListLocalMarkers'   :  "m?"
                     \ }
 
-        Plug 'dhruvasagar/vim-table-mode'
+        Plug 'dhruvasagar/vim-table-mode', { 'on':  'TableModeEnable' }
         Plug 'tpope/vim-commentary'
         "Plug 'glts/vim-textobj-comment'
         Plug 'kana/vim-textobj-fold'
@@ -73,9 +74,14 @@ function! AddPlugins(all)
         Plug '~/vimOld/bundle/targets.vim/'
 
         if(has('nvim'))
-            Plug 'benekastah/neomake'
+            Plug 'benekastah/neomake', { 'on':  'Neomake' }
             Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
         else
+            Plug 'Shougo/unite.vim', 
+            noremap <leader>fc :<c-u>Unite colorscheme<cr>
+
+            Plug 'ujihisa/unite-colorscheme'
+            Plug 'Shougo/neomru.vim'
             Plug '~/vimOld/bundle/syntastic-master/' 
             let g:syntastic_always_populate_loc_list = 1
             let g:syntastic_check_on_open = 1

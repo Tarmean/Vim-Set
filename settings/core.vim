@@ -58,7 +58,8 @@ if &t_Co > 2 || has("gui_running")
   if(!exists("g:seoul256_background"))
     let g:seoul256_background = 234
   endif
-  colorscheme seoul256
+  colorscheme gruvbox
+  "colorscheme seoul256
   au GUIEnter * simalt ~x
   syntax on "admittedly has a significant performance penalty but come on...
   set hlsearch

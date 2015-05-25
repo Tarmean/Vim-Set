@@ -1,7 +1,32 @@
+let g:sneak#streak=1
+silent! unmap s
+silent! unmap S
+let g:sneak#s_next=1
+let g:sneak#textobj_z=0
+let g:sneak#use_ic_scs = 1
+nmap f <Plug>Sneak_f
+lmap F <Plug>Sneak_F
+xmap f <Plug>Sneak_f
+xmap F <Plug>Sneak_F
+omap f <Plug>Sneak_f
+omap F <Plug>Sneak_F
+nmap ö <Plug>Sneak_s
+nmap Ö <Plug>Sneak_S
+" visual-mode
+xmap ö <Plug>Sneak_s
+xmap Ö <Plug>Sneak_S
+" operator-pending-mode
+omap ö <Plug>Sneak_s
+omap Ö <Plug>Sneak_S
 
-noremap ]oV :IndentGuidesDisable<cr>
-noremap [oV :IndentGuidesEnable<cr>
+noremap ]oL :RainbowParenthesesToggle<cr>
 
+let g:indentLine_char = '︙'
+let g:indentLine_enabled = 1
+noremap [oL :IndentLinesToggle<cr>
+noremap ]oLs :IndentLinesToggle<cr>
+set list lcs+=tab:\|\ 
+set nolist
 nnoremap <leader>u :GundoToggle<CR>
 
 vnoremap <leader>r :<c-u>execute ":'<,'>Tabular /"nr2char(getchar())<cr>
@@ -186,3 +211,5 @@ let g:signify_vcs_list = ['git']
 "noremap [og :GitGutterEager<cr>
 "noremap ]og :GitGutterLazy<cr>
 "noremap ]og :GitGutterLazy<cr>
+"
+"
