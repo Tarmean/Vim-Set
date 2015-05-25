@@ -65,5 +65,9 @@ noremap [oü :SetCharSwap 1<cr>
 noremap ]oä :SetCharSwap 0<cr>
 noremap ]oL :set foldcolumn=0<cr>
 noremap [oL :set foldcolumn=4<cr>
+noremap [oc :call SeoulInc()<cr>
+noremap ]oc :call SeoulDec()<cr>
+noremap ]oC :colorscheme molokai<cr>
+noremap [oC :colorscheme seoul256<cr>
 noremap <silent> [oA :call SideLineToggle(1)<cr>
 noremap <silent> ]oA :call SideLineToggle(0)<cr>

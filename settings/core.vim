@@ -55,7 +55,10 @@ if has("multi_byte")
 endif
 
 if &t_Co > 2 || has("gui_running")
-  colorscheme molokai
+  if(!exists("g:seoul256_background"))
+    let g:seoul256_background = 234
+  endif
+  colorscheme seoul256
   au GUIEnter * simalt ~x
   syntax on "admittedly has a significant performance penalty but come on...
   set hlsearch
@@ -74,8 +77,8 @@ nnoremap <leader>c <C-w>c
 nnoremap <leader>C :bd!<CR>
 map ü [
 map ä ]
-map Ä }
-map Ü {
+map Ä '
+map Ü `
 set langmap=\\ü\\[,\\ä\\]
 nnoremap <cr> :
 vnoremap <cr> :

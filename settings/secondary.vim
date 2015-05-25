@@ -8,6 +8,7 @@ vnoremap <Leader>p "+p
 vnoremap <Leader>P "+PP
 nnoremap <Leader>ö :w<CR>
 cnoremap %s/ %s/\v
+cnoremap  w!! w !sudo tee % > /dev/null
 nnoremap Y y$
 
 noremap <leader>ä <c-]>

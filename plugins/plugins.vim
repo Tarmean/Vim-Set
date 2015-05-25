@@ -4,6 +4,7 @@ function! AddPlugins(all)
     Plug 'tpope/vim-obsession'
     Plug 'dhruvasagar/vim-prosession'
     Plug 'ervandew/supertab'
+    Plug 'junegunn/seoul256.vim'
     Plug 'bling/vim-airline'
     Plug 'tpope/vim-fugitive'
     Plug 'gregsexton/gitv'
@@ -26,7 +27,7 @@ function! AddPlugins(all)
             Plug 'SirVer/ultisnips'
             Plug 'honza/vim-snippets'
             let g:UltiSnipsExpandTrigger="<tab>"
-            let g:UltiSnipsJumpForwardTrigger="<s-space>"
+            
             let g:UltiSnipsJumpBackwardTrigger="<c-space>"
         endif
         Plug 'Shougo/unite.vim'
@@ -47,14 +48,13 @@ function! AddPlugins(all)
                     \ 'GotoPrevLineByPos'  :  "['",
                     \ 'GotoNextSpotByPos'  :  "]s",
                     \ 'GotoPrevSpotByPos'  :  "[s",
-                    \ 'GotoNextMarker'     :  "[+",
-                    \ 'GotoPrevMarker'     :  "[-",
-                    \ 'GotoNextMarkerAny'  :  "]=",
-                    \ 'GotoPrevMarkerAny'  :  "[=",
+                    \ 'GotoNextMarker'     :  "]ü",
+                    \ 'GotoPrevMarker'     :  "[ä",
+                    \ 'GotoNextMarkerAny'  :  "]ä",
+                    \ 'GotoPrevMarkerAny'  :  "[ü",
                     \ 'ListLocalMarks'     :  "m/",
                     \ 'ListLocalMarkers'   :  "m?"
                     \ }
-
 
         Plug 'dhruvasagar/vim-table-mode'
         Plug 'tpope/vim-commentary'
@@ -102,6 +102,7 @@ if(has('nvim'))
 endif
 
 
+silent! unmap <space>ig
 " On-demand loading
 "Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
 "Plug 'tpope/vim-fireplace', { 'for': 'clojure' }

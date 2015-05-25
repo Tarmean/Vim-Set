@@ -130,8 +130,8 @@ else
 endif
 
 
-noremap ]oc :call SetJavaComplete(0)<cr>
-noremap [oc :call SetJavaComplete(1)<cr>
+"noremap ]oc :call SetJavaComplete(0)<cr>
+"noremap [oc :call SetJavaComplete(1)<cr>
 function! SetJavaComplete(bool)
     augroup JavaComplete
         au!
@@ -166,6 +166,7 @@ function! SignifyUpdate(b)
     call SignifyAutocommands()
     return
 endfunction
+
 noremap [og :call SignifyUpdate(1)<cr>
 noremap ]og :call SignifyUpdate(0)<cr>
 noremap [oG :SignifyToggle<cr>
