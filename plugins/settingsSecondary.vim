@@ -15,6 +15,11 @@ nnoremap <leader>a :Tagbar<cr>
 noremap ]oa :TagbarTogglePause<cr>
 noremap [oa :TagbarGetTypeConfig<cr>
 
+
+noremap ]oz :Goyo!<cr>
+noremap [oz :Goyo<cr>
+
+
 if(has('nvim'))
     nnoremap <silent> <leader><leader> :execute "Locate " . expand("~")<cr>
     command! -nargs=1 Locate call fzf#run(
