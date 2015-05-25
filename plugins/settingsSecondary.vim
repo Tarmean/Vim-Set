@@ -1,3 +1,6 @@
+autocmd User GoyoEnter Limelight
+autocmd User GoyoLeave Limelight!
+
 let g:sneak#streak=1
 silent! unmap s
 silent! unmap S
@@ -19,18 +22,33 @@ xmap Ö <Plug>Sneak_S
 omap ö <Plug>Sneak_s
 omap Ö <Plug>Sneak_S
 
+vmap <leader>r <Plug>(EasyAlign)
+nmap <leader>r <Plug>(EasyAlign)
+" autocmd VimEnter * call after_object#enable('=')
+
 noremap ]oL :RainbowParenthesesToggle<cr>
+function! Config_Rainbow()
+    call rainbow_parentheses#load(0)
+    call rainbow_parentheses#load(1)
+    call rainbow_parentheses#load(2)
+endfunction
+
+if(has('nvim'))
+    augroup RainbowLoadWeirdness
+        autocmd!
+        autocmd Syntax * call Config_Rainbow()
+        autocmd VimEnter * RainbowParenthesesToggle
+    augroup END
+endif
+
 
 let g:indentLine_char = '︙'
-let g:indentLine_enabled = 1
+let g:indentLine_enabled = 0
 noremap [oL :IndentLinesToggle<cr>
-noremap ]oLs :IndentLinesToggle<cr>
 set list lcs+=tab:\|\ 
 set nolist
 nnoremap <leader>u :GundoToggle<CR>
 
-vnoremap <leader>r :<c-u>execute ":'<,'>Tabular /"nr2char(getchar())<cr>
-vnoremap <leader>R :Tabular<space>/
 
 let g:tagbar_left=1
 let g:tagbar_autoclose=0
@@ -42,7 +60,7 @@ noremap [oa :TagbarGetTypeConfig<cr>
 
 
 noremap ]oz :Goyo!<cr>
-noremap [oz :Goyo<cr>
+noremap [oz :Goyo<cr>:IndentLinesDisable<cr>
 
 
 if(has('nvim'))
@@ -208,7 +226,7 @@ noremap ]oG :SignifyToggleHighlight<cr>
 let g:signify_vcs_list = ['git']
 "noremap [oG :GitGutterEnable<cr>
 "noremap ]oG :GitGutterDisable<cr>
-"noremap [og :GitGutterEager<cr>
+"noremap [og :GitGutterEaer<cr>
 "noremap ]og :GitGutterLazy<cr>
 "noremap ]og :GitGutterLazy<cr>
 "

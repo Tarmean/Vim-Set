@@ -1,18 +1,16 @@
 function! AddPlugins(all)
     call plug#begin('~/vimfiles/plugged')
     Plug 'tpope/vim-abolish', { 'on':  'S' }
-    Plug 'justinmk/vim-sneak' " , { 'on':  'S' }
-    Plug 'kien/rainbow_parentheses.vim'
+    Plug 'justinmk/vim-sneak'
+    Plug 'junegunn/vim-lengthmatters', {'on': 'LengthmattersEnable'}
+    "Plug 'junegunn/agl' <actually for command line
     Plug 'Konfekt/FastFold'
-    Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
     Plug 'tpope/vim-obsession', { 'on':  'Obsession' }
     Plug 'dhruvasagar/vim-prosession' " has to be loaded for auto complete on first use
     Plug 'ervandew/supertab'
     Plug 'junegunn/seoul256.vim'
     Plug 'morhetz/gruvbox'
     Plug 'bling/vim-airline'
-    Plug 'tpope/vim-fugitive'
-    Plug 'gregsexton/gitv', { 'on':  'Gitv' }
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-surround'
     Plug 'bruno-/vim-vertical-move'
@@ -23,15 +21,24 @@ function! AddPlugins(all)
     Plug '~/vimOld/bundle/convertBase/', { 'on':  'C' }
 
     if(a:all)
+        Plug 'tpope/vim-fugitive'
+        Plug 'gregsexton/gitv', { 'on':  'Gitv' }
+
+        Plug 'kien/rainbow_parentheses.vim'
+        Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
+        Plug 'junegunn/limelight.vim', { 'on':  'Goyo' }
         Plug 'Yggdroot/indentLine'
+        "Plug 'gelguy/Cmd2.vim'
+        "Plug 'junegunn/vim-after-object'
+        "Plug 'junegunn/vim-peekaboo'
         Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
-        Plug 'godlygeek/tabular', { 'on':  'Tabular' }
+        Plug 'junegunn/vim-easy-align' ", { 'on':  'Tabular' }
         Plug 'majutsushi/tagbar', { 'on':  'Tagbar' }
         if(has('python'))
             Plug 'SirVer/ultisnips'
             Plug 'honza/vim-snippets'
             let g:UltiSnipsExpandTrigger="<tab>"
-            
+
             let g:UltiSnipsJumpBackwardTrigger="<c-space>"
         endif
         Plug 'kshenoy/vim-signature'

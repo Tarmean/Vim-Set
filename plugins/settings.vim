@@ -59,6 +59,8 @@ noremap <silent><leader>K  : wincmd K<cr>
 noremap <silent><leader>L  : wincmd L<cr>
 noremap <silent><leader>J  : wincmd J<cr>
 
+noremap [oV :LengthmattersEnable<cr>
+noremap ]oV :LengthmattersDisable<cr>
 noremap [oI :set autoindent<cr>
 noremap ]oI :set noautoindent<cr>
 noremap [oü :SetCharSwap 1<cr>
