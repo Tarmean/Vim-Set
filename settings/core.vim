@@ -32,7 +32,7 @@ set directory=~/.vim/swaps//,.
 set foldmethod=syntax
 set foldlevel=1
 set foldclose=all
-set tags=./tags;_vimtags
+set tags=""
 set spelllang=de
 source ~\pcSpecificVimrc.vim
 set virtualedit=block
@@ -59,6 +59,7 @@ if &t_Co > 2 || has("gui_running")
     let g:seoul256_background = 234
   endif
   colorscheme gruvbox
+  set background=dark
   "colorscheme seoul256
   au GUIEnter * simalt ~x
   syntax on "admittedly has a significant performance penalty but come on...

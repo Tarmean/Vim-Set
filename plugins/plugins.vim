@@ -15,25 +15,29 @@ function! AddPlugins(all)
     Plug 'tpope/vim-surround'
     Plug 'bruno-/vim-vertical-move'
     Plug '~/vimOld/bundle/vim-unimpaired-master/'
-    Plug '~/vimOld/bundle/filebeagle/' " Probably would work after switching the mapping to Filebeagle but I use it too often too care.
+    Plug '~/vimOld/bundle/filebeagle/' 
     Plug '~/vimOld/bundle/delimitMate/'
     Plug '~/vimOld/bundle/mixedfunctions/'
-    Plug '~/vimOld/bundle/convertBase/', { 'on':  'C' }
+    Plug '~/vimOld/bundle/convertBase/'
 
     if(a:all)
+        Plug 'luochen1990/rainbow'
+        if(!has('nvim'))
+            let g:rainbow_active = 1
+        endif
         Plug 'tpope/vim-fugitive'
         Plug 'gregsexton/gitv', { 'on':  'Gitv' }
-
-        Plug 'kien/rainbow_parentheses.vim'
         Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
         Plug 'junegunn/limelight.vim', { 'on':  'Goyo' }
+        let g:limelight_conceal_ctermfg = 242
         Plug 'Yggdroot/indentLine'
         "Plug 'gelguy/Cmd2.vim'
         "Plug 'junegunn/vim-after-object'
         "Plug 'junegunn/vim-peekaboo'
         Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
-        Plug 'junegunn/vim-easy-align' ", { 'on':  'Tabular' }
-        Plug 'majutsushi/tagbar', { 'on':  'Tagbar' }
+        Plug 'junegunn/vim-easy-align'
+        Plug 'xolox/vim-easytags'
+        Plug 'xolox/vim-misc'
         if(has('python'))
             Plug 'SirVer/ultisnips'
             Plug 'honza/vim-snippets'
@@ -68,7 +72,7 @@ function! AddPlugins(all)
 
         Plug 'dhruvasagar/vim-table-mode', { 'on':  'TableModeEnable' }
         Plug 'tpope/vim-commentary'
-        "Plug 'glts/vim-textobj-comment'
+        Plug 'glts/vim-textobj-comment'
         Plug 'kana/vim-textobj-fold'
         Plug 'kana/vim-textobj-function'
         Plug 'kana/vim-textobj-indent'

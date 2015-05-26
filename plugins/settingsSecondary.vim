@@ -1,3 +1,15 @@
+"let g:easytags_async=1
+let g:easytags_dynamic_files=1
+noremap  ]oH unlet g:easytags_auto_highlight
+noremap [oH let g:easytags_auto_highlight=1
+
+let g:textobj_comment_no_default_key_mappings = 1
+xmap aX <Plug>(textobj-comment-big-a)
+xmap ax <Plug>(textobj-comment-a)
+omap ax <Plug>(textobj-comment-a)
+xmap ix <Plug>(textobj-comment-i)
+omap ix <Plug>(textobj-comment-i)
+
 autocmd User GoyoEnter Limelight
 autocmd User GoyoLeave Limelight!
 
@@ -22,24 +34,15 @@ xmap Ö <Plug>Sneak_S
 omap ö <Plug>Sneak_s
 omap Ö <Plug>Sneak_S
 
+noremap ]oL :RainbowToggle<cr>
+
 vmap <leader>r <Plug>(EasyAlign)
 nmap <leader>r <Plug>(EasyAlign)
+nmap <leader>r <Plug>(LiveEasyAlign)
+vmap <leader>r <Plug>(LiveEasyAlign)
+
 " autocmd VimEnter * call after_object#enable('=')
 
-noremap ]oL :RainbowParenthesesToggle<cr>
-function! Config_Rainbow()
-    call rainbow_parentheses#load(0)
-    call rainbow_parentheses#load(1)
-    call rainbow_parentheses#load(2)
-endfunction
-
-if(has('nvim'))
-    augroup RainbowLoadWeirdness
-        autocmd!
-        autocmd Syntax * call Config_Rainbow()
-        autocmd VimEnter * RainbowParenthesesToggle
-    augroup END
-endif
 
 
 let g:indentLine_char = '︙'
@@ -50,13 +53,13 @@ set nolist
 nnoremap <leader>u :GundoToggle<CR>
 
 
-let g:tagbar_left=1
-let g:tagbar_autoclose=0
-let g:tagbar_autofocus=1
-let g:tagbar_iconchars = ['▶', '▼']
-nnoremap <leader>a :Tagbar<cr>
-noremap ]oa :TagbarTogglePause<cr>
-noremap [oa :TagbarGetTypeConfig<cr>
+"let g:tagbar_left=1
+"let g:tagbar_autoclose=0
+"let g:tagbar_autofocus=1
+"let g:tagbar_iconchars = ['▶', '▼']
+"nnoremap <leader>a :Tagbar<cr>
+"noremap ]oa :TagbarTogglePause<cr>
+"noremap [oa :TagbarGetTypeConfig<cr>
 
 
 noremap ]oz :Goyo!<cr>
@@ -96,11 +99,29 @@ if(has('nvim'))
 
 
 
-    nnoremap <silent> <Leader>ft :FZFTag<cr>
-    command! FZFTag if !empty(tagfiles()) | call fzf#run({
-                \   'source': "sed '/^\\!/d;s/\t.*//' " . join(tagfiles()) . ' | uniq',
-                \   'sink':   'tag',
-                \ }) | else | echo 'No tags' | endif
+    nnoremap <silent> <Leader>fD :call FZFAllTags()<cr>
+    nnoremap <silent> <Leader>fd :call FZFTag()<cr>
+    function! FZFAllTags() 
+        if !empty(tagfiles()) 
+            call fzf#run({
+                    \   'source': "sed '/^\\!/d;s/\t.*//' " . join(tagfiles()) . ' | uniq',
+                    \   'sink':   'tag',
+                    \ }) 
+        else 
+            echo 'No tags' 
+        endif
+    endfunction
+
+    function! FZFTags() 
+        if !empty(tagfiles()) 
+            call fzf#run({
+                    \   'source': "sed '/^\\!/d;s/\t.*//' " . join(tagfiles()) . ' | uniq',
+                    \   'sink':   'tag',
+                    \ }) 
+        else 
+            echo 'No tags' 
+        endif
+    endfunction
 
     function! s:line_handler(l)
         let keys = split(a:l, ':\t')
@@ -154,7 +175,68 @@ if(has('nvim'))
                 \ 'down':    '50%'
                 \ })
 
+    cnoremap <silent> <c-l> <c-r>=GetCompletions()<cr>
+    "add an extra <cr> at the end of this line to automatically accept the fzf-selected completions.
 
+    function! Lister()
+        call extend(g:FZF_Cmd_Completion_Pre_List,split(getcmdline(),'\(\\\zs\)\@<!\& '))
+    endfunction
+
+    function! CmdLineDirComplete(prefix, options, rawdir)
+        let l:dirprefix = matchstr(a:rawdir,"^.*/")
+        if isdirectory(expand(l:dirprefix))
+            return join(a:prefix + map(fzf#run({
+                        \'options': a:options . ' --select-1  --query=' .
+                        \ a:rawdir[matchend(a:rawdir,"^.*/"):len(a:rawdir)], 
+                        \'dir': expand(l:dirprefix)
+                        \}), 
+                        \'"' . escape(l:dirprefix, " ") . '" . escape(v:val, " ")'))
+        else
+            return join(a:prefix + map(fzf#run({
+                        \'options': a:options . ' --query='. a:rawdir }),
+                        \'escape(v:val, " ")')) 
+            "dropped --select-1 to speed things up on a long query
+        endif
+    endfunction
+
+    function! GetCompletions()
+        let g:FZF_Cmd_Completion_Pre_List = []
+        let l:cmdline_list = split(getcmdline(), '\(\\\zs\)\@<!\& ', 1)
+        let l:Prefix = l:cmdline_list[0:-2]
+        execute "silent normal! :" . getcmdline() . "\<c-a>\<c-\>eLister()\<cr>\<c-c>"
+        let l:FZF_Cmd_Completion_List = g:FZF_Cmd_Completion_Pre_List[len(l:Prefix):-1]
+        unlet g:FZF_Cmd_Completion_Pre_List
+        echom l:cmdline_list[-1]
+        if len(l:Prefix) > 0 && l:Prefix[0] =~
+                    \ '^ed\=i\=t\=$\|^spl\=i\=t\=$\|^tabed\=i\=t\=$\|^arged\=i\=t\=$\|^vsp\=l\=i\=t\=$'
+            "single-argument file commands
+            return CmdLineDirComplete(l:Prefix, "",l:cmdline_list[-1])
+        elseif len(l:Prefix) > 0 && l:Prefix[0] =~ 
+                    \ '^arg\=s\=$\|^ne\=x\=t\=$\|^sne\=x\=t\=$\|^argad\=d\=$'  
+            "multi-argument file commands
+            return CmdLineDirComplete(l:Prefix, '--multi', l:cmdline_list[-1])
+        endif 
+        return join(l:Prefix + fzf#run({
+                    \'source':l:FZF_Cmd_Completion_List, 
+                    \'options': '--select-1 --query=' . l:cmdline_list[-1]
+                    \})) 
+    endfunction
+
+
+    nnoremap <silent> <Leader>fc :call fzf#run({
+                \   'source':
+                \     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
+                \         "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
+                \   'sink':    'colo',
+                \   'options': '+m',
+                \   'left':    30
+                \ })<CR>
+
+    command! -bar FZFTags if !empty(tagfiles()) | call fzf#run({
+                \   'source': "sed '/^\\!/d;s/\t.*//' " . join(tagfiles()) . ' | uniq',
+                \   'sink':   'tag',
+                \ }) | else | echo 'Preparing tags' | call system('ctags -R') | FZFTag | endif
+    noremap <leader>fd :FZFTags<cr>
 else
     "let g:unite_source_history_yank_enable = 1
     call unite#filters#matcher_default#use(['matcher_fuzzy'])
