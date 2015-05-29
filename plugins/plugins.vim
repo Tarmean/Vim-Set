@@ -26,6 +26,7 @@ function! AddPlugins(all)
             let g:rainbow_active = 1
         endif
         Plug 'tpope/vim-fugitive'
+        Plug 'artur-shaik/vim-javacomplete2'
         Plug 'gregsexton/gitv', { 'on':  'Gitv' }
         Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
         Plug 'junegunn/limelight.vim', { 'on':  'Goyo' }

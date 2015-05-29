@@ -1,14 +1,18 @@
+nnoremap <F4> call javacomplete#AddImport()<cr>
+autocmd FileType java set omnifunc=javacomplete#Complete
+
+ 
+ 
 "let g:easytags_async=1
 let g:easytags_dynamic_files=1
 noremap  ]oH unlet g:easytags_auto_highlight
 noremap [oH let g:easytags_auto_highlight=1
 
 let g:textobj_comment_no_default_key_mappings = 1
-xmap aX <Plug>(textobj-comment-big-a)
-xmap ax <Plug>(textobj-comment-a)
-omap ax <Plug>(textobj-comment-a)
-xmap ix <Plug>(textobj-comment-i)
-omap ix <Plug>(textobj-comment-i)
+xmap aC <Plug>(textobj-comment-a)
+omap aC <Plug>(textobj-comment-a)
+xmap iC <Plug>(textobj-comment-i)
+omap iC <Plug>(textobj-comment-i)
 
 autocmd User GoyoEnter Limelight
 autocmd User GoyoLeave Limelight!
@@ -93,8 +97,8 @@ if(has('nvim'))
     nnoremap <silent> <Leader>fs :FZFMru<cr>
     command! FZFMru call fzf#run({
                 \'source': v:oldfiles,
-                \'sink' : 'e ',
-                \'options' : ' -m -x',
+                \'sink' : 'e',
+                \'options' : '-m',
                 \})
 
 
