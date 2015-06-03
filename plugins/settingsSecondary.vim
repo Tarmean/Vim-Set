@@ -260,8 +260,11 @@ else
 endif
 
 
-"noremap ]oc :call SetJavaComplete(0)<cr>
-"noremap [oc :call SetJavaComplete(1)<cr>
+noremap ]oc :call SetJavaComplete(0)<cr>
+noremap [oc :call SetJavaComplete(1)<cr>
+let g:JavaComplete_Home = $HOME . '/vimfiles/plugged/vim-javacomplete2'
+let $CLASSPATH .= '.:' . $HOME . '/vimfiles/plugged/vim-javacomplete2/libs/javavi/target/classes'
+let g:JavaComplete_SourcePath = $HOME . '/teamf3/*.jar:' . $HOME . '/teamf3/src/**/*.java'
 function! SetJavaComplete(bool)
     augroup JavaComplete
         au!

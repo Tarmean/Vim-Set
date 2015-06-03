@@ -21,6 +21,7 @@ function! AddPlugins(all)
     Plug '~/vimOld/bundle/convertBase/'
 
     if(a:all)
+        Plug 'artur-shaik/vim-javacomplete2'
         Plug 'luochen1990/rainbow'
         if(!has('nvim'))
             let g:rainbow_active = 1
