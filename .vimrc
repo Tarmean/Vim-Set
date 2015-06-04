@@ -1,5 +1,5 @@
 set nocompatible
-let mapleader = "\<Space>"
+let mapleader = "\<space>"
 source ~/vimfiles/plugins/plugins.vim
 call AddPlugins(1)
 source ~/vimfiles/plugins/settings.vim

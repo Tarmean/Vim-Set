@@ -1,7 +1,7 @@
 nnoremap <leader>q :tab sp<CR>
 nnoremap <leader>e :redraw<CR>:ls<CR>
 
-vnoremap <Leader>y "+y
+noremap  <Leader>y "+y
 nnoremap <Leader>p "+p
 nnoremap <Leader>P "+P
 vnoremap <Leader>p "+p

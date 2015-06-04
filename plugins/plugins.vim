@@ -1,8 +1,11 @@
 function! AddPlugins(all)
     call plug#begin('~/vimfiles/plugged')
     Plug 'tpope/vim-abolish', { 'on':  'S' }
+    Plug 'christoomey/vim-conflicted'
+    set stl+=%{ConflictedVersion()}
     Plug 'justinmk/vim-sneak'
     Plug 'junegunn/vim-lengthmatters', {'on': 'LengthmattersEnable'}
+    Plug 'tommcdo/vim-exchange'
     "Plug 'junegunn/agl' <actually for command line
     Plug 'Konfekt/FastFold'
     Plug 'tpope/vim-obsession', { 'on':  'Obsession' }
@@ -21,9 +24,16 @@ function! AddPlugins(all)
     Plug '~/vimOld/bundle/convertBase/'
 
     if(a:all)
+        " Plug 'vim-scripts/ingo-library'
+        " Plug 'vim-scripts/CountJump'
+        " Plug 'vim-scripts/ConflictMotions'
+        " Plug 'vim-scripts/help_movement'
+        " Plug 'vim-scripts/diffwindow_movement'
+
+
         Plug 'luochen1990/rainbow'
-        if(!has('nvim'))
-            let g:rainbow_active = 1
+        if(has('gui'))
+            "let g:rainbow_active = 1
         endif
         Plug 'tpope/vim-fugitive'
         Plug 'artur-shaik/vim-javacomplete2'
@@ -42,9 +52,6 @@ function! AddPlugins(all)
         if(has('python'))
             Plug 'SirVer/ultisnips'
             Plug 'honza/vim-snippets'
-            let g:UltiSnipsExpandTrigger="<tab>"
-
-            let g:UltiSnipsJumpBackwardTrigger="<c-space>"
         endif
         Plug 'kshenoy/vim-signature'
         let g:SignatureMap = {
@@ -85,9 +92,21 @@ function! AddPlugins(all)
 
         Plug '~/vimOld/bundle/targets.vim/'
 
-        if(has('nvim'))
-            Plug 'benekastah/neomake', { 'on':  'Neomake' }
+        if(has('unix'))
             Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
+        endif
+        if(has('nvim'))
+            let g:python_host_prog='/usr/bin/python'
+
+            function! Get_classpath(ending)
+                let project_git_dir = fugitive#extract_git_dir(expand("%:p"))
+                let project_root = fnamemodify(project_git_dir, ":h")
+                let project_root .= a:ending
+                return project_root
+            endfunction
+
+            Plug 'benekastah/neomake'
+            autocmd BufWritePost * Neomake
         else
             Plug 'Shougo/unite.vim', 
             noremap <leader>fc :<c-u>Unite colorscheme<cr>

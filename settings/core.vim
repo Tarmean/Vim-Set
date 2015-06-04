@@ -54,12 +54,13 @@ if has("multi_byte")
   set fileencodings=ucs-bom,utf-8,latin1
 endif
 
-if &t_Co > 2 || has("gui_running")
+if &t_Co > 2 || has("gui_running") || has("unix")
   if(!exists("g:seoul256_background"))
     let g:seoul256_background = 234
   endif
-  colorscheme gruvbox
+  "colorscheme seoul256
   set background=dark
+  colorscheme gruvbox
   "colorscheme seoul256
   au GUIEnter * simalt ~x
   syntax on "admittedly has a significant performance penalty but come on...
@@ -81,7 +82,7 @@ map ü [
 map ä ]
 map Ä '
 map Ü `
-set langmap=\\ü\\[,\\ä\\]
+"set langnoremap=\\ü\\[,\\ä\\]
 nnoremap <cr> :
 vnoremap <cr> :
 nnoremap / /\v
