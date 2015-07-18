@@ -81,7 +81,6 @@ map ü [
 map ä ]
 map Ä '
 map Ü `
-set langmap=\\ü\\[,\\ä\\]
 nnoremap <cr> :
 vnoremap <cr> :
 nnoremap / /\v

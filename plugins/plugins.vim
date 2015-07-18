@@ -2,6 +2,8 @@ function! AddPlugins(all)
     call plug#begin('~/vimfiles/plugged')
     Plug 'tpope/vim-abolish', { 'on':  'S' }
     Plug 'justinmk/vim-sneak'
+    Plug 'vasconcelloslf/vim-interestingwords'
+    Plug 'tommcdo/vim-exchange'
     Plug 'junegunn/vim-lengthmatters', {'on': 'LengthmattersEnable'}
     "Plug 'junegunn/agl' <actually for command line
     Plug 'Konfekt/FastFold'
@@ -91,19 +93,19 @@ function! AddPlugins(all)
         else
             Plug 'Shougo/unite.vim', 
             noremap <leader>fc :<c-u>Unite colorscheme<cr>
-
+            Plug 'tsukkee/unite-tag'
             Plug 'ujihisa/unite-colorscheme'
             Plug 'Shougo/neomru.vim'
-            Plug '~/vimOld/bundle/syntastic-master/' 
-            let g:syntastic_always_populate_loc_list = 1
-            let g:syntastic_check_on_open = 1
-            let g:syntastic_check_on_wq = 0
-            let g:airline_exclude_preview=1
-            set statusline+=%#warningmsg#
-            set statusline+=%{SyntasticStatuslineFlag()}
-            set statusline+=%*
-            noremap ]os :SyntasticToggleMode<cr>
-            noremap [os :SyntasticCheck<cr>
+            " Plug '~/vimOld/bundle/syntastic-master/' 
+            " let g:syntastic_always_populate_loc_list = 1
+            " let g:syntastic_check_on_open = 1
+            " let g:syntastic_check_on_wq = 0
+            " let g:airline_exclude_preview=1
+            " set statusline+=%#warningmsg#
+            " set statusline+=%{SyntasticStatuslineFlag()}
+            " set statusline+=%*
+            " noremap ]os :SyntasticToggleMode<cr>
+            " noremap [os :SyntasticCheck<cr>
         endif
 
 

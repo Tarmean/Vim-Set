@@ -1,3 +1,6 @@
+nnoremap <silent> <leader>d :call InterestingWords('n')<cr>
+nnoremap <silent> <leader>D :call UncolorAllWords()<cr>
+let g:interestingWordsGUIColors = ['#FFF6CC', '#FFD65C', '#8CCBEA', '#A4E57E', '#99FFE6', '#E6FF99', '#FFDB72', '#5CD6FF', '#99FFB3', '#FF7272', '#99FF99', '#99B3FF', '#FFB399']
 "let g:easytags_async=1
 let g:easytags_dynamic_files=1
 noremap  ]oH unlet g:easytags_auto_highlight
@@ -245,6 +248,7 @@ else
     nnoremap <leader>fJ :Unite -buffer-name=files   -start-insert file_rec:!<cr>
     nnoremap <leader>fj :<C-u>Unite -buffer-name=files   -start-insert file<cr>
     nnoremap <leader>fs :<C-u>Unite -buffer-name=mru     -start-insert file_mru<cr>
+    nnoremap <leader>fd :<C-u>Unite -buffer-name=tags     -start-insert tag<cr>
     nnoremap <leader>fk :<C-u>Unite -buffer-name=outline -start-insert outline<cr>
     nnoremap <leader>fy :<C-u>Unite -buffer-name=yank    history/yank<cr>
     nnoremap <leader>ff :<C-u>Unite -buffer-name=buffer  buffer<cr>

@@ -32,8 +32,8 @@ nnoremap <space>gB :Gblame<CR>
 nnoremap <space>go :Git checkout<Space>
 nnoremap <space>ggP :Dispatch! git push<CR>
 nnoremap <space>ggp :Dispatch! git pull<CR>
-xnoremap dp :diffput<cr>
-xnoremap do :diffget<cr>
+"vnoremap dp :diffput<cr>
+"vnoremap do :diffget<cr>
 
 nnoremap <leader>gV :Gitv --all<cr>
 nnoremap <leader>gv :Gitv! --all<cr>
