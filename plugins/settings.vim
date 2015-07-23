@@ -1,3 +1,5 @@
+nmap _  <Plug>ReplaceWithRegisterOperator
+
 nnoremap [w :Obsession<CR>
 nnoremap ]w :Obsession!<CR>
 
@@ -15,29 +17,32 @@ let g:airline_theme='powerlineish'
 let g:airline_powerline_fonts = 1
 let g:airline_section_y = ''
 
-cabbrev git Git
-nnoremap <space>ga :execute 'Git add ' . expand('%:p')<CR>
-nnoremap <space>gs :Gstatus<CR>
-nnoremap <space>gc :Gcommit -v -q<CR>
-nnoremap <space>gt :Gcommit -v -q %:p<CR>
-nnoremap <space>gd :Gdiff<CR>
-nnoremap <space>ge :Gedit<CR>
-nnoremap <space>gr :Gread<CR>
-nnoremap <space>gw :Gwrite<CR><CR>
-nnoremap <space>gl :silent! Glog<CR>:bot copen<CR>
-noremap <space>gf :Ggrep<Space>
-nnoremap <space>gm :Gmove<Space>
-nnoremap <space>gb :Git branch<Space>
-nnoremap <space>gB :Gblame<CR>
-nnoremap <space>go :Git checkout<Space>
-nnoremap <space>ggP :Dispatch! git push<CR>
-nnoremap <space>ggp :Dispatch! git pull<CR>
-"vnoremap dp :diffput<cr>
-"vnoremap do :diffget<cr>
 
-nnoremap <leader>gV :Gitv --all<cr>
-nnoremap <leader>gv :Gitv! --all<cr>
-vnoremap <leader>gv :Gitv! --all<cr>
+noremap ]oz :Goyo!<cr>
+noremap [oz :Goyo<cr>:IndentLinesDisable<cr>
+autocmd User GoyoEnter Limelight
+autocmd User GoyoLeave Limelight!
+
+let g:sneak#streak=1
+silent! unmap s
+silent! unmap S
+let g:sneak#s_next=1
+let g:sneak#textobj_z=0
+let g:sneak#use_ic_scs = 1
+nmap f <Plug>Sneak_f
+lmap F <Plug>Sneak_F
+xmap f <Plug>Sneak_f
+xmap F <Plug>Sneak_F
+omap f <Plug>Sneak_f
+omap F <Plug>Sneak_F
+nmap ö <Plug>Sneak_s
+nmap Ö <Plug>Sneak_S
+" visual-mode
+xmap ö <Plug>Sneak_s
+xmap Ö <Plug>Sneak_S
+" operator-pending-mode
+omap ö <Plug>Sneak_s
+omap Ö <Plug>Sneak_S
 
 nnoremap <leader>fb :FileBeagle<cr>
 let g:filebeagle_show_hidden =  1
@@ -58,7 +63,6 @@ noremap <silent><leader>H  : wincmd H<cr>
 noremap <silent><leader>K  : wincmd K<cr>
 noremap <silent><leader>L  : wincmd L<cr>
 noremap <silent><leader>J  : wincmd J<cr>
-
 noremap [ov :LengthmattersEnable<cr>
 noremap ]ov :LengthmattersDisable<cr>
 noremap [oI :set autoindent<cr>

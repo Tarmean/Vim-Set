@@ -1,5 +1,6 @@
 set guifont=Sauce_Code_Powerline:h9:cANSI
 
+set autoindent
 set lazyredraw
 set hidden
 set backspace=indent,eol,start
@@ -21,24 +22,22 @@ set gdefault
 set wrap
 set splitbelow
 set splitright
-set noerrorbells
-set visualbell
-set noerrorbells
 set guioptions=e
 set fillchars+=vert:\ "█
 set backupdir=~/.vim/backups//,.
 set undodir=~/.vim/undodir//,.
 set directory=~/.vim/swaps//,.
-set foldmethod=syntax
+set foldmethod=syntax "overwritten by fastfold in almost all cases
+set noerrorbells visualbell t_vb=
 set foldlevel=1
 set foldclose=all
 set tags=""
-set spelllang=de
-source ~\pcSpecificVimrc.vim
+set spelllang=de,en
 set virtualedit=block
 set tabstop=4
 set shiftwidth=4
 set expandtab
+source ~\pcSpecificVimrc.vim
 
 highlight diffAdded guifg=#00bf00
 highlight diffRemoved guifg=#bf0000
@@ -60,10 +59,10 @@ if &t_Co > 2 || has("gui_running")
   endif
   colorscheme gruvbox
   set background=dark
-  "colorscheme seoul256
   au GUIEnter * simalt ~x
-  syntax on "admittedly has a significant performance penalty but come on...
+  syntax on 
   set hlsearch
+  noh "otherwhise the highlighting from the last search is reactivated after each vimrc reload
 endif
 
 let $MYVIMRC='~/vimfiles/.vimrc'
@@ -71,22 +70,88 @@ let $MYVIMRC='~/vimfiles/.vimrc'
 nnoremap j gj
 nnoremap k gk
 nnoremap <esc> :noh<return><esc>
+nnoremap <Leader>ö :w<CR>
 map  <leader>Ü :e $MYVIMRC<CR>
 map  <leader>Ä :so $MYVIMRC<CR>
 nnoremap <leader>v <C-w>v
 nnoremap <leader>V <C-w>s
 nnoremap <leader>c <C-w>c
-nnoremap <leader>C :bd!<CR>
+" not sure whether I should make this wipeout...
+nnoremap <leader>C :bd!<CR> 
 map ü [
 map ä ]
-map Ä '
-map Ü `
+map Ä }
+map Ü {
 nnoremap <cr> :
 vnoremap <cr> :
 nnoremap / /\v
-set autoindent
+
+nnoremap <tab> %
+nnoremap H ^
+nnoremap L $
+vnoremap L g_
+nnoremap gI `.
+
+nnoremap =<space>p ]p=']
+nnoremap =<space>P [p=']
+vnoremap <Leader>y "+y
+nnoremap <Leader>y "+y
+nnoremap <Leader>p "+p
+nnoremap <Leader>P "+P
+vnoremap <Leader>p "+p
+vnoremap <Leader>P "+P
+
+vnoremap * :<C-u>call <SID>VSetSearch()<CR>//<CR><c-o>
+vnoremap # :<C-u>call <SID>VSetSearch()<CR>??<CR><c-o>
+
+" }}}
+nnoremap <silent><leader>/ :execute 'vimgrep /'.@/.'/g %'<cr>:copen<cr>
+nnoremap <silent><leader>? :execute "Ag '" .  substitute(substitute(substitute(@/, "\\\\<", "\\\\b", ""), "\\\\>", "\\\\b", ""), "\\\\v", "", "") . "'"<cr>
+
+nnoremap <left>  :cprev<cr>zvzz
+nnoremap <right> :cnext<cr>zvzz
+nnoremap <up>    :lprev<cr>zvzz
+nnoremap <down>  :lnext<cr>zvzz
+
+cnoremap %s/ %s/\v
+cnoremap  w!! w !sudo tee % > /dev/null
+nnoremap Y y$
 
 if !exists(":DiffOrig")
     command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
                 \ | wincmd p | diffthis
 endif
+
+
+
+if has("autocmd")
+
+  filetype plugin indent on
+
+  augroup vimrcEx
+  au!
+
+      " When    editing a file, always jump to the last known cursor position.
+      " Don't do it when the position is invalid or when inside an event handler
+      " (happens when dropping a file on gvim).
+      autocmd BufReadPost *
+        \ if line("'\"") > 0 && line("'\"") <= line("$") |
+        \   exe 'normal g`"zvzz' |
+        \ endif
+
+  augroup END
+
+  if !exists('numBlacklist')
+      let numBlacklist = []
+  endif
+  let numBlacklist += ['help', 'filebeagle']
+
+  autocmd FileType FileBeagle map <buffer> <leader><c> q
+  autocmd BufNewFile,BufRead *.nasm set ft=nasm
+  autocmd BufNewFile,BufRead *.asm set ft=nasm
+  autocmd GUIEnter * set visualbell t_vb=
+else
+
+    set autoindent" always set autoindenting on
+
+endif 

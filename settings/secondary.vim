@@ -1,15 +1,6 @@
 nnoremap <leader>q :tab sp<CR>
 nnoremap <leader>e :redraw<CR>:ls<CR>
 
-vnoremap <Leader>y "+y
-nnoremap <Leader>p "+p
-nnoremap <Leader>P "+P
-vnoremap <Leader>p "+p
-vnoremap <Leader>P "+PP
-nnoremap <Leader>ö :w<CR>
-cnoremap %s/ %s/\v
-cnoremap  w!! w !sudo tee % > /dev/null
-nnoremap Y y$
 
 noremap <leader>ä <c-]>
 noremap <leader>ü <c-t>
@@ -26,11 +17,6 @@ nnoremap <leader>8 :buffer 8 <CR>
 nnoremap <leader>9 :buffer 9 <CR>
 nnoremap <leader>0 :buffer 0 <CR>
 
-"switch between windows easily
-nmap <left>  :3wincmd <<cr>
-nmap <right> :3wincmd ><cr>
-nmap <up>    :3wincmd +<cr>
-nmap <down>  :3wincmd -<cr>
 
 "session stuff, probably managed by obsession
 set ssop-=options    " do not store global and local values in a session
@@ -43,51 +29,49 @@ set pastetoggle=<F2>
 "options. Ctrl-P to search backwards, Ctrl-N to look forwards
 map! ^P ^[a. ^[hbmmi?\<^[2h"zdt.@z^Mywmx`mP xi
 map! ^N ^[a. ^[hbmmi/\<^[2h"zdt.@z^Mywmx`mP xi
-
 "F11 show current buffer in the explorer
 nmap <F11> :!start explorer /e,/select,%:p<CR>
 imap <F11> <Esc><F11>
 
-"save in two keypresses
-nmap <c-s> :w<CR>
-imap <c-s> <Esc>:w<CR>a
 
 
-if has("autocmd")
 
-  " Enable file type detection.file file file
-  " Use the default filetype settings, so that mail gets 'tw' set to 72,
-  " 'cindent' is on in C files, etc.
-  " Also load indent files, to automatically do language-dependent indenting.
-  filetype plugin indent on
+nnoremap <space>s mzzMzvzz15<c-e>`z:Pulse<cr>
+function! s:Pulse() " {{{
+    redir => old_hi
+        silent execute 'hi CursorLine'
+    redir END
+    let old_hi = split(old_hi, '\n')[0]
+    let old_hi = substitute(old_hi, 'xxx', '', '')
 
-  " Put these in an autocmd group, so that we can delete them easily.
-  augroup vimrcEx
-  au!
+    hi CursorLine guibg=#1c1c1c
+    redraw
+    sleep 80m
+    execute 'hi ' . old_hi
+endfunction " }}}
+command! -nargs=0 Pulse call s:Pulse()
+function! MyFoldText() " {{{
+    let line = getline(v:foldstart)
 
-      "autocmd FileType text setlocal textwidth=78
-      "actually don't because that is completly obnoxious when editing tables
-      " When    editing a file, always jump to the last known cursor position.
-      " Don't do it when the position is invalid or when inside an event handler
-      " (happens when dropping a file on gvim).
-      autocmd BufReadPost
-        \ if line("'\"") > 0 && line("'\"") <= line("$") |
-        \   exe "normal g`\"" |
-        \ endif
+    let nucolwidth = &fdc + &number * &numberwidth
+    let windowwidth = winwidth(0) - nucolwidth - 3
+    let foldedlinecount = v:foldend - v:foldstart
 
-  augroup END
+    " expand tabs into spaces
+    let onetab = strpart('          ', 0, &tabstop)
+    let line = substitute(line, '\t', onetab, 'g')
 
-  if !exists('numBlacklist')
-      let numBlacklist = []
-  endif
-  let numBlacklist += ['help', 'filebeagle']
+    let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
+    let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
+    return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
+endfunction " }}}
+set foldtext=MyFoldText()
+" Visual Mode */# from Scrooloose {{{
 
-  autocmd GUIEnter * set visualbell t_vb=
-  autocmd FileType FileBeagle map <buffer> <leader><c> q
-  autocmd BufNewFile,BufRead *.nasm set ft=nasm
-  autocmd BufNewFile,BufRead *.asm set ft=nasm
-else
+function! s:VSetSearch()
+  let temp = @@
+  norm! gvy
+  let @/ = '\V' . substitute(escape(@@, '\'), '\n', '\\n', 'g')
+  let @@ = temp
+endfunction
 
-    set autoindent" always set autoindenting on
-
-endif " has("autocmd")

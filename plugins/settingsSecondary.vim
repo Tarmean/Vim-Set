@@ -1,5 +1,9 @@
+let g:fastfold_fold_command_suffixes = []
+let g:fastfold_fold_movement_commands = []
+
 nnoremap <silent> <leader>d :call InterestingWords('n')<cr>
 nnoremap <silent> <leader>D :call UncolorAllWords()<cr>
+let g:interestingWordsDefaultMappings = 1
 let g:interestingWordsGUIColors = ['#FFF6CC', '#FFD65C', '#8CCBEA', '#A4E57E', '#99FFE6', '#E6FF99', '#FFDB72', '#5CD6FF', '#99FFB3', '#FF7272', '#99FF99', '#99B3FF', '#FFB399']
 "let g:easytags_async=1
 let g:easytags_dynamic_files=1
@@ -7,35 +11,12 @@ noremap  ]oH unlet g:easytags_auto_highlight
 noremap [oH let g:easytags_auto_highlight=1
 
 let g:textobj_comment_no_default_key_mappings = 1
-xmap aX <Plug>(textobj-comment-big-a)
-xmap ax <Plug>(textobj-comment-a)
-omap ax <Plug>(textobj-comment-a)
-xmap ix <Plug>(textobj-comment-i)
-omap ix <Plug>(textobj-comment-i)
+xmap aC <Plug>(textobj-comment-big-a)
+xmap ac <Plug>(textobj-comment-a)
+omap ac <Plug>(textobj-comment-a)
+xmap ic <Plug>(textobj-comment-i)
+omap ic <Plug>(textobj-comment-i)
 
-autocmd User GoyoEnter Limelight
-autocmd User GoyoLeave Limelight!
-
-let g:sneak#streak=1
-silent! unmap s
-silent! unmap S
-let g:sneak#s_next=1
-let g:sneak#textobj_z=0
-let g:sneak#use_ic_scs = 1
-nmap f <Plug>Sneak_f
-lmap F <Plug>Sneak_F
-xmap f <Plug>Sneak_f
-xmap F <Plug>Sneak_F
-omap f <Plug>Sneak_f
-omap F <Plug>Sneak_F
-nmap ö <Plug>Sneak_s
-nmap Ö <Plug>Sneak_S
-" visual-mode
-xmap ö <Plug>Sneak_s
-xmap Ö <Plug>Sneak_S
-" operator-pending-mode
-omap ö <Plug>Sneak_s
-omap Ö <Plug>Sneak_S
 
 noremap ]oL :RainbowToggle<cr>
 
@@ -65,8 +46,6 @@ nnoremap <leader>u :GundoToggle<CR>
 "noremap [oa :TagbarGetTypeConfig<cr>
 
 
-noremap ]oz :Goyo!<cr>
-noremap [oz :Goyo<cr>:IndentLinesDisable<cr>
 
 
 if(has('nvim'))
@@ -304,19 +283,42 @@ function! SignifyUpdate(b)
     return
 endfunction
 
-noremap [og :call SignifyUpdate(1)<cr>
-noremap ]og :call SignifyUpdate(0)<cr>
-noremap [oG :SignifyToggle<cr>
-omap ic <plug>(signify-motion-inner-pending)
-xmap ic <plug>(signify-motion-inner-visual)
-omap ac <plug>(signify-motion-outer-pending)
-xmap ac <plug>(signify-motion-outer-visual)
-noremap ]oG :SignifyToggleHighlight<cr>
+noremap [oG :call SignifyUpdate(1)<cr>
+noremap ]oG :call SignifyUpdate(0)<cr>
+noremap [og :SignifyToggle<cr>
+noremap ]og :SignifyToggleHighlight<cr>:noh<esc>
+omap ix <plug>(signify-motion-inner-pending)
+xmap ix <plug>(signify-motion-inner-visual)
+omap ax <plug>(signify-motion-outer-pending)
+xmap ax <plug>(signify-motion-outer-visual)
 let g:signify_vcs_list = ['git']
 "noremap [oG :GitGutterEnable<cr>
 "noremap ]oG :GitGutterDisable<cr>
 "noremap [og :GitGutterEaer<cr>
 "noremap ]og :GitGutterLazy<cr>
 "noremap ]og :GitGutterLazy<cr>
+
+
+cabbrev git Git
+nnoremap <space>ga :execute 'Git add ' . expand('%:p')<CR>
+nnoremap <space>gs :Gstatus<CR>
+nnoremap <space>gc :Gcommit -v -q<CR>
+nnoremap <space>gt :Gcommit -v -q %:p<CR>
+nnoremap <space>gd :Gdiff<CR>
+nnoremap <space>ge :Gedit<CR>
+nnoremap <space>gr :Gread<CR>
+nnoremap <space>gw :Gwrite<CR><CR>
+nnoremap <space>gl :silent! Glog<CR>:bot copen<CR>
+noremap <space>gf :Ggrep<Space>
+nnoremap <space>gm :Gmove<Space>
+nnoremap <space>gb :Git branch<Space>
+nnoremap <space>gB :Gblame<CR>
+nnoremap <space>go :Git checkout<Space>
+nnoremap <space>ggP :Dispatch! git push<CR>
+nnoremap <space>ggp :Dispatch! git pull<CR>
+"vnoremap dp :diffput<cr>
+"vnoremap do :diffget<cr>
 "
-"
+nnoremap <leader>gV :Gitv --all<cr>
+nnoremap <leader>gv :Gitv! --all<cr>
+vnoremap <leader>gv :Gitv! --all<cr>

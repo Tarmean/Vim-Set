@@ -1,16 +1,24 @@
 function! AddPlugins(all)
     call plug#begin('~/vimfiles/plugged')
-    Plug 'tpope/vim-abolish', { 'on':  'S' }
     Plug 'justinmk/vim-sneak'
-    Plug 'vasconcelloslf/vim-interestingwords'
+    Plug 'vim-scripts/ReplaceWithRegister'
     Plug 'tommcdo/vim-exchange'
-    Plug 'junegunn/vim-lengthmatters', {'on': 'LengthmattersEnable'}
-    "Plug 'junegunn/agl' <actually for command line
-    Plug 'Konfekt/FastFold'
+    Plug 'tpope/vim-abolish', { 'on':  'S' }
+    Plug 'dhruvasagar/vim-table-mode', { 'on':  'TableModeEnable' }
+    Plug 'glts/vim-textobj-comment'
+    Plug 'kana/vim-textobj-fold'
+    Plug 'kana/vim-textobj-function'
+    Plug 'kana/vim-textobj-indent'
+    Plug 'kana/vim-textobj-line'
+    Plug 'kana/vim-textobj-entire'
+    Plug 'kana/vim-textobj-user'
+    Plug 'Julian/vim-textobj-variable-segment'
     Plug 'tpope/vim-obsession', { 'on':  'Obsession' }
     Plug 'dhruvasagar/vim-prosession' " has to be loaded for auto complete on first use
+    Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
+    Plug 'junegunn/limelight.vim', { 'on':  'Goyo' }
+    let g:limelight_conceal_ctermfg = 242
     Plug 'ervandew/supertab'
-    Plug 'junegunn/seoul256.vim'
     Plug 'morhetz/gruvbox'
     Plug 'bling/vim-airline'
     Plug 'tpope/vim-repeat'
@@ -20,9 +28,14 @@ function! AddPlugins(all)
     Plug '~/vimOld/bundle/filebeagle/' 
     Plug '~/vimOld/bundle/delimitMate/'
     Plug '~/vimOld/bundle/mixedfunctions/'
-    Plug '~/vimOld/bundle/convertBase/'
+    Plug 'Konfekt/FastFold'
 
     if(a:all)
+    "Plug 'junegunn/agl' <actually for command line
+        Plug 'junegunn/seoul256.vim'
+        Plug '~/vimOld/bundle/convertBase/'
+        Plug 'vasconcelloslf/vim-interestingwords'
+        Plug 'junegunn/vim-lengthmatters', {'on': 'LengthmattersEnable'}
         Plug 'artur-shaik/vim-javacomplete2'
         Plug 'luochen1990/rainbow'
         if(!has('nvim'))
@@ -30,9 +43,6 @@ function! AddPlugins(all)
         endif
         Plug 'tpope/vim-fugitive'
         Plug 'gregsexton/gitv', { 'on':  'Gitv' }
-        Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
-        Plug 'junegunn/limelight.vim', { 'on':  'Goyo' }
-        let g:limelight_conceal_ctermfg = 242
         Plug 'Yggdroot/indentLine'
         "Plug 'gelguy/Cmd2.vim'
         "Plug 'junegunn/vim-after-object'
@@ -73,16 +83,7 @@ function! AddPlugins(all)
                     \ 'ListLocalMarkers'   :  "m?"
                     \ }
 
-        Plug 'dhruvasagar/vim-table-mode', { 'on':  'TableModeEnable' }
         Plug 'tpope/vim-commentary'
-        Plug 'glts/vim-textobj-comment'
-        Plug 'kana/vim-textobj-fold'
-        Plug 'kana/vim-textobj-function'
-        Plug 'kana/vim-textobj-indent'
-        Plug 'kana/vim-textobj-line'
-        Plug 'kana/vim-textobj-entire'
-        Plug 'kana/vim-textobj-user'
-        Plug 'Julian/vim-textobj-variable-segment'
         Plug 'mhinz/vim-signify'
 
         Plug '~/vimOld/bundle/targets.vim/'
