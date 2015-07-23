@@ -1,27 +1,35 @@
 function! AddPlugins(all)
     call plug#begin('~/vimfiles/plugged')
+    Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
+    Plug 'junegunn/limelight.vim', { 'on':  'Goyo' }
+    let g:limelight_conceal_ctermfg = 242
+    Plug 'tpope/vim-abolish', { 'on':  'S' }
+
+    Plug 'tpope/vim-surround'
     Plug 'justinmk/vim-sneak'
-    Plug 'jceb/vim-orgmode'
-    Plug 'dbakker/vim-projectroot'
-    Plug 'kana/vim-operator-user'
-    Plug 'kana/vim-grex'
-    Plug 'kana/vim-operator-replace'
     "Plug 'lambdalisue/vim-unified-diff'
     Plug 'sjl/splice.vim'
+    Plug 'vasconcelloslf/vim-interestingwords'
+    Plug 'tommcdo/vim-exchange'
+    "Plug 'junegunn/agl' <actually for command line
     Plug 'Konfekt/FastFold'
+    Plug 'tpope/vim-obsession', { 'on':  'Obsession' }
+    Plug 'dhruvasagar/vim-prosession' 
     Plug 'ervandew/supertab'
     Plug 'morhetz/gruvbox'
     "Plug 'bling/vim-airline'
     Plug 'itchyny/lightline.vim'
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-speeddating'
-    Plug 'tpope/vim-surround'
     Plug 'bruno-/vim-vertical-move'
+    Plug 'dbakker/vim-projectroot'
+
     Plug '~/vimOld/bundle/vim-unimpaired-master/'
+    Plug '~/vimOld/bundle/filebeagle/' 
     Plug '~/vimOld/bundle/delimitMate/'
     Plug '~/vimOld/bundle/mixedfunctions/'
+    Plug '~/vimOld/bundle/convertBase/'
 
-    Plug 'tpope/vim-commentary'
     Plug 'glts/vim-textobj-comment'
     Plug 'kana/vim-textobj-fold'
     Plug 'kana/vim-textobj-function'
@@ -30,16 +38,17 @@ function! AddPlugins(all)
     Plug 'kana/vim-textobj-entire'
     Plug 'kana/vim-textobj-user'
     Plug 'Julian/vim-textobj-variable-segment'
-    Plug 'mhinz/vim-signify'
+
+    Plug 'kana/vim-operator-user'
+    Plug 'kana/vim-grex'
+    Plug 'kana/vim-operator-replace'
     if(a:all)
-        Plug 'junegunn/seoul256.vim'
-        Plug 'lambdalisue/vim-gita'
-        Plug '~/vimOld/bundle/filebeagle/' 
+        Plug 'jceb/vim-orgmode'
+        Plug 'tpope/vim-commentary'
+        Plug 'mhinz/vim-signify'
+        "Plug 'junegunn/seoul256.vim'
+        "Plug 'lambdalisue/vim-gita'
         Plug 'tommcdo/vim-exchange'
-        Plug 'tpope/vim-abolish', { 'on':  'S' }
-        Plug 'tpope/vim-obsession', { 'on':  'Obsession' }
-        Plug 'dhruvasagar/vim-prosession' " has to be loaded for auto complete on first use
-        Plug '~/vimOld/bundle/convertBase/'
         " Plug 'vim-scripts/ingo-library'
         " Plug 'vim-scripts/CountJump'
         " Plug 'vim-scripts/ConflictMotions'
@@ -47,16 +56,13 @@ function! AddPlugins(all)
         " Plug 'vim-scripts/diffwindow_movement'
 
 
+        Plug 'artur-shaik/vim-javacomplete2'
         Plug 'luochen1990/rainbow'
         if(has('gui'))
-            "let g:rainbow_active = 1
+            let g:rainbow_active = 1
         endif
-        "Plug 'tpope/vim-fugitive'
-        Plug 'artur-shaik/vim-javacomplete2'
-        "Plug 'gregsexton/gitv', { 'on':  'Gitv' }
-        Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
-        Plug 'junegunn/limelight.vim', { 'on':  'Goyo' }
-        let g:limelight_conceal_ctermfg = 242
+        Plug 'tpope/vim-fugitive'
+        Plug 'gregsexton/gitv', { 'on':  'Gitv' }
         Plug 'Yggdroot/indentLine'
         "Plug 'gelguy/Cmd2.vim'
         "Plug 'junegunn/vim-after-object'
@@ -68,6 +74,9 @@ function! AddPlugins(all)
         if(has('python'))
             Plug 'SirVer/ultisnips'
             Plug 'honza/vim-snippets'
+            let g:UltiSnipsExpandTrigger="<tab>"
+
+            let g:UltiSnipsJumpBackwardTrigger="<c-space>"
         endif
         Plug 'kshenoy/vim-signature'
         let g:SignatureMap = {
@@ -115,19 +124,19 @@ function! AddPlugins(all)
         else
             Plug 'Shougo/unite.vim', 
             noremap <leader>fc :<c-u>Unite colorscheme<cr>
-
+            Plug 'tsukkee/unite-tag'
             Plug 'ujihisa/unite-colorscheme'
             Plug 'Shougo/neomru.vim'
-            Plug '~/vimOld/bundle/syntastic-master/' 
-            let g:syntastic_always_populate_loc_list = 1
-            let g:syntastic_check_on_open = 1
-            let g:syntastic_check_on_wq = 0
-            let g:airline_exclude_preview=1
-            set statusline+=%#warningmsg#
-            set statusline+=%{SyntasticStatuslineFlag()}
-            set statusline+=%*
-            noremap ]os :SyntasticToggleMode<cr>
-            noremap [os :SyntasticCheck<cr>
+            " Plug '~/vimOld/bundle/syntastic-master/' 
+            " let g:syntastic_always_populate_loc_list = 1
+            " let g:syntastic_check_on_open = 1
+            " let g:syntastic_check_on_wq = 0
+            " let g:airline_exclude_preview=1
+            " set statusline+=%#warningmsg#
+            " set statusline+=%{SyntasticStatuslineFlag()}
+            " set statusline+=%*
+            " noremap ]os :SyntasticToggleMode<cr>
+            " noremap [os :SyntasticCheck<cr>
         endif
 
 

@@ -58,9 +58,8 @@ if &t_Co > 2 || has("gui_running") || has("unix")
   if(!exists("g:seoul256_background"))
     let g:seoul256_background = 234
   endif
-  "colorscheme seoul256
-  set background=dark
   colorscheme gruvbox
+  set background=dark
   "colorscheme seoul256
   au GUIEnter * simalt ~x
   syntax on "admittedly has a significant performance penalty but come on...
@@ -82,7 +81,6 @@ map ü [
 map ä ]
 map Ä '
 map Ü `
-"set langnoremap=\\ü\\[,\\ä\\]
 nnoremap <cr> :
 vnoremap <cr> :
 nnoremap / /\v

@@ -29,40 +29,18 @@ let g:SuperTabContextDiscoverDiscovery =
 "" CONFLICT with some plugins like tpope/Endwise
 "inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
  
-let g:easytags_async=1
+if(has("unix"))
+    let g:easytags_async=1
+endif
 let g:easytags_dynamic_files=1
 noremap  ]oH unlet g:easytags_auto_highlight
 noremap [oH let g:easytags_auto_highlight=1
 
-let g:textobj_comment_no_default_key_mappings = 1
-xmap aC <Plug>(textobj-comment-a)
-omap aC <Plug>(textobj-comment-a)
-xmap iC <Plug>(textobj-comment-i)
-omap iC <Plug>(textobj-comment-i)
+nnoremap <silent> <leader>d :call InterestingWords('n')<cr>
+nnoremap <silent> <leader>D :call UncolorAllWords()<cr>
+let g:interestingWordsGUIColors = ['#FFF6CC', '#FFD65C', '#8CCBEA', '#A4E57E', '#99FFE6', '#E6FF99', '#FFDB72', '#5CD6FF', '#99FFB3', '#FF7272', '#99FF99', '#99B3FF', '#FFB399']
 
-autocmd User GoyoEnter Limelight
-autocmd User GoyoLeave Limelight!
 
-let g:sneak#streak=1
-silent! unmap s
-silent! unmap S
-let g:sneak#s_next=1
-let g:sneak#textobj_z=0
-let g:sneak#use_ic_scs = 1
-nmap f <Plug>Sneak_f
-lmap F <Plug>Sneak_F
-xmap f <Plug>Sneak_f
-xmap F <Plug>Sneak_F
-omap f <Plug>Sneak_f
-omap F <Plug>Sneak_F
-nmap ö <Plug>Sneak_s
-nmap Ö <Plug>Sneak_S
-" visual-mode
-xmap ö <Plug>Sneak_s
-xmap Ö <Plug>Sneak_S
-" operator-pending-mode
-omap ö <Plug>Sneak_s
-omap Ö <Plug>Sneak_S
 
 noremap ]oL :RainbowToggle<cr>
 
@@ -92,8 +70,6 @@ nnoremap <leader>u :GundoToggle<CR>
 "noremap [oa :TagbarGetTypeConfig<cr>
 
 
-noremap ]oz :Goyo!<cr>
-noremap [oz :Goyo<cr>:IndentLinesDisable<cr>
 
 
 if(has('unix'))
@@ -291,6 +267,7 @@ else
     nnoremap <leader>fJ :Unite -buffer-name=files   -start-insert file_rec:!<cr>
     nnoremap <leader>fj :<C-u>Unite -buffer-name=files   -start-insert file<cr>
     nnoremap <leader>fs :<C-u>Unite -buffer-name=mru     -start-insert file_mru<cr>
+    nnoremap <leader>fd :<C-u>Unite -buffer-name=tags     -start-insert tag<cr>
     nnoremap <leader>fk :<C-u>Unite -buffer-name=outline -start-insert outline<cr>
     nnoremap <leader>fy :<C-u>Unite -buffer-name=yank    history/yank<cr>
     nnoremap <leader>ff :<C-u>Unite -buffer-name=buffer  buffer<cr>
@@ -308,6 +285,11 @@ endif
 
 noremap ]oc :call SetJavaComplete(0)<cr>
 noremap [oc :call SetJavaComplete(1)<cr>
+if(has("unix"))
+    let g:JavaComplete_Home = $HOME . '/vimfiles/plugged/vim-javacomplete2'
+    let $CLASSPATH .= '.:' . $HOME . '/vimfiles/plugged/vim-javacomplete2/libs/javavi/target/classes'
+    let g:JavaComplete_SourcePath = $HOME . '/teamf3/*.jar:' . $HOME . '/teamf3/src/**/*.java'
+endif
 function! SetJavaComplete(bool)
     augroup JavaComplete
         au!

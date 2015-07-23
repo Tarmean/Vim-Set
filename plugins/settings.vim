@@ -1,9 +1,43 @@
+
+let g:textobj_comment_no_default_key_mappings = 1
+xmap aC <Plug>(textobj-comment-a)
+omap aC <Plug>(textobj-comment-a)
+xmap iC <Plug>(textobj-comment-i)
+omap iC <Plug>(textobj-comment-i)
+
+noremap ]oz :Goyo!<cr>
+noremap [oz :Goyo<cr>:IndentLinesDisable<cr>
+autocmd User GoyoEnter Limelight
+autocmd User GoyoLeave Limelight!
+
+let g:sneak#streak=1
+silent! unmap s
+silent! unmap S
+let g:sneak#s_next=1
+let g:sneak#textobj_z=0
+let g:sneak#use_ic_scs = 1
+nmap f <Plug>Sneak_f
+lmap F <Plug>Sneak_F
+xmap f <Plug>Sneak_f
+xmap F <Plug>Sneak_F
+omap f <Plug>Sneak_f
+omap F <Plug>Sneak_F
+nmap ö <Plug>Sneak_s
+nmap Ö <Plug>Sneak_S
+" visual-mode
+xmap ö <Plug>Sneak_s
+xmap Ö <Plug>Sneak_S
+" operator-pending-mode
+omap ö <Plug>Sneak_s
+omap Ö <Plug>Sneak_S
+
+
 nnoremap [w :Obsession<CR>
 nnoremap ]w :Obsession!<CR>
 
-map <space>Y <Plug>(operator-grex-yank)
-map <space>d <Plug>(operator-grex-delete)
-map _  <Plug>(operator-replace)
+noremap <space>Y <Plug>(operator-grex-yank)
+noremap <space>X <Plug>(operator-grex-delete)
+noremap _  <Plug>(operator-replace)
 
 let g:prosession_on_startup = 0
 noremap <leader>w :Prosession 
@@ -43,26 +77,45 @@ let g:lightline = {
       \ 'subseparator': { 'left': '', 'right': '' }
       \ }
 
+cabbrev git Git
+nnoremap <space>ga :execute 'Git add ' . expand('%:p')<CR>
+nnoremap <space>gs :Gstatus<CR>
+nnoremap <space>gc :Gcommit -v -q<CR>
+nnoremap <space>gt :Gcommit -v -q %:p<CR>
+nnoremap <space>gd :Gdiff<CR>
+nnoremap <space>ge :Gedit<CR>
+nnoremap <space>gr :Gread<CR>
+nnoremap <space>gw :Gwrite<CR><CR>
+nnoremap <space>gl :silent! Glog<CR>:bot copen<CR>
+noremap <space>gf :Ggrep<Space>
+nnoremap <space>gm :Gmove<Space>
+nnoremap <space>gb :Git branch<Space>
+nnoremap <space>gB :Gblame<CR>
+nnoremap <space>go :Git checkout<Space>
+nnoremap <space>ggP :Dispatch! git push<CR>
+nnoremap <space>ggp :Dispatch! git pull<CR>
+vnoremap dp :diffput<cr>
+vnoremap do :diffget<cr>
 
-    function! GitStatus() " {{{
-        let branch =  winwidth(0) > 70 ?  gita#statusline#format(' %lb%{ ⇄ |}rn%{/|}rb') : ''
-        let traffic =  winwidth(0) > 70 ?  gita#statusline#format('%{￩| }ic%{￫}og') : ''
-        "return winwidth(0) > 70 ?  gita#statusline#format('%{!| }nc%{+| }na%{-| }nd%{"| }nr%{*| }nm%{@|}nu') : ''
-        " b! clean ✔
-        " i? staged, unstaged, both ● ✚
-        " b! branch, remote, detached head  ➦ ⇄
-        " i! diverged ￩ ￫
-        " b? conflicted ❌
-        " i stash ⚑
-        " b! merging(.git/MERGE_HEAD), rebasing(.git/rebase, ./rebase-apply,
-        " .git/rebase-merge, .git/../.dotest), bisecting(.git/BISECT_LOG)
-        "OK  added, deleted, renamed, modified + - ±
-        if(strlen(l:branch)>0&&strlen(l:traffic)>0)
-            let branch .= " "
-        endif
-        let branch .= traffic
-        return branch
-    endfunction " }}}
+    " function! GitStatus() " {{{
+    "     let branch =  winwidth(0) > 70 ?  gita#statusline#format(' %lb%{ ⇄ |}rn%{/|}rb') : ''
+    "     let traffic =  winwidth(0) > 70 ?  gita#statusline#format('%{￩| }ic%{￫}og') : ''
+    "     "return winwidth(0) > 70 ?  gita#statusline#format('%{!| }nc%{+| }na%{-| }nd%{"| }nr%{*| }nm%{@|}nu') : ''
+    "     " b! clean ✔
+    "     " i? staged, unstaged, both ● ✚
+    "     " b! branch, remote, detached head  ➦ ⇄
+    "     " i! diverged ￩ ￫
+    "     " b? conflicted ❌
+    "     " i stash ⚑
+    "     " b! merging(.git/MERGE_HEAD), rebasing(.git/rebase, ./rebase-apply,
+    "     " .git/rebase-merge, .git/../.dotest), bisecting(.git/BISECT_LOG)
+    "     "OK  added, deleted, renamed, modified + - ±
+    "     if(strlen(l:branch)>0&&strlen(l:traffic)>0)
+    "         let branch .= " "
+    "     endif
+    "     let branch .= traffic
+    "     return branch
+    " endfunction " }}}
 " "  | |    ✚  ● ♻	♼  ⚝ ➦ ⚑ ⚐ ± ⚠ ☿ … ⇄ ￩ ￫ ✓ ✔ ✕ ✖ ✗ ✘ ⚡  ❌"
 " " …  ⚡"
       ""\   'gita': '%{gita#statusline#format("lb% ⇄ rb%  {￩ic%|}{￫og%|}")}',
@@ -78,48 +131,30 @@ let unified_diff#iwhite_arguments = [
             \ ]
 
 let g:splice_prefix = "+"
-cabbrev gita Gita
-cabbrev git term git
+cabbrev git Git
+
 nnoremap <space>ga :execute 'Git add ' . expand('%:p')<CR>
-nnoremap <space>gA :Gita commit --amend
-nnoremap <space>gs :Gita status<CR>
-nnoremap <space>gc :Gita commit
-"nnoremap <space>gt :Gcommit -v -q %:p<CR>
-nnoremap <space>gd :Gita diff <CR>
-"nnoremap <space>ge :Gedit<CR>
-"nnoremap <space>gr :Gread<CR>
-"nnoremap <space>gw :Gwrite<CR><CR>
-"nnoremap <space>gl :silent! Glog<CR>:bot copen<CR>
-"noremap <space>gf :Ggrep<Space>
-"nnoremap <space>gm :Gmove<Space>
-"nnoremap <space>gb :Git branch<Space>
-nnoremap <space>gb :Gita blame<CR>
-"nnoremap <space>go :Git checkout<Space>
-"nnoremap <space>ggP :Dispatch! git push<CR>
-"nnoremap <space>ggp :Dispatch! git pull<CR>
-"
-"nnoremap <space>ga :execute 'Git add ' . expand('%:p')<CR>
-"nnoremap <space>gs :Gstatus<CR>
-"nnoremap <space>gc :Gcommit -v -q<CR>
-"nnoremap <space>gt :Gcommit -v -q %:p<CR>
-"nnoremap <space>gd :Gdiff<CR>
-"nnoremap <space>ge :Gedit<CR>
-"nnoremap <space>gr :Gread<CR>
-"nnoremap <space>gw :Gwrite<CR><CR>
-"nnoremap <space>gl :silent! Glog<CR>:bot copen<CR>
-"noremap <space>gf :Ggrep<Space>
-"nnoremap <space>gm :Gmove<Space>
-"nnoremap <space>gb :Git branch<Space>
-"nnoremap <space>gB :Gblame<CR>
-"nnoremap <space>go :Git checkout<Space>
-"nnoremap <space>ggP :Dispatch! git push<CR>
-"nnoremap <space>ggp :Dispatch! git pull<CR>
-"xnoremap dp :diffput<cr>
-"xnoremap do :diffget<cr>
-"
-"nnoremap <leader>gV :Gitv --all<cr>
-"nnoremap <leader>gv :Gitv! --all<cr>
-"vnoremap <leader>gv :Gitv! --all<cr>
+nnoremap <space>gs :Gstatus<CR>
+nnoremap <space>gc :Gcommit -v -q<CR>
+nnoremap <space>gt :Gcommit -v -q %:p<CR>
+nnoremap <space>gd :Gdiff<CR>
+nnoremap <space>ge :Gedit<CR>
+nnoremap <space>gr :Gread<CR>
+nnoremap <space>gw :Gwrite<CR><CR>
+nnoremap <space>gl :silent! Glog<CR>:bot copen<CR>
+noremap <space>gf :Ggrep<Space>
+nnoremap <space>gm :Gmove<Space>
+nnoremap <space>gb :Git branch<Space>
+nnoremap <space>gB :Gblame<CR>
+nnoremap <space>go :Git checkout<Space>
+nnoremap <space>ggP :Dispatch! git push<CR>
+nnoremap <space>ggp :Dispatch! git pull<CR>
+xnoremap dp :diffput<cr>
+xnoremap do :diffget<cr>
+
+nnoremap <leader>gV :Gitv --all<cr>
+nnoremap <leader>gv :Gitv! --all<cr>
+vnoremap <leader>gv :Gitv! --all<cr>
 
 nnoremap <leader>fb :FileBeagle<cr>
 let g:filebeagle_show_hidden =  1
@@ -155,7 +190,7 @@ noremap <silent> [oA :call SideLineToggle(1)<cr>
 noremap <silent> ]oA :call SideLineToggle(0)<cr>
 
 
-omap ic <plug>(signify-motion-inner-pending)
-xmap ic <plug>(signify-motion-inner-visual)
-omap ac <plug>(signify-motion-outer-pending)
-xmap ac <plug>(signify-motion-outer-visual)
+omap ix <plug>(signify-motion-inner-pending)
+xmap ix <plug>(signify-motion-inner-visual)
+omap ax <plug>(signify-motion-outer-pending)
+xmap ax <plug>(signify-motion-outer-visual)
