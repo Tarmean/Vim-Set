@@ -1,29 +1,45 @@
 function! AddPlugins(all)
     call plug#begin('~/vimfiles/plugged')
-    Plug 'tpope/vim-abolish', { 'on':  'S' }
-    Plug 'christoomey/vim-conflicted'
-    set stl+=%{ConflictedVersion()}
     Plug 'justinmk/vim-sneak'
-    Plug 'junegunn/vim-lengthmatters', {'on': 'LengthmattersEnable'}
-    Plug 'tommcdo/vim-exchange'
-    "Plug 'junegunn/agl' <actually for command line
+    Plug 'jceb/vim-orgmode'
+    Plug 'dbakker/vim-projectroot'
+    Plug 'kana/vim-operator-user'
+    Plug 'kana/vim-grex'
+    Plug 'kana/vim-operator-replace'
+    "Plug 'lambdalisue/vim-unified-diff'
+    Plug 'sjl/splice.vim'
     Plug 'Konfekt/FastFold'
-    Plug 'tpope/vim-obsession', { 'on':  'Obsession' }
-    Plug 'dhruvasagar/vim-prosession' " has to be loaded for auto complete on first use
     Plug 'ervandew/supertab'
-    Plug 'junegunn/seoul256.vim'
     Plug 'morhetz/gruvbox'
-    Plug 'bling/vim-airline'
+    "Plug 'bling/vim-airline'
+    Plug 'itchyny/lightline.vim'
     Plug 'tpope/vim-repeat'
+    Plug 'tpope/vim-speeddating'
     Plug 'tpope/vim-surround'
     Plug 'bruno-/vim-vertical-move'
     Plug '~/vimOld/bundle/vim-unimpaired-master/'
-    Plug '~/vimOld/bundle/filebeagle/' 
     Plug '~/vimOld/bundle/delimitMate/'
     Plug '~/vimOld/bundle/mixedfunctions/'
-    Plug '~/vimOld/bundle/convertBase/'
 
+    Plug 'tpope/vim-commentary'
+    Plug 'glts/vim-textobj-comment'
+    Plug 'kana/vim-textobj-fold'
+    Plug 'kana/vim-textobj-function'
+    Plug 'kana/vim-textobj-indent'
+    Plug 'kana/vim-textobj-line'
+    Plug 'kana/vim-textobj-entire'
+    Plug 'kana/vim-textobj-user'
+    Plug 'Julian/vim-textobj-variable-segment'
+    Plug 'mhinz/vim-signify'
     if(a:all)
+        Plug 'junegunn/seoul256.vim'
+        Plug 'lambdalisue/vim-gita'
+        Plug '~/vimOld/bundle/filebeagle/' 
+        Plug 'tommcdo/vim-exchange'
+        Plug 'tpope/vim-abolish', { 'on':  'S' }
+        Plug 'tpope/vim-obsession', { 'on':  'Obsession' }
+        Plug 'dhruvasagar/vim-prosession' " has to be loaded for auto complete on first use
+        Plug '~/vimOld/bundle/convertBase/'
         " Plug 'vim-scripts/ingo-library'
         " Plug 'vim-scripts/CountJump'
         " Plug 'vim-scripts/ConflictMotions'
@@ -35,9 +51,9 @@ function! AddPlugins(all)
         if(has('gui'))
             "let g:rainbow_active = 1
         endif
-        Plug 'tpope/vim-fugitive'
+        "Plug 'tpope/vim-fugitive'
         Plug 'artur-shaik/vim-javacomplete2'
-        Plug 'gregsexton/gitv', { 'on':  'Gitv' }
+        "Plug 'gregsexton/gitv', { 'on':  'Gitv' }
         Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
         Plug 'junegunn/limelight.vim', { 'on':  'Goyo' }
         let g:limelight_conceal_ctermfg = 242
@@ -79,16 +95,6 @@ function! AddPlugins(all)
                     \ }
 
         Plug 'dhruvasagar/vim-table-mode', { 'on':  'TableModeEnable' }
-        Plug 'tpope/vim-commentary'
-        Plug 'glts/vim-textobj-comment'
-        Plug 'kana/vim-textobj-fold'
-        Plug 'kana/vim-textobj-function'
-        Plug 'kana/vim-textobj-indent'
-        Plug 'kana/vim-textobj-line'
-        Plug 'kana/vim-textobj-entire'
-        Plug 'kana/vim-textobj-user'
-        Plug 'Julian/vim-textobj-variable-segment'
-        Plug 'mhinz/vim-signify'
 
         Plug '~/vimOld/bundle/targets.vim/'
 
@@ -99,8 +105,7 @@ function! AddPlugins(all)
             let g:python_host_prog='/usr/bin/python'
 
             function! Get_classpath(ending)
-                let project_git_dir = fugitive#extract_git_dir(expand("%:p"))
-                let project_root = fnamemodify(project_git_dir, ":h")
+                let project_root = ProjectRootGuess() . "/"
                 let project_root .= a:ending
                 return project_root
             endfunction

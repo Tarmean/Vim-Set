@@ -92,3 +92,14 @@ if !exists(":DiffOrig")
     command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
                 \ | wincmd p | diffthis
 endif
+
+
+noremap  <Leader>y "+y
+nnoremap <Leader>p "+p
+nnoremap <Leader>P "+P
+vnoremap <Leader>p "+p
+vnoremap <Leader>P "+PP
+nnoremap <Leader>ö :w<CR>
+cnoremap %s/ %s/\v
+cnoremap  w!! w !sudo tee % > /dev/null
+nnoremap Y y$

@@ -1,32 +1,35 @@
 nnoremap <F4> call javacomplete#AddImport()<cr>
 autocmd FileType java set omnifunc=javacomplete#Complete
 let JavaComplete_LibsPath = "/home/cyril/teamf3/"
- 
-function! g:UltiSnips_Complete()
-    call UltiSnips#ExpandSnippet()
-    if g:ulti_expand_res == 0
-        if pumvisible()
-            return "\<C-n>"
-        else
-            call UltiSnips#JumpForwards()
-            if g:ulti_jump_forwards_res == 0
-               return "\<TAB>"
-            endif
-        endif
-    endif
-    return ""
-endfunction
 
-au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<c-tab>"
-let g:UltiSnipsListSnippets="<c-e>"
-" this mapping Enter key to <C-y> to chose the current highlight item 
-" and close the selection list, same as other IDEs.
-" CONFLICT with some plugins like tpope/Endwise
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
+let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', '&completefunc']
+let g:SuperTabContextDiscoverDiscovery =
+            \ ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>"]
+"function! g:UltiSnips_Complete()
+"    call UltiSnips#ExpandSnippet()
+"    if g:ulti_expand_res == 0
+"        if pumvisible()
+"            return "\<C-n>"
+"        else
+"            call UltiSnips#JumpForwards()
+"            if g:ulti_jump_forwards_res == 0
+"                return "\<tab>"
+"            endif
+"        endif
+"    endif
+"    return ""
+"endfunction
+"au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>"
+"let g:UltiSnipsJumpForwardTrigger="<tab>"
+"let g:UltiSnipsJumpBackwardTrigger="<c-tab>"
+"let g:UltiSnipsListSnippets="<c-e>"
+"" this mapping Enter key to <C-y> to chose the current highlight item 
+"" and close the selection list, same as other IDEs.
+"" CONFLICT with some plugins like tpope/Endwise
+"inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
  
-"let g:easytags_async=1
+let g:easytags_async=1
 let g:easytags_dynamic_files=1
 noremap  ]oH unlet g:easytags_auto_highlight
 noremap [oH let g:easytags_auto_highlight=1
@@ -94,7 +97,8 @@ noremap [oz :Goyo<cr>:IndentLinesDisable<cr>
 
 
 if(has('unix'))
-    nnoremap <silent> <leader><leader> :execute "Locate " . expand("~")<cr>
+    nnoremap <silent> <leader>fa :execute "Locate " . expand("~")<cr>
+    nnoremap <silent> <leader><leader> :execute "Locate " . Get_classpath("")<cr>
     command! -nargs=1 Locate call fzf#run(
                 \ {'source': 'locate <q-args>', 'sink': 'e', 'options': '-m'})
 
@@ -195,10 +199,17 @@ if(has('unix'))
         execute 'normal!' col.'|'
     endfunction
 
-    command! -nargs=1 Ag call fzf#run({
+    command! -nargs=1 Agcwd call fzf#run({
                 \ 'source':  'ag --nogroup --column --color "'.escape(<q-args>, '"\').'"',
                 \ 'sink*':    function('<sid>ag_handler'),
                 \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --no-multi',
+                \ 'down':    '50%'
+                \ })
+    
+    command! -nargs=1 Ag call fzf#run({
+                \ 'source':  'ag --nogroup --column --color "'.escape(<q-args>, '"\').'" ' . Get_classpath(""),
+                \ 'sink*':    function('<sid>ag_handler'),
+                \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-a,ctrl-x -x --multi',
                 \ 'down':    '50%'
                 \ })
 
@@ -262,7 +273,15 @@ if(has('unix'))
     command! -bar FZFTags if !empty(tagfiles()) | call fzf#run({
                 \   'source': "sed '/^\\!/d;s/\t.*//' " . join(tagfiles()) . ' | uniq',
                 \   'sink':   'tag',
-                \ }) | else | echo 'Preparing tags' | call system('ctags -R') | FZFTag | endif
+                \ }) | else | echo 'Tagfile not found or empty!' | endif
+    augroup TagSetter
+        au!
+        au BufEnter * call s:setTags()
+    augroup END
+    function! s:setTags()
+        let string = Get_classpath(".git/tags") . ",~/.vimtags"
+        let &tags= string
+    endfunction  
     noremap <leader>fd :FZFTags<cr>
 else
     "let g:unite_source_history_yank_enable = 1
@@ -324,13 +343,11 @@ function! SignifyUpdate(b)
     return
 endfunction
 
+nnoremap <silent> + :exec "cd " . Get_classpath("")<cr>
+
 noremap [og :call SignifyUpdate(1)<cr>
 noremap ]og :call SignifyUpdate(0)<cr>
 noremap [oG :SignifyToggle<cr>
-omap ic <plug>(signify-motion-inner-pending)
-xmap ic <plug>(signify-motion-inner-visual)
-omap ac <plug>(signify-motion-outer-pending)
-xmap ac <plug>(signify-motion-outer-visual)
 noremap ]oG :SignifyToggleHighlight<cr>
 let g:signify_vcs_list = ['git']
 "noremap [oG :GitGutterEnable<cr>
