@@ -53,7 +53,7 @@ if has("multi_byte")
   set fileencodings=ucs-bom,utf-8,latin1
 endif
 
-if &t_Co > 2 || has("gui_running")
+if &t_Co > 2 || has("gui_running") || has("unix")
   if(!exists("g:seoul256_background"))
     let g:seoul256_background = 234
   endif
@@ -155,3 +155,12 @@ else
     set autoindent" always set autoindenting on
 
 endif 
+noremap  <Leader>y "+y
+nnoremap <Leader>p "+p
+nnoremap <Leader>P "+P
+vnoremap <Leader>p "+p
+vnoremap <Leader>P "+PP
+nnoremap <Leader>ö :w<CR>
+cnoremap %s/ %s/\v
+cnoremap  w!! w !sudo tee % > /dev/null
+nnoremap Y y$

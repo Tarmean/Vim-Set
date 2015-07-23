@@ -1,21 +1,26 @@
 let g:fastfold_fold_command_suffixes = []
 let g:fastfold_fold_movement_commands = []
 
+
 nnoremap <silent> <leader>d :call InterestingWords('n')<cr>
 nnoremap <silent> <leader>D :call UncolorAllWords()<cr>
 let g:interestingWordsDefaultMappings = 1
 let g:interestingWordsGUIColors = ['#FFF6CC', '#FFD65C', '#8CCBEA', '#A4E57E', '#99FFE6', '#E6FF99', '#FFDB72', '#5CD6FF', '#99FFB3', '#FF7272', '#99FF99', '#99B3FF', '#FFB399']
 "let g:easytags_async=1
+       
+nnoremap <F4> call javacomplete#AddImport()<cr>
+autocmd FileType java set omnifunc=javacomplete#Complete
+let JavaComplete_LibsPath = "/home/cyril/teamf3/"
+
+ 
+if(has("unix"))
+    let g:easytags_async=1
+endif
 let g:easytags_dynamic_files=1
 noremap  ]oH unlet g:easytags_auto_highlight
 noremap [oH let g:easytags_auto_highlight=1
 
-let g:textobj_comment_no_default_key_mappings = 1
-xmap aC <Plug>(textobj-comment-big-a)
-xmap ac <Plug>(textobj-comment-a)
-omap ac <Plug>(textobj-comment-a)
-xmap ic <Plug>(textobj-comment-i)
-omap ic <Plug>(textobj-comment-i)
+
 
 
 noremap ]oL :RainbowToggle<cr>
@@ -48,8 +53,9 @@ nnoremap <leader>u :GundoToggle<CR>
 
 
 
-if(has('nvim'))
-    nnoremap <silent> <leader><leader> :execute "Locate " . expand("~")<cr>
+if(has('unix'))
+    nnoremap <silent> <leader>fa :execute "Locate " . expand("~")<cr>
+    nnoremap <silent> <leader><leader> :execute "Locate " . Get_classpath("")<cr>
     command! -nargs=1 Locate call fzf#run(
                 \ {'source': 'locate <q-args>', 'sink': 'e', 'options': '-m'})
 
@@ -75,8 +81,8 @@ if(has('nvim'))
     nnoremap <silent> <Leader>fs :FZFMru<cr>
     command! FZFMru call fzf#run({
                 \'source': v:oldfiles,
-                \'sink' : 'e ',
-                \'options' : ' -m -x',
+                \'sink' : 'e',
+                \'options' : '-m',
                 \})
 
 
@@ -150,10 +156,17 @@ if(has('nvim'))
         execute 'normal!' col.'|'
     endfunction
 
-    command! -nargs=1 Ag call fzf#run({
+    command! -nargs=1 Agcwd call fzf#run({
                 \ 'source':  'ag --nogroup --column --color "'.escape(<q-args>, '"\').'"',
                 \ 'sink*':    function('<sid>ag_handler'),
                 \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --no-multi',
+                \ 'down':    '50%'
+                \ })
+    
+    command! -nargs=1 Ag call fzf#run({
+                \ 'source':  'ag --nogroup --column --color "'.escape(<q-args>, '"\').'" ' . Get_classpath(""),
+                \ 'sink*':    function('<sid>ag_handler'),
+                \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-a,ctrl-x -x --multi',
                 \ 'down':    '50%'
                 \ })
 
@@ -217,7 +230,15 @@ if(has('nvim'))
     command! -bar FZFTags if !empty(tagfiles()) | call fzf#run({
                 \   'source': "sed '/^\\!/d;s/\t.*//' " . join(tagfiles()) . ' | uniq',
                 \   'sink':   'tag',
-                \ }) | else | echo 'Preparing tags' | call system('ctags -R') | FZFTag | endif
+                \ }) | else | echo 'Tagfile not found or empty!' | endif
+    augroup TagSetter
+        au!
+        au BufEnter * call s:setTags()
+    augroup END
+    function! s:setTags()
+        let string = Get_classpath(".git/tags") . ",~/.vimtags"
+        let &tags= string
+    endfunction  
     noremap <leader>fd :FZFTags<cr>
 else
     "let g:unite_source_history_yank_enable = 1
@@ -245,9 +266,11 @@ endif
 
 noremap ]oc :call SetJavaComplete(0)<cr>
 noremap [oc :call SetJavaComplete(1)<cr>
-let g:JavaComplete_Home = $HOME . '/vimfiles/plugged/vim-javacomplete2'
-let $CLASSPATH .= '.:' . $HOME . '/vimfiles/plugged/vim-javacomplete2/libs/javavi/target/classes'
-let g:JavaComplete_SourcePath = $HOME . '/teamf3/*.jar:' . $HOME . '/teamf3/src/**/*.java'
+if(has("unix"))
+    let g:JavaComplete_Home = $HOME . '/vimfiles/plugged/vim-javacomplete2'
+    let $CLASSPATH .= '.:' . $HOME . '/vimfiles/plugged/vim-javacomplete2/libs/javavi/target/classes'
+    let g:JavaComplete_SourcePath = $HOME . '/teamf3/*.jar:' . $HOME . '/teamf3/src/**/*.java'
+endif
 function! SetJavaComplete(bool)
     augroup JavaComplete
         au!
@@ -283,6 +306,8 @@ function! SignifyUpdate(b)
     return
 endfunction
 
+nnoremap <silent> + :exec "cd " . Get_classpath("")<cr>
+
 noremap [oG :call SignifyUpdate(1)<cr>
 noremap ]oG :call SignifyUpdate(0)<cr>
 noremap [og :SignifyToggle<cr>
@@ -291,12 +316,8 @@ omap ix <plug>(signify-motion-inner-pending)
 xmap ix <plug>(signify-motion-inner-visual)
 omap ax <plug>(signify-motion-outer-pending)
 xmap ax <plug>(signify-motion-outer-visual)
+
 let g:signify_vcs_list = ['git']
-"noremap [oG :GitGutterEnable<cr>
-"noremap ]oG :GitGutterDisable<cr>
-"noremap [og :GitGutterEaer<cr>
-"noremap ]og :GitGutterLazy<cr>
-"noremap ]og :GitGutterLazy<cr>
 
 
 cabbrev git Git
@@ -316,9 +337,9 @@ nnoremap <space>gB :Gblame<CR>
 nnoremap <space>go :Git checkout<Space>
 nnoremap <space>ggP :Dispatch! git push<CR>
 nnoremap <space>ggp :Dispatch! git pull<CR>
-"vnoremap dp :diffput<cr>
-"vnoremap do :diffget<cr>
-"
+vnoremap dp :diffput<cr>
+vnoremap do :diffget<cr>
+
 nnoremap <leader>gV :Gitv --all<cr>
 nnoremap <leader>gv :Gitv! --all<cr>
 vnoremap <leader>gv :Gitv! --all<cr>

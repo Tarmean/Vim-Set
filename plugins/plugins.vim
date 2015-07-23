@@ -1,10 +1,38 @@
 function! AddPlugins(all)
     call plug#begin('~/vimfiles/plugged')
-    Plug 'justinmk/vim-sneak'
-    Plug 'vim-scripts/ReplaceWithRegister'
-    Plug 'tommcdo/vim-exchange'
-    Plug 'tpope/vim-abolish', { 'on':  'S' }
     Plug 'dhruvasagar/vim-table-mode', { 'on':  'TableModeEnable' }
+    Plug 'vim-scripts/ReplaceWithRegister'
+
+    Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
+    Plug 'junegunn/limelight.vim', { 'on':  'Goyo' }
+    let g:limelight_conceal_ctermfg = 242
+    Plug 'tpope/vim-abolish', { 'on':  'S' }
+
+    Plug 'tpope/vim-surround'
+    Plug 'justinmk/vim-sneak'
+    "Plug 'lambdalisue/vim-unified-diff'
+    Plug 'sjl/splice.vim'
+    Plug 'vasconcelloslf/vim-interestingwords'
+    Plug 'tommcdo/vim-exchange'
+    "Plug 'junegunn/agl' <actually for command line
+    Plug 'Konfekt/FastFold'
+    Plug 'tpope/vim-obsession', { 'on':  'Obsession' }
+    Plug 'dhruvasagar/vim-prosession' 
+    Plug 'ervandew/supertab'
+    Plug 'morhetz/gruvbox'
+    "Plug 'bling/vim-airline'
+    Plug 'itchyny/lightline.vim'
+    Plug 'tpope/vim-repeat'
+    Plug 'tpope/vim-speeddating'
+    Plug 'bruno-/vim-vertical-move'
+    Plug 'dbakker/vim-projectroot'
+
+    Plug '~/vimOld/bundle/vim-unimpaired-master/'
+    Plug '~/vimOld/bundle/filebeagle/' 
+    Plug '~/vimOld/bundle/delimitMate/'
+    Plug '~/vimOld/bundle/mixedfunctions/'
+    Plug 'Konfekt/FastFold'
+
     Plug 'glts/vim-textobj-comment'
     Plug 'kana/vim-textobj-fold'
     Plug 'kana/vim-textobj-function'
@@ -13,32 +41,22 @@ function! AddPlugins(all)
     Plug 'kana/vim-textobj-entire'
     Plug 'kana/vim-textobj-user'
     Plug 'Julian/vim-textobj-variable-segment'
-    Plug 'tpope/vim-obsession', { 'on':  'Obsession' }
-    Plug 'dhruvasagar/vim-prosession' " has to be loaded for auto complete on first use
-    Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
-    Plug 'junegunn/limelight.vim', { 'on':  'Goyo' }
-    let g:limelight_conceal_ctermfg = 242
-    Plug 'ervandew/supertab'
-    Plug 'morhetz/gruvbox'
-    Plug 'bling/vim-airline'
-    Plug 'tpope/vim-repeat'
-    Plug 'tpope/vim-surround'
-    Plug 'bruno-/vim-vertical-move'
-    Plug '~/vimOld/bundle/vim-unimpaired-master/'
-    Plug '~/vimOld/bundle/filebeagle/' 
-    Plug '~/vimOld/bundle/delimitMate/'
-    Plug '~/vimOld/bundle/mixedfunctions/'
-    Plug 'Konfekt/FastFold'
-
     if(a:all)
     "Plug 'junegunn/agl' <actually for command line
         Plug 'junegunn/seoul256.vim'
         Plug '~/vimOld/bundle/convertBase/'
-        Plug 'vasconcelloslf/vim-interestingwords'
-        Plug 'junegunn/vim-lengthmatters', {'on': 'LengthmattersEnable'}
+        Plug 'jceb/vim-orgmode'
+        "Plug 'junegunn/seoul256.vim'
+        "Plug 'lambdalisue/vim-gita'
+        " Plug 'vim-scripts/ingo-library'
+        " Plug 'vim-scripts/CountJump'
+        " Plug 'vim-scripts/ConflictMotions'
+        " Plug 'vim-scripts/help_movement'
+        " Plug 'vim-scripts/diffwindow_movement'
+
         Plug 'artur-shaik/vim-javacomplete2'
         Plug 'luochen1990/rainbow'
-        if(!has('nvim'))
+        if(has('gui'))
             let g:rainbow_active = 1
         endif
         Plug 'tpope/vim-fugitive'
@@ -88,9 +106,20 @@ function! AddPlugins(all)
 
         Plug '~/vimOld/bundle/targets.vim/'
 
-        if(has('nvim'))
-            Plug 'benekastah/neomake', { 'on':  'Neomake' }
+        if(has('unix'))
             Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
+        endif
+        if(has('nvim'))
+            let g:python_host_prog='/usr/bin/python'
+
+            function! Get_classpath(ending)
+                let project_root = ProjectRootGuess() . "/"
+                let project_root .= a:ending
+                return project_root
+            endfunction
+
+            Plug 'benekastah/neomake'
+            autocmd BufWritePost * Neomake
         else
             Plug 'Shougo/unite.vim', 
             noremap <leader>fc :<c-u>Unite colorscheme<cr>
