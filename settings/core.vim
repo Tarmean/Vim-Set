@@ -76,7 +76,6 @@ map  <leader>Ä :so $MYVIMRC<CR>
 nnoremap <leader>v <C-w>v
 nnoremap <leader>V <C-w>s
 nnoremap <leader>c <C-w>c
-" not sure whether I should make this wipeout...
 nnoremap <leader>C :bd!<CR> 
 map ü [
 map ä ]
@@ -101,6 +100,10 @@ nnoremap <Leader>P "+P
 vnoremap <Leader>p "+p
 vnoremap <Leader>P "+P
 
+cnoremap %s/ %s/\v
+cnoremap  w!! w !sudo tee % > /dev/null
+nnoremap Y y$
+
 vnoremap * :<C-u>call <SID>VSetSearch()<CR>//<CR><c-o>
 vnoremap # :<C-u>call <SID>VSetSearch()<CR>??<CR><c-o>
 
@@ -113,9 +116,6 @@ nnoremap <right> :cnext<cr>zvzz
 nnoremap <up>    :lprev<cr>zvzz
 nnoremap <down>  :lnext<cr>zvzz
 
-cnoremap %s/ %s/\v
-cnoremap  w!! w !sudo tee % > /dev/null
-nnoremap Y y$
 
 if !exists(":DiffOrig")
     command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
@@ -155,12 +155,3 @@ else
     set autoindent" always set autoindenting on
 
 endif 
-noremap  <Leader>y "+y
-nnoremap <Leader>p "+p
-nnoremap <Leader>P "+P
-vnoremap <Leader>p "+p
-vnoremap <Leader>P "+PP
-nnoremap <Leader>ö :w<CR>
-cnoremap %s/ %s/\v
-cnoremap  w!! w !sudo tee % > /dev/null
-nnoremap Y y$
