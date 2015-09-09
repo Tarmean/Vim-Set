@@ -1,3 +1,27 @@
+let g:syntastic_mode_map = {
+            \ "mode": "active",
+            \ "active_filetypes": [],
+            \ "passive_filetypes": [] }
+
+let g:fold_options = {
+   \ 'show_if_and_else': 1,
+   \ 'strip_template_argurments': 1,
+   \ 'strip_namespaces': 1,
+   \ }
+
+fun! JumpToDef()
+  if exists("*GotoDefinition_" . &filetype)
+    call GotoDefinition_{&filetype}()
+  else
+    exe "norm! \<C-]>"
+  endif
+endf
+
+" Jump to tag
+nn <M-g> :call JumpToDef()<cr>
+ino <M-g> <esc>:call JumpToDef()<cr>i
+
+
 let g:fastfold_fold_command_suffixes = []
 let g:fastfold_fold_movement_commands = []
 
@@ -6,19 +30,11 @@ nnoremap <silent> <leader>d :call InterestingWords('n')<cr>
 nnoremap <silent> <leader>D :call UncolorAllWords()<cr>
 let g:interestingWordsDefaultMappings = 1
 let g:interestingWordsGUIColors = ['#FFF6CC', '#FFD65C', '#8CCBEA', '#A4E57E', '#99FFE6', '#E6FF99', '#FFDB72', '#5CD6FF', '#99FFB3', '#FF7272', '#99FF99', '#99B3FF', '#FFB399']
-"let g:easytags_async=1
        
 nnoremap <F4> call javacomplete#AddImport()<cr>
 autocmd FileType java set omnifunc=javacomplete#Complete
 let JavaComplete_LibsPath = "/home/cyril/teamf3/"
 
- 
-if(has("unix"))
-    let g:easytags_async=1
-endif
-let g:easytags_dynamic_files=1
-noremap  ]oH unlet g:easytags_auto_highlight
-noremap [oH let g:easytags_auto_highlight=1
 
 
 
@@ -343,3 +359,6 @@ vnoremap do :diffget<cr>
 nnoremap <leader>gV :Gitv --all<cr>
 nnoremap <leader>gv :Gitv! --all<cr>
 vnoremap <leader>gv :Gitv! --all<cr>
+
+
+

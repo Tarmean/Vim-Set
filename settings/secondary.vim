@@ -2,8 +2,8 @@ nnoremap <leader>q :tab sp<CR>
 nnoremap <leader>e :redraw<CR>:ls<CR>
 
 
-noremap <leader>ä <c-]>
-noremap <leader>ü <c-t>
+noremap <leader>a <c-]>
+noremap <leader><s-a> <c-t>
 
 
 
@@ -59,4 +59,5 @@ function! s:VSetSearch()
   let @/ = '\V' . substitute(escape(@@, '\'), '\n', '\\n', 'g')
   let @@ = temp
 endfunction
+
 

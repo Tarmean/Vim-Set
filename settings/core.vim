@@ -30,7 +30,7 @@ set directory=~/.vim/swaps//,.
 set foldmethod=syntax "overwritten by fastfold in almost all cases
 set noerrorbells visualbell t_vb=
 set foldlevel=1
-set foldclose=all
+set foldclose=""
 set tags=""
 set spelllang=de,en
 set virtualedit=block
@@ -38,7 +38,7 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 source ~\pcSpecificVimrc.vim
-
+ 
 highlight diffAdded guifg=#00bf00
 highlight diffRemoved guifg=#bf0000
 highlight diffAdded ctermfg=34
@@ -67,9 +67,32 @@ endif
 
 let $MYVIMRC='~/vimfiles/.vimrc'
 
+function! RightOrElse()
+    let c = col(".")
+    echo c
+    norm $
+    if c == col(".")
+        silent! norm zo
+    endif
+endfunc
+command! RightOr call RightOrElse()
+
+function! LeftOrElse()
+    let c = col(".")
+    norm ^
+    if c == col(".")
+        silent! norm zc
+    endif
+endfunc
+command! LeftOr call LeftOrElse()
+	
+"noremap J L
+"noremap K H
+"noremap <c-j> J
+nnoremap + <c-^>
 nnoremap j gj
 nnoremap k gk
-nnoremap <esc> :noh<return><esc>
+nnoremap <silent> <esc> :noh<return><esc>
 nnoremap <Leader>ö :w<CR>
 map  <leader>Ü :e $MYVIMRC<CR>
 map  <leader>Ä :so $MYVIMRC<CR>
@@ -85,9 +108,8 @@ nnoremap <cr> :
 vnoremap <cr> :
 nnoremap / /\v
 
-nnoremap <tab> %
-nnoremap H ^
-nnoremap L $
+nnoremap <silent>H :LeftOr<cr>
+nnoremap <silent>L :RightOr<cr>
 vnoremap L g_
 nnoremap gI `.
 
@@ -125,7 +147,6 @@ endif
 
 
 if has("autocmd")
-
   filetype plugin indent on
 
   augroup vimrcEx
@@ -150,6 +171,10 @@ if has("autocmd")
   autocmd BufNewFile,BufRead *.nasm set ft=nasm
   autocmd BufNewFile,BufRead *.asm set ft=nasm
   autocmd GUIEnter * set visualbell t_vb=
+
+
+
+  autocmd BufEnter *.hs set formatprg=pointfree\ --stdin
 else
 
     set autoindent" always set autoindenting on

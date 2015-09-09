@@ -1,14 +1,130 @@
-nmap _  <Plug>ReplaceWithRegisterOperator
+map <space><c-j> :SidewaysLeft<cr>
+map <space><c-k> :SidewaysRight<cr>
+map <space><c-h> :SidewaysJumpLeft<cr>
+map <space><c-l> :SidewaysJumpRight<cr>
+" map <space><c-j> ]e
+" map <space><c-k> [e
+" vmap <space><c-j> ]egv
+" vmap <space><c-k> [egv
+
+let g:fold_cycle_default_mapping = 0 "disable default mappings 
+nmap <silent> <space>ü :<C-u>call fold_cycle#close()<CR>
+nmap <silent> <space>ä :<C-u>call fold_cycle#open()<CR>
+let g:splitjoin_split_mapping = ''
+let g:splitjoin_join_mapping = ''
+nmap K :SplitjoinJoin<cr>
+nmap J :SplitjoinSplit<cr>
+
+let g:tf_workaround= 0
+
+"Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
+" Disable AutoComplPop.
+let g:acp_enableAtStartup = 0
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+
+" Define dictionary.
+let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default' : '',
+    \ 'text' : $HOME.'/vimfiles/UK.dict',
+    \ 'vimshell' : $HOME.'/.vimshell_hist',
+    \ 'scheme' : $HOME.'/.gosh_completions'
+        \ }
+
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+" Plugin key-mappings.
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return neocomplete#close_popup() . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><C-y>  neocomplete#close_popup()
+inoremap <expr><C-e>  neocomplete#cancel_popup()
+" Close popup by <Space>.
+"inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
+
+" For cursor moving in insert mode(Not recommended)
+"inoremap <expr><Left>  neocomplete#close_popup() . "\<Left>"
+"inoremap <expr><Right> neocomplete#close_popup() . "\<Right>"
+"inoremap <expr><Up>    neocomplete#close_popup() . "\<Up>"
+"inoremap <expr><Down>  neocomplete#close_popup() . "\<Down>"
+" Or set this.
+"let g:neocomplete#enable_cursor_hold_i = 1
+" Or set this.
+"let g:neocomplete#enable_insert_char_pre = 1
+
+" AutoComplPop like behavior.
+"let g:neocomplete#enable_auto_select = 1
+
+
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+
+"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+" For perlomni.vim setting.
+" https://github.com/c9s/perlomni.vim
+
+let g:skip_default_textobj_word_column_mappings=1
+nnoremap <silent> vav :call TextObjWordBasedColumn("aw")<cr>
+nnoremap <silent> vaV :call TextObjWordBasedColumn("aW")<cr>
+nnoremap <silent> viv :call TextObjWordBasedColumn("iw")<cr>
+nnoremap <silent> viV :call TextObjWordBasedColumn("iW")<cr>
+onoremap <silent> av  :call TextObjWordBasedColumn("aw")<cr>
+onoremap <silent> aV  :call TextObjWordBasedColumn("aW")<cr>
+onoremap <silent> iv  :call TextObjWordBasedColumn("iw")<cr>
+onoremap <silent> iV  :call TextObjWordBasedColumn("iW")<cr>
 
 let g:textobj_comment_no_default_key_mappings = 1
-xmap aC <Plug>(textobj-comment-big-a)
-xmap ac <Plug>(textobj-comment-a)
+omap aC <Plug>(textobj-comment-big-a)
+omap ac <Plug>(textobj-comment-a)
 omap ic <Plug>(textobj-comment-i)
+nmap vaC v<Plug>(textobj-comment-big-a)
+nmap vac v<Plug>(textobj-comment-a)
+nmap vic v<Plug>(textobj-comment-i)
+
+nmap _  <Plug>ReplaceWithRegisterOperator
+nmap __  <Plug>ReplaceWithRegisterOperatorik
 
 noremap ]oz :Goyo!<cr>
 noremap [oz :Goyo<cr>:IndentLinesDisable<cr>
 autocmd User GoyoEnter Limelight
 autocmd User GoyoLeave Limelight!
+
+let gutentags_tagfile=".git/tags"
 
 let g:sneak#streak=1
 silent! unmap s
@@ -16,26 +132,23 @@ silent! unmap S
 let g:sneak#s_next=1
 let g:sneak#textobj_z=0
 let g:sneak#use_ic_scs = 1
-nmap f <Plug>Sneak_f
-lmap F <Plug>Sneak_F
-xmap f <Plug>Sneak_f
-xmap F <Plug>Sneak_F
-omap f <Plug>Sneak_f
-omap F <Plug>Sneak_F
-nmap ö <Plug>Sneak_s
-nmap Ö <Plug>Sneak_S
-" visual-mode
-xmap ö <Plug>Sneak_s
-xmap Ö <Plug>Sneak_S
-" operator-pending-mode
-omap ö <Plug>Sneak_s
-omap Ö <Plug>Sneak_S
-
+"nmap f <Plug>Sneak_f
+"lmap F <Plug>Sneak_F
+"xmap f <Plug>Sneak_f
+"xmap F <Plug>Sneak_F
+"omap f <Plug>Sneak_f
+"omap F <Plug>Sneak_F
+"nmap ö <Plug>Sneak_s
+"nmap Ö <Plug>Sneak_S
+"" visual-mode
+"xmap ö <Plug>Sneak_s
+"xmap Ö <Plug>Sneak_S
+"" operator-pending-mode
+"omap ö <Plug>Sneak_s
+"omap Ö <Plug>Sneak_S
 
 nnoremap [w :Obsession<CR>
 nnoremap ]w :Obsession!<CR>
-
-noremap _  <Plug>(operator-replace)
 
 let g:prosession_on_startup = 0
 noremap <leader>w :Prosession 
@@ -76,10 +189,11 @@ let g:SuperTabContextDiscoverDiscovery =
 let g:lightline = {
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'GitStatus'],
+      \             [ 'GitStatus' ],
       \             [ 'readonly', 'filename', 'modified' ] ],
       \   'right': [ [ 'lineinfo', 'percent' ],
-      \              [ 'neomake' ],
+      \              [ 'neomake' , 'syntastic'],
+      \              [ 'tags' ],
       \              [ 'filetype' ] ]
       \ },
       \ 'component_function': {
@@ -87,8 +201,15 @@ let g:lightline = {
       \   'GitStatus': 'GitStatus',
       \ },
       \ 'component': {
+      \   'tags':     '%{gutentags#statusline("[tags]")}',
       \   'readonly': '%{&filetype=="help"?"":&readonly?"":""}',
       \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}'},
+      \ 'component_expand': {
+      \   'syntastic': 'SyntasticStatuslineFlag',
+      \ },
+      \ 'component_type': {
+      \   'syntastic': 'error',
+      \ },
       \ 'component_visible_condition': {
       \   'readonly': '(&filetype!="help"&& &readonly)',
       \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
@@ -98,7 +219,15 @@ let g:lightline = {
       \ 'subseparator': { 'left': '', 'right': '' }
       \ }
 
-
+	let g:syntastic_mode_map = { 'mode': 'passive' }
+	augroup AutoSyntastic
+	  autocmd!
+	  autocmd BufWritePost *.c,*.cpp call s:syntastic()
+	augroup END
+	function! s:syntastic()
+	  SyntasticCheck
+	  call lightline#update()
+	endfunction
     " function! GitStatus() " {{{
     "     let branch =  winwidth(0) > 70 ?  gita#statusline#format(' %lb%{ ⇄ |}rn%{/|}rb') : ''
     "     let traffic =  winwidth(0) > 70 ?  gita#statusline#format('%{￩| }ic%{￫}og') : ''
@@ -107,7 +236,7 @@ let g:lightline = {
     "     " i? staged, unstaged, both ● ✚
     "     " b! branch, remote, detached head  ➦ ⇄
     "     " i! diverged ￩ ￫
-    "     " b? conflicted ❌
+    "     " b? conflicted
     "     " i stash ⚑
     "     " b! merging(.git/MERGE_HEAD), rebasing(.git/rebase, ./rebase-apply,
     "     " .git/rebase-merge, .git/../.dotest), bisecting(.git/BISECT_LOG)

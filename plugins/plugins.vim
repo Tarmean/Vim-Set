@@ -1,7 +1,15 @@
 function! AddPlugins(all)
     call plug#begin('~/vimfiles/plugged')
+    Plug 'AndrewRadev/sideways.vim'
+
+    Plug 'arecarn/fold-cycle.vim'
+    Plug 'AndrewRadev/splitjoin.vim'
+    Plug 'vim-scripts/repeatable-motions.vim'
+    Plug 'Shougo/neocomplete.vim'
+    Plug 'plasticboy/vim-markdown'
     Plug 'dhruvasagar/vim-table-mode', { 'on':  'TableModeEnable' }
     Plug 'vim-scripts/ReplaceWithRegister'
+    Plug 'idbrii/textobj-word-column.vim'
 
     Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
     Plug 'junegunn/limelight.vim', { 'on':  'Goyo' }
@@ -18,7 +26,6 @@ function! AddPlugins(all)
     Plug 'Konfekt/FastFold'
     Plug 'tpope/vim-obsession', { 'on':  'Obsession' }
     Plug 'dhruvasagar/vim-prosession' 
-    Plug 'ervandew/supertab'
     Plug 'morhetz/gruvbox'
     "Plug 'bling/vim-airline'
     Plug 'itchyny/lightline.vim'
@@ -27,6 +34,7 @@ function! AddPlugins(all)
     Plug 'bruno-/vim-vertical-move'
     Plug 'dbakker/vim-projectroot'
 
+    Plug 'ludovicchabant/vim-gutentags'
     Plug '~/vimOld/bundle/vim-unimpaired-master/'
     Plug '~/vimOld/bundle/filebeagle/' 
     Plug '~/vimOld/bundle/delimitMate/'
@@ -43,6 +51,10 @@ function! AddPlugins(all)
     Plug 'Julian/vim-textobj-variable-segment'
     if(a:all)
     "Plug 'junegunn/agl' <actually for command line
+        Plug 'LucHermitte/lh-vim-lib'
+        Plug 'LucHermitte/VimFold4C'
+        Plug 'RyanMcG/vim-j'
+        Plug 'zah/nim.vim'
         Plug 'junegunn/seoul256.vim'
         Plug '~/vimOld/bundle/convertBase/'
         Plug 'jceb/vim-orgmode'
@@ -67,8 +79,9 @@ function! AddPlugins(all)
         "Plug 'junegunn/vim-peekaboo'
         Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
         Plug 'junegunn/vim-easy-align'
-        Plug 'xolox/vim-easytags'
-        Plug 'xolox/vim-misc'
+
+        "Plug 'xolox/vim-easytags'
+        "Plug 'xolox/vim-misc'
         if(has('python'))
             Plug 'SirVer/ultisnips'
             Plug 'honza/vim-snippets'
@@ -91,14 +104,14 @@ function! AddPlugins(all)
                     \ 'GotoPrevSpotAlpha'  :  "`[",
                     \ 'GotoNextLineByPos'  :  "]'",
                     \ 'GotoPrevLineByPos'  :  "['",
-                    \ 'GotoNextSpotByPos'  :  "]s",
-                    \ 'GotoPrevSpotByPos'  :  "[s",
+                    \ 'GotoNextSpotByPos'  :  "]ä",
+                    \ 'GotoPrevSpotByPos'  :  "[ü",
                     \ 'GotoNextMarker'     :  "]ü",
                     \ 'GotoPrevMarker'     :  "[ä",
-                    \ 'GotoNextMarkerAny'  :  "]ä",
-                    \ 'GotoPrevMarkerAny'  :  "[ü",
-                    \ 'ListLocalMarks'     :  "m/",
-                    \ 'ListLocalMarkers'   :  "m?"
+                    \ 'GotoNextMarkerAny'  :  "]Ä",
+                    \ 'GotoPrevMarkerAny'  :  "[Ü",
+                    \ 'ListLocalMarks'     :  "<space>m",
+                    \ 'ListLocalMarkers'   :  "<space>M"
                     \ }
 
         Plug 'tpope/vim-commentary'
@@ -126,16 +139,16 @@ function! AddPlugins(all)
             Plug 'tsukkee/unite-tag'
             Plug 'ujihisa/unite-colorscheme'
             Plug 'Shougo/neomru.vim'
-            " Plug '~/vimOld/bundle/syntastic-master/' 
+            Plug 'scrooloose/syntastic' 
             " let g:syntastic_always_populate_loc_list = 1
             " let g:syntastic_check_on_open = 1
-            " let g:syntastic_check_on_wq = 0
+            let g:syntastic_check_on_wq = 0
             " let g:airline_exclude_preview=1
             " set statusline+=%#warningmsg#
             " set statusline+=%{SyntasticStatuslineFlag()}
             " set statusline+=%*
-            " noremap ]os :SyntasticToggleMode<cr>
-            " noremap [os :SyntasticCheck<cr>
+             noremap ]os :SyntasticToggleMode<cr>
+             noremap [os :SyntasticCheck<cr>
         endif
 
 
@@ -145,6 +158,7 @@ function! AddPlugins(all)
 endfunction
 
 if(has('nvim'))
+    Plug 'ervandew/supertab'
     " move from the neovim terminal window to somewhere else
     tnoremap <C-h> <C-\><C-n><C-w>h
     tnoremap <C-j> <C-\><C-n><C-w>j
