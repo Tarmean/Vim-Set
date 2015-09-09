@@ -142,14 +142,14 @@ let g:filebeagle_show_hidden =  1
 
 let delimitMate_expand_cr=1
 
-silent! unmap <space>k
-silent! unmap <space>K
 nnoremap <leader>i gT
 nnoremap <leader>I :<C-U>call Clone_rel_tab_backwards(1, v:count)<CR>
 nnoremap <leader><c-I> :<C-U>call Clone_rel_tab_backwards(0, v:count)<CR>
 nnoremap <leader>O :<C-U>call Clone_rel_tab_forwards(1, v:count)<CR>
 nnoremap <leader><c-O> :<C-U>call Clone_rel_tab_forwards(0, v:count)<CR>
 nnoremap <silent><leader>o :<C-U>call RelativeNext(v:count1)<CR>
+silent! unmap <space>k
+silent! unmap <space>K
 noremap <silent><leader>h  : call WinMove('h')<cr>
 noremap <silent><leader>k  : call WinMove('k')<cr>
 noremap <silent><leader>l  : call WinMove('l')<cr>

@@ -1,3 +1,11 @@
+nmap <M-b> <Plug>LLBreakSwitch
+nnoremap <F5> :LLrefresh<CR>
+nnoremap <S-F5> :LLredraw<CR>
+nnoremap <F8> :LLcontinue<CR>
+nnoremap <F9> :LLprint <C-R>=expand('<cword>')<CR>
+vnoremap <F9> :<C-U>LLprint <C-R>=lldb#util#get_selection()<CR>
+
+
 let g:fastfold_fold_command_suffixes = []
 let g:fastfold_fold_movement_commands = []
 

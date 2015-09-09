@@ -77,6 +77,7 @@ nnoremap <leader>v <C-w>v
 nnoremap <leader>V <C-w>s
 nnoremap <leader>c <C-w>c
 nnoremap <leader>C :bd!<CR> 
+nnoremap _ <c-^>
 map ü [
 map ä ]
 map Ä }
@@ -85,7 +86,6 @@ nnoremap <cr> :
 vnoremap <cr> :
 nnoremap / /\v
 
-nnoremap <tab> %
 nnoremap H ^
 nnoremap L $
 vnoremap L g_

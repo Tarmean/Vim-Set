@@ -1,7 +1,9 @@
 function! AddPlugins(all)
     call plug#begin('~/vimfiles/plugged')
     Plug 'dhruvasagar/vim-table-mode', { 'on':  'TableModeEnable' }
+    Plug 'KabbAmine/zeavim.vim'
     Plug 'vim-scripts/ReplaceWithRegister'
+    Plug 'zah/nim.vim'
 
     Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
     Plug 'junegunn/limelight.vim', { 'on':  'Goyo' }
@@ -18,7 +20,7 @@ function! AddPlugins(all)
     Plug 'Konfekt/FastFold'
     Plug 'tpope/vim-obsession', { 'on':  'Obsession' }
     Plug 'dhruvasagar/vim-prosession' 
-    Plug 'ervandew/supertab'
+    "Plug 'ervandew/supertab'
     Plug 'morhetz/gruvbox'
     "Plug 'bling/vim-airline'
     Plug 'itchyny/lightline.vim'
@@ -112,6 +114,9 @@ function! AddPlugins(all)
         if(has('nvim'))
             let g:python_host_prog='/usr/bin/python'
 
+            "Plug 'Valloric/YouCompleteMe'
+            Plug 'critiqjo/lldb.nvim'
+
             function! Get_classpath(ending)
                 let project_root = ProjectRootGuess() . "/"
                 let project_root .= a:ending
@@ -150,7 +155,7 @@ if(has('nvim'))
     tnoremap <C-j> <C-\><C-n><C-w>j
     tnoremap <C-k> <C-\><C-n><C-w>k
     tnoremap <C-l> <C-\><C-n><C-w>l
-    tnoremap <esc><esc> <C-\><C-n>
+    tnoremap ö <C-\><C-n>
 endif
 
 
