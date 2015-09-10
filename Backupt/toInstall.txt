@@ -1,0 +1,12 @@
+Haskell
+Nim
+steam
+zsh
+ohmyzsh
+python2.10
+nasm?
+gcc?
+pointfree
+pip
+python vim thingy
+
