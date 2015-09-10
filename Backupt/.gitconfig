@@ -1,0 +1,19 @@
+[user]
+    email = Tarmean
+    name = cyfah100@hhu.de
+[core]
+    editor = nvim
+
+[alias]
+    lag = log --graph --decorate --all --oneline
+    laag = log --graph --decorate --all --format='%C(auto)%h%d %s%Creset %Cblue<%aE>%Creset'
+
+
+[merge]
+    tool = splice
+
+[mergetool "splice"]
+    cmd = "nvim -u ~/vimfiles/.vimrclite -f $BASE $LOCAL $REMOTE $MERGED -c 'SpliceInit'"
+    trustExitCode = true
+[push]
+	default = upstream
