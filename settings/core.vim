@@ -30,7 +30,7 @@ set directory=~/.vim/swaps//,.
 set foldmethod=syntax "overwritten by fastfold in almost all cases
 set noerrorbells visualbell t_vb=
 set foldlevel=1
-set foldclose=all
+set foldclose=""
 set tags=""
 set spelllang=de,en
 set virtualedit=block
@@ -67,9 +67,32 @@ endif
 
 let $MYVIMRC='~/vimfiles/.vimrc'
 
+function! RightOrElse()
+    let c = col(".")
+    echo c
+    norm $
+    if c == col(".")
+        silent! norm zo
+    endif
+endfunc
+command! RightOr call RightOrElse()
+
+function! LeftOrElse()
+    let c = col(".")
+    norm ^
+    if c == col(".")
+        silent! norm zc
+    endif
+endfunc
+command! LeftOr call LeftOrElse()
+	
+"noremap J L
+"noremap K H
+"noremap <c-j> J
+"nnoremap + <c-^>
 nnoremap j gj
 nnoremap k gk
-nnoremap <esc> :noh<return><esc>
+nnoremap <silent> <esc> :noh<return><esc>
 nnoremap <Leader>ö :w<CR>
 map  <leader>Ü :e $MYVIMRC<CR>
 map  <leader>Ä :so $MYVIMRC<CR>
@@ -77,7 +100,6 @@ nnoremap <leader>v <C-w>v
 nnoremap <leader>V <C-w>s
 nnoremap <leader>c <C-w>c
 nnoremap <leader>C :bd!<CR> 
-nnoremap _ <c-^>
 map ü [
 map ä ]
 map Ä }
@@ -125,7 +147,6 @@ endif
 
 
 if has("autocmd")
-
   filetype plugin indent on
 
   augroup vimrcEx
@@ -150,6 +171,10 @@ if has("autocmd")
   autocmd BufNewFile,BufRead *.nasm set ft=nasm
   autocmd BufNewFile,BufRead *.asm set ft=nasm
   autocmd GUIEnter * set visualbell t_vb=
+
+
+
+  autocmd BufEnter *.hs set formatprg=pointfree\ --stdin
 else
 
     set autoindent" always set autoindenting on
