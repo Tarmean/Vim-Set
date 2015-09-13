@@ -172,7 +172,11 @@ if has("autocmd")
   autocmd BufNewFile,BufRead *.asm set ft=nasm
   autocmd GUIEnter * set visualbell t_vb=
 
-
+  augroup commandWin
+      au!
+      autocmd CmdwinEnter * map <buffer> <CR> <CR>q:
+      autocmd CmdwinEnter * map <buffer> <esc> :quit<CR>
+  augroup END
 
   autocmd BufEnter *.hs set formatprg=pointfree\ --stdin
 else
