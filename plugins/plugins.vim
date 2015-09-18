@@ -5,11 +5,10 @@ function! AddPlugins(all)
     Plug 'arecarn/fold-cycle.vim'
     Plug 'AndrewRadev/splitjoin.vim'
     Plug 'vim-scripts/repeatable-motions.vim'
-    Plug 'Shougo/neocomplete.vim'
     Plug 'plasticboy/vim-markdown'
     Plug 'dhruvasagar/vim-table-mode', { 'on':  'TableModeEnable' }
+    Plug 'KabbAmine/zeavim.vim'
     Plug 'vim-scripts/ReplaceWithRegister'
-    Plug 'idbrii/textobj-word-column.vim'
 
     Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
     Plug 'junegunn/limelight.vim', { 'on':  'Goyo' }
@@ -18,7 +17,7 @@ function! AddPlugins(all)
 
     Plug 'tpope/vim-surround'
     Plug 'justinmk/vim-sneak'
-    "Plug 'lambdalisue/vim-unified-diff'
+    Plug 'lambdalisue/vim-unified-diff'
     Plug 'sjl/splice.vim'
     Plug 'vasconcelloslf/vim-interestingwords'
     Plug 'tommcdo/vim-exchange'
@@ -26,8 +25,9 @@ function! AddPlugins(all)
     Plug 'Konfekt/FastFold'
     Plug 'tpope/vim-obsession', { 'on':  'Obsession' }
     Plug 'dhruvasagar/vim-prosession' 
+    Plug 'ervandew/supertab'
     Plug 'morhetz/gruvbox'
-    "Plug 'bling/vim-airline'
+    ""Plug 'bling/vim-airline'
     Plug 'itchyny/lightline.vim'
     Plug 'tpope/vim-repeat'
     Plug 'tpope/vim-speeddating'
@@ -125,6 +125,9 @@ function! AddPlugins(all)
         if(has('nvim'))
             let g:python_host_prog='/usr/bin/python'
 
+            "Plug 'Valloric/YouCompleteMe'
+            Plug 'critiqjo/lldb.nvim'
+
             function! Get_classpath(ending)
                 let project_root = ProjectRootGuess() . "/"
                 let project_root .= a:ending
@@ -134,6 +137,7 @@ function! AddPlugins(all)
             Plug 'benekastah/neomake'
             autocmd BufWritePost * Neomake
         else
+            Plug 'Shougo/neocomplete.vim'
             Plug 'Shougo/unite.vim', 
             noremap <leader>fc :<c-u>Unite colorscheme<cr>
             Plug 'tsukkee/unite-tag'
@@ -158,13 +162,13 @@ function! AddPlugins(all)
 endfunction
 
 if(has('nvim'))
-    Plug 'ervandew/supertab'
+    "Plug 'ervandew/supertab'
     " move from the neovim terminal window to somewhere else
     tnoremap <C-h> <C-\><C-n><C-w>h
     tnoremap <C-j> <C-\><C-n><C-w>j
     tnoremap <C-k> <C-\><C-n><C-w>k
     tnoremap <C-l> <C-\><C-n><C-w>l
-    tnoremap <esc><esc> <C-\><C-n>
+    tnoremap ö <C-\><C-n>
 endif
 
 

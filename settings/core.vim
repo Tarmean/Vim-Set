@@ -38,7 +38,7 @@ set tabstop=4
 set shiftwidth=4
 set expandtab
 source ~\pcSpecificVimrc.vim
- 
+
 highlight diffAdded guifg=#00bf00
 highlight diffRemoved guifg=#bf0000
 highlight diffAdded ctermfg=34
@@ -89,7 +89,7 @@ command! LeftOr call LeftOrElse()
 "noremap J L
 "noremap K H
 "noremap <c-j> J
-nnoremap + <c-^>
+"nnoremap + <c-^>
 nnoremap j gj
 nnoremap k gk
 nnoremap <silent> <esc> :noh<return><esc>
@@ -108,8 +108,8 @@ nnoremap <cr> :
 vnoremap <cr> :
 nnoremap / /\v
 
-nnoremap <silent>H :LeftOr<cr>
-nnoremap <silent>L :RightOr<cr>
+nnoremap H ^
+nnoremap L $
 vnoremap L g_
 nnoremap gI `.
 

@@ -1,3 +1,11 @@
+nmap <M-b> <Plug>LLBreakSwitch
+nnoremap <F5> :LLrefresh<CR>
+nnoremap <S-F5> :LLredraw<CR>
+nnoremap <F8> :LLcontinue<CR>
+nnoremap <F9> :LLprint <C-R>=expand('<cword>')<CR>
+vnoremap <F9> :<C-U>LLprint <C-R>=lldb#util#get_selection()<CR>
+
+
 let g:syntastic_mode_map = {
             \ "mode": "active",
             \ "active_filetypes": [],
@@ -20,7 +28,6 @@ endf
 " Jump to tag
 nn <M-g> :call JumpToDef()<cr>
 ino <M-g> <esc>:call JumpToDef()<cr>i
-
 
 let g:fastfold_fold_command_suffixes = []
 let g:fastfold_fold_movement_commands = []
@@ -322,7 +329,7 @@ function! SignifyUpdate(b)
     return
 endfunction
 
-nnoremap <silent> + :exec "cd " . Get_classpath("")<cr>
+nnoremap <silent> <space>+ :exec "cd " . Get_classpath("")<cr>
 
 noremap [oG :call SignifyUpdate(1)<cr>
 noremap ]oG :call SignifyUpdate(0)<cr>
