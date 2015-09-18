@@ -81,6 +81,11 @@ function! multiselect#inittest() "{{{
     set nowrapscan
     let curpos = getpos(".")
     call multiselect#readAndProcess(v:operator)
+    if g:yankresult != ""
+        call setreg('"', g:yankresult, 'aV')
+    else
+        call setreg('"', g:tempresult, 'aV')
+    endif
     call setpos(".", curpos)
     call setpos("'<", curpos)
     call setpos("'>", curpos)
@@ -239,18 +244,31 @@ function! multiselect#applyCommand(command, areas) "{{{
     let areas = reverse(a:areas.areas)
     if a:areas.visual
         norm! v
-        let result = ""
-        let previousReg = @"
+        let g:tempresult = ""
+        let g:yankresult = ""
+        let previousTempReg = ""
+        let previousYankReg = ""
+        let tempRegModify = 0
+        let yankRegModify = 0
         for area in areas
+            call setreg('"', "")
+            call setreg('0', "")
             call setpos("'<", area[0])
             call setpos("'>", area[1])
             execute "norm gv".a:command
-            if @" != previousReg
-                let previousReg = @""
-                let result = previousReg . "\n" . result
+            if getreg('"') != ""
+                let tempRegModify = 1
+                let previousTempReg = getreg('"')
+                let g:tempresult = previousTempReg . "\n" . g:tempresult
+            endif
+            if getreg("0") != ""
+                let yankRegModify = 1
+                let previousYankReg = getreg("0")
+                let g:yankresult = previousYankReg . "\n" . g:yankresult
             endif
         endfor
-        let @" = result
+        call setreg('"', g:tempresult)
+        call setreg('0', g:yankresult)
     else
         for area in areas
             call setpos(".", area)
