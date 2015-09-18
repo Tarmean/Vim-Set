@@ -1,0 +1,20 @@
+n  zD          * <Esc>:call foldOp#pushVis()<CR>:set opfunc=foldOp#zDOp<CR>g@
+n  zO          * <Esc>:call foldOp#pushVis()<CR>:set opfunc=foldOp#zOOp<CR>g@
+n  zo          * <Esc>:call foldOp#pushVis()<CR>:set opfunc=foldOp#zoOp<CR>g@
+n  zC          * <Esc>:call foldOp#pushVis()<CR>:set opfunc=foldOp#zCOp<CR>g@
+n  zc          * <Esc>:call foldOp#pushVis()<CR>:set opfunc=foldOp#zcOp<CR>g@
+n  <Plug>CommentaryLine * :<C-U>set opfunc=<SNR>88_go|exe 'norm! 'v:count1.'g@_'<CR>
+n  <Plug>Commentary * :<C-U>set opfunc=<SNR>88_go<CR>g@
+n  <Plug>(EasyAlignOperator) * :set opfunc=<SNR>79_easy_align_op<CR>g@
+n  <Plug>(LiveEasyAlign) * :set opfunc=<SNR>79_live_easy_align_op<CR>g@
+n  <Plug>(EasyAlign) * :set opfunc=<SNR>79_easy_align_op<CR>g@
+n  <Plug>unimpaired_xml_decode * :<C-U>call <SNR>58_TransformSetup("xml_decode")<CR>g@
+n  <Plug>unimpaired_xml_encode * :<C-U>call <SNR>58_TransformSetup("xml_encode")<CR>g@
+n  <Plug>unimpaired_url_decode * :<C-U>call <SNR>58_TransformSetup("url_decode")<CR>g@
+n  <Plug>unimpaired_url_encode * :<C-U>call <SNR>58_TransformSetup("url_encode")<CR>g@
+n  <Plug>unimpaired_string_decode * :<C-U>call <SNR>58_TransformSetup("string_decode")<CR>g@
+n  <Plug>unimpaired_string_encode * :<C-U>call <SNR>58_TransformSetup("string_encode")<CR>g@
+n  <Plug>(ExchangeLine) * :<C-U>set operatorfunc=<SNR>50_exchange_set<CR>g@_
+n  <Plug>(Exchange) * :<C-U>set operatorfunc=<SNR>50_exchange_set<CR>g@
+n  <Plug>YSurround * :<C-U>set opfunc=<SNR>46_opfunc2<CR>g@
+n  <Plug>Ysurround * :<C-U>set opfunc=<SNR>46_opfunc<CR>g@
