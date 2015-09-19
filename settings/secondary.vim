@@ -2,8 +2,8 @@ nnoremap <leader>q :tab sp<CR>
 nnoremap <leader>e :redraw<CR>:ls<CR>
 
 
-noremap <leader>a <c-]>
-noremap <leader><s-a> <c-t>
+noremap <leader>a <c-]>mzzMzvzz15<c-e>`z:Pulse<cr>
+noremap <leader><s-a> <c-t>mzzMzvzz15<c-e>`z:Pulse<cr>
 
 
 
@@ -21,7 +21,7 @@ imap <F11> <Esc><F11>
 
 
 
-nnoremap <space>s mzzMzvzz15<c-e>`z:Pulse<cr>
+nmap <leader>s mzzMzvzz15<c-e>`z:Pulse<cr>
 function! s:Pulse() " {{{
     redir => old_hi
         silent execute 'hi CursorLine'
