@@ -1,15 +1,15 @@
 "legacy{{{
-let g:chainops#prompt = ">"
+let g:multi#prompt = ">"
 function! NoArea() "{{{
     norm vii
     norm ygv
     norm! .
 
-    echom chainops#getAreaOrMotion(0)
-    "return chainops#getAreaOrMotion(1)
+    echom multi#getAreaOrMotion(0)
+    "return multi#getAreaOrMotion(1)
 endfunction "}}}
 onoremap <silent> im :call NoArea()<cr>
-function! chainops#getAreaOrMotion(...) "{{{
+function! multi#getAreaOrMotion(...) "{{{
     if a:0 == 0 || a:1
         let b1 = "'["
         let b2 = "']"
@@ -29,7 +29,7 @@ function! ListToString(list) "{{{
     return result . "]"
 endfunction
  "}}}
-function! chainops#getOmaps() "{{{
+function! multi#getOmaps() "{{{
     let backup = @a
     redir @a
     silent! omap
@@ -49,36 +49,36 @@ function! chainops#getOmaps() "{{{
     return [lhsList, rhsList]
 endfunction
  "}}}
-function! chainops#getSelected() "{{{
+function! multi#getSelected() "{{{
     return [[getpos("'<")[1:2], getpos("'>")[1:2]]]
 endfunction
  "}}}
-function! chainops#test() "{{{
-    if(g:chainops#chainopspending) 
-        call TestA("line") 
+function! multi#test() "{{{
+    if(g:multi#multipending)
+        call TestA("line")
     endif
 endfunction
  "}}}
 function! TestA(type) "{{{
-    let g:chainops#counter =0
+    let g:multi#counter =0
     set operatorfunc=TestB
     norm! .
     set operatorfunc=TestA
-    echo g:chainops#counter
+    echo g:multi#counter
 endfunction
 function! TestB(type)
-    let g:chainops#counter += 1
+    let g:multi#counter += 1
 endfunction "}}}"}}}
 
 "Processing:{{{
-function! chainops#inittest() "{{{
+function! multi#inittest() "{{{
     set nowrapscan
     let curpos = getpos(".")
-    call chainops#readAndProcess(v:operator)
+    call multi#readAndProcess(v:operator)
     if g:yankresult != ""
         call setreg('"', g:yankresult, 'aV')
     else
-        call setreg('"', g:chainopsresult, 'aV')
+        call setreg('"', g:multiresult, 'aV')
     endif
     call setpos(".", curpos)
     call setpos("'<", curpos)
@@ -87,12 +87,12 @@ function! chainops#inittest() "{{{
     call setpos("']", curpos)
     set wrapscan
 endfunction
-onoremap . :call chainops#inittest()<cr>
-xnoremap . :call chainops#inittest()<cr>
+onoremap . :call multi#inittest()<cr>
+xnoremap . :call multi#inittest()<cr>
 "}}}
-function! chainops#readAndProcess(endCom) "{{{
-    if len(g:chainops#matchidlist) != 0
-        call chainops#clearHighlights()
+function! multi#readAndProcess(endCom) "{{{
+    if len(g:multi#matchidlist) != 0
+        call multi#clearHighlights()
     endif
     let reading = 1
     let area = {"areas": [getpos(".")], "visual": 0}
@@ -101,7 +101,7 @@ function! chainops#readAndProcess(endCom) "{{{
     let motionstack = []
     let skipCon = 0
     while reading
-        let  commandlist = chainops#readOp(promptbase)
+        let  commandlist = multi#readOp(promptbase)
         if len(commandlist) == 2
             let [reading, command] = commandlist
             let alias = command
@@ -109,33 +109,33 @@ function! chainops#readAndProcess(endCom) "{{{
             let [reading, command, alias] = commandlist
         endif
         if reading == -1
-            call chainops#clearHighlights()
+            call multi#clearHighlights()
             norm v
             return
         elseif command ==# "V"
             if area.visual
-                let area = chainops#visualToLines(area) 
-                call chainops#applySelection(area)
+                let area = multi#visualToLines(area)
+                call multi#applySelection(area)
                 let reading = 1
             endif
         elseif command ==# "v"
             if area.visual
-                let area = chainops#visualToPoints(area) 
-                call chainops#applySelection(area)
+                let area = multi#visualToPoints(area)
+                call multi#applySelection(area)
                 let reading = 1
             endif
         elseif command ==# "."
             if area.visual
-                let area = chainops#visualToLines(area) 
-                let area = chainops#visualToPoints(area) 
-                call chainops#applySelection(area)
+                let area = multi#visualToLines(area)
+                let area = multi#visualToPoints(area)
+                call multi#applySelection(area)
                 let reading = 1
                 let skipCon = 2
                 let alias = " → "
             endif
         elseif command ==# "<BS>"
             if len(motionstack) == 1
-                call chainops#clearHighlights()
+                call multi#clearHighlights()
             endif
             let motionlist = []
             let motionstack = motionstack[0:-2]
@@ -148,37 +148,37 @@ function! chainops#readAndProcess(endCom) "{{{
                     let promptbase = promptbase . motion[1] . " . "
                 endif
             endfor
-            let area = chainops#chainMotions(motionlist, startarea)
+            let area = multi#chainMotions(motionlist, startarea)
             continue
         endif
         if !skipCon
             let promptbase = promptbase  . " . " . alias
-        else 
+        else
             let promptbase = promptbase  . alias
             let skipCon -= 1
         endif
         call add(motionstack, [command, alias])
         if reading == 2
-            let area = chainops#apply(command, area)
+            let area = multi#apply(command, area)
         endif
-        call chainops#applySelection(area)
+        call multi#applySelection(area)
     endwhile
-    call chainops#applyCommand(a:endCom, area)
+    call multi#applyCommand(a:endCom, area)
 endfunction
 
 
 "}}}
-function! chainops#readOp(...) "{{{
+function! multi#readOp(...) "{{{
     if a:0 == 0
         let base = ""
     else
         let base = a:1
     endif
-    let [lhs, rhs] = chainops#getOmaps()
+    let [lhs, rhs] = multi#getOmaps()
     let reading = 1
     let i = 0
     let s = ""
-    redraw | echo base . g:chainops#prompt
+    redraw | echo base . g:multi#prompt
     while 1
         "if sneak#util#isvisualop(a:mode) | exe 'norm! gv' | endif "preserve selection
         let c = sneak#util#getchar()
@@ -189,7 +189,7 @@ function! chainops#readOp(...) "{{{
             if i>0
                 let s = s[0:-2]
                 let i -= 1
-                redraw | echo base . g:chainops#prompt . s
+                redraw | echo base . g:multi#prompt . s
             else
                 return [1, "<BS>"]
             endif
@@ -201,7 +201,7 @@ function! chainops#readOp(...) "{{{
         endif
         if c ==# "\<CR>"
             if match(s, "^\/.\*$") == 0
-                return [2, s."", s]
+                return [2, s."", s]
             endif
             if i > 0 "special case: accept the current input (#15)
                 return [2, s]
@@ -228,21 +228,21 @@ function! chainops#readOp(...) "{{{
                 return [2, s]
             endif
         endfor
-        redraw | echo base . g:chainops#prompt . s
+        redraw | echo base . g:multi#prompt . s
     endwhile
     return[0, s]
 endfunction
 "}}}
-function! chainops#applyCommand(command, areas) "{{{
-    call chainops#clearHighlights()
+function! multi#applyCommand(command, areas) "{{{
+    call multi#clearHighlights()
     let areas = reverse(a:areas.areas)
     if a:areas.visual
         norm! v
-        let g:chainopsresult = ""
+        let g:multiresult = ""
         let g:yankresult = ""
-        let previouschainopsReg = ""
+        let previousmultiReg = ""
         let previousYankReg = ""
-        let chainopsRegModify = 0
+        let multiRegModify = 0
         let yankRegModify = 0
         for area in areas
             call setreg('"', "")
@@ -251,9 +251,9 @@ function! chainops#applyCommand(command, areas) "{{{
             call setpos("'>", area[1])
             execute "norm gv".a:command
             if getreg('"') != ""
-                let chainopsRegModify = 1
-                let previouschainopsReg = getreg('"')
-                let g:chainopsresult = previouschainopsReg . "\n" . g:chainopsresult
+                let multiRegModify = 1
+                let previousmultiReg = getreg('"')
+                let g:multiresult = previousmultiReg . "\n" . g:multiresult
             endif
             if getreg("0") != ""
                 let yankRegModify = 1
@@ -261,7 +261,7 @@ function! chainops#applyCommand(command, areas) "{{{
                 let g:yankresult = previousYankReg . "\n" . g:yankresult
             endif
         endfor
-        call setreg('"', g:chainopsresult)
+        call setreg('"', g:multiresult)
         call setreg('0', g:yankresult)
     else
         for area in areas
@@ -271,7 +271,7 @@ function! chainops#applyCommand(command, areas) "{{{
     endif
 endfunction
 "}}}
-function! chainops#chainMotions(commands, ...) "{{{
+function! multi#chainMotions(commands, ...) "{{{
     if a:0 == 0
         let area = {area: [getpos("'<"), getpos("'>")], visual = 1}
     else
@@ -281,34 +281,34 @@ function! chainops#chainMotions(commands, ...) "{{{
     for command in a:commands
         if command ==# "V"
             if area.visual
-                let area = chainops#visualToLines(area) 
+                let area = multi#visualToLines(area)
             endif
         elseif command ==# "v"
             if area.visual
-                let area = chainops#visualToPoints(area) 
+                let area = multi#visualToPoints(area)
             endif
         elseif command ==# "."
             if area.visual
-                let area = chainops#visualToLines(area) 
-                let area = chainops#visualToPoints(area) 
+                let area = multi#visualToLines(area)
+                let area = multi#visualToPoints(area)
             endif
         else
-            let area = chainops#apply(command, area)
+            let area = multi#apply(command, area)
         endif
     endfor
-    call chainops#applySelection(area)
+    call multi#applySelection(area)
     return area
 endfunction
 "}}}
-highlight chainopsArea ctermbg=gray guibg=#504640 
-highlight chainopsPosition ctermbg=gray guibg=#585559
-let g:chainops#matchidlist=[]
-function! chainops#apply(command, areas) "{{{
+highlight multiArea ctermbg=gray guibg=#504640
+highlight multiPosition ctermbg=gray guibg=#585559
+let g:multi#matchidlist=[]
+function! multi#apply(command, areas) "{{{
     let selection =  {"visual":0, "areas":[]}
     let areaSelection = 0
     if a:areas.visual
         for area in a:areas.areas
-            let result = chainops#applyArea(a:command, area)
+            let result = multi#applyArea(a:command, area)
             let areaSelection = areaSelection || result.visual
             if areaSelection
                 let selection.areas = selection.areas + result.areas
@@ -319,15 +319,15 @@ function! chainops#apply(command, areas) "{{{
         endfor
     else
         for area in a:areas.areas
-            let result = chainops#applyPosition(a:command, area)
+            let result = multi#applyPosition(a:command, area)
             let areaSelection = areaSelection || result.visual
             if areaSelection
                 if(len(selection.areas) == 0 || selection.areas[-1] != result.areas)
-                    call chainops#appendArea(result.areas, selection.areas, area)
+                    call multi#appendArea(result.areas, selection.areas, area)
                 endif
             else
                 if(len(selection.areas) == 0 || selection.areas[-1] != result.areas)
-                    call chainops#appendPosition(result.areas, selection.areas)
+                    call multi#appendPosition(result.areas, selection.areas)
                 endif
             endif
             " echo result
@@ -341,7 +341,7 @@ function! chainops#apply(command, areas) "{{{
 endfunction
 
  "}}}
-function! chainops#applyPosition(command, location) "{{{
+function! multi#applyPosition(command, location) "{{{
     call setpos(".", a:location)
     silent execute "norm v" . a:command . ""
     let curPos = getpos(".")
@@ -360,7 +360,7 @@ function! chainops#applyPosition(command, location) "{{{
     " return {"visual":0, "areas":[]}
 endfunction
 "}}}
-function! chainops#applyArea(command, ...) "{{{
+function! multi#applyArea(command, ...) "{{{
     if a:0 == 0
         let area = [getpos("'<"), getpos("'>")]
     elseif a:0 == 1
@@ -390,18 +390,18 @@ function! chainops#applyArea(command, ...) "{{{
         let rightSelection =  getpos("'>")
         let movLeft = leftSelection == curPos && rightSelection == oldCurPos
         let movRight = leftSelection == oldCurPos && rightSelection == curPos
-        let noMovement = chainops#appendArea([leftSelection, rightSelection], newAreas, oldCurPos)
+        let noMovement = multi#appendArea([leftSelection, rightSelection], newAreas, oldCurPos)
         " echo "curPos: " . ListToString(curPos) . ", oldCurPos: " . ListToString(oldCurPos) . ", left: " . ListToString(leftSelection) . ", right: " . ListToString(rightSelection)
         if !areaSelection && (movLeft || movRight)
             "movement to the left
-            if chainops#appendPosition(curPos, newLocations)
+            if multi#appendPosition(curPos, newLocations)
                 break
             endif
         else
             "textobject or visual selection
             let areaSelection = 1
         endif
-        if !chainops#positionInArea(curPos, area)
+        if !multi#positionInArea(curPos, area)
             let newAreas = newAreas[0:-2]
             let newLocations = newLocations[0:-2]
             break
@@ -420,11 +420,11 @@ function! chainops#applyArea(command, ...) "{{{
         return {"visual":areaSelection, "areas":newAreas}
     else
         "let length = len(newLocations)>2 ? -1 : 0
-        return {"visual":areaSelection, "areas":newLocations} 
+        return {"visual":areaSelection, "areas":newLocations}
     endif
-endfunction 
+endfunction
 "}}}
-function! chainops#appendArea(area, areaList, oldCursor) "{{{
+function! multi#appendArea(area, areaList, oldCursor) "{{{
     if a:area[0] == a:area[1] && a:area[0] == a:oldCursor
         "call add(a:areaList, a:area)
         return -1
@@ -432,32 +432,32 @@ function! chainops#appendArea(area, areaList, oldCursor) "{{{
     if len(a:areaList) > 0 && a:areaList[-1] == a:area
         return -1
     endif
-    if len(a:areaList) > 0 && chainops#comparePosition(a:area[0][1:2], a:areaList[-1][0][1:2]) == -1
+    if len(a:areaList) > 0 && multi#comparePosition(a:area[0][1:2], a:areaList[-1][0][1:2]) == -1
         return -1
     endif
     call add(a:areaList, a:area)
 endfunction
  "}}}
-function! chainops#returnRHS(command) "{{{
+function! multi#returnRHS(command) "{{{
 
-endfunction 
+endfunction
 
 "}}}
-function! chainops#appendPosition(position, positionList) "{{{
-    if len(a:positionList)>0 && !chainops#comparePosition(a:position[1:2], a:positionList[-1][1:2])
+function! multi#appendPosition(position, positionList) "{{{
+    if len(a:positionList)>0 && !multi#comparePosition(a:position[1:2], a:positionList[-1][1:2])
         return 1
     endif
     call add(a:positionList, a:position)
-endfunction 
+endfunction
 
 "}}}
-function! chainops#positionInArea(position, area) "{{{
-    let biggerMin = chainops#comparePosition(a:position[1:2], a:area[0][1:2]) == 1
-    let smallerMax = chainops#comparePosition(a:position[1:2], a:area[1][1:2]) == -1
+function! multi#positionInArea(position, area) "{{{
+    let biggerMin = multi#comparePosition(a:position[1:2], a:area[0][1:2]) == 1
+    let smallerMax = multi#comparePosition(a:position[1:2], a:area[1][1:2]) == -1
     return (biggerMin && smallerMax)
 endfunction
 "}}}
-function! chainops#comparePosition(position1, position2) "{{{
+function! multi#comparePosition(position1, position2) "{{{
     let [row1, col1] = a:position1
     let [row2, col2] = a:position2
     if row1 > row2 || (row1 == row2 && col1 > col2)
@@ -469,11 +469,11 @@ function! chainops#comparePosition(position1, position2) "{{{
     endif
 endfunction
 "}}}
-function! chainops#highlightArea(area) "{{{
+function! multi#highlightArea(area) "{{{
      let [p1, p2] = a:area
      let delta = p2[1] - p1[1]
      if delta == 0
-         return {"partials":[[p1[1], p1[2], p2[2]-p1[2]]], "full":[]}
+         return {"partials":[[p1[1], p1[2], p2[2]-p1[2]+1]], "full":[]}
      endif
      let partials = [[p1[1], p1[2], col([p1[1], "$"])-p1[2]]]
      call add(partials, [p2[1], 0, p2[2]])
@@ -494,7 +494,7 @@ function! chainops#highlightArea(area) "{{{
      return {"partials":partials, "full":fulllist}
  endfunction
  "}}}
-function! chainops#highlightPosition(area) "{{{
+function! multi#highlightPosition(area) "{{{
     let points = []
     let segmentedlist = []
     let divider = 0
@@ -510,16 +510,15 @@ function! chainops#highlightPosition(area) "{{{
     call add(segmentedlist,points)
     return segmentedlist
 endfunction
-function! chainops#clearHighlights() "{{{
-    for id in g:chainops#matchidlist
+function! multi#clearHighlights() "{{{
+    for id in g:multi#matchidlist
         call matchdelete(id)
     endfor
-    let g:chainops#matchidlist = []
+    let g:multi#matchidlist = []
 endfunction
 "}}}
 
-" vim: set fdm=marker :"}}}
-function! chainops#divide(list) "{{{
+function! multi#divide(list) "{{{
     let divider = 0
     let dividedlist = []
     let sublist = []
@@ -536,7 +535,7 @@ function! chainops#divide(list) "{{{
     return dividedlist
 endfunction
 "}}}
-function! chainops#visualToLines(areas) "{{{
+function! multi#visualToLines(areas) "{{{
     let linelist = []
     for area in a:areas.areas
         let left = area[0]
@@ -564,7 +563,7 @@ function! s:toLineWith(area, offset) "{{{
     return [[a:area[0],a:area[1]+a:offset, 1, a:area[3]], [a:area[0],a:area[1]+a:offset, 2147483647, a:area[3]]]
 endfunction
 "}}}
-function! chainops#visualToPoints(areas) "{{{
+function! multi#visualToPoints(areas) "{{{
     let pointlist = []
     for area in a:areas.areas
         call add(pointlist,area[0])
@@ -572,41 +571,44 @@ function! chainops#visualToPoints(areas) "{{{
     return {"areas": pointlist, "visual": 0}
 endfunction
 "}}}
-function! chainops#applyAreaSelection(areas) "{{{
+function! multi#applyAreaSelection(areas) "{{{
     let partials = []
     let full = []
     for area in a:areas.areas
-        let result = chainops#highlightArea(area)
+        let result = multi#highlightArea(area)
         let partials = partials + result.partials
         let full = full + result.full
     endfor
-    let partials = chainops#divide(partials)
+    let partials = multi#divide(partials)
     let fullid = []
     for lineblock in full
-        call add(fullid, matchaddpos("chainopsArea",lineblock))
+        call add(fullid, matchaddpos("multiArea",lineblock))
     endfor
     let partialid = []
     for partial in partials
-        call add(fullid, matchaddpos("chainopsArea", partial))
+        call add(fullid, matchaddpos("multiArea", partial))
     endfor
-    let g:chainops#matchidlist = fullid + partialid
+    let g:multi#matchidlist = fullid + partialid
 endfunction
 "}}}
-function! chainops#applyPositionSelection(areas) "{{{
+function! multi#applyPositionSelection(areas) "{{{
     let idlist = []
-    let segmentedlist = chainops#highlightPosition(a:areas.areas)
+    let segmentedlist = multi#highlightPosition(a:areas.areas)
     for pointlist in segmentedlist
-        let id =  matchaddpos("chainopsPosition", pointlist)
+        let id =  matchaddpos("multiPosition", pointlist)
         call add(idlist, id)
     endfor
-    let g:chainops#matchidlist = idlist
+    let g:multi#matchidlist = idlist
 endfunction
 "}}}
-function! chainops#applySelection(selection)
-    call chainops#clearHighlights()
+function! multi#applySelection(selection)
+    call multi#clearHighlights()
     if a:selection.visual
-        call chainops#applyAreaSelection(a:selection)
+        call multi#applyAreaSelection(a:selection)
     else
-        call chainops#applyPositionSelection(a:selection)
+        call multi#applyPositionSelection(a:selection)
     endif
 endfunction
+"}}}
+" vim: set fdm=marker :
+
