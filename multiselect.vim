@@ -78,9 +78,15 @@ endfunction "}}}"}}}
 
 "Processing:{{{
 function! multiselect#inittest() "{{{
+    let command = v:operator
     set nowrapscan
     let curpos = getpos(".")
-    call multiselect#readAndProcess(v:operator)
+    let area = {"areas": [getpos(".")], "visual": 0}
+    call multiselect#applySelection(area)
+    let result = multiselect#readAndProcess(command, area)
+    if type(result) == type({})
+        call multiselect#applyCommand(command, result)
+    endif
     if g:yankresult != ""
         call setreg('"', g:yankresult, 'aV')
     else
@@ -93,19 +99,43 @@ function! multiselect#inittest() "{{{
     call setpos("']", curpos)
     set wrapscan
 endfunction
-onoremap . :call multiselect#inittest()<cr>
-xnoremap . :call multiselect#inittest()<cr>
+let g:yankresult = ""
+let g:tempresult = ""
 "}}}
-function! multiselect#readAndProcess(endCom) "{{{
-    if len(g:multiselect#matchidlist) != 0
-        call multiselect#clearHighlights()
+function! multiselect#startVisual() "{{{
+    set nowrapscan
+    let curpos = getpos(".")
+    let area = {"areas": [[getpos("'<"), getpos("'>")]], "visual": 1}
+    call multiselect#applySelection(area)
+    let area = multiselect#readAndProcess(v:operator, area)
+    if type(area) == type({})
+        call multiselect#applyCommand("@q", area)
     endif
+    if g:yankresult != ""
+        call setreg('"', g:yankresult, 'aV')
+    else
+        call setreg('"', g:tempresult, 'aV')
+    endif
+    call setpos(".", curpos)
+    call setpos("'<", curpos)
+    call setpos("'>", curpos)
+    call setpos("'[", curpos)
+    call setpos("']", curpos)
+    set wrapscan
+endfunction
+"}}}
+"mappings{{{
+onoremap . :call multiselect#inittest()<cr>
+xnoremap . :<c-u>call multiselect#startVisual()<cr>
+"}}}
+function! multiselect#readAndProcess(endCom, area) 
     let reading = 1
-    let area = {"areas": [getpos(".")], "visual": 0}
-    let startarea = {"areas": [getpos(".")], "visual": 0}
+    let area = a:area
+    let startarea = a:area
     let promptbase = a:endCom
     let motionstack = []
     let skipCon = 0
+    let forceVisual = 0
     while reading
         let  commandlist = multiselect#readOp(promptbase)
         if len(commandlist) == 2
@@ -129,6 +159,12 @@ function! multiselect#readAndProcess(endCom) "{{{
                 let area = multiselect#visualToPoints(area) 
                 call multiselect#applySelection(area)
                 let reading = 1
+            else
+                let forceVisual = 1
+                let reading = 1
+                let promptbase = promptbase  . " . v"
+                let skipCon = 1
+                continue
             endif
         elseif command ==# "."
             if area.visual
@@ -157,23 +193,30 @@ function! multiselect#readAndProcess(endCom) "{{{
             let area = multiselect#chainMotions(motionlist, startarea)
             continue
         endif
+        call add(motionstack, [command, alias])
+        let oldVisual = area.visual
+        if reading == 2
+            let area = multiselect#apply(command, area, forceVisual)
+        endif
+        if oldVisual == 0 && area.visual == 0
+            let skipCon = skipCon ? skipCon : 1
+        endif
         if !skipCon
             let promptbase = promptbase  . " . " . alias
         else 
             let promptbase = promptbase  . alias
             let skipCon -= 1
         endif
-        call add(motionstack, [command, alias])
-        if reading == 2
-            let area = multiselect#apply(command, area)
-        endif
         call multiselect#applySelection(area)
+        if area.visual && forceVisual
+            let forceVisual = 0
+        endif
     endwhile
-    call multiselect#applyCommand(a:endCom, area)
+    return area
 endfunction
 
 
-"}}}
+
 function! multiselect#readOp(...) "{{{
     if a:0 == 0
         let base = ""
@@ -283,7 +326,7 @@ function! multiselect#chainMotions(commands, ...) "{{{
     else
         let area = a:1
     endif
-    let forcevisual = 0
+    let forceVisual = 0
     for command in a:commands
         if command ==# "V"
             if area.visual
@@ -292,6 +335,8 @@ function! multiselect#chainMotions(commands, ...) "{{{
         elseif command ==# "v"
             if area.visual
                 let area = multiselect#visualToPoints(area) 
+            else 
+                let forceVisual = 1
             endif
         elseif command ==# "."
             if area.visual
@@ -299,7 +344,10 @@ function! multiselect#chainMotions(commands, ...) "{{{
                 let area = multiselect#visualToPoints(area) 
             endif
         else
-            let area = multiselect#apply(command, area)
+            let area = multiselect#apply(command, area, forceVisual)
+            if forceVisual && area.visual
+                let forceVisual = 0
+            endif
         endif
     endfor
     call multiselect#applySelection(area)
@@ -309,7 +357,7 @@ endfunction
 highlight MultiselectArea ctermbg=gray guibg=#504640 
 highlight MultiselectPosition ctermbg=gray guibg=#585559
 let g:multiselect#matchidlist=[]
-function! multiselect#apply(command, areas) "{{{
+function! multiselect#apply(command, areas, visualMode) "{{{
     let selection =  {"visual":0, "areas":[]}
     let areaSelection = 0
     if a:areas.visual
@@ -325,7 +373,7 @@ function! multiselect#apply(command, areas) "{{{
         endfor
     else
         for area in a:areas.areas
-            let result = multiselect#applyPosition(a:command, area)
+            let result = multiselect#applyPosition(a:command, area, a:visualMode)
             let areaSelection = areaSelection || result.visual
             if areaSelection
                 if(len(selection.areas) == 0 || selection.areas[-1] != result.areas)
@@ -347,7 +395,7 @@ function! multiselect#apply(command, areas) "{{{
 endfunction
 
  "}}}
-function! multiselect#applyPosition(command, location) "{{{
+function! multiselect#applyPosition(command, location, forceVisual) "{{{
     call setpos(".", a:location)
     silent execute "norm v" . a:command . ""
     let curPos = getpos(".")
@@ -356,7 +404,7 @@ function! multiselect#applyPosition(command, location) "{{{
     let movLeft = leftSelection == curPos && rightSelection == a:location
     let movRight = leftSelection == a:location && rightSelection == curPos
     let shittyWordObjectHeuristic = (a:command[0] == 'a'|| a:command[0] == 'i')
-    if (movLeft || movRight) && !shittyWordObjectHeuristic && a:location != getpos(".")
+    if (movLeft || movRight) && !shittyWordObjectHeuristic && a:location != getpos(".") && !a:forceVisual
         "movement to the left
         return {"visual":0, "areas":curPos}
     else
@@ -408,6 +456,7 @@ function! multiselect#applyArea(command, ...) "{{{
             let areaSelection = 1
         endif
         if !multiselect#positionInArea(curPos, area)
+            norm! 
             let newAreas = newAreas[0:-2]
             let newLocations = newLocations[0:-2]
             break
@@ -608,7 +657,7 @@ function! multiselect#applyPositionSelection(areas) "{{{
     let g:multiselect#matchidlist = idlist
 endfunction
 "}}}
-function! multiselect#applySelection(selection)
+function! multiselect#applySelection(selection) "{{{
     call multiselect#clearHighlights()
     if a:selection.visual
         call multiselect#applyAreaSelection(a:selection)
@@ -616,3 +665,5 @@ function! multiselect#applySelection(selection)
         call multiselect#applyPositionSelection(a:selection)
     endif
 endfunction
+"}}}
+" vim: set fdm=marker :
