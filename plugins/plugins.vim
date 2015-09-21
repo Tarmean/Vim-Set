@@ -1,6 +1,7 @@
 function! AddPlugins(all)
     call plug#begin('~/vimfiles/plugged')
     Plug 'AndrewRadev/sideways.vim'
+    Plug 'terryma/vim-multiple-cursors'
 
     Plug 'arecarn/fold-cycle.vim'
     Plug 'AndrewRadev/splitjoin.vim'
