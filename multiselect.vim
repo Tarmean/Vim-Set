@@ -30,7 +30,7 @@ function! multiselect#getOmaps() "{{{
 endfunction
  "}}}
 function! multiselect#getSelected() "{{{
-    return [[getpos("'<")[1:2], getpos("'>")[1:2]]]
+    return ListToString(getpos("'<")[1:2])." ".ListToString( getpos("'>")[1:2])
 endfunction
 function! Tester(type)
     let g:cannary= multiselect#comparePosition(getpos("'[")[1:2], getpos("']")[1:2])!=-1
@@ -89,8 +89,14 @@ endfunction
 "}}}
 function! multiselect#startVisual() "{{{
     set nowrapscan
-    let curpos = getpos(".")
-    let area = {"areas": [[getpos("'<"), getpos("'>")]], "visual": 1}
+    let curPos = getpos(".")
+    let leftSel = getpos("'<")
+    let rightSel = getpos("'>")
+    if leftSel != rightSel
+        let area = {"areas": [[leftSel,rightSel]], "visual": 1}
+    else
+        let area = {"areas": [curPos], "visual": 0}
+    endif
     call multiselect#applySelection(area)
     let areas = multiselect#readAndProcess(v:operator, area, [])
     if type(areas) == type({})
@@ -102,11 +108,11 @@ function! multiselect#startVisual() "{{{
     else
         call setreg('"', g:tempresult, 'aV')
     endif
-    call setpos(".", curpos)
-    call setpos("'<", curpos)
-    call setpos("'>", curpos)
-    call setpos("'[", curpos)
-    call setpos("']", curpos)
+    call setpos(".", curPos)
+    call setpos("'<", curPos)
+    call setpos("'>", curPos)
+    call setpos("'[", curPos)
+    call setpos("']", curPos)
     set wrapscan
 endfunction
 "}}}
@@ -148,7 +154,7 @@ function! multiselect#readAndProcess(endCom, ...) "{{{
             endif
         elseif command ==# "v"
             if area.visual
-                let area = multiselect#visualToPoints(area)
+                let area = multiselect#visualToPoints(area.areas)
                 call multiselect#applySelection(area)
                 let reading = 1
             else
@@ -161,7 +167,7 @@ function! multiselect#readAndProcess(endCom, ...) "{{{
         elseif command ==# "."
             if area.visual
                 let area = multiselect#visualToLines(area)
-                let area = multiselect#visualToPoints(area)
+                let area = multiselect#visualToPoints(area.areas)
                 call multiselect#applySelection(area)
                 let reading = 1
                 let skipCon = 2
@@ -323,6 +329,13 @@ function! multiselect#applyCommand(command, areas) "{{{
         endfor
         call setreg('"', g:tempresult)
         call setreg('0', g:yankresult)
+        if areaSelection
+            return {"areas":reverse(selection.areas),"visual":1}
+        else
+            let points = reverse(selection.positions)
+            call getchar()
+            return {"areas":points,"visual":0}
+        endif
     else
         for area in areas
             call setreg('"', "")
@@ -338,20 +351,13 @@ function! multiselect#applyCommand(command, areas) "{{{
                 endif
             endif
         endfor
-    endif
-    redraw
-    if areaSelection
-        return {"areas":reverse(selection.areas),"visual":1}
-    else
-        return {"areas":reverse(selection.positions),"visual":0}
+        if areaSelection
+            return {"areas":reverse(selection.areas),"visual":1}
+        else
+            return {"areas":reverse(selection.positions),"visual":0}
+        endif
     endif
 
-endfunction
-"}}}
-function! multiselect#commandLoop(command, areas) "{{{
-    let areas = multiselect#applyCommand(a:command, a:areas)
-    call multiselect#applySelection(areas)
-    return areas
 endfunction
 "}}}
 function! multiselect#chainCommands(areas) "{{{
@@ -363,7 +369,11 @@ function! multiselect#chainCommands(areas) "{{{
         if command == ""
             let running = 0
         endif
-        let areas = multiselect#commandLoop(command, areas)
+        let areas = multiselect#applyCommand(command, areas)
+        echo areas
+        let g:areas = areas
+        call multiselect#applySelection(areas)
+        redraw
     endwhile
     call multiselect#clearHighlights()
 endfunction
@@ -382,14 +392,14 @@ function! multiselect#chainMotions(commands, ...) "{{{
             endif
         elseif command ==# "v"
             if area.visual
-                let area = multiselect#visualToPoints(area)
+                let area = multiselect#visualToPoints(area.areas)
             else 
                 let forceVisual = 1
             endif
         elseif command ==# "."
             if area.visual
                 let area = multiselect#visualToLines(area)
-                let area = multiselect#visualToPoints(area)
+                let area = multiselect#visualToPoints(area.areas)
             endif
         else
             let area = multiselect#apply(command, area, forceVisual)
@@ -478,7 +488,8 @@ function! multiselect#applyPosition(command, context, location, forceVisual, ...
     "     let newPos = forward
     " endif
     call setpos(".", backward)
-    return{"visual":visual, "areas":[forward, backward], "position": backward}
+    let result = {"visual":visual, "areas":[forward, backward], "position": a:0>0? curPos : backward}
+    return result
 endfunction
 "}}}
 function! multiselect#applyArea(command, ...) "{{{
@@ -684,7 +695,7 @@ endfunction
 "}}}
 function! multiselect#visualToPoints(areas) "{{{
     let pointlist = []
-    for area in a:areas.areas
+    for area in a:areas
         call add(pointlist,area[0])
     endfor
     return {"areas": pointlist, "visual": 0}
