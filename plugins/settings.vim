@@ -1,3 +1,5 @@
+let g:multi_cursor_exit_from_visual_mode = 0
+let g:multi_cursor_exit_from_insert_mode = 0
 map <space><c-j> :SidewaysLeft<cr>
 map <space><c-k> :SidewaysRight<cr>
 map <space><c-h> :SidewaysJumpLeft<cr>
@@ -6,7 +8,8 @@ map <space><c-l> :SidewaysJumpRight<cr>
 " map <space><c-k> [e
 " vmap <space><c-j> ]egv
 " vmap <space><c-k> [egv
-
+let g:multi_cursor_insert_maps = {}
+let g:multi_cursor_normal_maps= {'!':1, '@':1, '=':1, 'q':1, 'r':1, 't':1, 'T':1, 'y':1, '[':1, ']':1, '\':1, 'd':1, 'f':1, 'F':1, 'g':1, '"':1, 'z':1, 'c':1, 'm':1, '<':1, '>':1}
 let g:fold_cycle_default_mapping = 0 "disable default mappings 
 nmap <silent> <space>ü :<C-u>call fold_cycle#close()<CR>
 nmap <silent> <space>ä :<C-u>call fold_cycle#open()<CR>
@@ -128,6 +131,7 @@ autocmd User GoyoLeave Limelight!
 let gutentags_tagfile=".git/tags"
 
 let g:sneak#streak=1
+let g:sneak#streak_esc = "\<esc>"
 silent! unmap s
 silent! unmap S
 let g:sneak#s_next=1
