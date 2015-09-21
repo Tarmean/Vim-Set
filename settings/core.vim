@@ -85,7 +85,7 @@ function! LeftOrElse()
     endif
 endfunc
 command! LeftOr call LeftOrElse()
-	
+
 "noremap J L
 "noremap K H
 "noremap <c-j> J
@@ -108,9 +108,8 @@ nnoremap <cr> :
 vnoremap <cr> :
 nnoremap / /\v
 
-nnoremap H ^
-nnoremap L $
-vnoremap L g_
+noremap H ^
+noremap L $
 nnoremap gI `.
 
 nnoremap =<space>p ]p=']
