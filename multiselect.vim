@@ -222,6 +222,7 @@ function! multiselect#readOp(...) "{{{
     let i = 0
     let s = ""
     redraw | echo base . g:multiselect#prompt
+    let cou = "1"
     while 1
         "if sneak#util#isvisualop(a:mode) | exe 'norm! gv' | endif "preserve selection
         let c = sneak#util#getchar()
@@ -238,16 +239,9 @@ function! multiselect#readOp(...) "{{{
             endif
             continue
         endif
-        if (c == "f" || c == "t") && i == 0
-            let d = sneak#util#getchar()
-            if d == "/"
-                let d = "\\/"
-            endif
-            return [2, "/\\V" . d . "" , c.d]
-        endif
         if c ==# "\<CR>"
             if match(s, "^\/.\*$") == 0
-                return [2, s."", s]
+                return [2, cou. s."", s]
             endif
             if i > 0 "special case: accept the current input (#15)
                 return [2, s]
@@ -268,6 +262,18 @@ function! multiselect#readOp(...) "{{{
             " endif
         endif
         let result = substitute(s, '^\d*\(.\{-}\)$', '\1', '')
+        let start = match(s, '\D')
+        let cou = start > 0 ? s[0:start-1] : "1"
+        if (result == "f" || result == "t")
+            redraw | echo base . g:multiselect#prompt . s
+            let d = sneak#util#getchar()
+            let alias = s.d
+            if d == "/"
+                let d = "\\/"
+            endif
+            return [2, cou . "/\\V" . d . "" , alias]
+        endif
+
         for mapping in g:predefined
             if result ==# mapping
                 return [2, s]
@@ -348,11 +354,6 @@ function! multiselect#applyCommand(command, areas) "{{{
 
 endfunction
 "}}}
-function! multiselect#commandLoop(command, areas) "{{{
-    let areas = multiselect#applyCommand(a:command, a:areas)
-    call multiselect#applySelection(areas)
-    return areas
-endfunction
 "}}}
 function! multiselect#chainCommands(areas) "{{{
     let running = 1
@@ -363,7 +364,8 @@ function! multiselect#chainCommands(areas) "{{{
         if command == ""
             let running = 0
         endif
-        let areas = multiselect#commandLoop(command, areas)
+        let areas = multiselect#applyCommand(command, areas)
+        call multiselect#applySelection(areas)
     endwhile
     call multiselect#clearHighlights()
 endfunction
@@ -473,12 +475,13 @@ function! multiselect#applyPosition(command, context, location, forceVisual, ...
     else
         let visual = 1
     endif
-    " if movRight
-    " else
-    "     let newPos = forward
-    " endif
-    call setpos(".", backward)
-    return{"visual":visual, "areas":[forward, backward], "position": backward}
+     if movRight && a:0 == 0
+         let newPos = backward
+     else
+         let newPos = forward
+     endif
+    call setpos(".", newPos)
+    return{"visual":visual, "areas":[forward, backward], "position": newPos}
 endfunction
 "}}}
 function! multiselect#applyArea(command, ...) "{{{

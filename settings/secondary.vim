@@ -5,6 +5,7 @@ nnoremap <leader>e :redraw<CR>:ls<CR>
 noremap <leader>a <c-]>mzzMzvzz15<c-e>`z:Pulse<cr>
 noremap <leader><s-a> <c-t>mzzMzvzz15<c-e>`z:Pulse<cr>
 
+nnoremap Q q:
 
 
 "session stuff, probably managed by obsession
