@@ -26,7 +26,7 @@ function! multiselect#getOmaps() "{{{
         let rhs = join(pair[1:-1])
         call add(rhsList, rhs)
     endfor
-    return [lhsList, rhsList]
+    return lhsList
 endfunction
  "}}}
 function! multiselect#getSelected() "{{{
@@ -135,13 +135,10 @@ function! multiselect#readAndProcess(endCom, ...) "{{{
     let skipCon = 0
     let forceVisual = 0
     while reading
-        let  commandlist = multiselect#readOp(promptbase)
-        if len(commandlist) == 2
-            let [reading, command] = commandlist
-            let alias = command
-        else
-            let [reading, command, alias] = commandlist
-        endif
+        let  result = ReadOp(g:defaultCommands, promptbase)
+        let command = result.command
+        let reading = 2 "result.state
+        let alias = result.alias
         if reading == -1
             call multiselect#clearHighlights()
             norm v
@@ -217,6 +214,131 @@ endfunction
 "}}} "Predefined Motions:{{{
 let g:predefined = ["w", "W", "b", "B", "e", "ge", "E", "gE", "iw", "iW", "aw", "aW", "v", "V", "is", "as", 'i"', 'a"', "ib", "ab", "iB", "aB", "i)", "a)", "i}", "a}", "i]", "a]" ]
 ""}}}
+function! multiselect#initCommandStruct()
+    return {"command":"",
+           \"alias":"",
+           \"state":-1
+           \}
+endfunction
+function! s:updatePrompt(command, base)
+    redraw | echo a:base . g:multiselect#prompt . a:command
+endfunction
+function! s:abort(...)
+    let a:1.state = -1
+endfunction
+
+function! s:backspace(...)
+    let entry = a:1
+    if len(entry.command) >= 4
+        let entry.command = entry.command[0:-5]
+        let entry.alias = entry.alias[0:-5]
+        return 1
+    elseif has_key(entry,"count")
+        if entry.count > 1
+            let entry.count = max([entry.count/10, 1])
+            let entry.command = entry.command[0:-5]
+            let entry.alias = entry.alias[0:-5]
+            return 1
+        else
+            let entry.command = ""
+            let entry.alias = entry.alias[0:-5]
+            call remove(entry, "count")
+            return 1
+        endif
+    else
+        let entry.command = ""
+        let entry.alias = entry.alias[0:-5]
+        let entry.state = -1
+        return
+    endif
+endfunction
+
+function! s:count(...)
+    let entry = a:1
+    if !has_key(entry, "count")
+        let entry.count = entry.command[0] - '0'
+    else
+        let entry.count = entry.count * 10
+        let entry.count += entry.command[0] - '0'
+    endif
+    let entry.command = ""
+    let entry.alias = entry.count
+    return 1
+endfunction
+
+
+let g:defaultCommands = 
+    \{
+        \"regex": [
+                \{
+                    \"match":".*\<esc>\\|.*\<c-c>",
+                    \"postMatch":"s:abort",
+                    \"command":"",
+                \},
+                \{
+                    \"match":".*\<BS>",
+                    \"postMatch":"s:backspace",
+                \},
+                \{
+                    \"match":"^[0-9]$",
+                    \"postMatch":"s:count",
+                \},
+                \{
+                    \"match":".*",
+                \},
+            \],
+        \"motion": multiselect#getOmaps()
+    \}
+function! ReadOp(commandList, base)
+    let commandStruct = multiselect#initCommandStruct()
+    let alias = a:base
+    let state = 0
+    " -1 -> failure
+    " 1 -> success
+    " 2 -> finished
+    let commandCount = 0
+    while 1
+        let finish = -1
+        let c = sneak#util#getchar()
+
+        let commandStruct.command = commandStruct.command . c
+        let commandStruct.alias = commandStruct.alias . c
+        for entry in a:commandList.regex
+            if match(commandStruct.command, entry.match) == 0
+                let finish = 1
+                if has_key(entry, "command")
+                    let commandStruct.command = entry.command
+                endif
+                if has_key(entry,"alias")
+                    let commandStruct.alias = entry.alias
+                endif
+                let commandStruct.state = has_key(entry, "state") ? entry.state : 1
+                if has_key(entry, "postMatch")
+                    let finish =  !call(entry.postMatch, [commandStruct])
+                endif
+                if has_key(entry, "pre")
+                    let commandStruct.pre = entry.pre
+                endif
+                if finish > 0
+                    if !has_key(commandStruct, "count")
+                        let commandStruct.count = 1
+                    endif
+                    return commandStruct
+                endif
+            endif
+        endfor
+
+        if finish == -1
+            for motion in a:commandList.motion
+                if motion ==# commandStruct.command
+                    return commandStruct
+                endif
+            endfor
+        endif
+
+        call s:updatePrompt(commandStruct.alias, a:base)
+    endwhile
+endfunction
 function! multiselect#readOp(...) "{{{
     if a:0 == 0
         let base = ""
@@ -332,8 +454,8 @@ function! multiselect#applyCommand(command, areas) "{{{
         if areaSelection
             return {"areas":reverse(selection.areas),"visual":1}
         else
-            let points = reverse(selection.positions)
-            call getchar()
+            let points = (selection.positions)
+            " call getchar()
             return {"areas":points,"visual":0}
         endif
     else

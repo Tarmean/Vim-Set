@@ -8,7 +8,7 @@ function! AddPlugins(all)
     Plug 'vim-scripts/repeatable-motions.vim'
     Plug 'plasticboy/vim-markdown'
     Plug 'dhruvasagar/vim-table-mode', { 'on':  'TableModeEnable' }
-    Plug 'KabbAmine/zeavim.vim'
+    " Plug 'KabbAmine/zeavim.vim'
     Plug 'vim-scripts/ReplaceWithRegister'
 
     Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
@@ -40,6 +40,7 @@ function! AddPlugins(all)
     Plug '~/vimOld/bundle/filebeagle/' 
     Plug '~/vimOld/bundle/delimitMate/'
     Plug '~/vimOld/bundle/mixedfunctions/'
+    Plug '~/vimfiles/plugged/ranger.vim/'
     Plug 'Konfekt/FastFold'
 
     Plug 'glts/vim-textobj-comment'
