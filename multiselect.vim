@@ -117,8 +117,8 @@ function! multiselect#startVisual() "{{{
 endfunction
 "}}}
 "mappings{{{
-onoremap . :call multiselect#inittest()<cr>
-xnoremap . :<c-u>call multiselect#startVisual()<cr>
+onoremap <silent>. :call multiselect#inittest()<cr>
+xnoremap <silent>. :<c-u>call multiselect#startVisual()<cr>
 "}}}
 function! multiselect#readAndProcess(endCom, ...) "{{{
     let reading = 1
@@ -132,16 +132,30 @@ function! multiselect#readAndProcess(endCom, ...) "{{{
         let motionstack = []
     endif
     let promptbase = a:endCom
-    let skipCon = 0
     let forceVisual = 0
-    let alias = promptbase
+    let g:stack = {"states":[{"command":{"alias":a:endCom}, "areas": area}], "pushState": function("s:pushState")}
     while reading
-        let  result = ReadOp(g:defaultCommands, promptbase)
+        let result = ReadOp(g:defaultCommands, g:stack)
+        if result.state == -1
+            echo ""
+            redraw!
+            return {"areas":[], "visual":0}
+        elseif result.state == 0
+            let area = g:stack.states[-1].areas
+            call multiselect#applySelection(area)
+            redraw!
+            continue
+        elseif result.state == 2
+            echo ""
+            redraw!
+            return area
+        endif
         let command = result.command
         let area = multiselect#apply(command, area, forceVisual)
+        call g:stack.pushState(result, area)
         call multiselect#applySelection(area)
         redraw!
-        " let reading = 2 "result.state
+        " let reading = 2 "result.state"{{{
         " let alias = alias . result.alias
         " call s:updatePrompt(alias, "")
         " if reading == -1
@@ -208,21 +222,26 @@ function! multiselect#readAndProcess(endCom, ...) "{{{
         " endif
         " if area.visual && forceVisual
         "     let forceVisual = 0
-        " endif
+        " endif"}}}
     endwhile
-    return area
 endfunction
 
 
-"}}} "Predefined Motions:{{{
+"}}} 
+""Predefined Motions:{{{
 let g:predefined = ["w", "W", "b", "B", "e", "ge", "E", "gE", "iw", "iW", "aw", "aW", "v", "V", "is", "as", 'i"', 'a"', "ib", "ab", "iB", "aB", "i)", "a)", "i}", "a}", "i]", "a]" ]
 ""}}}
-
-" CommandStructPrimitives"{{{
+"StateStack {{{
+function! s:pushState(command, areas) dict
+    call add(self.states, {"command": a:command, "areas": a:areas})
+endfunction
+let stack = {"states":[], "pushState": function("s:pushState")}
+"}}}
+"CommandStructPrimitives"{{{
 function! multiselect#initCommandStruct() "{{{
     return {"command":"",
            \"alias":"",
-           \"state":-1
+           \"state":1
            \}
 endfunction
 "}}}
@@ -235,28 +254,35 @@ function! s:abort(...) "{{{
 endfunction
 "}}}
 function! s:backspace(...) "{{{
-    let entry = a:1
-    if len(entry.command) >= 4
-        let entry.command = entry.command[0:-5]
-        let entry.alias = entry.alias[0:-5]
+    let result = a:1
+    let stack = a:2
+    let entry = a:3
+    if len(result.command) >= 4
+        let result.command = result.command[0:-5]
+        let result.alias = result.alias[0:-5]
         return 1
-    elseif has_key(entry,"count")
-        if entry.count > 1
-            let entry.count = max([entry.count/10, 1])
-            let entry.command = entry.command[0:-5]
-            let entry.alias = entry.alias[0:-5]
+    elseif has_key(result,"count")
+        if result.count > 1
+            let result.count = max([result.count/10, 1])
+            let result.command = result.command[0:-5]
+            let result.alias = result.alias[0:-5]
             return 1
         else
-            let entry.command = ""
-            let entry.alias = entry.alias[0:-5]
-            call remove(entry, "count")
+            let result.command = ""
+            let result.alias = result.alias[0:-5]
+            call remove(result, "count")
             return 1
         endif
     else
-        let entry.command = ""
-        let entry.alias = entry.alias[0:-5]
-        let entry.state = -1
-        return
+        if len(stack.states) == 1
+            let result.command = ""
+            let result.alias = result.alias[0:-5]
+            let result.state = -1
+            return
+        else
+            let result.state = 0
+            call remove(stack.states, -1)
+            return -1
     endif
 endfunction
 "}}}
@@ -277,6 +303,13 @@ function! s:carriagereturn(...) "{{{
     let entry = a:1
     let entry.command = entry.command[0:-2]
     let entry.alias = entry.alias[0:-2]
+    if len(entry.command) == 0
+        let entry.state = 2
+    endif
+endfunction
+"}}}
+function! s:aliascleaner(...) "{{{
+    let a:3.alias =  a:1.alias[0:-2]
 endfunction
 "}}}
 "}}}
@@ -288,6 +321,7 @@ let g:defaultCommands =
                     \"match":".*\<esc>\\|.*\<c-c>",
                     \"postMatch":"s:abort",
                     \"command":"",
+                    \"state":-1
                 \},
                 \{
                     \"match":".*\<BS>",
@@ -299,6 +333,7 @@ let g:defaultCommands =
                 \},
                 \{
                     \"match":"^/.*",
+                    \"postMatch":"s:aliascleaner"
                 \},
                 \{
                     \"match":".*$",
@@ -311,41 +346,43 @@ let g:defaultCommands =
         \"motion": multiselect#getOmaps()
     \}
 "}}}
-function! ReadOp(commandList, base) "{{{
+function! ReadOp(commandList, stack) "{{{
     let commandStruct = multiselect#initCommandStruct()
-    let alias = a:base
-    let state = 0
+    let alias =  a:stack.states[-1].command.alias
+    call s:updatePrompt("", alias)
     " -1 -> failure
     " 1 -> success
     " 2 -> finished
-    let commandCount = 0
     while 1
         let finish = -1
         let c = sneak#util#getchar()
 
         let commandStruct.command = commandStruct.command . c
         let commandStruct.alias = commandStruct.alias . c
+
         for entry in a:commandList.regex
             if match(commandStruct.command, entry.match) == 0
                 let finish = 1
                 if has_key(entry, "command")
                     let commandStruct.command = entry.command
                 endif
-                if has_key(entry,"alias")
-                    let commandStruct.alias = entry.alias
-                endif
-                let commandStruct.state = has_key(entry, "state") ? entry.state : 1
                 if has_key(entry, "postMatch")
-                    let finish =  !call(entry.postMatch, [commandStruct])
+                    let finish =  call(entry.postMatch, [commandStruct, a:stack, entry])
                 endif
                 if has_key(entry, "pre")
                     let commandStruct.pre = entry.pre
                 endif
-                if finish > 0
+                if finish == 0
+                    if has_key(entry,"alias")
+                        let commandStruct.alias = alias . "." . entry.alias
+                    else
+                        let commandStruct.alias = alias . "." . commandStruct.command
+                    endif
                     if !has_key(commandStruct, "count")
                         let commandStruct.count = 1
                     endif
-        call s:updatePrompt(commandStruct.alias, a:base)
+                    return commandStruct
+                elseif finish < 0
                     return commandStruct
                 endif
             endif
@@ -354,12 +391,13 @@ function! ReadOp(commandList, base) "{{{
         if finish == -1
             for motion in a:commandList.motion
                 if motion ==# commandStruct.command
+                    let commandStruct.alias = alias . "." . motion
                     return commandStruct
                 endif
             endfor
         endif
 
-        call s:updatePrompt(commandStruct.alias, a:base)
+        call s:updatePrompt(commandStruct.alias, alias)
     endwhile
 endfunction
 "}}}
