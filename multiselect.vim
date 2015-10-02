@@ -134,78 +134,81 @@ function! multiselect#readAndProcess(endCom, ...) "{{{
     let promptbase = a:endCom
     let skipCon = 0
     let forceVisual = 0
+    let alias = promptbase
     while reading
         let  result = ReadOp(g:defaultCommands, promptbase)
         let command = result.command
-        let reading = 2 "result.state
-        let alias = result.alias
-        if reading == -1
-            call multiselect#clearHighlights()
-            norm v
-            return
-        elseif command ==# "V"
-            if area.visual
-                let area = multiselect#visualToLines(area)
-                call multiselect#applySelection(area)
-                let reading = 1
-            endif
-        elseif command ==# "v"
-            if area.visual
-                let area = multiselect#visualToPoints(area.areas)
-                call multiselect#applySelection(area)
-                let reading = 1
-            else
-                let forceVisual = 1
-                let reading = 1
-                let promptbase = promptbase  . " . v"
-                let skipCon = 1
-                continue
-            endif
-        elseif command ==# "."
-            if area.visual
-                let area = multiselect#visualToLines(area)
-                let area = multiselect#visualToPoints(area.areas)
-                call multiselect#applySelection(area)
-                let reading = 1
-                let skipCon = 2
-                let alias = " → "
-            endif
-        elseif command ==# "<BS>"
-            if len(motionstack) == 1
-                call multiselect#clearHighlights()
-            endif
-            let motionlist = []
-            let motionstack = motionstack[0:-2]
-            let promptbase = a:endCom . " . "
-            for motion in motionstack
-                call add(motionlist, motion[0])
-                if (motion[0] == ".")
-                    let promptbase = promptbase . motion[1]
-                else
-                    let promptbase = promptbase . motion[1] . " . "
-                endif
-            endfor
-            let area = multiselect#chainMotions(motionlist, startarea)
-            continue
-        endif
-        call add(motionstack, [command, alias])
-        let oldVisual = area.visual
-        if reading == 2
-            let area = multiselect#apply(command, area, forceVisual)
-        endif
-        if oldVisual == 0 && area.visual == 0
-            let skipCon = skipCon ? skipCon : 1
-        endif
-        if !skipCon
-            let promptbase = promptbase  . " . " . alias
-        else
-            let promptbase = promptbase  . alias
-            let skipCon -= 1
-        endif
-        if area.visual && forceVisual
-            let forceVisual = 0
-        endif
+        let area = multiselect#apply(command, area, forceVisual)
         call multiselect#applySelection(area)
+        redraw!
+        " let reading = 2 "result.state
+        " let alias = alias . result.alias
+        " call s:updatePrompt(alias, "")
+        " if reading == -1
+        "     call multiselect#clearHighlights()
+        "     norm v
+        "     return
+        " elseif command ==# "V"
+        "     if area.visual
+        "         let area = multiselect#visualToLines(area)
+        "         call multiselect#applySelection(area)
+        "         let reading = 1
+        "     endif
+        " elseif command ==# "v"
+        "     if area.visual
+        "         let area = multiselect#visualToPoints(area.areas)
+        "         call multiselect#applySelection(area)
+        "         let reading = 1
+        "     else
+        "         let forceVisual = 1
+        "         let reading = 1
+        "         let promptbase = promptbase  . " . v"
+        "         let skipCon = 1
+        "         continue
+        "     endif
+        " elseif command ==# "."
+        "     if area.visual
+        "         let area = multiselect#visualToLines(area)
+        "         let area = multiselect#visualToPoints(area.areas)
+        "         call multiselect#applySelection(area)
+        "         let reading = 1
+        "         let skipCon = 2
+        "         let alias = " → "
+        "     endif
+        " elseif command ==# "<BS>"
+        "     if len(motionstack) == 1
+        "         call multiselect#clearHighlights()
+        "     endif
+        "     let motionlist = []
+        "     let motionstack = motionstack[0:-2]
+        "     let promptbase = a:endCom . " . "
+        "     for motion in motionstack
+        "         call add(motionlist, motion[0])
+        "         if (motion[0] == ".")
+        "             let promptbase = promptbase . motion[1]
+        "         else
+        "             let promptbase = promptbase . motion[1] . " . "
+        "         endif
+        "     endfor
+        "     let area = multiselect#chainMotions(motionlist, startarea)
+        "     continue
+        " endif
+        " call add(motionstack, [command, alias])
+        " let oldVisual = area.visual
+        " if reading == 2
+        " endif
+        " if oldVisual == 0 && area.visual == 0
+        "     let skipCon = skipCon ? skipCon : 1
+        " endif
+        " if !skipCon
+        "     let promptbase = promptbase  . " . " . alias
+        " else
+        "     let promptbase = promptbase  . alias
+        "     let skipCon -= 1
+        " endif
+        " if area.visual && forceVisual
+        "     let forceVisual = 0
+        " endif
     endwhile
     return area
 endfunction
@@ -214,20 +217,24 @@ endfunction
 "}}} "Predefined Motions:{{{
 let g:predefined = ["w", "W", "b", "B", "e", "ge", "E", "gE", "iw", "iW", "aw", "aW", "v", "V", "is", "as", 'i"', 'a"', "ib", "ab", "iB", "aB", "i)", "a)", "i}", "a}", "i]", "a]" ]
 ""}}}
-function! multiselect#initCommandStruct()
+
+" CommandStructPrimitives"{{{
+function! multiselect#initCommandStruct() "{{{
     return {"command":"",
            \"alias":"",
            \"state":-1
            \}
 endfunction
-function! s:updatePrompt(command, base)
+"}}}
+function! s:updatePrompt(command, base) "{{{
     redraw | echo a:base . g:multiselect#prompt . a:command
 endfunction
-function! s:abort(...)
+"}}}
+function! s:abort(...) "{{{
     let a:1.state = -1
 endfunction
-
-function! s:backspace(...)
+"}}}
+function! s:backspace(...) "{{{
     let entry = a:1
     if len(entry.command) >= 4
         let entry.command = entry.command[0:-5]
@@ -252,8 +259,8 @@ function! s:backspace(...)
         return
     endif
 endfunction
-
-function! s:count(...)
+"}}}
+function! s:count(...) "{{{
     let entry = a:1
     if !has_key(entry, "count")
         let entry.count = entry.command[0] - '0'
@@ -265,8 +272,15 @@ function! s:count(...)
     let entry.alias = entry.count
     return 1
 endfunction
-
-
+"}}}
+function! s:carriagereturn(...) "{{{
+    let entry = a:1
+    let entry.command = entry.command[0:-2]
+    let entry.alias = entry.alias[0:-2]
+endfunction
+"}}}
+"}}}
+"defaultCommand {{{
 let g:defaultCommands = 
     \{
         \"regex": [
@@ -284,12 +298,20 @@ let g:defaultCommands =
                     \"postMatch":"s:count",
                 \},
                 \{
-                    \"match":".*",
+                    \"match":"^/.*",
+                \},
+                \{
+                    \"match":".*$",
+                    \"postMatch":"s:carriagereturn",
+                \},
+                \{
+                    \"match":"^f.$",
                 \},
             \],
         \"motion": multiselect#getOmaps()
     \}
-function! ReadOp(commandList, base)
+"}}}
+function! ReadOp(commandList, base) "{{{
     let commandStruct = multiselect#initCommandStruct()
     let alias = a:base
     let state = 0
@@ -323,6 +345,7 @@ function! ReadOp(commandList, base)
                     if !has_key(commandStruct, "count")
                         let commandStruct.count = 1
                     endif
+        call s:updatePrompt(commandStruct.alias, a:base)
                     return commandStruct
                 endif
             endif
@@ -339,6 +362,7 @@ function! ReadOp(commandList, base)
         call s:updatePrompt(commandStruct.alias, a:base)
     endwhile
 endfunction
+"}}}
 function! multiselect#readOp(...) "{{{
     if a:0 == 0
         let base = ""
