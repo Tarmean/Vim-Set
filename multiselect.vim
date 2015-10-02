@@ -312,6 +312,40 @@ function! s:aliascleaner(...) "{{{
     let a:3.alias =  a:1.alias[0:-2]
 endfunction
 "}}}
+function! s:visualline(...) "{{{
+    let result = a:1
+    let stack = a:2
+    let entry = a:3
+
+    let state = deepcopy(stack.states[-1].areas)
+    if state.visual
+        let state = multiselect#visualToLines(state)
+        let result.state = 0
+        let result.alias = stack.states[-1].command.alias . "V"
+        call stack.pushState(result, state)
+    endif
+    return -1
+
+endfunction
+"}}}
+function! s:visual(...) "{{{
+    let result = a:1
+    let stack = a:2
+
+    if stack.states[-1].areas.visual
+        let state = deepcopy(stack.states[-1].areas)
+        let state = multiselect#visualToPoints(state)
+        let result.state = 0
+        let result.alias = stack.states[-1].command.alias . "v"
+        call stack.pushState(result, state)
+        return -1
+    else
+        let result.forceVisual = 1
+        let result.command = ""
+        return 1
+    endif
+endfunction
+"}}}
 "}}}
 "defaultCommand {{{
 let g:defaultCommands = 
@@ -340,6 +374,14 @@ let g:defaultCommands =
                     \"postMatch":"s:carriagereturn",
                 \},
                 \{
+                    \"match":"V",
+                    \"postMatch":"s:visualline",
+                \},
+                \{
+                    \"match":"v",
+                    \"postMatch":"s:visual",
+                \},
+                \{
                     \"match":"^f.$",
                 \},
             \],
@@ -360,6 +402,8 @@ function! ReadOp(commandList, stack) "{{{
         let commandStruct.command = commandStruct.command . c
         let commandStruct.alias = commandStruct.alias . c
 
+        let ignoreC = &ignorecase
+        set noignorecase
         for entry in a:commandList.regex
             if match(commandStruct.command, entry.match) == 0
                 let finish = 1
@@ -387,7 +431,7 @@ function! ReadOp(commandList, stack) "{{{
                 endif
             endif
         endfor
-
+        let ignorecase = ignoreC
         if finish == -1
             for motion in a:commandList.motion
                 if motion ==# commandStruct.command
@@ -879,7 +923,7 @@ endfunction
 "}}}
 function! multiselect#visualToPoints(areas) "{{{
     let pointlist = []
-    for area in a:areas
+    for area in a:areas.areas
         call add(pointlist,area[0])
     endfor
     return {"areas": pointlist, "visual": 0}
