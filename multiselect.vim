@@ -115,7 +115,9 @@ xnoremap <silent>. :<c-u>call multiselect#startVisual()<cr>
 "Dummy{{{
 let g:yankresult = ""
 let g:tempresult = ""
-vnoremap  <silent><Plug>dummyop :<c-u>let g:multiselect#cannary=1<cr><esc>
+" has()
+vnoremap  <silent><Plug>dummyop :<c-u>let g:multiselect#cannary=1<cr>
+nnoremap  <silent><Plug>dummyop :<c-u>let g:multiselect#cannary=0<cr>
 vnoremap <space>n <Plug>dummyop
 function! Test(motion)
     let g:multiselect#cannary = 0
@@ -152,9 +154,12 @@ function! multiselect#readAndProcess(endCom, ...) "{{{
             echo ""
             redraw!
             return area
+        elseif result.state == 3
+            let area = multiselect#chainMotions(result.chain, area)
+        else
+            let command = result.command
+            let area = multiselect#apply(command, area, forceVisual)
         endif
-        let command = result.command
-        let area = multiselect#apply(command, area, forceVisual)
         call g:stack.pushState(result, area)
         if has_key(result, "post")
             call call(result.post, [g:stack])
@@ -370,7 +375,16 @@ function! s:invertselection(...) "{{{
     while i >= 0
         if stack.states[i].areas.visual
             "a and not b
-            let stack.states[-1].areas.areas = multiselect#invertSelectionWith(stack.states[-1].areas.areas, stack.states[i].areas.areas)
+            if i - len(stack.states) + 2 > 0
+                let command = stack.states[i].command.command
+                let area = stack.states[-2].areas
+                let target =  multiselect#apply(command, area, 0)
+            else
+                let target =  stack.states[i].areas
+            endif
+            let inverse = stack.states[-1].areas.areas
+            let result = multiselect#invertSelectionWith(inverse, target.areas)
+            let stack.states[-1].areas.areas = result
             return 2
         endif
         let i -= 1
@@ -428,7 +442,8 @@ let g:defaultCommands =
                     \"post":"s:invertselection",
                 \},
             \],
-        \"motion": multiselect#getOmaps()
+        \"motion": multiselect#getOmaps(),
+        \"pairs":["[", "("],
     \}
 "}}}
 function! ReadOp(commandList, stack) "{{{
@@ -486,6 +501,18 @@ function! ReadOp(commandList, stack) "{{{
         endfor
         let ignorecase = ignoreC
         if finish == -1
+            if len(commandStruct.command) == 2
+                for pair in a:commandList.pairs
+                    if commandStruct.command[1] == pair && (commandStruct.command[0] == "i" || commandStruct.command[0] == "a")
+                        if a:stack.states[-1].areas.visual
+                            let commandStruct.chain = ["/". pair ."", commandStruct.command]
+                            let commandStruct.state = 3
+                        endif
+                        let commandStruct.alias = alias . "." . commandStruct.alias
+                        return commandStruct
+                    endif
+                endfor
+            endif
             for motion in a:commandList.motion
                 if motion ==# commandStruct.command
                     let commandStruct.alias = alias . "." . commandStruct.alias
@@ -627,7 +654,8 @@ function! multiselect#applyPosition(command, context, location, forceVisual, ...
 
     if a:0 == 0
         let g:multiselect#cannary = 0
-        silent! execute "norm v" .  a:command . a:context
+        silent! execute "norm v" .  a:command . a:context 
+        silent! norm! 
     else
         execute "norm v" .  a:command . a:context
         let g:multiselect#cannary = 1
