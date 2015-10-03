@@ -1059,7 +1059,9 @@ function! multiselect#invertSelectionWith(area1, area2) "{{{
     let area2 = a:area2
     " echo area1
     " echo area2
-    " call getchar()
+        " call getchar(aa)
+        " call getchar(aa)
+        "
     let i = 0
     let newSelection = []
     for area in area2
@@ -1074,13 +1076,33 @@ function! multiselect#invertSelectionWith(area1, area2) "{{{
             if multiselect#comparePosition(current[1:2], area1[i][0][1:2])
                 " echo newSelection
                 " call getchar()
-                call add(newSelection, [[current[0], current[1], current[2]+1 , current[3]], [area1[i][0][0], area1[i][0][1], area1[i][0][2]-1, area1[i][0][3]]])
+                let line = current[1]
+                let linelength = col([line, "$"])
+                let column = current[2]+1
+                if column >= linelength || column < 0
+                    let line += 1
+                    let column = 1
+                endif
+                call add(newSelection, [[current[0], line, column, current[3]], [area1[i][0][0], area1[i][0][1], area1[i][0][2]-1, area1[i][0][3]]])
             endif
             let current = area1[i][1]
             let i = i+1
         endwhile
-        if multiselect#comparePosition(current[1:2], area[1][1:2])
-            call add(newSelection, [[current[0], current[1], current[2]+1 , current[3]], area[1]])
+        if multiselect#comparePosition([current[1], current[2+1]], area[1][1:2])
+            "TODO make each partial line selection completely a seperate
+            "selection so lines don't join
+            let line1 = area[1][1]
+            let column1 = area[1][2]
+            let linelength1 = col([line1, "$"])
+            if column1 >= linelength1 || col < 0
+                let column1 = linelength1 - 1
+            endif
+            let line2 = current[1]
+            let linelength2 = col([line, "$"])
+            let column2 = current[2]+1
+            if !(column2 >= linelength2 || column2 < 0)
+                call add(newSelection, [[current[0],line2, column2, current[3]], [area[1][0], line1, column1, area[1][3]]])
+            endif
         endif
     endfor
     " echo newSelection
