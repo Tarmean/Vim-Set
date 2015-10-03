@@ -1,6 +1,6 @@
 "Pre{{{
 "legacy{{{
-let g:multiselect#prompt = ">"
+let g:multiselect#prompt = " >"
 function! ListToString(list) "{{{
     let result = "["
     for entry in a:list[0:-2]
@@ -312,8 +312,14 @@ function! s:carriagereturn(...) "{{{
     endif
 endfunction
 "}}}
-function! s:aliascleaner(...) "{{{
-    let a:3.alias =  a:1.alias[0:-2]
+function! s:createclearalias(...) "{{{
+    let a:1.alias =  a:2.states[-1].command.alias . " . " . a:1.alias[0:-2]
+    return -1
+endfunction
+"}}}
+function! s:directaliascleaner(...) "{{{
+    let a:1.alias =  a:1.alias[0:-2]
+    return 1
 endfunction
 "}}}
 function! s:visualline(...) "{{{
@@ -327,8 +333,8 @@ function! s:visualline(...) "{{{
         let result.state = 0
         let result.alias = stack.states[-1].command.alias . "V"
         call stack.pushState(result, state)
+        return -1
     endif
-    return -1
 
 endfunction
 "}}}
@@ -374,8 +380,8 @@ function! s:invertselection(...) "{{{
 endfunction
 "}}}
 "}}}
-"}}}
-"defaultCommand {{{
+""}}}
+"DefaultCommands {{{
 let g:defaultCommands = 
     \{
         \"regex": [
@@ -395,15 +401,17 @@ let g:defaultCommands =
                 \},
                 \{
                     \"match":"^/.*",
-                    \"postMatch":"s:aliascleaner"
+                    \"postMatch":"s:createclearalias"
                 \},
                 \{
                     \"match":".*$",
+                    \"alias":"",
                     \"postMatch":"s:carriagereturn",
                 \},
                 \{
                     \"match":"V",
                     \"postMatch":"s:visualline",
+                    \"alias":"",
                 \},
                 \{
                     \"match":"v",
@@ -415,6 +423,8 @@ let g:defaultCommands =
                 \{
                     \"match":"^!$",
                     \"command":"",
+                    \"alias":"!",
+                    \"postMatch":"s:directaliascleaner",
                     \"post":"s:invertselection",
                 \},
             \],
@@ -439,7 +449,7 @@ function! ReadOp(commandList, stack) "{{{
         set noignorecase
         for entry in a:commandList.regex
             if match(commandStruct.command, entry.match) == 0
-                let finish = 1
+                let finish = 0
                 if has_key(entry, "command")
                     let commandStruct.command = entry.command
                 endif
@@ -454,9 +464,12 @@ function! ReadOp(commandList, stack) "{{{
                 endif
                 if finish == 0
                     if has_key(entry,"alias")
-                        let commandStruct.alias = alias . "." . entry.alias
+                        " echo alias
+                        " echo commandStruct.alias
+                        " call getchar()
+                        let commandStruct.alias = alias . "." . commandStruct.alias . entry.alias
                     else
-                        let commandStruct.alias = alias . "." . commandStruct.command
+                        let commandStruct.alias = alias . "." . commandStruct.alias . commandStruct.command
                     endif
                     if !has_key(commandStruct, "count")
                         let commandStruct.count = 1
@@ -464,6 +477,10 @@ function! ReadOp(commandList, stack) "{{{
                     return commandStruct
                 elseif finish < 0
                     return commandStruct
+                else
+                    if has_key(entry, "alias")
+                        let commandStruct.alias .= entry.alias
+                    endif
                 endif
             endif
         endfor
@@ -471,7 +488,7 @@ function! ReadOp(commandList, stack) "{{{
         if finish == -1
             for motion in a:commandList.motion
                 if motion ==# commandStruct.command
-                    let commandStruct.alias = alias . "." . motion
+                    let commandStruct.alias = alias . "." . commandStruct.alias
                     return commandStruct
                 endif
             endfor
