@@ -1,6 +1,6 @@
 "Pre{{{
 "legacy{{{
-let g:multiselect#prompt = " >"
+let g:multiselect#prompt = ">"
 function! ListToString(list) "{{{
     let result = "["
     for entry in a:list[0:-2]
@@ -317,8 +317,20 @@ function! s:carriagereturn(...) "{{{
     endif
 endfunction
 "}}}
-function! s:createclearalias(...) "{{{
+function! s:search(...) "{{{
     let a:1.alias =  a:2.states[-1].command.alias . " . " . a:1.alias[0:-2]
+     if a:1.command == "//"
+        let a:1.command = "/\/"
+    endif
+    return -1
+endfunction
+"}}}
+function! s:for(...) "{{{
+    let a:1.alias = a:2.states[-1].command.alias . ">" . a:1.command
+    let a:1.command = "/" . a:1.command[1] . ""
+    if a:1.command == "//"
+        let a:1.command = "/\\/"
+    endif
     return -1
 endfunction
 "}}}
@@ -415,7 +427,7 @@ let g:defaultCommands =
                 \},
                 \{
                     \"match":"^/.*",
-                    \"postMatch":"s:createclearalias"
+                    \"postMatch":"s:search"
                 \},
                 \{
                     \"match":".*$",
@@ -433,6 +445,7 @@ let g:defaultCommands =
                 \},
                 \{
                     \"match":"^f.$",
+                    \"postMatch":"s:for",
                 \},
                 \{
                     \"match":"^!$",
@@ -442,7 +455,7 @@ let g:defaultCommands =
                     \"post":"s:invertselection",
                 \},
             \],
-        \"motion": multiselect#getOmaps(),
+        \"motion": multiselect#getOmaps() + ["w", "iw" ],
         \"pairs":["[", "("],
     \}
 "}}}
@@ -482,9 +495,9 @@ function! ReadOp(commandList, stack) "{{{
                         " echo alias
                         " echo commandStruct.alias
                         " call getchar()
-                        let commandStruct.alias = alias . "." . commandStruct.alias . entry.alias
+                        let commandStruct.alias = alias . ">" . commandStruct.alias . entry.alias
                     else
-                        let commandStruct.alias = alias . "." . commandStruct.alias . commandStruct.command
+                        let commandStruct.alias = alias . ">" . commandStruct.alias . commandStruct.command
                     endif
                     if !has_key(commandStruct, "count")
                         let commandStruct.count = 1
@@ -508,14 +521,14 @@ function! ReadOp(commandList, stack) "{{{
                             let commandStruct.chain = ["/". pair ."", commandStruct.command]
                             let commandStruct.state = 3
                         endif
-                        let commandStruct.alias = alias . "." . commandStruct.alias
+                        let commandStruct.alias = alias . ">" . commandStruct.alias
                         return commandStruct
                     endif
                 endfor
             endif
             for motion in a:commandList.motion
                 if motion ==# commandStruct.command
-                    let commandStruct.alias = alias . "." . commandStruct.alias
+                    let commandStruct.alias = alias . ">" . commandStruct.alias
                     return commandStruct
                 endif
             endfor
