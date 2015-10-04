@@ -143,7 +143,7 @@ function! multiselect#readAndProcess(endCom, ...) "{{{
         let result = ReadOp(g:defaultCommands, g:stack)
         if result.state == -1
             echo ""
-            redraw!
+            call feedkeys("")
             return {"areas":[], "visual":0}
         elseif result.state == 0
             let area = g:stack.states[-1].areas
@@ -152,7 +152,7 @@ function! multiselect#readAndProcess(endCom, ...) "{{{
             continue
         elseif result.state == 2
             echo ""
-            redraw!
+            call feedkeys("")
             return area
         elseif result.state == 3
             let area = multiselect#chainMotions(result.chain, area)
@@ -168,7 +168,6 @@ function! multiselect#readAndProcess(endCom, ...) "{{{
         endif
 
         call multiselect#applySelection(area)
-        redraw!
         " let reading = 2 "result.state"{{{
         " let alias = alias . result.alias
         " call s:updatePrompt(alias, "")

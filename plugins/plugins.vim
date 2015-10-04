@@ -1,6 +1,7 @@
 function! AddPlugins(all)
     call plug#begin('~/vimfiles/plugged')
     Plug 'AndrewRadev/sideways.vim'
+    Plug 'wellle/targets.vim'
     Plug 'terryma/vim-multiple-cursors'
 
     Plug 'arecarn/fold-cycle.vim'
@@ -119,7 +120,7 @@ function! AddPlugins(all)
         Plug 'tpope/vim-commentary'
         Plug 'mhinz/vim-signify'
 
-        Plug '~/vimOld/bundle/targets.vim/'
+        " Plug '~/vimOld/bundle/targets.vim/'
 
         if(has('unix'))
             Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
