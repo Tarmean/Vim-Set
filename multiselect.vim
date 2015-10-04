@@ -9,7 +9,7 @@ function! ListToString(list) "{{{
     let result = result . a:list[-1] . ""
     return result . "]"
 endfunction
- "}}}
+"}}}
 function! multiselect#getOmaps() "{{{
     let backup = @a
     redir @a
@@ -29,7 +29,7 @@ function! multiselect#getOmaps() "{{{
     endfor
     return lhsList
 endfunction
- "}}}
+"}}}
 function! multiselect#getSelected() "{{{
     return ListToString(getpos("'<")[1:2])." ".ListToString( getpos("'>")[1:2])
 endfunction
@@ -46,7 +46,7 @@ function! TestCarrier(motion)
         echo "NOPE"
     endif 
 endfunction
- "}}}
+"}}}
 "}}}
 "Init{{{
 function! multiselect#inittest() "{{{
@@ -249,9 +249,9 @@ let g:predefined = ["w", "W", "b", "B", "e", "ge", "E", "gE", "iw", "iW", "aw", 
 "Postmatch"{{{
 function! multiselect#initCommandStruct() "{{{
     return {"command":"",
-           \"alias":"",
-           \"state":1
-           \}
+                \"alias":"",
+                \"state":1
+                \}
 endfunction
 "}}}
 function! s:updatePrompt(command, base) "{{{
@@ -292,826 +292,887 @@ function! s:backspace(...) "{{{
             let result.state = 0
             call remove(stack.states, -1)
             return -1
-    endif
-endfunction
-"}}}
-function! s:count(...) "{{{
-    let entry = a:1
-    if !has_key(entry, "count")
-        let entry.count = entry.command[0] - '0'
-    else
-        let entry.count = entry.count * 10
-        let entry.count += entry.command[0] - '0'
-    endif
-    let entry.command = ""
-    let entry.alias = entry.count
-    return 1
-endfunction
-"}}}
-function! s:carriagereturn(...) "{{{
-    let entry = a:1
-    let entry.command = entry.command[0:-2]
-    let entry.alias = entry.alias[0:-2]
-    if len(entry.command) == 0
-        let entry.state = 2
-    endif
-endfunction
-"}}}
-function! s:search(...) "{{{
-    let a:1.alias =  a:2.states[-1].command.alias . " . " . a:1.alias[0:-2]
-     if a:1.command == "//"
-        let a:1.command = "/\/"
-    endif
-    return -1
-endfunction
-"}}}
-function! s:for(...) "{{{
-    let a:1.alias = a:2.states[-1].command.alias . ">" . a:1.command
-    let a:1.command = "/" . a:1.command[1] . ""
-    if a:1.command == "//"
-        let a:1.command = "/\\/"
-    endif
-    return -1
-endfunction
-"}}}
-function! s:directaliascleaner(...) "{{{
-    let a:1.alias =  a:1.alias[0:-2]
-    return 1
-endfunction
-"}}}
-function! s:visualline(...) "{{{
-    let result = a:1
-    let stack = a:2
-    let entry = a:3
-
-    let state = deepcopy(stack.states[-1].areas)
-    if state.visual
-        let state = multiselect#visualToLines(state)
-        let result.state = 0
-        let result.alias = stack.states[-1].command.alias . "V"
-        call stack.pushState(result, state)
-        return -1
-    endif
-
-endfunction
-"}}}
-function! s:visual(...) "{{{
-    let result = a:1
-    let stack = a:2
-
-    if stack.states[-1].areas.visual
-        let state = deepcopy(stack.states[-1].areas)
-        let state = multiselect#visualToPoints(state)
-        let result.state = 0
-        let result.alias = stack.states[-1].command.alias . "v"
-        call stack.pushState(result, state)
-        return -1
-    else
-        let result.forceVisual = 1
-        let result.command = ""
-        return 1
-    endif
-endfunction
-"}}}
-"}}}
-"PostCommand{{{
-function! s:invertselection(...) "{{{
-    let stack = a:1
-    if !stack.states[-1].areas.visual
-        return
-    endif
-
-
-    "find last visual selection to invert the current one with
-    let i = len(stack.states) - 2
-    while i >= 0
-        if stack.states[i].areas.visual
-            "a and not b
-            if i - len(stack.states) + 2 > 0
-                let command = stack.states[i].command.command
-                let area = stack.states[-2].areas
-                let target =  multiselect#apply(command, area, 0)
-            else
-                let target =  stack.states[i].areas
-            endif
-            let inverse = stack.states[-1].areas.areas
-            let result = multiselect#invertSelectionWith(inverse, target.areas)
-            let stack.states[-1].areas.areas = result
-            return 2
         endif
-        let i -= 1
-    endwhile
-    "No previous visual selection, give up
-    let stack.states[-1].areas.areas = []
-endfunction
-"}}}
-"}}}
-""}}}
-"DefaultCommands {{{
-let g:defaultCommands = 
-    \{
-        \"regex": [
-                \{
-                    \"match":".*\<esc>\\|.*\<c-c>",
-                    \"postMatch":"s:abort",
-                    \"command":"",
-                    \"state":-1
-                \},
-                \{
-                    \"match":".*\<BS>",
-                    \"postMatch":"s:backspace",
-                \},
-                \{
-                    \"match":"^[0-9]$",
-                    \"postMatch":"s:count",
-                \},
-                \{
-                    \"match":"^/.*",
-                    \"postMatch":"s:search"
-                \},
-                \{
-                    \"match":".*$",
-                    \"alias":"",
-                    \"postMatch":"s:carriagereturn",
-                \},
-                \{
-                    \"match":"V",
-                    \"postMatch":"s:visualline",
-                    \"alias":"",
-                \},
-                \{
-                    \"match":"v",
-                    \"postMatch":"s:visual",
-                \},
-                \{
-                    \"match":"^f.$",
-                    \"postMatch":"s:for",
-                \},
-                \{
-                    \"match":"^!$",
-                    \"command":"",
-                    \"alias":"!",
-                    \"postMatch":"s:directaliascleaner",
-                    \"post":"s:invertselection",
-                \},
-            \],
-        \"motion": multiselect#getOmaps() + ["w", "iw" ],
-        \"pairs":["[", "("],
-    \}
-"}}}
-function! ReadOp(commandList, stack) "{{{
-    let commandStruct = multiselect#initCommandStruct()
-    let alias =  a:stack.states[-1].command.alias
-    call s:updatePrompt("", alias)
-    " -1 -> failure
-    " 1 -> success
-    " 2 -> finished
-    while 1
-        let finish = -1
-        let c = sneak#util#getchar()
+    endfunction
+    "}}}
+    function! s:count(...) "{{{
+        let entry = a:1
+        if !has_key(entry, "count")
+            let entry.count = entry.command[0] - '0'
+        else
+            let entry.count = entry.count * 10
+            let entry.count += entry.command[0] - '0'
+        endif
+        let entry.command = ""
+        let entry.alias = entry.count
+        return 1
+    endfunction
+    "}}}
+    function! s:carriagereturn(...) "{{{
+        let entry = a:1
+        let entry.command = entry.command[0:-2]
+        let entry.alias = entry.alias[0:-2]
+        if len(entry.command) == 0
+            let entry.state = 2
+        endif
+    endfunction
+    "}}}
+    function! s:search(...) "{{{
+        let a:1.alias =  a:2.states[-1].command.alias . " . " . a:1.alias[0:-2]
+        if a:1.command == "//"
+            let a:1.command = "/\/"
+        endif
+        return -1
+    endfunction
+    "}}}
+    function! s:for(...) "{{{
+        let a:1.alias = a:2.states[-1].command.alias . ">" . a:1.command
+        let a:1.command = "/" . a:1.command[1] . ""
+        if a:1.command == "//"
+            let a:1.command = "/\\/"
+        endif
+        return -1
+    endfunction
+    "}}}
+    function! s:directaliascleaner(...) "{{{
+        let a:1.alias =  a:1.alias[0:-2]
+        return 1
+    endfunction
+    "}}}
+    function! s:visualline(...) "{{{
+        let result = a:1
+        let stack = a:2
+        let entry = a:3
 
-        let commandStruct.command = commandStruct.command . c
-        let commandStruct.alias = commandStruct.alias . c
+        let state = deepcopy(stack.states[-1].areas)
+        if state.visual
+            let state = multiselect#visualToLines(state)
+            let result.state = 0
+            let result.alias = stack.states[-1].command.alias . "V"
+            call stack.pushState(result, state)
+            return -1
+        endif
 
-        let ignoreC = &ignorecase
-        set noignorecase
-        for entry in a:commandList.regex
-            if match(commandStruct.command, entry.match) == 0
-                let finish = 0
-                if has_key(entry, "command")
-                    let commandStruct.command = entry.command
-                endif
-                if has_key(entry, "postMatch")
-                    let finish =  call(entry.postMatch, [commandStruct, a:stack, entry])
-                endif
-                if has_key(entry, "pre")
-                    let commandStruct.pre = entry.pre
-                endif
-                if has_key(entry, "post")
-                    let commandStruct.post = entry.post
-                endif
-                if finish == 0
-                    if has_key(entry,"alias")
-                        " echo alias
-                        " echo commandStruct.alias
-                        " call getchar()
-                        let commandStruct.alias = alias . ">" . commandStruct.alias . entry.alias
-                    else
-                        let commandStruct.alias = alias . ">" . commandStruct.alias . commandStruct.command
-                    endif
-                    if !has_key(commandStruct, "count")
-                        let commandStruct.count = 1
-                    endif
-                    return commandStruct
-                elseif finish < 0
-                    return commandStruct
+    endfunction
+    "}}}
+    function! s:visual(...) "{{{
+        let result = a:1
+        let stack = a:2
+
+        if stack.states[-1].areas.visual
+            let state = deepcopy(stack.states[-1].areas)
+            let state = multiselect#visualToPoints(state)
+            let result.state = 0
+            let result.alias = stack.states[-1].command.alias . "v"
+            call stack.pushState(result, state)
+            return -1
+        else
+            let result.forceVisual = 1
+            let result.command = ""
+            return 1
+        endif
+    endfunction
+    "}}}
+    "}}}
+    "PostCommand{{{
+    function! s:invertselection(...) "{{{
+        let stack = a:1
+        if !stack.states[-1].areas.visual
+            return
+        endif
+
+
+        "find last visual selection to invert the current one with
+        let i = len(stack.states) - 2
+        while i >= 0
+            if stack.states[i].areas.visual
+                "a and not b
+                if i - len(stack.states) + 2 > 0
+                    let command = stack.states[i].command.command
+                    let area = stack.states[-2].areas
+                    let target =  multiselect#apply(command, area, 0)
                 else
-                    if has_key(entry, "alias")
-                        let commandStruct.alias .= entry.alias
+                    let target =  stack.states[i].areas
+                endif
+                let inverse = stack.states[-1].areas.areas
+                let result = multiselect#invertSelectionWith(inverse, target.areas)
+                let stack.states[-1].areas.areas = result
+                return 2
+            endif
+            let i -= 1
+        endwhile
+        "No previous visual selection, give up
+        let stack.states[-1].areas.areas = []
+    endfunction
+    "}}}
+    "}}}
+    ""}}}
+    "DefaultCommands {{{
+    let g:defaultCommands = 
+                \{
+                \"regex": [
+                \{
+                \"match":".*\<esc>\\|.*\<c-c>",
+                \"postMatch":"s:abort",
+                \"command":"",
+                \"state":-1
+                \},
+                \{
+                \"match":".*\<BS>",
+                \"postMatch":"s:backspace",
+                \},
+                \{
+                \"match":"^[0-9]$",
+                \"postMatch":"s:count",
+                \},
+                \{
+                \"match":"^/.*",
+                \"postMatch":"s:search"
+                \},
+                \{
+                \"match":".*$",
+                \"alias":"",
+                \"postMatch":"s:carriagereturn",
+                \},
+                \{
+                \"match":"V",
+                \"postMatch":"s:visualline",
+                \"alias":"",
+                \},
+                \{
+                \"match":"v",
+                \"postMatch":"s:visual",
+                \},
+                \{
+                \"match":"^f.$",
+                \"postMatch":"s:for",
+                \},
+                \{
+                \"match":"^!$",
+                \"command":"",
+                \"alias":"!",
+                \"postMatch":"s:directaliascleaner",
+                \"post":"s:invertselection",
+                \},
+                \],
+                \"motion": multiselect#getOmaps() + ["w", "iw" ],
+                \"pairs":["[", "("],
+                \}
+    "}}}
+    function! ReadOp(commandList, stack) "{{{
+        let commandStruct = multiselect#initCommandStruct()
+        let alias =  a:stack.states[-1].command.alias
+        call s:updatePrompt("", alias)
+        " -1 -> failure
+        " 1 -> success
+        " 2 -> finished
+        while 1
+            let finish = -1
+            let c = sneak#util#getchar()
+
+            let commandStruct.command = commandStruct.command . c
+            let commandStruct.alias = commandStruct.alias . c
+
+            let ignoreC = &ignorecase
+            set noignorecase
+            for entry in a:commandList.regex
+                if match(commandStruct.command, entry.match) == 0
+                    let finish = 0
+                    if has_key(entry, "command")
+                        let commandStruct.command = entry.command
+                    endif
+                    if has_key(entry, "postMatch")
+                        let finish =  call(entry.postMatch, [commandStruct, a:stack, entry])
+                    endif
+                    if has_key(entry, "pre")
+                        let commandStruct.pre = entry.pre
+                    endif
+                    if has_key(entry, "post")
+                        let commandStruct.post = entry.post
+                    endif
+                    if finish == 0
+                        if has_key(entry,"alias")
+                            " echo alias
+                            " echo commandStruct.alias
+                            " call getchar()
+                            let commandStruct.alias = alias . ">" . commandStruct.alias . entry.alias
+                        else
+                            let commandStruct.alias = alias . ">" . commandStruct.alias . commandStruct.command
+                        endif
+                        if !has_key(commandStruct, "count")
+                            let commandStruct.count = 1
+                        endif
+                        return commandStruct
+                    elseif finish < 0
+                        return commandStruct
+                    else
+                        if has_key(entry, "alias")
+                            let commandStruct.alias .= entry.alias
+                        endif
                     endif
                 endif
-            endif
-        endfor
-        let ignorecase = ignoreC
-        if finish == -1
-            if len(commandStruct.command) == 2
-                for pair in a:commandList.pairs
-                    if commandStruct.command[1] == pair && (commandStruct.command[0] == "i" || commandStruct.command[0] == "a")
-                        if a:stack.states[-1].areas.visual
-                            let commandStruct.chain = ["/". pair ."", commandStruct.command]
-                            let commandStruct.state = 3
+            endfor
+            let ignorecase = ignoreC
+            if finish == -1
+                if len(commandStruct.command) == 2
+                    for pair in a:commandList.pairs
+                        if commandStruct.command[1] == pair && (commandStruct.command[0] == "i" || commandStruct.command[0] == "a")
+                            if a:stack.states[-1].areas.visual
+                                let commandStruct.chain = ["/". pair ."", commandStruct.command]
+                                let commandStruct.state = 3
+                            endif
+                            let commandStruct.alias = alias . ">" . commandStruct.alias
+                            return commandStruct
                         endif
+                    endfor
+                endif
+                for motion in a:commandList.motion
+                    if motion ==# commandStruct.command
                         let commandStruct.alias = alias . ">" . commandStruct.alias
                         return commandStruct
                     endif
                 endfor
             endif
-            for motion in a:commandList.motion
-                if motion ==# commandStruct.command
-                    let commandStruct.alias = alias . ">" . commandStruct.alias
-                    return commandStruct
+
+            call s:updatePrompt(commandStruct.alias, alias)
+        endwhile
+    endfunction
+    "}}}
+    function! multiselect#readOp(...) "{{{
+        if a:0 == 0
+            let base = ""
+        else
+            let base = a:1
+        endif
+        let [lhs, rhs] = multiselect#getOmaps()
+        let reading = 1
+        let i = 0
+        let s = ""
+        redraw | echo base . g:multiselect#prompt
+        let cou = "1"
+        while 1
+            "if sneak#util#isvisualop(a:mode) | exe 'norm! gv' | endif "preserve selection
+            let c = sneak#util#getchar()
+            if -1 != index(["\<esc>", "\<c-c>", "\<del>"], c)
+                return [-1, ""]
+            endif
+            if -1 != index(["\<backspace>"], c)
+                if i>0
+                    let s = s[0:-2]
+                    let i -= 1
+                    redraw | echo base . g:multiselect#prompt . s
+                else
+                    return [1, "<BS>"]
+                endif
+                continue
+            endif
+            if c ==# "\<CR>"
+                if match(s, "^\/.\*$") == 0
+                    return [2, cou. s."", s]
+                endif
+                if i > 0 "special case: accept the current input (#15)
+                    return [2, s]
+                    " else "special case: repeat the last search (useful for streak-mode).
+                    "     return s:st.input
+                endif
+                return [0, s]
+            else
+                let s .= c
+                let i += 1
+                " if 1 == &iminsert && sneak#util#strlen(s) >= a:n
+                "     "HACK: this can happen if the user entered multiple characters while we
+                "     "were waiting to resolve a multi-char keymap.
+                "     "example for keymap 'bulgarian-phonetic':
+                "     "    e:: => ё    | resolved, strwidth=1
+                "     "    eo  => eo   | unresolved, strwidth=2
+                "     break
+                " endif
+            endif
+            let result = substitute(s, '^\d*\(.\{-}\)$', '\1', '')
+            let start = match(s, '\D')
+            let cou = start > 0 ? s[0:start-1] : "1"
+            if (result == "f" || result == "t")
+                redraw | echo base . g:multiselect#prompt . s
+                let d = sneak#util#getchar()
+                let alias = s.d
+                if d == "/"
+                    let d = "\\/"
+                endif
+                return [2, cou . "/\\V" . d . "" , alias]
+            endif
+
+            for mapping in g:predefined
+                if result ==# mapping
+                    return [2, s]
                 endif
             endfor
-        endif
 
-        call s:updatePrompt(commandStruct.alias, alias)
-    endwhile
-endfunction
-"}}}
-function! multiselect#readOp(...) "{{{
-    if a:0 == 0
-        let base = ""
-    else
-        let base = a:1
-    endif
-    let [lhs, rhs] = multiselect#getOmaps()
-    let reading = 1
-    let i = 0
-    let s = ""
-    redraw | echo base . g:multiselect#prompt
-    let cou = "1"
-    while 1
-        "if sneak#util#isvisualop(a:mode) | exe 'norm! gv' | endif "preserve selection
-        let c = sneak#util#getchar()
-        if -1 != index(["\<esc>", "\<c-c>", "\<del>"], c)
-            return [-1, ""]
-        endif
-        if -1 != index(["\<backspace>"], c)
-            if i>0
-                let s = s[0:-2]
-                let i -= 1
-                redraw | echo base . g:multiselect#prompt . s
-            else
-                return [1, "<BS>"]
-            endif
-            continue
-        endif
-        if c ==# "\<CR>"
-            if match(s, "^\/.\*$") == 0
-                return [2, cou. s."", s]
-            endif
-            if i > 0 "special case: accept the current input (#15)
-                return [2, s]
-            " else "special case: repeat the last search (useful for streak-mode).
-            "     return s:st.input
-            endif
-            return [0, s]
-        else
-            let s .= c
-            let i += 1
-            " if 1 == &iminsert && sneak#util#strlen(s) >= a:n
-            "     "HACK: this can happen if the user entered multiple characters while we
-            "     "were waiting to resolve a multi-char keymap.
-            "     "example for keymap 'bulgarian-phonetic':
-            "     "    e:: => ё    | resolved, strwidth=1
-            "     "    eo  => eo   | unresolved, strwidth=2
-            "     break
-            " endif
-        endif
-        let result = substitute(s, '^\d*\(.\{-}\)$', '\1', '')
-        let start = match(s, '\D')
-        let cou = start > 0 ? s[0:start-1] : "1"
-        if (result == "f" || result == "t")
+            for mapping in lhs
+                if result ==# mapping
+                    return [2, s]
+                endif
+            endfor
             redraw | echo base . g:multiselect#prompt . s
-            let d = sneak#util#getchar()
-            let alias = s.d
-            if d == "/"
-                let d = "\\/"
-            endif
-            return [2, cou . "/\\V" . d . "" , alias]
+        endwhile
+        return[0, s]
+    endfunction
+    "}}}
+    "}}}
+    "}}}
+    "Main{{{
+    function! multiselect#apply(command, areas, visualMode) "{{{
+        let selection =  {"visual":0, "areas":[], "positions":[]}
+        let areaSelection = 0
+        if a:areas.visual
+            for area in a:areas.areas
+                let result = multiselect#applyArea(a:command, area)
+                if result.visual != -1
+                    let areaSelection = areaSelection || result.visual
+                    if areaSelection
+                        let selection.areas = selection.areas + result.areas
+                    else
+                        let selection.positions = selection.positions + result.areas
+                    endif
+                endif
+                " echo areaSelection ? newAreas : newLocations
+            endfor
+        else
+            for area in a:areas.areas
+                let oldPos = getpos(".")
+                let result = multiselect#applyPosition(a:command, "\<Plug>dummyop", area, a:visualMode)
+                if result.visual != -1
+                    let areaSelection = areaSelection || result.visual
+                    if(len(selection.areas) == 0 || selection.areas[-1] != result.areas)
+                        call multiselect#appendArea(result.areas, selection.areas, area)
+                    endif
+                    if !areaSelection
+                        if(len(selection.areas) == 0 || selection.areas[-1] != result.position)
+                            call multiselect#appendPosition(result.position, selection.positions)
+                        endif
+                    endif
+                endif
+                " echo result
+            endfor
         endif
+        if areaSelection
+            return {"visual":1, "areas":selection.areas}
+        else
+            return {"visual":0, "areas":selection.positions}
+        endif
+    endfunction
 
-        for mapping in g:predefined
-            if result ==# mapping
-                return [2, s]
-            endif
-        endfor
+    "}}}
+    function! multiselect#applyPosition(command, context, location, forceVisual, ...) "{{{
+        call setpos(".", a:location)
 
-        for mapping in lhs
-            if result ==# mapping
-                return [2, s]
-            endif
-        endfor
-        redraw | echo base . g:multiselect#prompt . s
-    endwhile
-    return[0, s]
-endfunction
-"}}}
-"}}}
-"}}}
-"Main{{{
-function! multiselect#apply(command, areas, visualMode) "{{{
-    let selection =  {"visual":0, "areas":[], "positions":[]}
-    let areaSelection = 0
-    if a:areas.visual
-        for area in a:areas.areas
-            let result = multiselect#applyArea(a:command, area)
-            if result.visual != -1
-                let areaSelection = areaSelection || result.visual
-                if areaSelection
-                    let selection.areas = selection.areas + result.areas
+        if a:0 == 0
+            let g:multiselect#cannary = 0
+            silent! execute "norm v" .  a:command . a:context 
+            silent! norm! 
+        else
+            execute "norm v" .  a:command . a:context
+            let g:multiselect#cannary = 1
+        endif
+        if !g:multiselect#cannary
+            return{"visual":-1, "areas":[], "position": []}
+        endif
+        let forward = getpos("'<")
+        let backward = getpos("'>")
+        let forceMotion = 0
+        let curPos = getpos(".")
+        let movRight = forward == a:location
+        let movLeft = backward == a:location
+        let shittyWordObjectHeuristic = (a:command[0] == 'a'|| a:command[0] == 'i')
+        let textobjectCheck = !(movRight||movLeft) || shittyWordObjectHeuristic
+        if !(textobjectCheck || forceMotion) && !a:forceVisual
+            let visual = 0
+        else
+            let visual = 1
+        endif
+        if movRight && a:0 == 0
+            let newPos = backward
+        else
+            let newPos = forward
+        endif
+        call setpos(".", newPos)
+        return{"visual":visual, "areas":[forward, backward], "position": newPos}
+    endfunction
+    "}}}
+    function! multiselect#applyArea(command, ...) "{{{
+        if a:0 == 0
+            let area = [getpos("'<"), getpos("'>")]
+        elseif a:0 == 1
+            let visual = 0
+            let area = a:1
+        else
+            let visual = 1
+            let area = a:1
+            let movecommand =""
+        endif
+        " echo area
+
+        let shittyWordObjectHeuristic = (a:command[0] == 'a'|| a:command[0] == 'i')
+        let areaSelection = visual || shittyWordObjectHeuristic
+        let inside = 1
+        call setpos(".", area[0])
+        let curPos = getpos(".")
+        let startingPosition = getcurpos()
+        let newLocations = []
+        let newAreas = []
+        while inside "{{{
+            let oldCurPos =  getpos(".")
+            let return = multiselect#applyPosition(a:command, "\<Plug>dummyop", oldCurPos, 0)
+            if return.visual == -1
+                if oldCurPos == getpos(".")
+                    break
                 else
-                    let selection.positions = selection.positions + result.areas
+                    continue
                 endif
             endif
-            " echo areaSelection ? newAreas : newLocations
-        endfor
-    else
-        for area in a:areas.areas
-            let oldPos = getpos(".")
-            let result = multiselect#applyPosition(a:command, "\<Plug>dummyop", area, a:visualMode)
-            if result.visual != -1
+            let noMovement = multiselect#appendArea([return.areas[0], return.areas[1]], newAreas, oldCurPos)
+            " echo "curPos: " . ListToString(curPos) . ", oldCurPos: " . ListToString(oldCurPos) . ", left: " . ListToString(leftSelection) . ", right: " . ListToString(rightSelection)
+            if !areaSelection && !visual
+                "movement to the left
+                if multiselect#appendPosition(return.position, newLocations)
+                    break
+                endif
+            else
+                "textobject or visual selection
+                let areaSelection = 1
+            endif
+            if !multiselect#positionInArea(return.position, area)
+                norm! 
+                let newAreas = newAreas[0:-2]
+                let newLocations = newLocations[0:-2]
+                break
+            endif
+            if visual
+                silent execute "norm " . movecommand
+            endif
+            if noMovement
+                break
+            endif
+        endwhile "}}}
+        noh
+        norm! 
+        if areaSelection
+            "let length = len(newAreas)>2 ? -1 : 0
+            return {"visual":areaSelection, "areas":newAreas}
+        else
+            "let length = len(newLocations)>2 ? -1 : 0
+            return {"visual":areaSelection, "areas":newLocations}
+        endif
+    endfunction
+    "}}}
+    function! multiselect#applyCommand(command, areas) "{{{
+        call multiselect#clearHighlights()
+        let areas = reverse(a:areas.areas)
+        let selection = {"positions":[], "areas":[], "visual":0}
+        let areaSelection=0
+        if a:areas.visual
+            let g:tempresult = ""
+            let g:yankresult = ""
+            let previousTempReg = ""
+            let previousYankReg = ""
+            let tempRegModify = 0
+            let yankRegModify = 0
+            for area in areas
+                call setreg('"', "")
+                call setreg('0', "")
+                call setpos("'m",area[1])
+                let result = multiselect#applyPosition( "`m", a:command, area[0], 0, 1)
                 let areaSelection = areaSelection || result.visual
                 if(len(selection.areas) == 0 || selection.areas[-1] != result.areas)
                     call multiselect#appendArea(result.areas, selection.areas, area)
                 endif
                 if !areaSelection
-                    if(len(selection.areas) == 0 || selection.areas[-1] != result.position)
+                    if(len(selection.positions) == 0 || selection.positions[-1] != result.position)
                         call multiselect#appendPosition(result.position, selection.positions)
                     endif
                 endif
-            endif
-            " echo result
-        endfor
-    endif
-    if areaSelection
-        return {"visual":1, "areas":selection.areas}
-    else
-        return {"visual":0, "areas":selection.positions}
-    endif
-endfunction
-
-"}}}
-function! multiselect#applyPosition(command, context, location, forceVisual, ...) "{{{
-    call setpos(".", a:location)
-
-    if a:0 == 0
-        let g:multiselect#cannary = 0
-        silent! execute "norm v" .  a:command . a:context 
-        silent! norm! 
-    else
-        execute "norm v" .  a:command . a:context
-        let g:multiselect#cannary = 1
-    endif
-    if !g:multiselect#cannary
-        return{"visual":-1, "areas":[], "position": []}
-    endif
-    let forward = getpos("'<")
-    let backward = getpos("'>")
-    let forceMotion = 0
-    let curPos = getpos(".")
-    let movRight = forward == a:location
-    let movLeft = backward == a:location
-    let shittyWordObjectHeuristic = (a:command[0] == 'a'|| a:command[0] == 'i')
-    let textobjectCheck = !(movRight||movLeft) || shittyWordObjectHeuristic
-    if !(textobjectCheck || forceMotion) && !a:forceVisual
-        let visual = 0
-    else
-        let visual = 1
-    endif
-     if movRight && a:0 == 0
-         let newPos = backward
-     else
-         let newPos = forward
-     endif
-    call setpos(".", newPos)
-    return{"visual":visual, "areas":[forward, backward], "position": newPos}
-endfunction
-"}}}
-function! multiselect#applyArea(command, ...) "{{{
-    if a:0 == 0
-        let area = [getpos("'<"), getpos("'>")]
-    elseif a:0 == 1
-        let visual = 0
-        let area = a:1
-    else
-        let visual = 1
-        let area = a:1
-        let movecommand =""
-    endif
-    " echo area
-
-    let shittyWordObjectHeuristic = (a:command[0] == 'a'|| a:command[0] == 'i')
-    let areaSelection = visual || shittyWordObjectHeuristic
-    let inside = 1
-    call setpos(".", area[0])
-    let curPos = getpos(".")
-    let startingPosition = getcurpos()
-    let newLocations = []
-    let newAreas = []
-    while inside "{{{
-        let oldCurPos =  getpos(".")
-        let return = multiselect#applyPosition(a:command, "\<Plug>dummyop", oldCurPos, 0)
-        if return.visual == -1
-            if oldCurPos == getpos(".")
-                break
+                if getreg('"') != ""
+                    let tempRegModify = 1
+                    let previousTempReg = getreg('"')
+                    let g:tempresult = previousTempReg . "\n" . g:tempresult
+                endif
+                if getreg("0") != ""
+                    let yankRegModify = 1
+                    let previousYankReg = getreg("0")
+                    let g:yankresult = previousYankReg . "\n" . g:yankresult
+                endif
+            endfor
+            call setreg('"', g:tempresult)
+            call setreg('0', g:yankresult)
+            if areaSelection
+                return {"areas":reverse(selection.areas),"visual":1}
             else
-                continue
-            endif
-        endif
-        let noMovement = multiselect#appendArea([return.areas[0], return.areas[1]], newAreas, oldCurPos)
-        " echo "curPos: " . ListToString(curPos) . ", oldCurPos: " . ListToString(oldCurPos) . ", left: " . ListToString(leftSelection) . ", right: " . ListToString(rightSelection)
-        if !areaSelection && !visual
-            "movement to the left
-            if multiselect#appendPosition(return.position, newLocations)
-                break
+                let points = (selection.positions)
+                " call getchar()
+                return {"areas":points,"visual":0}
             endif
         else
-            "textobject or visual selection
-            let areaSelection = 1
-        endif
-        if !multiselect#positionInArea(return.position, area)
-            norm! 
-            let newAreas = newAreas[0:-2]
-            let newLocations = newLocations[0:-2]
-            break
-        endif
-        if visual
-            silent execute "norm " . movecommand
-        endif
-        if noMovement
-            break
-        endif
-    endwhile "}}}
-    noh
-    norm! 
-    if areaSelection
-        "let length = len(newAreas)>2 ? -1 : 0
-        return {"visual":areaSelection, "areas":newAreas}
-    else
-        "let length = len(newLocations)>2 ? -1 : 0
-        return {"visual":areaSelection, "areas":newLocations}
-    endif
-endfunction
-"}}}
-function! multiselect#applyCommand(command, areas) "{{{
-    call multiselect#clearHighlights()
-    let areas = reverse(a:areas.areas)
-    let selection = {"positions":[], "areas":[], "visual":0}
-    let areaSelection=0
-    if a:areas.visual
-        let g:tempresult = ""
-        let g:yankresult = ""
-        let previousTempReg = ""
-        let previousYankReg = ""
-        let tempRegModify = 0
-        let yankRegModify = 0
-        for area in areas
-            call setreg('"', "")
-            call setreg('0', "")
-            call setpos("'m",area[1])
-            let result = multiselect#applyPosition( "`m", a:command, area[0], 0, 1)
-            let areaSelection = areaSelection || result.visual
-            if(len(selection.areas) == 0 || selection.areas[-1] != result.areas)
-                call multiselect#appendArea(result.areas, selection.areas, area)
-            endif
-            if !areaSelection
-                if(len(selection.positions) == 0 || selection.positions[-1] != result.position)
-                    call multiselect#appendPosition(result.position, selection.positions)
+            for area in areas
+                call setreg('"', "")
+                call setreg('0', "")
+                let result = multiselect#applyPosition("v",a:command, area, 0, 1)
+                let areaSelection = areaSelection || result.visual
+                if(len(selection.areas) == 0 || selection.areas[-1] != result.areas)
+                    call multiselect#appendArea(result.areas, selection.areas, area)
                 endif
+                if !areaSelection
+                    if(len(selection.positions) == 0 || selection.positions[-1] != result.position)
+                        call multiselect#appendPosition(result.position, selection.positions)
+                    endif
+                endif
+            endfor
+            if areaSelection
+                return {"areas":reverse(selection.areas),"visual":1}
+            else
+                return {"areas":reverse(selection.positions),"visual":0}
             endif
-            if getreg('"') != ""
-                let tempRegModify = 1
-                let previousTempReg = getreg('"')
-                let g:tempresult = previousTempReg . "\n" . g:tempresult
-            endif
-            if getreg("0") != ""
-                let yankRegModify = 1
-                let previousYankReg = getreg("0")
-                let g:yankresult = previousYankReg . "\n" . g:yankresult
-            endif
-        endfor
-        call setreg('"', g:tempresult)
-        call setreg('0', g:yankresult)
-        if areaSelection
-            return {"areas":reverse(selection.areas),"visual":1}
-        else
-            let points = (selection.positions)
-            " call getchar()
-            return {"areas":points,"visual":0}
         endif
-    else
-        for area in areas
-            call setreg('"', "")
-            call setreg('0', "")
-            let result = multiselect#applyPosition("v",a:command, area, 0, 1)
-            let areaSelection = areaSelection || result.visual
-            if(len(selection.areas) == 0 || selection.areas[-1] != result.areas)
-                call multiselect#appendArea(result.areas, selection.areas, area)
+
+    endfunction
+    "}}}
+    function! multiselect#chainCommands(areas) "{{{
+        let running = 1
+        let areas = a:areas
+        while running
+            let command = input(g:multiselect#prompt)
+            let g:command = command
+            if command == ""
+                let running = 0
             endif
-            if !areaSelection
-                if(len(selection.positions) == 0 || selection.positions[-1] != result.position)
-                    call multiselect#appendPosition(result.position, selection.positions)
+            let areas = multiselect#applyCommand(command, areas)
+            call multiselect#applySelection(areas)
+        endwhile
+        call multiselect#clearHighlights()
+    endfunction
+    "}}}
+    function! multiselect#chainMotions(commands, ...) "{{{
+        if a:0 == 0
+            let area = {area: [getpos("'<"), getpos("'>")], visual = 1}
+        else
+            let area = a:1
+        endif
+        let forceVisual = 0
+        for command in a:commands
+            if command ==# "V"
+                if area.visual
+                    let area = multiselect#visualToLines(area)
+                endif
+            elseif command ==# "v"
+                if area.visual
+                    let area = multiselect#visualToPoints(area.areas)
+                else 
+                    let forceVisual = 1
+                endif
+            elseif command ==# "."
+                if area.visual
+                    let area = multiselect#visualToLines(area)
+                    let area = multiselect#visualToPoints(area.areas)
+                endif
+            else
+                let area = multiselect#apply(command, area, forceVisual)
+                if forceVisual && area.visual
+                    let forceVisual = 0
                 endif
             endif
         endfor
-        if areaSelection
-            return {"areas":reverse(selection.areas),"visual":1}
-        else
-            return {"areas":reverse(selection.positions),"visual":0}
+        call multiselect#applySelection(area)
+        return area
+    endfunction
+    "}}}
+    highlight MultiselectArea ctermbg=gray guibg=#504640 
+    highlight MultiselectPosition ctermbg=gray guibg=#585559
+    let g:multiselect#matchidlist=[]
+    "}}}
+    "Utility{{{
+    "Highlight{{{
+    function! multiselect#highlightArea(area) "{{{
+        let [p1, p2] = a:area
+        let delta = p2[1] - p1[1]
+        if delta == 0
+            return {"partials":[[ p1[1], p1[2], p2[2]-p1[2]+1]], "full":[]}
         endif
-    endif
+        let partials = [[p1[1], p1[2], col([p1[1], "$"])-p1[2]+1]]
+        call add(partials, [p2[1], 1, p2[2]])
+        " [[[0, 846, 1, 0], [0, 853, 2147483647, 0]]] 
+        " [[[0, 847, 1, 0], [0, 854, 2147483647, 0]]] 
+        let full = []
+        let fulllist = []
+        let divider = 0
+        while delta > 1
+            let delta = delta - 1
+            call add(full, [p1[1]+delta])
+            let divider += 1
+            if divider > 7
+                let divider = 0
+                call add(fulllist,full)
+                let full = []
+            endif
+        endwhile
+        call  add(fulllist,full)
+        return {"partials":partials, "full":fulllist}
+    endfunction
+    "}}}
+    function! multiselect#highlightPosition(area) "{{{
+        let points = []
+        let segmentedlist = []
+        let divider = 0
+        for position in a:area
+            let divider += 1
+            if divider > 7
+                let divider = 0
+                call add(segmentedlist,points)
+                let points = []
+            endif
+            call add(points, position[1:2])
+        endfor
+        call add(segmentedlist,points)
+        return segmentedlist
+    endfunction
+    "}}}
+    function! multiselect#clearHighlights() "{{{
+        for id in g:multiselect#matchidlist
+            call matchdelete(id)
+        endfor
+        let g:multiselect#matchidlist = []
+    endfunction
+    "}}}
+    function! multiselect#applyAreaSelection(areas) "{{{
+        let partials = []
+        let full = []
+        for area in a:areas.areas
+            let result = multiselect#highlightArea(area)
+            let partials = partials + result.partials
+            let full = full + result.full
+        endfor
+        let partials = multiselect#divide(partials)
+        let fullid = []
+        for lineblock in full
+            call add(fullid, matchaddpos("MultiselectArea",lineblock))
+        endfor
+        let partialid = []
+        for partial in partials
+            call add(fullid, matchaddpos("MultiselectArea", partial))
+        endfor
+        let g:multiselect#matchidlist = fullid + partialid
+    endfunction
+    "}}}
+    function! multiselect#applyPositionSelection(areas) "{{{
+        let idlist = []
+        let segmentedlist = multiselect#highlightPosition(a:areas.areas)
+        for pointlist in segmentedlist
+            let id =  matchaddpos("MultiselectPosition", pointlist)
+            call add(idlist, id)
+        endfor
+        let g:multiselect#matchidlist = idlist
+    endfunction
+    "}}}
+    function! multiselect#applySelection(selection) "{{{
+        call multiselect#clearHighlights()
+        if a:selection.visual
+            call multiselect#applyAreaSelection(a:selection)
+        else
+            call multiselect#applyPositionSelection(a:selection)
+        endif
+    endfunction
+    "}}}
+    "}}}
+    "Helper:{{{
+    function! multiselect#appendArea(area, areaList, oldCursor) "{{{
+        if len(a:areaList) > 0 && a:areaList[-1] == a:area
+            return -1
+        endif
+        if len(a:areaList) > 0 && multiselect#comparePosition(a:area[0][1:2], a:areaList[-1][0][1:2]) != 1
+            return -1
+        endif
+        if len(a:areaList) > 0 && multiselect#comparePosition(a:area[0][1:2], a:areaList[-1][1][1:2]) != 1
+            if len(a:areaList) > 0 && multiselect#comparePosition(a:area[1][1:2], a:areaList[-1][1][1:2]) != 1
+                return
+            else
+                let a:areaList[-1][1] = a:area[1]
+            endif
+        endif
+        call add(a:areaList, a:area)
+    endfunction
+    "}}}
+    function! multiselect#appendPosition(position, positionList) "{{{
+        if len(a:positionList)>0 && !multiselect#comparePosition(a:position[1:2], a:positionList[-1][1:2])
+            return 1
+        endif
+        call add(a:positionList, a:position)
+    endfunction
 
-endfunction
-"}}}
-function! multiselect#chainCommands(areas) "{{{
-    let running = 1
-    let areas = a:areas
-    while running
-        let command = input(g:multiselect#prompt)
-        let g:command = command
-        if command == ""
-            let running = 0
-        endif
-        let areas = multiselect#applyCommand(command, areas)
-        call multiselect#applySelection(areas)
-    endwhile
-    call multiselect#clearHighlights()
-endfunction
-"}}}
-function! multiselect#chainMotions(commands, ...) "{{{
-    if a:0 == 0
-        let area = {area: [getpos("'<"), getpos("'>")], visual = 1}
-    else
-        let area = a:1
-    endif
-    let forceVisual = 0
-    for command in a:commands
-        if command ==# "V"
-            if area.visual
-                let area = multiselect#visualToLines(area)
-            endif
-        elseif command ==# "v"
-            if area.visual
-                let area = multiselect#visualToPoints(area.areas)
-            else 
-                let forceVisual = 1
-            endif
-        elseif command ==# "."
-            if area.visual
-                let area = multiselect#visualToLines(area)
-                let area = multiselect#visualToPoints(area.areas)
-            endif
+    "}}}
+    function! multiselect#positionInArea(position, area) "{{{
+        let biggerMin = multiselect#comparePosition(a:position[1:2], a:area[0][1:2]) == 1
+        let smallerMax = multiselect#comparePosition(a:position[1:2], a:area[1][1:2]) == -1
+        return (biggerMin && smallerMax)
+    endfunction
+    "}}}
+    function! multiselect#comparePosition(position1, position2) "{{{
+        let [row1, col1] = a:position1
+        let [row2, col2] = a:position2
+        if row1 > row2 || (row1 == row2 && col1 > col2)
+            return 1
+        elseif row1 == row2 && col1 == col2
+            return 0
         else
-            let area = multiselect#apply(command, area, forceVisual)
-            if forceVisual && area.visual
-                let forceVisual = 0
+            return -1
+        endif
+    endfunction
+    "}}}
+    function! multiselect#divide(list) "{{{
+        let divider = 0
+        let dividedlist = []
+        let sublist = []
+        for entry in a:list
+            let divider += 1
+            call add(sublist, entry)
+            if divider > 7
+                call add(dividedlist, sublist)
+                let divider = 0
+                let sublist = []
             endif
-        endif
-    endfor
-    call multiselect#applySelection(area)
-    return area
-endfunction
-"}}}
-highlight MultiselectArea ctermbg=gray guibg=#504640 
-highlight MultiselectPosition ctermbg=gray guibg=#585559
-let g:multiselect#matchidlist=[]
- "}}}
-"Utility{{{
-"Highlight{{{
-function! multiselect#highlightArea(area) "{{{
-     let [p1, p2] = a:area
-     let delta = p2[1] - p1[1]
-     if delta == 0
-         return {"partials":[[ p1[1], p1[2], p2[2]-p1[2]+1]], "full":[]}
-     endif
-     let partials = [[p1[1], p1[2], col([p1[1], "$"])-p1[2]+1]]
-      call add(partials, [p2[1], 1, p2[2]])
-     " [[[0, 846, 1, 0], [0, 853, 2147483647, 0]]] 
-     " [[[0, 847, 1, 0], [0, 854, 2147483647, 0]]] 
-     let full = []
-     let fulllist = []
-     let divider = 0
-     while delta > 1
-        let delta = delta - 1
-        call add(full, [p1[1]+delta])
-        let divider += 1
-        if divider > 7
-            let divider = 0
-            call add(fulllist,full)
-            let full = []
-        endif
-     endwhile
-     call  add(fulllist,full)
-     return {"partials":partials, "full":fulllist}
- endfunction
- "}}}
-function! multiselect#highlightPosition(area) "{{{
-    let points = []
-    let segmentedlist = []
-    let divider = 0
-    for position in a:area
-        let divider += 1
-        if divider > 7
-            let divider = 0
-            call add(segmentedlist,points)
-            let points = []
-        endif
-        call add(points, position[1:2])
-    endfor
-    call add(segmentedlist,points)
-    return segmentedlist
-endfunction
-"}}}
-function! multiselect#clearHighlights() "{{{
-    for id in g:multiselect#matchidlist
-        call matchdelete(id)
-    endfor
-    let g:multiselect#matchidlist = []
-endfunction
-"}}}
-function! multiselect#applyAreaSelection(areas) "{{{
-    let partials = []
-    let full = []
-    for area in a:areas.areas
-        let result = multiselect#highlightArea(area)
-        let partials = partials + result.partials
-        let full = full + result.full
-    endfor
-    let partials = multiselect#divide(partials)
-    let fullid = []
-    for lineblock in full
-        call add(fullid, matchaddpos("MultiselectArea",lineblock))
-    endfor
-    let partialid = []
-    for partial in partials
-        call add(fullid, matchaddpos("MultiselectArea", partial))
-    endfor
-    let g:multiselect#matchidlist = fullid + partialid
-endfunction
-"}}}
-function! multiselect#applyPositionSelection(areas) "{{{
-    let idlist = []
-    let segmentedlist = multiselect#highlightPosition(a:areas.areas)
-    for pointlist in segmentedlist
-        let id =  matchaddpos("MultiselectPosition", pointlist)
-        call add(idlist, id)
-    endfor
-    let g:multiselect#matchidlist = idlist
-endfunction
-"}}}
-function! multiselect#applySelection(selection) "{{{
-    call multiselect#clearHighlights()
-    if a:selection.visual
-        call multiselect#applyAreaSelection(a:selection)
-    else
-        call multiselect#applyPositionSelection(a:selection)
-    endif
-endfunction
-"}}}
-"}}}
-"Helper:{{{
-function! multiselect#appendArea(area, areaList, oldCursor) "{{{
-    if len(a:areaList) > 0 && a:areaList[-1] == a:area
-        return -1
-    endif
-    if len(a:areaList) > 0 && multiselect#comparePosition(a:area[0][1:2], a:areaList[-1][0][1:2]) == -1
-        return -1
-    endif
-    call add(a:areaList, a:area)
-endfunction
- "}}}
-function! multiselect#appendPosition(position, positionList) "{{{
-    if len(a:positionList)>0 && !multiselect#comparePosition(a:position[1:2], a:positionList[-1][1:2])
-        return 1
-    endif
-    call add(a:positionList, a:position)
-endfunction
-
-"}}}
-function! multiselect#positionInArea(position, area) "{{{
-    let biggerMin = multiselect#comparePosition(a:position[1:2], a:area[0][1:2]) == 1
-    let smallerMax = multiselect#comparePosition(a:position[1:2], a:area[1][1:2]) == -1
-    return (biggerMin && smallerMax)
-endfunction
-"}}}
-function! multiselect#comparePosition(position1, position2) "{{{
-    let [row1, col1] = a:position1
-    let [row2, col2] = a:position2
-    if row1 > row2 || (row1 == row2 && col1 > col2)
-        return 1
-    elseif row1 == row2 && col1 == col2
-        return 0
-    else
-        return -1
-    endif
-endfunction
-"}}}
-function! multiselect#divide(list) "{{{
-    let divider = 0
-    let dividedlist = []
-    let sublist = []
-    for entry in a:list
-        let divider += 1
-        call add(sublist, entry)
-        if divider > 7
-            call add(dividedlist, sublist)
-            let divider = 0
-            let sublist = []
-        endif
-    endfor
-    call add(dividedlist, sublist)
-    return dividedlist
-endfunction
-"}}}
-function! multiselect#visualToLines(areas) "{{{
-    let linelist = []
-    for area in a:areas.areas
-        let left = area[0]
-        let right = area[1]
-        let delta = right[1] - left[1]
-        if (left[1] == right[1])
-            call add(linelist, s:toLineWith(left, 0))
-        else
-            let return = s:toLineWith(left, 0)
-            call add(linelist, return)
-            let i = 1
-            while delta > i
+        endfor
+        call add(dividedlist, sublist)
+        return dividedlist
+    endfunction
+    "}}}
+    function! multiselect#visualToLines(areas) "{{{
+        let linelist = []
+        for area in a:areas.areas
+            let left = area[0]
+            let right = area[1]
+            let delta = right[1] - left[1]
+            if (left[1] == right[1])
+                call add(linelist, s:toLineWith(left, 0))
+            else
+                let return = s:toLineWith(left, 0)
+                call add(linelist, return)
+                let i = 1
+                while delta > i
+                    let result = s:toLineWith(left, i)
+                    call add(linelist,result)
+                    let i += 1
+                endwhile
                 let result = s:toLineWith(left, i)
                 call add(linelist,result)
-                let i += 1
-            endwhile
-            let result = s:toLineWith(left, i)
-            call add(linelist,result)
-        endif
-    endfor
-    return {"areas":linelist, "visual":1}
-endfunction
-"}}}
-function! s:toLineWith(area, offset) "{{{
-    return [[a:area[0],a:area[1]+a:offset, 1, a:area[3]], [a:area[0],a:area[1]+a:offset, 2147483647, a:area[3]]]
-endfunction
-"}}}
-function! multiselect#visualToPoints(areas) "{{{
-    let pointlist = []
-    for area in a:areas.areas
-        call add(pointlist,area[0])
-    endfor
-    return {"areas": pointlist, "visual": 0}
-endfunction
-"}}}
-function! multiselect#invertSelectionWith(area1, area2) "{{{
-    let area1 = a:area1
-    let area2 = a:area2
-    " echo area1
-    " echo area2
-    " call getchar()
-    let i = 0
-    let newSelection = []
-    for area in area2
-        let max = area[1]
-        let current = area[0]
-        let current = [current[0], current[1], current[2]-1 , current[3]]
-        while i < len(area1) && multiselect#comparePosition(area1[i][0][1:2], max[1:2]) < 0
-            " echo area
-            " echo area1[i]
-            " echo multiselect#comparePosition(area1[i][0][1:2], max[1:2])
-            " call getchar()
-            if multiselect#comparePosition(current[1:2], area1[i][0][1:2])
-                " echo newSelection
-                " call getchar()
-                call add(newSelection, [[current[0], current[1], current[2]+1 , current[3]], [area1[i][0][0], area1[i][0][1], area1[i][0][2]-1, area1[i][0][3]]])
             endif
-            let current = area1[i][1]
-            let i = i+1
+        endfor
+        return {"areas":linelist, "visual":1}
+    endfunction
+    "}}}
+    function! s:toLineWith(area, offset) "{{{
+        return [[a:area[0],a:area[1]+a:offset, 1, a:area[3]], [a:area[0],a:area[1]+a:offset, 2147483647, a:area[3]]]
+    endfunction
+    "}}}
+    function! multiselect#visualToPoints(areas) "{{{
+        let pointlist = []
+        for area in a:areas.areas
+            call add(pointlist,area[0])
+        endfor
+        return {"areas": pointlist, "visual": 0}
+    endfunction
+    "}}}
+    function! multiselect#invertSelectionWith(area1, area2) "{{{
+        let area1 = a:area1
+        let area2 = a:area2
+        " echo area1
+        " echo area2
+        " call getchar()
+        let i = 0
+        let j = 0
+        let newSelection = []
+        let running = 1
+        while running
+            let area = area2[j]
+            let j += 1
+            let max = area[1]
+            let current = area[0]
+            let current = [current[0], current[1], current[2]-1 , current[3]]
+            while i < len(area1) && multiselect#comparePosition(area1[i][0][1:2], max[1:2]) < 0
+                " echo area
+                " echo area1[i]
+                " echo multiselect#comparePosition(area1[i][0][1:2], max[1:2])
+                " call getchar()
+                let start = current
+                let end = area1[i][0]
+                call multiselect#addSelectionSlice(start, end, newSelection, j == 1 && i == 0)
+                let current = area1[i][1]
+                let i = i+1
+            endwhile
+            let start = current
+            let end = area[1]
+            let running = j < len(area2)
+            call multiselect#addSelectionSlice(start, end, newSelection,  -1)
         endwhile
-        if multiselect#comparePosition(current[1:2], area[1][1:2])
-            call add(newSelection, [[current[0], current[1], current[2]+1 , current[3]], area[1]])
+        " echo newSelection
+        " echo "retuuuurn"
+        " call getchar()
+        return newSelection
+    endfunction
+    "}}}
+    function! multiselect#addSelectionSlice(area1, area2, list, first) "{{{
+        let area1 = a:area1
+        let area2 = a:area2
+        let newSelection = a:list
+        let area1 = [area1[0], area1[1], area1[2]+1, area1[3]]
+        let area2 = [area2[0], area2[1], area2[2]-1, area2[3]]
+        let linelength = col([area1[1], "$"])
+        let delta = area2[1] - area1[1]
+        let end = []
+
+
+        if delta > 0 && a:first == 0
+            if area1[2] < linelength && multiselect#comparePosition(area1[1:2], [area1[1], linelength-1]) <= 0
+                "add to end of line
+                call add(newSelection, [copy(area1), [area1[0], area1[1], linelength - 1, area1[3]]])
+            endif
+            let area1[1] += 1
+            let area1[2] = 1
         endif
-    endfor
-    " echo newSelection
-    " echo "retuuuurn"
-    " call getchar()
-    return newSelection
-endfunction
-"}}}
-"}}}
-"StateStack {{{
-function! s:pushState(command, areas) dict "{{{
-    call add(self.states, {"command": a:command, "areas": a:areas})
-endfunction
-"}}}
-let stack = {"states":[], "pushState": function("s:pushState")}
-"}}}
-"}}}
-" vim: set fdm=marker :
+        if  delta > 1 && a:first == 0
+
+            if area2[2] > 0 && multiselect#comparePosition([area2[1], 1], area2[1:2]) <= 0
+                "add to end of line
+                let end =  [[area2[0], area2[1], 1, area2[3]],copy( area2)]
+            endif
+            let area2[1] -= 1
+            let area2[2] = 2147483647
+        endif
+
+        if a:first < 0
+            echo area1
+            echo area2
+            call getchar()
+            let linelength = col([area1[1], "$"]) - 1
+            if linelength < area1[2]
+                let area1[1] += 1
+                let area1[2] = 1
+            endif
+            let area2[2] = min([area2[2],  col([area2[1], "$"]) - 2 ]) + 1
+        endif
+
+
+        if multiselect#comparePosition(area1[1:2], area2[1:2]) <= 0
+            call add(newSelection, [copy(area1),area2])
+        endif
+        if len(end) > 0
+            call add(newSelection, end)
+        endif
+        return newSelection
+    endfunction
+    "}}}
+    "}}}
+    "StateStack {{{
+    function! s:pushState(command, areas) dict "{{{
+        call add(self.states, {"command": a:command, "areas": a:areas})
+    endfunction
+    "}}}
+    let stack = {"states":[], "pushState": function("s:pushState")}
+    "}}}
+    "}}}
+    " vim: set fdm=marker :

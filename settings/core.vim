@@ -44,7 +44,8 @@ highlight diffRemoved guifg=#bf0000
 highlight diffAdded ctermfg=34
 highlight diffRemoved ctermfg=124
 
-if has("multi_byte")
+if has("multi_byte") && !exists("g:encodingset")
+  let g:encodingset = 1
   if &termencoding == ""
     let &termencoding = &encoding
   endif
