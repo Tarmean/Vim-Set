@@ -143,7 +143,7 @@ function! multiselect#readAndProcess(endCom, ...) "{{{
         let result = ReadOp(g:defaultCommands, g:stack)
         if result.state == -1
             echo ""
-            call feedkeys("")
+            redraw!
             return {"areas":[], "visual":0}
         elseif result.state == 0
             let area = g:stack.states[-1].areas
@@ -152,12 +152,17 @@ function! multiselect#readAndProcess(endCom, ...) "{{{
             continue
         elseif result.state == 2
             echo ""
-            call feedkeys("")
+            redraw!
             return area
         elseif result.state == 3
             let area = multiselect#chainMotions(result.chain, area)
         else
             let command = result.command
+            if has_key(result, "forceVisual")
+                let forceVisual = result.forceVisual
+            else
+                let forceVisual = 0
+            endif
             let area = multiselect#apply(command, area, forceVisual)
         endif
         call g:stack.pushState(result, area)
@@ -168,6 +173,7 @@ function! multiselect#readAndProcess(endCom, ...) "{{{
         endif
 
         call multiselect#applySelection(area)
+        redraw!
         " let reading = 2 "result.state"{{{
         " let alias = alias . result.alias
         " call s:updatePrompt(alias, "")
@@ -455,7 +461,7 @@ function! s:backspace(...) "{{{
                 \},
                 \],
                 \"motion": multiselect#getOmaps() + ["w", "iw" ],
-                \"pairs":["[", "("],
+                \"pairs":["[", "(", '"'],
                 \}
     "}}}
     function! ReadOp(commandList, stack) "{{{
@@ -618,8 +624,8 @@ function! s:backspace(...) "{{{
     "}}}
     "}}}
     "}}}
-    "Main{{{
-    function! multiselect#apply(command, areas, visualMode) "{{{
+"Main{{{
+    function! multiselect#apply(command, areas, forceVisual) "{{{
         let selection =  {"visual":0, "areas":[], "positions":[]}
         let areaSelection = 0
         if a:areas.visual
@@ -638,7 +644,7 @@ function! s:backspace(...) "{{{
         else
             for area in a:areas.areas
                 let oldPos = getpos(".")
-                let result = multiselect#applyPosition(a:command, "\<Plug>dummyop", area, a:visualMode)
+                let result = multiselect#applyPosition(a:command, "\<Plug>dummyop", area, a:forceVisual)
                 if result.visual != -1
                     let areaSelection = areaSelection || result.visual
                     if(len(selection.areas) == 0 || selection.areas[-1] != result.areas)
@@ -886,7 +892,7 @@ function! s:backspace(...) "{{{
     highlight MultiselectPosition ctermbg=gray guibg=#585559
     let g:multiselect#matchidlist=[]
     "}}}
-    "Utility{{{
+"Utility{{{
     "Highlight{{{
     function! multiselect#highlightArea(area) "{{{
         let [p1, p2] = a:area
@@ -1144,9 +1150,9 @@ function! s:backspace(...) "{{{
         endif
 
         if a:first < 0
-            echo area1
-            echo area2
-            call getchar()
+            " echo area1
+            " echo area2
+            " call getchar()
             let linelength = col([area1[1], "$"]) - 1
             if linelength < area1[2]
                 let area1[1] += 1
