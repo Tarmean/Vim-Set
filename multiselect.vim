@@ -624,7 +624,7 @@ function! s:backspace(...) "{{{
     "}}}
     "}}}
     "}}}
-"Main{{{
+    "Main{{{
     function! multiselect#apply(command, areas, forceVisual) "{{{
         let selection =  {"visual":0, "areas":[], "positions":[]}
         let areaSelection = 0
@@ -892,7 +892,7 @@ function! s:backspace(...) "{{{
     highlight MultiselectPosition ctermbg=gray guibg=#585559
     let g:multiselect#matchidlist=[]
     "}}}
-"Utility{{{
+    "Utility{{{
     "Highlight{{{
     function! multiselect#highlightArea(area) "{{{
         let [p1, p2] = a:area
@@ -1082,90 +1082,81 @@ function! s:backspace(...) "{{{
         return {"areas": pointlist, "visual": 0}
     endfunction
     "}}}
-    function! multiselect#invertSelectionWith(area1, area2) "{{{
-        let area1 = a:area1
-        let area2 = a:area2
-        " echo area1
-        " echo area2
-        " call getchar()
+    function! multiselect#invertSelectionWith(ranges, area) "{{{
         let i = 0
-        let j = 0
-        let newSelection = []
-        let running = 1
-        while running
-            let area = area2[j]
-            let j += 1
-            let max = area[1]
-            let current = area[0]
-            let current = [current[0], current[1], current[2]-1 , current[3]]
-            while i < len(area1) && multiselect#comparePosition(area1[i][0][1:2], max[1:2]) < 0
-                " echo area
-                " echo area1[i]
-                " echo multiselect#comparePosition(area1[i][0][1:2], max[1:2])
-                " call getchar()
-                let start = current
-                let end = area1[i][0]
-                call multiselect#addSelectionSlice(start, end, newSelection, j == 1 && i == 0)
-                let current = area1[i][1]
-                let i = i+1
+        let result = []
+        for area in a:area
+            let inArea = []
+            let running = 1
+            while running && i < len(a:ranges)
+                let bigger =  multiselect#comparePosition(area[0][1:2], a:ranges[i][0][1:2]) != 1
+                let smaller =  multiselect#comparePosition(area[1][1:2], a:ranges[i][0][1:2]) != -1
+                let running = bigger && smaller
+                if running
+                    call add(inArea, a:ranges[i])
+                    let i += 1
+                endif
             endwhile
-            let start = current
-            let end = area[1]
-            let running = j < len(area2)
-            call multiselect#addSelectionSlice(start, end, newSelection,  -1)
-        endwhile
-        " echo newSelection
-        " echo "retuuuurn"
-        " call getchar()
-        return newSelection
+            if len(inArea) > 0
+                if multiselect#comparePosition(area[0][1:2], s:dec(inArea[0][0])[1:2]) == -1
+                    call add(result, [area[0], s:dec(inArea[0][0])])
+                endif
+                let j = 1
+                while j < len(inArea)
+                    let result = result + s:betweenSlices(inArea[j - 1][1], inArea[j][0])
+                    let j += 1
+                endwhile
+                if multiselect#comparePosition(s:inc(inArea[-1][1])[1:2], area[1][1:2]) == -1
+                    call add(result, [s:inc(inArea[-1][1]), area[1]])
+                endif
+            endif
+        endfor
+        return result
     endfunction
     "}}}
-    function! multiselect#addSelectionSlice(area1, area2, list, first) "{{{
-        let area1 = a:area1
-        let area2 = a:area2
-        let newSelection = a:list
-        let area1 = [area1[0], area1[1], area1[2]+1, area1[3]]
-        let area2 = [area2[0], area2[1], area2[2]-1, area2[3]]
+    function! s:inc(pos) "{{{
+        let pos = [a:pos[0], a:pos[1], a:pos[2]+1, a:pos[3]]
+        let linelength = col([pos[1], "$"])
+        if pos[2] >= linelength || pos[2] < 0
+            let pos[1] +=1
+            let pos[2] = 1
+        endif
+        return pos
+    endfunction
+    function! s:dec(pos)
+        let pos = [a:pos[0], a:pos[1], a:pos[2]-1, a:pos[3]]
+        if pos[2] <= 0
+            let pos[1] -=1
+            let pos[2] = 2147483647
+        endif
+        return pos
+    endfunction
+    function! s:limittoline(pos)
+        let pos = [a:pos[0], a:pos[1], min([a:pos[2], col([a:pos[1], "$"])-1]), a:pos[3]]
+        return pos
+    endfunction
+    "}}}
+    function! s:betweenSlices(pos1, pos2) "{{{
+        let area1 = s:inc(a:pos1)
+        let area2 = s:dec(a:pos2)
         let linelength = col([area1[1], "$"])
         let delta = area2[1] - area1[1]
+        let newSelection = []
         let end = []
+        if delta == 0
+            if multiselect#comparePosition(area1[1:2], area2[1:2]) <= 0
+                return [[area1,area2]]
+            endif
+            return []
+        endif
 
-
-        if delta > 0 || a:first == 0
+        if delta > 0 && a:pos1[1] == area1[1]
             if area1[2] < linelength && multiselect#comparePosition(area1[1:2], [area1[1], linelength-1]) <= 0
-                "add to end of line
                 call add(newSelection, [copy(area1), [area1[0], area1[1], linelength - 1, area1[3]]])
             endif
             let area1[1] += 1
             let area1[2] = 1
         endif
-        if  delta > 1 || a:first == 0
-
-            if area2[2] > 0 && multiselect#comparePosition([area2[1], 1], area2[1:2]) <= 0
-                "add to end of line
-                let end =  [[area2[0], area2[1], 1, area2[3]],copy( area2)]
-            endif
-            let area2[1] -= 1
-            let area2[2] = 2147483647
-        endif
-
-        if a:first < 0
-            " echo area1
-            " echo area2
-            " call getchar()
-            let linelength = col([area1[1], "$"]) - 1
-            if linelength <= area1[2] + 1
-                let area1[1] += 1
-                let area1[2] = 1
-            endif
-            let area2[2] = min([area2[2] + 1,  col([area2[1], "$"]) - 1 ])
-        endif
-        if a:first > 0 && area2[2] <= 0
-            let area2[1] -= 1
-            let area2[2] = 2147483647
-        endif
-
-
         if multiselect#comparePosition(area1[1:2], area2[1:2]) <= 0
             call add(newSelection, [copy(area1),area2])
         endif
@@ -1174,7 +1165,7 @@ function! s:backspace(...) "{{{
         endif
         return newSelection
     endfunction
-    "}}}
+"}}}
     "}}}
     "StateStack {{{
     function! s:pushState(command, areas) dict "{{{
