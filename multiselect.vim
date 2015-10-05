@@ -1131,7 +1131,7 @@ function! s:backspace(...) "{{{
         let end = []
 
 
-        if delta > 0 && a:first == 0
+        if delta > 0 || a:first == 0
             if area1[2] < linelength && multiselect#comparePosition(area1[1:2], [area1[1], linelength-1]) <= 0
                 "add to end of line
                 call add(newSelection, [copy(area1), [area1[0], area1[1], linelength - 1, area1[3]]])
@@ -1139,7 +1139,7 @@ function! s:backspace(...) "{{{
             let area1[1] += 1
             let area1[2] = 1
         endif
-        if  delta > 1 && a:first == 0
+        if  delta > 1 || a:first == 0
 
             if area2[2] > 0 && multiselect#comparePosition([area2[1], 1], area2[1:2]) <= 0
                 "add to end of line
@@ -1154,11 +1154,15 @@ function! s:backspace(...) "{{{
             " echo area2
             " call getchar()
             let linelength = col([area1[1], "$"]) - 1
-            if linelength < area1[2]
+            if linelength <= area1[2] + 1
                 let area1[1] += 1
                 let area1[2] = 1
             endif
-            let area2[2] = min([area2[2],  col([area2[1], "$"]) - 2 ]) + 1
+            let area2[2] = min([area2[2] + 1,  col([area2[1], "$"]) - 1 ])
+        endif
+        if a:first > 0 && area2[2] <= 0
+            let area2[1] -= 1
+            let area2[2] = 2147483647
         endif
 
 
