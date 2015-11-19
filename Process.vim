@@ -22,3 +22,4 @@ endfunction
 function! Log2(a)
     return Log(a:a, 2)
 endfunction
+

@@ -1,97 +1,97 @@
 function! AddPlugins(all)
-    call plug#begin('~/vimfiles/plugged')
-    Plug 'AndrewRadev/sideways.vim'
-    Plug 'wellle/targets.vim'
-    Plug 'terryma/vim-multiple-cursors'
-
-    Plug 'arecarn/fold-cycle.vim'
-    Plug 'AndrewRadev/splitjoin.vim'
-    Plug 'vim-scripts/repeatable-motions.vim'
-    Plug 'plasticboy/vim-markdown'
-    Plug 'dhruvasagar/vim-table-mode', { 'on':  'TableModeEnable' }
-    " Plug 'KabbAmine/zeavim.vim'
-    Plug 'vim-scripts/ReplaceWithRegister'
-
-    Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
-    Plug 'junegunn/limelight.vim', { 'on':  'Goyo' }
-    let g:limelight_conceal_ctermfg = 242
-    Plug 'tpope/vim-abolish', { 'on':  'S' }
-
-    Plug 'tpope/vim-surround'
-    Plug 'justinmk/vim-sneak'
-    Plug 'lambdalisue/vim-unified-diff'
-    Plug 'sjl/splice.vim'
-    Plug 'vasconcelloslf/vim-interestingwords'
-    Plug 'tommcdo/vim-exchange'
-    "Plug 'junegunn/agl' <actually for command line
-    Plug 'Konfekt/FastFold'
-    Plug 'tpope/vim-obsession', { 'on':  'Obsession' }
-    Plug 'dhruvasagar/vim-prosession' 
-    Plug 'ervandew/supertab'
-    Plug 'morhetz/gruvbox'
-    ""Plug 'bling/vim-airline'
-    Plug 'itchyny/lightline.vim'
-    Plug 'tpope/vim-repeat'
-    Plug 'tpope/vim-speeddating'
-    Plug 'bruno-/vim-vertical-move'
-    Plug 'dbakker/vim-projectroot'
-
-    Plug 'ludovicchabant/vim-gutentags'
-    Plug '~/vimOld/bundle/vim-unimpaired-master/'
-    Plug '~/vimOld/bundle/filebeagle/' 
-    Plug '~/vimOld/bundle/delimitMate/'
-    Plug '~/vimOld/bundle/mixedfunctions/'
-    Plug '~/vimfiles/plugged/ranger.vim/'
-    Plug 'Konfekt/FastFold'
-
-    Plug 'glts/vim-textobj-comment'
-    Plug 'kana/vim-textobj-fold'
-    Plug 'kana/vim-textobj-function'
-    Plug 'kana/vim-textobj-indent'
-    Plug 'kana/vim-textobj-line'
-    Plug 'kana/vim-textobj-entire'
-    Plug 'kana/vim-textobj-user'
-    Plug 'Julian/vim-textobj-variable-segment'
-    if(a:all)
-    "Plug 'junegunn/agl' <actually for command line
-        Plug 'LucHermitte/lh-vim-lib'
-        Plug 'LucHermitte/VimFold4C'
-        Plug 'RyanMcG/vim-j'
-        Plug 'zah/nim.vim'
-        Plug 'junegunn/seoul256.vim'
-        Plug '~/vimOld/bundle/convertBase/'
-        Plug 'jceb/vim-orgmode'
-        "Plug 'junegunn/seoul256.vim'
-        "Plug 'lambdalisue/vim-gita'
-        " Plug 'vim-scripts/ingo-library'
-        " Plug 'vim-scripts/CountJump'
-        " Plug 'vim-scripts/ConflictMotions'
-        " Plug 'vim-scripts/help_movement'
-        " Plug 'vim-scripts/diffwindow_movement'
-
-        Plug 'artur-shaik/vim-javacomplete2'
-        Plug 'luochen1990/rainbow'
-        if(has('gui'))
-            let g:rainbow_active = 1
-        endif
-        Plug 'tpope/vim-fugitive'
-        Plug 'gregsexton/gitv', { 'on':  'Gitv' }
-        Plug 'Yggdroot/indentLine'
-        "Plug 'gelguy/Cmd2.vim'
-        "Plug 'junegunn/vim-after-object'
-        "Plug 'junegunn/vim-peekaboo'
-        Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
-        Plug 'junegunn/vim-easy-align'
-
-        "Plug 'xolox/vim-easytags'
-        "Plug 'xolox/vim-misc'
-        if(has('python'))
-            Plug 'SirVer/ultisnips'
-            Plug 'honza/vim-snippets'
-            let g:UltiSnipsExpandTrigger="<tab>"
-
-            let g:UltiSnipsJumpBackwardTrigger="<c-space>"
-        endif
+     call plug#begin('~/vimfiles/plugged')
+     Plug 'PProvost/vim-ps1'
+     Plug 'kovisoft/slimv'
+     Plug 'AndrewRadev/sideways.vim'
+     Plug 'davidhalter/jedi-vim'
+     Plug 'wellle/targets.vim'
+     Plug 'terryma/vim-multiple-cursors'
+ 
+     Plug 'arecarn/fold-cycle.vim'
+     Plug 'AndrewRadev/splitjoin.vim'
+     Plug 'vim-scripts/repeatable-motions.vim'
+     Plug 'plasticboy/vim-markdown'
+     Plug 'dhruvasagar/vim-table-mode', { 'on':  'TableModeEnable' }
+     " Plug 'KabbAmine/zeavim.vim'
+     Plug 'vim-scripts/ReplaceWithRegister'
+ 
+     Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
+     Plug 'junegunn/limelight.vim', { 'on':  'Goyo' }
+     let g:limelight_conceal_ctermfg = 242
+     Plug 'tpope/vim-abolish', { 'on':  'S' }
+ 
+     Plug 'tpope/vim-surround'
+     Plug 'justinmk/vim-sneak'
+     Plug 'lambdalisue/vim-unified-diff'
+     Plug 'sjl/splice.vim'
+     Plug 'vasconcelloslf/vim-interestingwords'
+     Plug 'tommcdo/vim-exchange'
+     "Plug 'junegunn/agl' <actually for command line
+     Plug 'Konfekt/FastFold'
+     Plug 'tpope/vim-obsession', { 'on':  'Obsession' }
+     Plug 'dhruvasagar/vim-prosession' 
+     Plug 'ervandew/supertab'
+     Plug 'morhetz/gruvbox'
+     ""Plug 'bling/vim-airline'
+     Plug 'itchyny/lightline.vim'
+     Plug 'tpope/vim-repeat'
+     Plug 'tpope/vim-speeddating'
+     Plug 'bruno-/vim-vertical-move'
+     Plug 'dbakker/vim-projectroot'
+ 
+     Plug 'ludovicchabant/vim-gutentags'
+     Plug '~/vimOld/bundle/vim-unimpaired-master/'
+     Plug '~/vimOld/bundle/filebeagle/' 
+     Plug '~/vimOld/bundle/delimitMate/'
+     Plug '~/vimOld/bundle/mixedfunctions/'
+     Plug '~/vimfiles/plugged/ranger.vim/'
+     Plug 'Konfekt/FastFold'
+ 
+     Plug 'glts/vim-textobj-comment'
+     Plug 'kana/vim-textobj-fold'
+     Plug 'kana/vim-textobj-function'
+     Plug 'kana/vim-textobj-indent'
+     Plug 'kana/vim-textobj-line'
+     Plug 'kana/vim-textobj-entire'
+     Plug 'kana/vim-textobj-user'
+     Plug 'Julian/vim-textobj-variable-segment'
+     if(a:all)
+     "Plug 'junegunn/agl' <actually for command line
+         Plug 'LucHermitte/lh-vim-lib'
+         Plug 'LucHermitte/VimFold4C'
+         Plug 'RyanMcG/vim-j'
+         Plug 'zah/nim.vim'
+         Plug 'junegunn/seoul256.vim'
+         Plug '~/vimOld/bundle/convertBase/'
+         Plug 'jceb/vim-orgmode'
+         "Plug 'junegunn/seoul256.vim'
+         "Plug 'lambdalisue/vim-gita'
+         " Plug 'vim-scripts/ingo-library'
+         " Plug 'vim-scripts/CountJump'
+         " Plug 'vim-scripts/ConflictMotions'
+         " Plug 'vim-scripts/help_movement'
+         " Plug 'vim-scripts/diffwindow_movement'
+ 
+         Plug 'artur-shaik/vim-javacomplete2'
+         Plug 'luochen1990/rainbow'
+         if(has('gui'))
+             let g:rainbow_active = 1
+         endif
+         Plug 'tpope/vim-fugitive'
+         Plug 'gregsexton/gitv', { 'on':  'Gitv' }
+         Plug 'Yggdroot/indentLine'
+         "Plug 'gelguy/Cmd2.vim'
+         "Plug 'junegunn/vim-after-object'
+         "Plug 'junegunn/vim-peekaboo'
+         Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
+         Plug 'junegunn/vim-easy-align'
+ 
+         " Plug 'xolox/vim-easytags'
+         " Plug 'xolox/vim-misc'
+          if (has('python'))
+              Plug 'SirVer/ultisnips'
+              Plug 'honza/vim-snippets'
+          endif
         Plug 'kshenoy/vim-signature'
         let g:SignatureMap = {
                     \ 'Leader'             :  "m",
@@ -140,7 +140,7 @@ function! AddPlugins(all)
             Plug 'benekastah/neomake'
             autocmd BufWritePost * Neomake
         else
-            Plug 'Shougo/neocomplete.vim'
+            " Plug 'Shougo/neocomplete.vim'
             Plug 'Shougo/unite.vim', 
             noremap <leader>fc :<c-u>Unite colorscheme<cr>
             Plug 'tsukkee/unite-tag'

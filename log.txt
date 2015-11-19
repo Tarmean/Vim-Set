@@ -1,0 +1,2342 @@
+autocmds:218:    changelog.Debian
+autocmds:219:              setf debchangelog
+autocmds:220:    changelog.dch
+autocmds:221:              setf debchangelog
+autocmds:223:              setf debchangelog
+autocmds:224:    NEWS.dch  setf debchangelog
+autocmds:226:              if getline(1) =~ '; urgency='|   setf debchangelog| else|   setf changelog| endif
+autocmds:227:    NEWS      if getline(1) =~ '; urgency='|   setf debchangelog| endif
+autocmds:519:    upstream.log\c
+autocmds:520:              setf upstreamlog
+autocmds:521:    upstream.*.log\c
+autocmds:522:              setf upstreamlog
+autocmds:523:    *.upstream.log\c
+autocmds:524:              setf upstreamlog
+autocmds:525:    upstreaminstall.log\c
+autocmds:526:              setf upstreaminstalllog
+autocmds:527:    upstreaminstall.*.log\c
+autocmds:528:              setf upstreaminstalllog
+autocmds:529:    *.upstreaminstall.log\c
+autocmds:530:              setf upstreaminstalllog
+autocmds:531:    usserver.log\c
+autocmds:532:              setf usserverlog
+autocmds:533:    usserver.*.log\c
+autocmds:534:              setf usserverlog
+autocmds:535:    *.usserver.log\c
+autocmds:536:              setf usserverlog
+autocmds:537:    usw2kagt.log\c
+autocmds:538:              setf usw2kagtlog
+autocmds:539:    usw2kagt.*.log\c
+autocmds:540:              setf usw2kagtlog
+autocmds:541:    *.usw2kagt.log\c
+autocmds:542:              setf usw2kagtlog
+autocmds:599:    *.sig     setf lprolog
+autocmds:634:    */etc/login.access
+autocmds:635:              setf loginaccess
+autocmds:636:    */etc/login.defs
+autocmds:637:              setf logindefs
+autocmds:638:    *.lgt     setf logtalk
+autocmds:708:    */log/{auth,cron,daemon,debug,kern,lpr,mail,messages,news/news,syslog,user}{,.log,.err,.info,.warn,.crit,.notice}{,.[0-9]*,-[0-9]*}
+autocmds:717:    *.mod     if getline(1) =~ '\<module\>' |   setf lprolog | else |   setf modsim3 | endif
+autocmds:874:    *.pdb     setf prolog
+autocmds:977:    catalog   setf catalog
+autocmds:978:    sgml.catalog*
+autocmds:979:              call s:StarSetf('catalog')
+autocmds:986:    .bash_logout*
+autocmds:1003:    tcsh.login
+autocmds:1005:    .login*   call s:CSH()
+autocmds:1008:    csh.login call s:CSH()
+autocmds:1009:    csh.logout
+autocmds:1019:    .zlog*    call s:StarSetf('zsh')
+autocmds:1182:    *.v       setf verilog
+autocmds:1183:    *.va      setf verilogams
+autocmds:1184:    *.vams    setf verilogams
+autocmds:1185:    *.sv      setf systemverilog
+autocmds:1186:    *.svh     setf systemverilog
+autocmds:1307:    bzr_log.* setf bzr
+autocmds:1319:              if getline(1) =~ '; urgency='|  call s:StarSetf('debchangelog')|else|  call s:StarSetf('changelog')|endif
+autocmds:1342:    */etc/logcheck/*.d*/*
+autocmds:1343:              call s:StarSetf('logcheck')
+autocmds:1390:    zlog*     call s:StarSetf('zsh')
+autocmds:1575:    changelog.Debian
+autocmds:1576:              setf debchangelog
+autocmds:1577:    changelog.dch
+autocmds:1578:              setf debchangelog
+autocmds:1580:              setf debchangelog
+autocmds:1581:    NEWS.dch  setf debchangelog
+autocmds:1583:              if getline(1) =~ '; urgency='|   setf debchangelog| else|   setf changelog| endif
+autocmds:1584:    NEWS      if getline(1) =~ '; urgency='|   setf debchangelog| endif
+autocmds:1876:    upstream.log\c
+autocmds:1877:              setf upstreamlog
+autocmds:1878:    upstream.*.log\c
+autocmds:1879:              setf upstreamlog
+autocmds:1880:    *.upstream.log\c
+autocmds:1881:              setf upstreamlog
+autocmds:1882:    upstreaminstall.log\c
+autocmds:1883:              setf upstreaminstalllog
+autocmds:1884:    upstreaminstall.*.log\c
+autocmds:1885:              setf upstreaminstalllog
+autocmds:1886:    *.upstreaminstall.log\c
+autocmds:1887:              setf upstreaminstalllog
+autocmds:1888:    usserver.log\c
+autocmds:1889:              setf usserverlog
+autocmds:1890:    usserver.*.log\c
+autocmds:1891:              setf usserverlog
+autocmds:1892:    *.usserver.log\c
+autocmds:1893:              setf usserverlog
+autocmds:1894:    usw2kagt.log\c
+autocmds:1895:              setf usw2kagtlog
+autocmds:1896:    usw2kagt.*.log\c
+autocmds:1897:              setf usw2kagtlog
+autocmds:1898:    *.usw2kagt.log\c
+autocmds:1899:              setf usw2kagtlog
+autocmds:1956:    *.sig     setf lprolog
+autocmds:1991:    */etc/login.access
+autocmds:1992:              setf loginaccess
+autocmds:1993:    */etc/login.defs
+autocmds:1994:              setf logindefs
+autocmds:1995:    *.lgt     setf logtalk
+autocmds:2065:    */log/{auth,cron,daemon,debug,kern,lpr,mail,messages,news/news,syslog,user}{,.log,.err,.info,.warn,.crit,.notice}{,.[0-9]*,-[0-9]*}
+autocmds:2074:    *.mod     if getline(1) =~ '\<module\>' |   setf lprolog | else |   setf modsim3 | endif
+autocmds:2231:    *.pdb     setf prolog
+autocmds:2334:    catalog   setf catalog
+autocmds:2335:    sgml.catalog*
+autocmds:2336:              call s:StarSetf('catalog')
+autocmds:2343:    .bash_logout*
+autocmds:2360:    tcsh.login
+autocmds:2362:    .login*   call s:CSH()
+autocmds:2365:    csh.login call s:CSH()
+autocmds:2366:    csh.logout
+autocmds:2376:    .zlog*    call s:StarSetf('zsh')
+autocmds:2539:    *.v       setf verilog
+autocmds:2540:    *.va      setf verilogams
+autocmds:2541:    *.vams    setf verilogams
+autocmds:2542:    *.sv      setf systemverilog
+autocmds:2543:    *.svh     setf systemverilog
+autocmds:2664:    bzr_log.* setf bzr
+autocmds:2676:              if getline(1) =~ '; urgency='|  call s:StarSetf('debchangelog')|else|  call s:StarSetf('changelog')|endif
+autocmds:2699:    */etc/logcheck/*.d*/*
+autocmds:2700:              call s:StarSetf('logcheck')
+autocmds:2747:    zlog*     call s:StarSetf('zsh')
+autocmds:3131:              call tablemode#logger#log('Table Mode Enabled')
+autocmds:3133:              call tablemode#logger#log('Table Mode Disabled')
+autoload\plug.vim:636:      \ (a:pull && !empty(s:system_chomp('git log --pretty=format:"%h" "HEAD...HEAD@{1}"', spec.dir)))
+autoload\plug.vim:855:      call s:log(self.new ? '+' : '*', self.name, self.result)
+autoload\plug.vim:904:  call s:log(job.error ? 'x' : '-', a:name, job.result)
+autoload\plug.vim:920:function! s:logpos(name)
+autoload\plug.vim:929:function! s:log(bullet, name, lines)
+autoload\plug.vim:931:    let pos = s:logpos(a:name)
+autoload\plug.vim:968:  call s:log(new ? '+' : '*', name, pull ? 'Updating ...' : 'Installing ...')
+autoload\plug.vim:1061:      cls.ON = int(vim.eval('get(g:, "plug_log_on", 0)'))
+autoload\plug.vim:1062:      cls.LOGDIR = os.path.expanduser(vim.eval('get(g:, "plug_logs", "~/plug_logs")'))
+autoload\plug.vim:1071:    with open(fname, 'ab') as flog:
+autoload\plug.vim:1074:      flog.write(msg.encode())
+autoload\plug.vim:1476:  logh  = proc {
+autoload\plug.vim:1484:  log   = proc { |name, result, type|
+autoload\plug.vim:1509:      logh.call
+autoload\plug.vim:1529:        log_prob = 1.0 / nthr
+autoload\plug.vim:1532:          log.call name, line.chomp, type if name && (first_line || rand < log_prob)
+autoload\plug.vim:1547:          log.call name, "Timeout. Will retry in #{countdown} second#{s} ...", type
+autoload\plug.vim:1550:        log.call name, 'Retrying ...', type
+autoload\plug.vim:1608:                  log.call name, 'Updating ...', :update
+autoload\plug.vim:1617:              log.call name, 'Installing ...', :install
+autoload\plug.vim:1623:          log.call name, result, ok
+autoload\plug.vim:1629:  logh.call
+autoload\plug.vim:1949:    let diff = s:system_chomp('git log --pretty=format:"%h %s (%cr)" "HEAD...HEAD@{1}"', v.dir)
+autoload\test\workflow.vader:1087:  Assert len(split(system('git log --oneline'), '\n')) == 1
+autoload\test\workflow.vader:1094:  Assert len(split(system('git log --oneline'), '\n')) > 1
+autoload\test\workflow.vader:1112:  Assert len(split(system('git log --oneline'), '\n')) > 1, 'not shallow'
+autoload\test\workflow.vader:1133:  Assert len(split(system('git log --oneline'), '\n')) > 1
+index.txt:205:100644 8990f5f052e5c222b31078f148cac9e95102c657 0	bundle/syntastic/autoload/syntastic/log.vim
+index.txt:1309:100644 e5cfddcfc915abcc46d1951e847cdfa6368cd9c0 0	bundle/syntastic/syntax_checkers/verilog/verilator.vim
+log.txt:1:autocmds:218:    changelog.Debian
+log.txt:2:autocmds:219:              setf debchangelog
+log.txt:3:autocmds:220:    changelog.dch
+log.txt:4:autocmds:221:              setf debchangelog
+log.txt:5:autocmds:223:              setf debchangelog
+log.txt:6:autocmds:224:    NEWS.dch  setf debchangelog
+log.txt:7:autocmds:226:              if getline(1) =~ '; urgency='|   setf debchangelog| else|   setf changelog| endif
+log.txt:8:autocmds:227:    NEWS      if getline(1) =~ '; urgency='|   setf debchangelog| endif
+log.txt:9:autocmds:519:    upstream.log\c
+log.txt:10:autocmds:520:              setf upstreamlog
+log.txt:11:autocmds:521:    upstream.*.log\c
+log.txt:12:autocmds:522:              setf upstreamlog
+log.txt:13:autocmds:523:    *.upstream.log\c
+log.txt:14:autocmds:524:              setf upstreamlog
+log.txt:15:autocmds:525:    upstreaminstall.log\c
+log.txt:16:autocmds:526:              setf upstreaminstalllog
+log.txt:17:autocmds:527:    upstreaminstall.*.log\c
+log.txt:18:autocmds:528:              setf upstreaminstalllog
+log.txt:19:autocmds:529:    *.upstreaminstall.log\c
+log.txt:20:autocmds:530:              setf upstreaminstalllog
+log.txt:21:autocmds:531:    usserver.log\c
+log.txt:22:autocmds:532:              setf usserverlog
+log.txt:23:autocmds:533:    usserver.*.log\c
+log.txt:24:autocmds:534:              setf usserverlog
+log.txt:25:autocmds:535:    *.usserver.log\c
+log.txt:26:autocmds:536:              setf usserverlog
+log.txt:27:autocmds:537:    usw2kagt.log\c
+log.txt:28:autocmds:538:              setf usw2kagtlog
+log.txt:29:autocmds:539:    usw2kagt.*.log\c
+log.txt:30:autocmds:540:              setf usw2kagtlog
+log.txt:31:autocmds:541:    *.usw2kagt.log\c
+log.txt:32:autocmds:542:              setf usw2kagtlog
+log.txt:33:autocmds:599:    *.sig     setf lprolog
+log.txt:34:autocmds:634:    */etc/login.access
+log.txt:35:autocmds:635:              setf loginaccess
+log.txt:36:autocmds:636:    */etc/login.defs
+log.txt:37:autocmds:637:              setf logindefs
+log.txt:38:autocmds:638:    *.lgt     setf logtalk
+log.txt:39:autocmds:708:    */log/{auth,cron,daemon,debug,kern,lpr,mail,messages,news/news,syslog,user}{,.log,.err,.info,.warn,.crit,.notice}{,.[0-9]*,-[0-9]*}
+log.txt:40:autocmds:717:    *.mod     if getline(1) =~ '\<module\>' |   setf lprolog | else |   setf modsim3 | endif
+log.txt:41:autocmds:874:    *.pdb     setf prolog
+log.txt:42:autocmds:977:    catalog   setf catalog
+log.txt:43:autocmds:978:    sgml.catalog*
+log.txt:44:autocmds:979:              call s:StarSetf('catalog')
+log.txt:45:autocmds:986:    .bash_logout*
+log.txt:46:autocmds:1003:    tcsh.login
+log.txt:47:autocmds:1005:    .login*   call s:CSH()
+log.txt:48:autocmds:1008:    csh.login call s:CSH()
+log.txt:49:autocmds:1009:    csh.logout
+log.txt:50:autocmds:1019:    .zlog*    call s:StarSetf('zsh')
+log.txt:51:autocmds:1182:    *.v       setf verilog
+log.txt:52:autocmds:1183:    *.va      setf verilogams
+log.txt:53:autocmds:1184:    *.vams    setf verilogams
+log.txt:54:autocmds:1185:    *.sv      setf systemverilog
+log.txt:55:autocmds:1186:    *.svh     setf systemverilog
+log.txt:56:autocmds:1307:    bzr_log.* setf bzr
+log.txt:57:autocmds:1319:              if getline(1) =~ '; urgency='|  call s:StarSetf('debchangelog')|else|  call s:StarSetf('changelog')|endif
+log.txt:58:autocmds:1342:    */etc/logcheck/*.d*/*
+log.txt:59:autocmds:1343:              call s:StarSetf('logcheck')
+log.txt:60:autocmds:1390:    zlog*     call s:StarSetf('zsh')
+log.txt:61:autocmds:1575:    changelog.Debian
+log.txt:62:autocmds:1576:              setf debchangelog
+log.txt:63:autocmds:1577:    changelog.dch
+log.txt:64:autocmds:1578:              setf debchangelog
+log.txt:65:autocmds:1580:              setf debchangelog
+log.txt:66:autocmds:1581:    NEWS.dch  setf debchangelog
+log.txt:67:autocmds:1583:              if getline(1) =~ '; urgency='|   setf debchangelog| else|   setf changelog| endif
+log.txt:68:autocmds:1584:    NEWS      if getline(1) =~ '; urgency='|   setf debchangelog| endif
+log.txt:69:autocmds:1876:    upstream.log\c
+log.txt:70:autocmds:1877:              setf upstreamlog
+log.txt:71:autocmds:1878:    upstream.*.log\c
+log.txt:72:autocmds:1879:              setf upstreamlog
+log.txt:73:autocmds:1880:    *.upstream.log\c
+log.txt:74:autocmds:1881:              setf upstreamlog
+log.txt:75:autocmds:1882:    upstreaminstall.log\c
+log.txt:76:autocmds:1883:              setf upstreaminstalllog
+log.txt:77:autocmds:1884:    upstreaminstall.*.log\c
+log.txt:78:autocmds:1885:              setf upstreaminstalllog
+log.txt:79:autocmds:1886:    *.upstreaminstall.log\c
+log.txt:80:autocmds:1887:              setf upstreaminstalllog
+log.txt:81:autocmds:1888:    usserver.log\c
+log.txt:82:autocmds:1889:              setf usserverlog
+log.txt:83:autocmds:1890:    usserver.*.log\c
+log.txt:84:autocmds:1891:              setf usserverlog
+log.txt:85:autocmds:1892:    *.usserver.log\c
+plugins\settingsSecondary.vim:355:nnoremap <space>gl :silent! Glog<CR>:bot copen<CR>
+Process.vim:20:    return log(a:a) / log(a:b)
+UK.dic:875:log
+UK.dic:1953:clog
+UK.dic:2496:flog
+UK.dic:3302:loge
+UK.dic:3303:logo
+UK.dic:3304:logs
+UK.dic:3305:logy
+UK.dic:4309:slog
+UK.dic:6232:clogs
+UK.dic:6291:colog
+UK.dic:7326:flogs
+UK.dic:7669:glogg
+UK.dic:8798:logan
+UK.dic:8799:loges
+UK.dic:8800:logia
+UK.dic:8801:logic
+UK.dic:8802:logie
+UK.dic:8803:logos
+UK.dic:9393:ology
+UK.dic:10802:slogs
+UK.dic:12548:alogia
+UK.dic:12604:analog
+UK.dic:14330:cloggy
+UK.dic:14438:cologs
+UK.dic:15848:eulogy
+UK.dic:18607:logged
+UK.dic:18608:logger
+UK.dic:18609:loggia
+UK.dic:18610:logier
+UK.dic:18611:logion
+UK.dic:18612:logjam
+UK.dic:18613:loglog
+UK.dic:19551:oology
+UK.dic:20568:putlog
+UK.dic:22093:slogan
+UK.dic:23596:unclog
+UK.dic:25078:analogy
+UK.dic:25187:antilog
+UK.dic:25240:apology
+UK.dic:25597:backlog
+UK.dic:26065:biology
+UK.dic:26261:bologna
+UK.dic:27074:catalog
+UK.dic:27591:clogged
+UK.dic:27592:clogger
+UK.dic:27743:cologne
+UK.dic:29431:eclogue
+UK.dic:29433:ecology
+UK.dic:29706:enology
+UK.dic:29944:eulogia
+UK.dic:30578:flogged
+UK.dic:30579:flogger
+UK.dic:31206:geology
+UK.dic:31857:halogen
+UK.dic:32271:homolog
+UK.dic:32509:illogic
+UK.dic:33816:logbook
+UK.dic:33817:loggers
+UK.dic:33818:loggias
+UK.dic:33819:logging
+UK.dic:33820:logical
+UK.dic:33821:logiest
+UK.dic:33822:logjams
+UK.dic:33823:loglogs
+UK.dic:34677:neology
+UK.dic:34842:noology
+UK.dic:35076:ologies
+UK.dic:35153:oralogy
+UK.dic:35192:orology
+UK.dic:35230:otology
+UK.dic:35376:ovology
+UK.dic:36769:putlogs
+UK.dic:38962:slogans
+UK.dic:38963:slogged
+UK.dic:38964:slogger
+UK.dic:40112:tagalog
+UK.dic:40875:trilogy
+UK.dic:41120:ufology
+UK.dic:41205:unclogs
+UK.dic:41538:urology
+UK.dic:42476:zoology
+UK.dic:42823:aerology
+UK.dic:42898:agrology
+UK.dic:42979:algology
+UK.dic:43019:allogamy
+UK.dic:43144:analogue
+UK.dic:43288:antilogy
+UK.dic:43351:apologia
+UK.dic:43352:apologue
+UK.dic:43783:axiology
+UK.dic:43821:backlogs
+UK.dic:44310:biologic
+UK.dic:45005:cacology
+UK.dic:45509:cetology
+UK.dic:45983:cloggier
+UK.dic:45984:clogging
+UK.dic:46176:collogue
+UK.dic:46185:cologned
+UK.dic:46186:colognes
+UK.dic:47008:cytology
+UK.dic:47587:dialogic
+UK.dic:47588:dialogue
+UK.dic:48042:doxology
+UK.dic:48203:duologue
+UK.dic:48247:dyslogia
+UK.dic:48308:eclogite
+UK.dic:48309:eclogues
+UK.dic:48311:ecologic
+UK.dic:48791:epilogue
+UK.dic:48959:ethology
+UK.dic:48965:etiology
+UK.dic:48976:eulogies
+UK.dic:48977:eulogise
+UK.dic:48978:eulogist
+UK.dic:48979:eulogize
+UK.dic:49468:fetology
+UK.dic:49772:floggers
+UK.dic:49773:flogging
+UK.dic:49907:footslog
+UK.dic:50449:gemology
+UK.dic:50478:geologer
+UK.dic:50479:geologic
+UK.dic:51164:halogens
+UK.dic:51636:hologamy
+UK.dic:51637:hologram
+UK.dic:51638:hologyny
+UK.dic:51670:homology
+UK.dic:51727:horologe
+UK.dic:51728:horology
+UK.dic:51832:hyalogen
+UK.dic:51906:idealogy
+UK.dic:51913:ideology
+UK.dic:52123:indology
+UK.dic:52463:isologue
+UK.dic:52752:kidology
+UK.dic:52760:kilogram
+UK.dic:53408:logbooks
+UK.dic:53409:logician
+UK.dic:53410:logicise
+UK.dic:53411:logicism
+UK.dic:53412:loginess
+UK.dic:53413:logistic
+UK.dic:53414:logogram
+UK.dic:53415:logotype
+UK.dic:53416:logotypy
+UK.dic:54122:monology
+UK.dic:54480:nomology
+UK.dic:54546:nosology
+UK.dic:54735:oenology
+UK.dic:54784:olograph
+UK.dic:54805:oncology
+UK.dic:54813:ontology
+UK.dic:54821:oologist
+UK.dic:54968:otologic
+UK.dic:55611:pedology
+UK.dic:55651:penology
+UK.dic:56134:podology
+UK.dic:56227:pomology
+UK.dic:56286:posology
+UK.dic:56597:prologue
+UK.dic:57960:rheology
+UK.dic:58905:serology
+UK.dic:58944:sexology
+UK.dic:59277:sinology
+UK.dic:59296:sitology
+UK.dic:59452:sloggers
+UK.dic:59453:slogging
+UK.dic:60940:tagalogs
+UK.dic:61264:theology
+UK.dic:61462:tocology
+UK.dic:61473:tokology
+UK.dic:61519:topology
+UK.dic:62004:typology
+UK.dic:62651:urologic
+UK.dic:62973:virology
+UK.dic:63172:waterlog
+UK.dic:63681:zoologic
+UK.dic:63701:zymology
+UK.dic:63807:acarology
+UK.dic:64039:aerologic
+UK.dic:64055:aetiology
+UK.dic:64149:aitiology
+UK.dic:64209:alkylogen
+UK.dic:64237:allogenic
+UK.dic:64238:allograft
+UK.dic:64239:allograph
+UK.dic:64407:analogies
+UK.dic:64408:analogist
+UK.dic:64409:analogous
+UK.dic:64410:analogues
+UK.dic:64470:angiology
+UK.dic:64581:anthology
+UK.dic:64682:apologias
+UK.dic:64683:apologies
+UK.dic:64684:apologise
+UK.dic:64685:apologist
+UK.dic:64686:apologize
+UK.dic:65005:astrology
+UK.dic:65099:audiology
+UK.dic:65692:biologies
+UK.dic:65693:biologist
+UK.dic:66539:carpology
+UK.dic:66609:catalogia
+UK.dic:66610:catalogue
+UK.dic:66972:chirology
+UK.dic:67030:chorology
+UK.dic:67222:cloggiest
+UK.dic:67403:collogued
+UK.dic:67404:collogues
+UK.dic:67689:coniology
+UK.dic:67851:coprology
+UK.dic:67944:cosmology
+UK.dic:68295:cyclogram
+UK.dic:68330:cytologic
+UK.dic:68462:decalogue
+UK.dic:68987:dialogism
+UK.dic:68988:dialogist
+UK.dic:68989:dialogize
+UK.dic:68990:dialoguer
+UK.dic:68991:dialogues
+UK.dic:69213:discology
+UK.dic:69674:duologues
+UK.dic:69784:ecologies
+UK.dic:69785:ecologist
+UK.dic:70172:enologies
+UK.dic:70322:epilogist
+UK.dic:70323:epilogues
+UK.dic:70412:erotology
+UK.dic:70510:ethnology
+UK.dic:70516:etiologic
+UK.dic:70519:etymology
+UK.dic:70536:eulogised
+UK.dic:70537:eulogiser
+UK.dic:70538:eulogises
+UK.dic:70539:eulogists
+UK.dic:70540:eulogized
+UK.dic:70541:eulogizer
+UK.dic:70542:eulogizes
+UK.dic:71414:footslogs
+UK.dic:71923:genealogy
+UK.dic:71952:geologers
+UK.dic:71953:geologies
+UK.dic:71954:geologise
+UK.dic:71955:geologist
+UK.dic:71956:geologize
+UK.dic:72536:hagiology
+UK.dic:72567:halogeton
+UK.dic:72625:haplology
+UK.dic:72941:hierology
+UK.dic:72971:hippology
+UK.dic:72988:histology
+UK.dic:73028:holograms
+UK.dic:73029:holograph
+UK.dic:73030:hologynic
+UK.dic:73057:homologic
+UK.dic:73058:homologue
+UK.dic:73103:hoplogogy
+UK.dic:73117:horologer
+UK.dic:73118:horologia
+UK.dic:73119:horologic
+UK.dic:73256:hydrology
+UK.dic:73278:hymnology
+UK.dic:73303:hypnology
+UK.dic:73347:ichnology
+UK.dic:73350:iconology
+UK.dic:73359:idealogue
+UK.dic:73365:ideologic
+UK.dic:73366:ideologue
+UK.dic:73392:ikonology
+UK.dic:73408:illogical
+UK.dic:74079:iridology
+UK.dic:74152:isologous
+UK.dic:74153:isologues
+UK.dic:74390:karyology
+UK.dic:74454:kilograms
+UK.dic:74512:koniology
+UK.dic:74762:leprology
+UK.dic:74955:lithology
+UK.dic:75015:logarithm
+UK.dic:75016:logically
+UK.dic:75017:logicians
+UK.dic:75018:logicised
+UK.dic:75019:logicises
+UK.dic:75020:logistics
+UK.dic:75021:logograms
+UK.dic:75022:logograph
+UK.dic:75023:logogriph
+UK.dic:75024:logomachy
+UK.dic:75025:logopathy
+UK.dic:75026:logopedia
+UK.dic:75027:logorrhea
+UK.dic:75028:logospasm
+UK.dic:75029:logotypes
+UK.dic:75284:mammalogy
+UK.dic:75379:mariology
+UK.dic:75656:metrology
+UK.dic:75775:monologic
+UK.dic:75776:monologue
+UK.dic:75829:mythology
+UK.dic:75911:necrology
+UK.dic:75943:neologies
+UK.dic:75944:neologise
+UK.dic:75945:neologism
+UK.dic:75946:neologist
+UK.dic:75947:neologize
+UK.dic:75964:nephology
+UK.dic:76002:neurology
+UK.dic:76205:noologies
+UK.dic:76222:nosologic
+UK.dic:76225:nostology
+UK.dic:76501:oncologic
+UK.dic:76527:oological
+UK.dic:76546:ophiology
+UK.dic:76584:oralogies
+UK.dic:76630:orologist
+UK.dic:76663:osteology
+UK.dic:76681:otologies
+UK.dic:76682:otologist
+UK.dic:76953:ovologist
+UK.dic:77002:paedology
+UK.dic:77135:paralogia
+UK.dic:77263:pathology
+UK.dic:77276:patrology
+UK.dic:77342:pedologic
+UK.dic:77402:pentalogy
+UK.dic:77566:pestology
+UK.dic:77580:petrology
+UK.dic:77609:phellogen
+UK.dic:77620:phenology
+UK.dic:77630:philology
+UK.dic:77651:phonology
+UK.dic:77690:phycology
+UK.dic:77695:phylogeny
+UK.dic:78106:posologic
+UK.dic:78505:prologued
+UK.dic:78506:prologues
+UK.dic:78770:pyelogram
+UK.dic:78891:quinology
+UK.dic:78945:radiology
+UK.dic:79937:rheologic
+UK.dic:79948:rhinology
+UK.dic:80300:sarcology
+UK.dic:80388:scalogram
+UK.dic:80410:scatology
+UK.dic:80708:semiology
+UK.dic:80798:serologic
+UK.dic:81036:sialogram
+UK.dic:81178:skatology
+UK.dic:81394:sociology
+UK.dic:82518:syllogise
+UK.dic:82519:syllogism
+UK.dic:82520:syllogize
+UK.dic:82532:symbology
+UK.dic:82707:tautology
+UK.dic:82762:teleology
+UK.dic:82895:tetralogy
+UK.dic:83325:tribology
+UK.dic:83378:trilogies
+UK.dic:83431:tropology
+UK.dic:83558:typologic
+UK.dic:83566:ufologist
+UK.dic:83677:unclogged
+UK.dic:84289:urologies
+UK.dic:84290:urologist
+UK.dic:84539:vexillogy
+UK.dic:84616:virologic
+UK.dic:85132:xylograph
+UK.dic:85202:zoologies
+UK.dic:85203:zoologist
+UK.dic:85227:zymologic
+UK.dic:85438:actinology
+UK.dic:85568:aerologist
+UK.dic:85681:algologist
+UK.dic:85728:allogamies
+UK.dic:85729:allogamous
+UK.dic:85730:allogeneic
+UK.dic:85731:allographs
+UK.dic:85877:analogical
+UK.dic:85878:analogists
+UK.dic:85932:angelology
+UK.dic:86052:antilogies
+UK.dic:86115:apologetic
+UK.dic:86116:apologised
+UK.dic:86117:apologiser
+UK.dic:86118:apologises
+UK.dic:86119:apologists
+UK.dic:86120:apologized
+UK.dic:86121:apologizer
+UK.dic:86122:apologizes
+UK.dic:86230:archeology
+UK.dic:86295:arthrology
+UK.dic:86404:astrologer
+UK.dic:86405:astrologic
+UK.dic:86498:autecology
+UK.dic:86520:autologous
+UK.dic:86573:axiologist
+UK.dic:86609:backlogged
+UK.dic:86663:balneology
+UK.dic:86959:bioecology
+UK.dic:86966:biological
+UK.dic:86967:biologists
+UK.dic:87222:brachylogy
+UK.dic:87644:cardiology
+UK.dic:87674:carphology
+UK.dic:87741:catalogued
+UK.dic:87742:cataloguer
+UK.dic:87743:catalogues
+UK.dic:87909:cetologist
+UK.dic:88025:cheirology
+UK.dic:88159:chronology
+UK.dic:88316:clogginess
+UK.dic:88387:codicology
+UK.dic:88465:colloguing
+UK.dic:88677:conchology
+UK.dic:89081:cosmologic
+UK.dic:89151:craniology
+UK.dic:89278:cryptology
+UK.dic:89357:cyclograms
+UK.dic:89358:cyclograph
+UK.dic:89391:cytologies
+UK.dic:89392:cytologist
+UK.dic:89708:deltiology
+UK.dic:89744:demonology
+UK.dic:89758:dendrology
+UK.dic:89790:deontology
+UK.dic:90044:dialogists
+UK.dic:90045:dialogized
+UK.dic:90046:dialogizes
+UK.dic:90047:dialoguers
+UK.dic:90565:doxologies
+UK.dic:90720:ecological
+UK.dic:90721:ecologists
+UK.dic:90798:egyptology
+UK.dic:90910:embryology
+UK.dic:91159:entomology
+UK.dic:91198:enzymology
+UK.dic:91294:epizoology
+UK.dic:91371:escapology
+UK.dic:91412:ethnologic
+UK.dic:91413:ethologies
+UK.dic:91414:ethologist
+UK.dic:91419:etiologies
+UK.dic:91420:etiologist
+UK.dic:91444:eulogisers
+UK.dic:91445:eulogising
+UK.dic:91446:eulogistic
+UK.dic:91447:eulogizers
+UK.dic:91448:eulogizing
+UK.dic:91605:exobiology
+UK.dic:91914:fetologies
+UK.dic:91915:fetologist
+UK.dic:92468:futurology
+UK.dic:92549:gastrology
+UK.dic:92584:gemologist
+UK.dic:92587:genealogic
+UK.dic:92619:geological
+UK.dic:92620:geologised
+UK.dic:92621:geologises
+UK.dic:92622:geologists
+UK.dic:92623:geologized
+UK.dic:92624:geologizes
+UK.dic:92643:geratology
+UK.dic:92696:glaciology
+UK.dic:92753:glossology
+UK.dic:92755:glottology
+UK.dic:92904:graphology
+UK.dic:93118:hagiologic
+UK.dic:93137:halogenate
+UK.dic:93138:halogenoid
+UK.dic:93139:halogenous
+UK.dic:93181:haplologic
+UK.dic:93345:hematology
+UK.dic:93465:heterology
+UK.dic:93504:hierologic
+UK.dic:93537:histologic
+UK.dic:93574:hologamies
+UK.dic:93575:hologamous
+UK.dic:93576:hologedral
+UK.dic:93577:holographs
+UK.dic:93578:holography
+UK.dic:93579:hologynies
+UK.dic:93607:homologate
+UK.dic:93608:homologies
+UK.dic:93609:homologise
+UK.dic:93610:homologize
+UK.dic:93611:homologous
+UK.dic:93652:horologers
+UK.dic:93653:horologist
+UK.dic:93654:horologium
+UK.dic:93770:hydrologic
+UK.dic:93813:hymnologic
+UK.dic:93856:hypnologic
+UK.dic:93933:idealogies
+UK.dic:93944:ideologies
+UK.dic:93945:ideologise
+UK.dic:93946:ideologist
+UK.dic:93947:ideologize
+UK.dic:93948:ideologues
+UK.dic:94039:immunology
+UK.dic:94272:indologist
+UK.dic:95060:kilogramme
+UK.dic:95150:lalognosis
+UK.dic:95498:lithologic
+UK.dic:95542:logagnosia
+UK.dic:95543:logamnesia
+UK.dic:95544:loganberry
+UK.dic:95545:loganstone
+UK.dic:95546:logaphasia
+UK.dic:95547:logarithms
+UK.dic:95548:loggerhead
+UK.dic:95549:logicality
+UK.dic:95550:logicising
+UK.dic:95551:logistical
+UK.dic:95552:logographs
+UK.dic:95553:logography
+UK.dic:95554:logogriphs
+UK.dic:95555:logopedics
+UK.dic:95556:logoplegia
+UK.dic:95557:logorrheic
+UK.dic:95558:logrolling
+UK.dic:95732:malacology
+UK.dic:95884:martyology
+UK.dic:96194:monologist
+UK.dic:96195:monologues
+UK.dic:96207:morphology
+UK.dic:96306:necrologic
+UK.dic:96350:nematology
+UK.dic:96356:neological
+UK.dic:96357:neologised
+UK.dic:96358:neologises
+UK.dic:96359:neologisms
+UK.dic:96360:neologists
+UK.dic:96361:neologized
+UK.dic:96362:neologizes
+UK.dic:96366:neontology
+UK.dic:96385:nephrology
+UK.dic:96419:neurologic
+UK.dic:96516:nomologist
+UK.dic:96553:nonlogical
+UK.dic:96604:noological
+UK.dic:96626:nosologies
+UK.dic:96627:nosologist
+UK.dic:96628:nostologic
+UK.dic:96677:numerology
+UK.dic:96771:oceanology
+UK.dic:96787:oculogyral
+UK.dic:96788:oculogyric
+UK.dic:96796:odontology
+UK.dic:96801:oenologies
+UK.dic:96802:oenologist
+UK.dic:96847:oncologies
+UK.dic:96848:oncologist
+UK.dic:96856:ontologist
+UK.dic:96939:organology
+UK.dic:96961:orological
+UK.dic:97010:osteologic
+UK.dic:97034:otological
+UK.dic:97035:otologists
+UK.dic:97291:ovologists
+UK.dic:97386:palynology
+UK.dic:97437:papyrology
+UK.dic:97468:paralogism
+UK.dic:97469:paralogist
+UK.dic:97588:pathologic
+UK.dic:97653:pedologies
+UK.dic:97654:pedologist
+UK.dic:97703:penologist
+UK.dic:97926:petrologic
+UK.dic:97965:phenologic
+UK.dic:97982:phlebology
+UK.dic:97989:phlogistic
+UK.dic:97990:phlogiston
+UK.dic:97991:phlogopite
+UK.dic:98009:phonologic
+UK.dic:98060:phrenology
+UK.dic:98068:phylogenic
+UK.dic:98076:physiology
+UK.dic:98285:pneumology
+UK.dic:98291:podologies
+UK.dic:98399:pomologist
+UK.dic:98446:posologies
+UK.dic:98486:potamology
+UK.dic:98522:praxeology
+UK.dic:98523:praxiology
+UK.dic:98827:proctology
+UK.dic:98884:prologuing
+UK.dic:99045:psephology
+UK.dic:99058:psychology
+UK.dic:99147:pyelograph
+UK.dic:99288:radiologic
+UK.dic:100212:rheologies
+UK.dic:100213:rheologist
+UK.dic:100228:rhinologic
+UK.dic:100590:scatologic
+UK.dic:100788:seismology
+UK.dic:100794:selenology
+UK.dic:100802:semeiology
+UK.dic:100919:serologies
+UK.dic:100920:serologist
+UK.dic:100943:sexologies
+UK.dic:100944:sexologist
+UK.dic:101078:sialogogue
+UK.dic:101167:sinologist
+UK.dic:101174:sitologies
+UK.dic:101339:sociologic
+UK.dic:101388:somatology
+UK.dic:101471:speciology
+UK.dic:101488:speleology
+UK.dic:101936:stylograph
+UK.dic:102374:syllogiser
+UK.dic:102375:syllogisms
+UK.dic:102376:syllogizer
+UK.dic:102423:synecology
+UK.dic:102484:tachylogia
+UK.dic:102573:technology
+UK.dic:102591:teleologic
+UK.dic:102664:teratology
+UK.dic:102747:theologian
+UK.dic:102748:theologies
+UK.dic:102749:theologise
+UK.dic:102750:theologist
+UK.dic:102751:theologize
+UK.dic:102905:tocologies
+UK.dic:102910:tokologies
+UK.dic:102948:topologies
+UK.dic:102949:topologist
+UK.dic:102997:toxicology
+UK.dic:103101:travelogue
+UK.dic:103147:trichology
+UK.dic:103248:trophology
+UK.dic:103251:tropologic
+UK.dic:103347:typhlology
+UK.dic:103352:typologist
+UK.dic:103496:unclogging
+UK.dic:104088:urbanology
+UK.dic:104110:urological
+UK.dic:104111:urologists
+UK.dic:104249:venerology
+UK.dic:104394:virologies
+UK.dic:104395:virologist
+UK.dic:104812:xylography
+UK.dic:104862:zoological
+UK.dic:104863:zoologists
+UK.dic:104879:zymologies
+UK.dic:104880:zymologist
+UK.dic:104957:acarologies
+UK.dic:105144:aerobiology
+UK.dic:105147:aerological
+UK.dic:105148:aerologists
+UK.dic:105161:aetiologies
+UK.dic:105222:agrobiology
+UK.dic:105224:agrostology
+UK.dic:105234:aitiologies
+UK.dic:105254:algological
+UK.dic:105255:algologists
+UK.dic:105281:allergology
+UK.dic:105295:allographic
+UK.dic:105390:amphibology
+UK.dic:105415:analogously
+UK.dic:105449:angiologies
+UK.dic:105525:anthologies
+UK.dic:105526:anthologise
+UK.dic:105527:anthologist
+UK.dic:105528:anthologize
+UK.dic:105625:apologisers
+UK.dic:105626:apologising
+UK.dic:105627:apologizers
+UK.dic:105628:apologizing
+UK.dic:105709:arachnology
+UK.dic:105728:archaeology
+UK.dic:105860:assyriology
+UK.dic:105876:astrologers
+UK.dic:105877:astrologist
+UK.dic:105934:audiologies
+UK.dic:105935:audiologist
+UK.dic:106007:axiological
+UK.dic:106008:axiologists
+UK.dic:106029:backlogging
+UK.dic:106269:biocenology
+UK.dic:106647:campanology
+UK.dic:106660:cancerology
+UK.dic:106757:cardiologic
+UK.dic:106789:carphologia
+UK.dic:106793:carpologist
+UK.dic:106838:cataloguers
+UK.dic:106839:cataloguing
+UK.dic:106840:cataloguist
+UK.dic:106982:cetological
+UK.dic:106983:cetologists
+UK.dic:107093:chirologies
+UK.dic:107140:chondrology
+UK.dic:107149:chorologist
+UK.dic:107294:climatology
+UK.dic:107425:cologarithm
+UK.dic:107720:coniologies
+UK.dic:107939:coprologies
+UK.dic:108013:cosmetology
+UK.dic:108017:cosmologist
+UK.dic:108133:criminology
+UK.dic:108163:cryobiology
+UK.dic:108236:cyclographs
+UK.dic:108277:cytological
+UK.dic:108278:cytologists
+UK.dic:108287:dactylogram
+UK.dic:108288:dactylology
+UK.dic:108589:dendrologic
+UK.dic:108699:dermatology
+UK.dic:108858:dialogistic
+UK.dic:108859:dialogizing
+UK.dic:109024:discologist
+UK.dic:109321:doxological
+UK.dic:109416:eccrinology
+UK.dic:109590:embryologic
+UK.dic:109782:entomologic
+UK.dic:109907:erotologist
+UK.dic:109933:eschatology
+UK.dic:109968:ethnologist
+UK.dic:109969:ethological
+UK.dic:109970:ethologists
+UK.dic:109973:etiological
+UK.dic:109974:etiologosts
+UK.dic:109975:etymologies
+UK.dic:109976:etymologise
+UK.dic:109977:etymologist
+UK.dic:109978:etymologize
+UK.dic:110360:fetologists
+UK.dic:110517:footslogged
+UK.dic:110518:footslogger
+UK.dic:110809:gastrologer
+UK.dic:110837:gemmologist
+UK.dic:110839:gemological
+UK.dic:110840:gemologists
+UK.dic:110842:genealogies
+UK.dic:110843:genealogist
+UK.dic:110878:geologising
+UK.dic:110879:geologizing
+UK.dic:110896:geratologic
+UK.dic:110909:gerontology
+UK.dic:110937:glaciologic
+UK.dic:111065:grammalogue
+UK.dic:111109:graphologic
+UK.dic:111188:gynaecology
+UK.dic:111212:haematology
+UK.dic:111233:hagiologies
+UK.dic:111234:hagiologist
+UK.dic:111253:halogenated
+UK.dic:111286:haplography
+UK.dic:111287:haplologies
+UK.dic:111400:hematologic
+UK.dic:111483:herpetology
+UK.dic:111545:hierologies
+UK.dic:111546:hierologist
+UK.dic:111563:hippologies
+UK.dic:111571:histologies
+UK.dic:111572:histologist
+UK.dic:111591:holographes
+UK.dic:111592:holographic
+UK.dic:111630:homologated
+UK.dic:111631:homologates
+UK.dic:111632:homological
+UK.dic:111633:homologised
+UK.dic:111634:homologiser
+UK.dic:111635:homologises
+UK.dic:111636:homologized
+UK.dic:111637:homologizes
+UK.dic:111668:hoplologist
+UK.dic:111673:horological
+UK.dic:111674:horologists
+UK.dic:111755:hydrologist
+UK.dic:111798:hymnologist
+UK.dic:111850:hypnologies
+UK.dic:111851:hypnologist
+UK.dic:111936:hysterology
+UK.dic:111947:ichthyology
+UK.dic:111952:iconologist
+UK.dic:111965:ideological
+UK.dic:111966:ideologised
+UK.dic:111967:ideologists
+UK.dic:111968:ideologized
+UK.dic:111969:ideologizes
+UK.dic:112013:illogically
+UK.dic:112070:immunologic
+UK.dic:112305:indologists
+UK.dic:112501:insectology
+UK.dic:112829:iridologist
+UK.dic:112986:karyologies
+UK.dic:113033:kinesiology
+UK.dic:113068:koniologies
+UK.dic:113150:laryngology
+UK.dic:113216:leprologies
+UK.dic:113217:leprologist
+UK.dic:113285:lichenology
+UK.dic:113356:lithologies
+UK.dic:113357:lithologist
+UK.dic:113395:logarithmal
+UK.dic:113396:logarithmic
+UK.dic:113397:loggerheads
+UK.dic:113398:logicalness
+UK.dic:113399:logistician
+UK.dic:113400:logographer
+UK.dic:113401:logographic
+UK.dic:113402:logogriphic
+UK.dic:113403:logomachies
+UK.dic:113404:logomachist
+UK.dic:113405:logopathies
+UK.dic:113554:malariology
+UK.dic:113582:mammalogist
+UK.dic:113676:martyrology
+UK.dic:113844:meteorology
+UK.dic:113845:methodology
+UK.dic:113924:mythologist
+UK.dic:113981:necrologied
+UK.dic:113982:necrologies
+UK.dic:113983:necrologist
+UK.dic:114027:neologising
+UK.dic:114028:neologistic
+UK.dic:114029:neologizing
+UK.dic:114031:neonatology
+UK.dic:114039:nephologist
+UK.dic:114073:neurologies
+UK.dic:114074:neurologise
+UK.dic:114075:neurologist
+UK.dic:114159:nomological
+UK.dic:114160:nomologists
+UK.dic:114315:nosological
+UK.dic:114316:nosologists
+UK.dic:114453:oenological
+UK.dic:114474:olfactology
+UK.dic:114496:oncological
+UK.dic:114497:oncologists
+UK.dic:114501:onomatology
+UK.dic:114506:ontological
+UK.dic:114507:ontologists
+UK.dic:114524:ophiologist
+UK.dic:114551:organologic
+UK.dic:114564:ornithology
+UK.dic:114590:oscillogram
+UK.dic:114604:osteologies
+UK.dic:114605:osteologist
+UK.dic:114873:paedologist
+UK.dic:115116:pathologies
+UK.dic:115117:pathologist
+UK.dic:115126:patrologist
+UK.dic:115167:pedological
+UK.dic:115168:pedologists
+UK.dic:115197:penological
+UK.dic:115198:penologists
+UK.dic:115206:pentalogies
+UK.dic:115409:pestologist
+UK.dic:115418:petrologies
+UK.dic:115419:petrologist
+UK.dic:115443:phenologies
+UK.dic:115444:phenologist
+UK.dic:115454:philologist
+UK.dic:115463:phlogogenic
+UK.dic:115475:phonologies
+UK.dic:115476:phonologist
+UK.dic:115525:phraseology
+UK.dic:115527:phrenologic
+UK.dic:115534:phycologist
+UK.dic:115539:phylogenies
+UK.dic:115547:physiologic
+UK.dic:115631:planetology
+UK.dic:115646:plasmalogen
+UK.dic:115839:pomological
+UK.dic:115873:posological
+UK.dic:116140:primatology
+UK.dic:116200:proctologic
+UK.dic:116421:psychologic
+UK.dic:116430:pteridology
+UK.dic:116488:pyelography
+UK.dic:116555:quinologies
+UK.dic:116556:quinologist
+UK.dic:116593:radiologies
+UK.dic:116594:radiologist
+UK.dic:116925:reflexology
+UK.dic:117385:rheological
+UK.dic:117386:rheologists
+UK.dic:117394:rhinologies
+UK.dic:117395:rhinologist
+UK.dic:117624:scatologies
+UK.dic:117625:scatologist
+UK.dic:117802:semiologies
+UK.dic:117861:serological
+UK.dic:117862:serologists
+UK.dic:117889:sexological
+UK.dic:117890:sexologists
+UK.dic:117965:sialogenous
+UK.dic:117966:sialography
+UK.dic:118023:sinologists
+UK.dic:118032:skatologies
+UK.dic:118094:sociologies
+UK.dic:118095:sociologist
+UK.dic:118132:somatologic
+UK.dic:118160:soteriology
+UK.dic:118474:stomatology
+UK.dic:118548:styloglossi
+UK.dic:118549:stylography
+UK.dic:118734:suicidology
+UK.dic:118916:syllogistic
+UK.dic:118939:synaptology
+UK.dic:118968:synecologic
+UK.dic:118995:syphilology
+UK.dic:119059:tautologies
+UK.dic:119060:tautologise
+UK.dic:119061:tautologist
+UK.dic:119062:tautologize
+UK.dic:119063:tautologous
+UK.dic:119080:technologic
+UK.dic:119106:teleologies
+UK.dic:119107:teleologism
+UK.dic:119108:teleologist
+UK.dic:119172:teratologic
+UK.dic:119179:terminology
+UK.dic:119215:tetralogies
+UK.dic:119236:thanatology
+UK.dic:119249:theologians
+UK.dic:119250:theological
+UK.dic:119251:theologised
+UK.dic:119252:theologiser
+UK.dic:119253:theologises
+UK.dic:119254:theologized
+UK.dic:119255:theologizer
+UK.dic:119256:theologizes
+UK.dic:119316:threpsology
+UK.dic:119394:topological
+UK.dic:119416:toxicologic
+UK.dic:119538:travelogues
+UK.dic:119660:tropologies
+UK.dic:119727:typological
+UK.dic:119728:typologists
+UK.dic:120449:venereology
+UK.dic:120501:vexillogist
+UK.dic:120549:virological
+UK.dic:120550:virologists
+UK.dic:120597:volcanology
+UK.dic:120620:vulcanology
+UK.dic:120659:waterlogged
+UK.dic:120811:xenobiology
+UK.dic:120830:xylographer
+UK.dic:120831:xylographic
+UK.dic:120998:actinologies
+UK.dic:121058:aerobiologic
+UK.dic:121180:amelogeneses
+UK.dic:121181:amelogenesis
+UK.dic:121225:analogically
+UK.dic:121264:angelologist
+UK.dic:121311:anthological
+UK.dic:121312:anthologised
+UK.dic:121313:anthologises
+UK.dic:121314:anthologists
+UK.dic:121315:anthologized
+UK.dic:121316:anthologizes
+UK.dic:121324:anthropology
+UK.dic:121464:archaeologic
+UK.dic:121470:archeologist
+UK.dic:121501:arthrologies
+UK.dic:121556:astrobiology
+UK.dic:121559:astrogeology
+UK.dic:121560:astrological
+UK.dic:121561:astrologists
+UK.dic:121587:audiological
+UK.dic:121588:audiologists
+UK.dic:121661:bacteriology
+UK.dic:121667:balneologies
+UK.dic:121668:balneologist
+UK.dic:121795:biocoenology
+UK.dic:121798:bioecologies
+UK.dic:121806:biologically
+UK.dic:121897:brachylogies
+UK.dic:121898:brachylogous
+UK.dic:122006:campanologer
+UK.dic:122087:cardiologies
+UK.dic:122088:cardiologist
+UK.dic:122110:carphologias
+UK.dic:122111:carphologies
+UK.dic:122112:carpological
+UK.dic:122113:carpologists
+UK.dic:122132:cataloguists
+UK.dic:122192:cephalogyric
+UK.dic:122259:cheirologies
+UK.dic:122332:chorologists
+UK.dic:122346:chromatology
+UK.dic:122359:chronologies
+UK.dic:122360:chronologist
+UK.dic:122456:climatologic
+UK.dic:122495:codicologist
+UK.dic:122543:cologarithms
+UK.dic:122698:conchologist
+UK.dic:123032:cosmological
+UK.dic:123033:cosmologists
+UK.dic:123101:craniologies
+UK.dic:123102:craniologist
+UK.dic:123127:criminologic
+UK.dic:123159:cryptologist
+UK.dic:123232:dactylograph
+UK.dic:123418:deltiologist
+UK.dic:123458:demonologies
+UK.dic:123459:demonologist
+UK.dic:123480:dendrologies
+UK.dic:123481:dendrologist
+UK.dic:123482:dendrologous
+UK.dic:123504:deontologies
+UK.dic:123505:deontologist
+UK.dic:123692:dialectology
+UK.dic:123772:diplogeneses
+UK.dic:123773:diplogenesis
+UK.dic:123829:discologists
+UK.dic:124133:dysteleology
+UK.dic:124144:ecclesiology
+UK.dic:124151:ecologically
+UK.dic:124188:egyptologist
+UK.dic:124281:embryologies
+UK.dic:124282:embryologist
+UK.dic:124422:entomologies
+UK.dic:124423:entomologise
+UK.dic:124424:entomologist
+UK.dic:124425:entomologize
+UK.dic:124447:enzymologies
+UK.dic:124448:enzymologist
+UK.dic:124462:epidemiology
+UK.dic:124486:epistemology
+UK.dic:124497:epizoologies
+UK.dic:124498:epizootology
+UK.dic:124533:erotological
+UK.dic:124534:erotologists
+UK.dic:124550:escapologist
+UK.dic:124578:ethnological
+UK.dic:124579:ethnologists
+UK.dic:124583:etymological
+UK.dic:124584:etymologised
+UK.dic:124585:etymologises
+UK.dic:124586:etymologists
+UK.dic:124587:etymologized
+UK.dic:124588:etymologizes
+UK.dic:124597:eulogistical
+UK.dic:124690:exobiologist
+UK.dic:124691:exocrinology
+UK.dic:125000:footsloggers
+UK.dic:125001:footslogging
+UK.dic:125132:futurologist
+UK.dic:125182:gastrologies
+UK.dic:125183:gastrologist
+UK.dic:125204:gemmologists
+UK.dic:125206:genealogical
+UK.dic:125207:genealogists
+UK.dic:125234:geologically
+UK.dic:125240:geopathology
+UK.dic:125248:geratologies
+UK.dic:125249:geratologous
+UK.dic:125273:glaciologist
+UK.dic:125300:glossologies
+UK.dic:125301:glottologies
+UK.dic:125324:gnotobiology
+UK.dic:125351:grammatology
+UK.dic:125372:graphologies
+UK.dic:125373:graphologist
+UK.dic:125425:gynaecologic
+UK.dic:125445:haematologic
+UK.dic:125466:hagiological
+UK.dic:125467:hagiologists
+UK.dic:125486:halogenating
+UK.dic:125487:halogenation
+UK.dic:125488:hamartiology
+UK.dic:125565:hematologies
+UK.dic:125566:hematologist
+UK.dic:125625:herpetologic
+UK.dic:125651:heterologies
+UK.dic:125652:heterologous
+UK.dic:125691:hierological
+UK.dic:125692:hierologists
+UK.dic:125705:histological
+UK.dic:125706:histologists
+UK.dic:125715:holographies
+UK.dic:125744:homologating
+UK.dic:125745:homologation
+UK.dic:125746:homologising
+UK.dic:125747:homologizing
+UK.dic:125833:hydrogeology
+UK.dic:125837:hydrological
+UK.dic:125838:hydrologists
+UK.dic:125868:hymnological
+UK.dic:125922:hypnological
+UK.dic:126000:ichnological
+UK.dic:126002:ichthyologic
+UK.dic:126008:iconological
+UK.dic:126009:iconologists
+UK.dic:126018:ideologising
+UK.dic:126019:ideologizing
+UK.dic:126050:illogicality
+UK.dic:126099:immunologies
+UK.dic:126100:immunologist
+UK.dic:126778:iridologists
+UK.dic:126915:killogrammes
+UK.dic:126924:kinesiologic
+UK.dic:126948:kremlinology
+UK.dic:127041:leprologists
+UK.dic:127118:lithologists
+UK.dic:127130:liturgiology
+UK.dic:127144:loganberries
+UK.dic:127145:loggerheaded
+UK.dic:127146:logistically
+UK.dic:127147:logisticians
+UK.dic:127148:logographers
+UK.dic:127149:logomachists
+UK.dic:127246:malacologist
+UK.dic:127271:mammalogical
+UK.dic:127272:mammalogists
+UK.dic:127320:martyrologic
+UK.dic:127444:metrological
+UK.dic:127448:microbiology
+UK.dic:127497:morphologist
+UK.dic:127510:mythological
+UK.dic:127511:mythologists
+UK.dic:127549:necrological
+UK.dic:127550:necrologists
+UK.dic:127575:nematologies
+UK.dic:127576:nematologist
+UK.dic:127581:neologically
+UK.dic:127582:neontologist
+UK.dic:127586:nephological
+UK.dic:127587:nephologists
+UK.dic:127590:nephrologies
+UK.dic:127591:nephrologist
+UK.dic:127610:neurobiology
+UK.dic:127629:neurological
+UK.dic:127630:neurologised
+UK.dic:127631:neurologists
+UK.dic:127877:numerologist
+UK.dic:127923:oceanologist
+UK.dic:127934:odontologies
+UK.dic:127935:odontologist
+UK.dic:127986:ophiological
+UK.dic:128026:organologies
+UK.dic:128027:organologist
+UK.dic:128037:orologically
+UK.dic:128062:oscellograph
+UK.dic:128064:oscillograph
+UK.dic:128085:osteological
+UK.dic:128086:osteologists
+UK.dic:128100:otologically
+UK.dic:128293:paedological
+UK.dic:128302:palaeotology
+UK.dic:128313:paleontology
+UK.dic:128328:palynologist
+UK.dic:128364:papyrologist
+UK.dic:128394:paralogistic
+UK.dic:128417:parasitology
+UK.dic:128478:pathological
+UK.dic:128479:pathologists
+UK.dic:128484:patrological
+UK.dic:128513:pennological
+UK.dic:128640:pestologists
+UK.dic:128648:petrological
+UK.dic:128649:petrologists
+UK.dic:128668:pharmacology
+UK.dic:128672:pharyngology
+UK.dic:128676:phenological
+UK.dic:128677:phenologists
+UK.dic:128692:philological
+UK.dic:128693:philologists
+UK.dic:128701:phlebologies
+UK.dic:128707:phlogogenous
+UK.dic:128721:phonological
+UK.dic:128722:phonologists
+UK.dic:128742:photobiology
+UK.dic:128752:photogeology
+UK.dic:128793:phrenologies
+UK.dic:128794:phrenologist
+UK.dic:128796:phthisiology
+UK.dic:128797:phycological
+UK.dic:128808:physiologies
+UK.dic:128809:physiologist
+UK.dic:128915:pneumatology
+UK.dic:128922:pneumologies
+UK.dic:129053:praxeologies
+UK.dic:129054:praxiologies
+UK.dic:129300:proctologies
+UK.dic:129301:proctologist
+UK.dic:129414:protistology
+UK.dic:129427:protozoology
+UK.dic:129439:psephologist
+UK.dic:129468:psychologies
+UK.dic:129469:psychologise
+UK.dic:129470:psychologism
+UK.dic:129471:psychologist
+UK.dic:129472:psychologize
+UK.dic:129487:ptyalography
+UK.dic:129515:pyelographic
+UK.dic:129586:quinologists
+UK.dic:129605:radiobiology
+UK.dic:129609:radioecology
+UK.dic:129616:radiological
+UK.dic:129617:radiologists
+UK.dic:129870:reflexologic
+UK.dic:130200:rheumatology
+UK.dic:130204:rhinological
+UK.dic:130205:rhinologists
+UK.dic:130343:scatological
+UK.dic:130455:seismologist
+UK.dic:130460:selenologist
+UK.dic:130466:semeiologies
+UK.dic:130484:semiological
+UK.dic:130530:serialograph
+UK.dic:130680:sociobiology
+UK.dic:130685:sociological
+UK.dic:130686:sociologists
+UK.dic:130721:somatologies
+UK.dic:130722:somatologist
+UK.dic:130749:soteriologic
+UK.dic:130794:speleologist
+UK.dic:130805:spermatology
+UK.dic:130971:stoichiology
+UK.dic:130975:stomatologic
+UK.dic:131050:styloglossus
+UK.dic:131051:stylographic
+UK.dic:131241:superlogical
+UK.dic:131380:syphilograph
+UK.dic:131411:tautological
+UK.dic:131421:technologies
+UK.dic:131422:technologist
+UK.dic:131437:teleological
+UK.dic:131463:teratologies
+UK.dic:131464:teratologist
+UK.dic:131507:thaumatology
+UK.dic:131518:theologising
+UK.dic:131519:theologizing
+UK.dic:131533:thermatology
+UK.dic:131662:toxicologies
+UK.dic:131663:toxicologist
+UK.dic:131789:traumatology
+UK.dic:131809:tribological
+UK.dic:131820:trichologies
+UK.dic:131872:trophologies
+UK.dic:131923:uloglossitis
+UK.dic:131955:unapologetic
+UK.dic:132380:urbanologist
+UK.dic:132467:venerologies
+UK.dic:132538:vitaminology
+UK.dic:132592:waterlogging
+UK.dic:132685:zoologically
+UK.dic:132688:zoopathology
+UK.dic:132763:acropathology
+UK.dic:132823:aerobiologies
+UK.dic:132824:aerobiologist
+UK.dic:132847:agrobiologist
+UK.dic:132849:agrostologist
+UK.dic:132858:algologically
+UK.dic:132865:allergologies
+UK.dic:132903:amphibologies
+UK.dic:132921:analogousness
+UK.dic:132936:angelologists
+UK.dic:132952:ankyloglossia
+UK.dic:132966:anthologising
+UK.dic:132967:anthologizing
+UK.dic:132970:anthropologic
+UK.dic:132998:antilogarithm
+UK.dic:133067:arachnologist
+UK.dic:133071:archaeologist
+UK.dic:133075:archeological
+UK.dic:133076:archeologists
+UK.dic:133131:assyriologist
+UK.dic:133167:autecological
+UK.dic:133202:axiologically
+UK.dic:133213:bacteriologic
+UK.dic:133227:balneological
+UK.dic:133228:balneologists
+UK.dic:133294:biopsychology
+UK.dic:133299:biotechnology
+UK.dic:133417:campanologers
+UK.dic:133418:campanologist
+UK.dic:133426:cancerologies
+UK.dic:133427:cancerologist
+UK.dic:133481:cardiological
+UK.dic:133482:cardiologists
+UK.dic:133645:chondrologies
+UK.dic:133690:chronobiology
+UK.dic:133694:chronological
+UK.dic:133695:chronologists
+UK.dic:133767:climatologist
+UK.dic:133789:codicological
+UK.dic:133790:codicologists
+UK.dic:133933:conchological
+UK.dic:133934:conchologists
+UK.dic:134150:cosmetologist
+UK.dic:134192:craniological
+UK.dic:134193:craniologists
+UK.dic:134209:criminologies
+UK.dic:134210:criminologist
+UK.dic:134220:cryobiologies
+UK.dic:134221:cryobiologist
+UK.dic:134234:cryptologists
+UK.dic:134242:crystallogram
+UK.dic:134280:cytologically
+UK.dic:134281:cytopathology
+UK.dic:134286:dactylography
+UK.dic:134287:dactylologies
+UK.dic:134424:deltiologists
+UK.dic:134456:demonological
+UK.dic:134457:demonologists
+UK.dic:134466:demythologise
+UK.dic:134467:demythologize
+UK.dic:134476:dendrological
+UK.dic:134477:dendrologists
+UK.dic:134496:deontological
+UK.dic:134497:deontologists
+UK.dic:134540:dermatologies
+UK.dic:134541:dermatologist
+UK.dic:134634:dialogistical
+UK.dic:134902:doxologically
+UK.dic:134935:eccrinologies
+UK.dic:134966:egyptological
+UK.dic:134967:egyptologists
+UK.dic:134978:electrologist
+UK.dic:135028:embryological
+UK.dic:135029:embryologists
+UK.dic:135048:encephalogram
+UK.dic:135070:endocrinology
+UK.dic:135111:entomological
+UK.dic:135112:entomologised
+UK.dic:135113:entomologises
+UK.dic:135114:entomologists
+UK.dic:135115:entomologized
+UK.dic:135116:entomologizes
+UK.dic:135130:enzymological
+UK.dic:135131:enzymologists
+UK.dic:135143:epidemiologic
+UK.dic:135164:epizootiology
+UK.dic:135198:escapologists
+UK.dic:135199:eschatologist
+UK.dic:135217:ethologically
+UK.dic:135219:etiologically
+UK.dic:135221:etymologising
+UK.dic:135222:etymologizing
+UK.dic:135271:exobiological
+UK.dic:135272:exobiologists
+UK.dic:135536:futurologists
+UK.dic:135562:gastrological
+UK.dic:135563:gastrologists
+UK.dic:135591:geochronology
+UK.dic:135595:geomorphology
+UK.dic:135608:gerontologies
+UK.dic:135609:gerontologist
+UK.dic:135620:glaciological
+UK.dic:135621:glaciologists
+UK.dic:135681:graphological
+UK.dic:135682:graphologists
+UK.dic:135702:gynaecologies
+UK.dic:135703:gynaecologist
+UK.dic:135715:haematologist
+UK.dic:135721:haemorheology
+UK.dic:135738:halogenations
+UK.dic:135742:haplographies
+UK.dic:135767:helminthology
+UK.dic:135772:hematological
+UK.dic:135773:hematologists
+UK.dic:135814:heresiologist
+UK.dic:135821:herpetologist
+UK.dic:135868:holographical
+UK.dic:135887:homologically
+UK.dic:135888:homolographic
+UK.dic:136048:hysterologies
+UK.dic:136060:ichthyologist
+UK.dic:136069:ideologically
+UK.dic:136084:illogicalness
+UK.dic:136115:immunological
+UK.dic:136116:immunologists
+UK.dic:136787:kinesiologies
+UK.dic:136829:laryngologies
+UK.dic:136830:laryngologist
+UK.dic:136932:logarithmical
+UK.dic:136933:logogrammatic
+UK.dic:136934:logographical
+UK.dic:137011:malacological
+UK.dic:137012:malacologists
+UK.dic:137020:malariologies
+UK.dic:137021:malariologist
+UK.dic:137060:martyrologies
+UK.dic:137061:martyrologist
+UK.dic:137157:meteorologist
+UK.dic:137158:methodologies
+UK.dic:137190:morphological
+UK.dic:137191:morphologists
+UK.dic:137230:nematological
+UK.dic:137231:nematologists
+UK.dic:137237:neologistical
+UK.dic:137238:neonatologist
+UK.dic:137239:neontologists
+UK.dic:137246:nephrologists
+UK.dic:137275:neurologising
+UK.dic:137307:nomologically
+UK.dic:137477:nosologically
+UK.dic:137493:numerological
+UK.dic:137494:numerologists
+UK.dic:137495:numismatology
+UK.dic:137530:oceanologists
+UK.dic:137533:ododntologist
+UK.dic:137537:odontological
+UK.dic:137538:odontologists
+UK.dic:137550:olfactologies
+UK.dic:137564:onomatologies
+UK.dic:137567:ontologically
+UK.dic:137582:ophthalmology
+UK.dic:137603:organological
+UK.dic:137614:ornithologist
+UK.dic:137628:oscillography
+UK.dic:137799:palaeontology
+UK.dic:137800:palaeozoology
+UK.dic:137818:palynological
+UK.dic:137837:papyrological
+UK.dic:137851:parallelogram
+UK.dic:137869:parasitologic
+UK.dic:138068:pharmacologia
+UK.dic:138069:pharmacologic
+UK.dic:138112:phlogogenetic
+UK.dic:138127:photobiologic
+UK.dic:138158:phraseologies
+UK.dic:138159:phraseologist
+UK.dic:138168:phrenological
+UK.dic:138169:phrenologists
+UK.dic:138182:physiological
+UK.dic:138183:physiologists
+UK.dic:138216:planetologist
+UK.dic:138258:pneumological
+UK.dic:138318:polysyllogism
+UK.dic:138324:pomologically
+UK.dic:138362:praxeological
+UK.dic:138556:proctological
+UK.dic:138557:proctologists
+UK.dic:138669:psephologists
+UK.dic:138697:psychobiology
+UK.dic:138712:psychological
+UK.dic:138713:psychologised
+UK.dic:138714:psychologises
+UK.dic:138715:psychologists
+UK.dic:138716:psychologized
+UK.dic:138717:psychologizes
+UK.dic:138732:pteridologist
+UK.dic:138750:pyelographies
+UK.dic:138818:radiobiologic
+UK.dic:138826:radiologieses
+UK.dic:139009:reflexologies
+UK.dic:139010:reflexologist
+UK.dic:139260:roentgenology
+UK.dic:139392:sedimentology
+UK.dic:139401:seismological
+UK.dic:139402:seismologists
+UK.dic:139406:selenological
+UK.dic:139407:selenologists
+UK.dic:139408:semeiological
+UK.dic:139474:serologically
+UK.dic:139505:sialographies
+UK.dic:139561:somatological
+UK.dic:139598:sovietologist
+UK.dic:139620:speleological
+UK.dic:139621:speleologists
+UK.dic:139666:splanchnology
+UK.dic:139752:stomatologies
+UK.dic:139753:stomatologist
+UK.dic:139880:suicidologies
+UK.dic:139881:suicidologist
+UK.dic:139985:syllepsiology
+UK.dic:139986:syllogisation
+UK.dic:139987:syllogization
+UK.dic:140006:synaptologies
+UK.dic:140023:syphilography
+UK.dic:140024:syphilologies
+UK.dic:140025:syphilologist
+UK.dic:140034:systematology
+UK.dic:140064:technological
+UK.dic:140065:technologists
+UK.dic:140104:teratological
+UK.dic:140105:teratologists
+UK.dic:140117:terminologies
+UK.dic:140118:terminologist
+UK.dic:140143:thanatologies
+UK.dic:140154:theologically
+UK.dic:140207:thremmatology
+UK.dic:140208:threpsologies
+UK.dic:140242:topologically
+UK.dic:140253:toxicological
+UK.dic:140254:toxicologists
+UK.dic:140426:typologically
+UK.dic:140656:unphysiologic
+UK.dic:140742:urbanologists
+UK.dic:140797:venereologies
+UK.dic:140798:venereologist
+UK.dic:140853:virologically
+UK.dic:140882:volcanologist
+UK.dic:140890:vulcanologist
+UK.dic:140929:xenobiologies
+UK.dic:141014:aerobiological
+UK.dic:141015:aerobiologists
+UK.dic:141034:agrobiological
+UK.dic:141035:agrobiologists
+UK.dic:141036:agrostological
+UK.dic:141037:agrostologists
+UK.dic:141087:anesthesiology
+UK.dic:141104:anthropologies
+UK.dic:141105:anthropologist
+UK.dic:141132:antilogarithms
+UK.dic:141143:antiphlogistic
+UK.dic:141161:apologetically
+UK.dic:141178:arachnologists
+UK.dic:141180:archaeological
+UK.dic:141181:archaeologists
+UK.dic:141182:archaeozoology
+UK.dic:141219:assyriologists
+UK.dic:141224:astrobiologies
+UK.dic:141225:astrobiologist
+UK.dic:141227:astrogeologist
+UK.dic:141228:astrologically
+UK.dic:141239:audiologically
+UK.dic:141275:bacteriologies
+UK.dic:141276:bacteriologist
+UK.dic:141309:bioclimatology
+UK.dic:141381:campanological
+UK.dic:141382:campanologists
+UK.dic:141385:cancerologists
+UK.dic:141413:carphologieses
+UK.dic:141464:characterology
+UK.dic:141543:chromatologist
+UK.dic:141594:climatological
+UK.dic:141595:climatologists
+UK.dic:141812:cosmetologists
+UK.dic:141815:cosmologically
+UK.dic:141864:criminological
+UK.dic:141865:criminologists
+UK.dic:141869:cryobiological
+UK.dic:141870:cryobiologists
+UK.dic:141901:cytomorphology
+UK.dic:141908:cytotechnology
+UK.dic:141917:dactylographer
+UK.dic:141918:dactylographic
+UK.dic:142011:demythologised
+UK.dic:142012:demythologises
+UK.dic:142013:demythologized
+UK.dic:142014:demythologizes
+UK.dic:142062:dermatological
+UK.dic:142063:dermatologists
+UK.dic:142109:dialectologist
+UK.dic:142316:dysteleologist
+UK.dic:142322:ecclesiologies
+UK.dic:142323:ecclesiologist
+UK.dic:142346:electrobiology
+UK.dic:142357:electrologists
+UK.dic:142392:encaphalograph
+UK.dic:142397:encephalograms
+UK.dic:142398:encephalograph
+UK.dic:142405:endocrinologic
+UK.dic:142427:entomologising
+UK.dic:142428:entomologizing
+UK.dic:142435:epidemiologies
+UK.dic:142436:epidemiologist
+UK.dic:142452:epistemologist
+UK.dic:142458:epizootologies
+UK.dic:142483:eschatological
+UK.dic:142484:eschatologists
+UK.dic:142491:ethnologically
+UK.dic:142492:etymologically
+UK.dic:142494:eulogistically
+UK.dic:142527:exocrinologies
+UK.dic:142683:genealogically
+UK.dic:142694:geomorphologic
+UK.dic:142695:geopathologies
+UK.dic:142699:gerontological
+UK.dic:142700:gerontologists
+UK.dic:142722:gnotobiologies
+UK.dic:142727:grammatologist
+UK.dic:142749:gynaecological
+UK.dic:142750:gynaecologists
+UK.dic:142765:haematological
+UK.dic:142766:haematologists
+UK.dic:142824:heresiologists
+UK.dic:142828:herpetological
+UK.dic:142829:herpetologists
+UK.dic:142867:histologically
+UK.dic:142868:histopathology
+UK.dic:142905:hydrogeologies
+UK.dic:142906:hydrogeologist
+UK.dic:142909:hydrologically
+UK.dic:143021:ichthyological
+UK.dic:143022:ichthyologists
+UK.dic:143444:kinesiological
+UK.dic:143447:kremlinologist
+UK.dic:143463:laryngological
+UK.dic:143464:laryngologists
+UK.dic:143535:lithologically
+UK.dic:143579:macrosociology
+UK.dic:143589:malariologists
+UK.dic:143610:martyrological
+UK.dic:143649:meteorological
+UK.dic:143650:meteorologists
+UK.dic:143651:methodological
+UK.dic:143653:microbiologist
+UK.dic:143700:neonatologists
+UK.dic:143712:neurobiologies
+UK.dic:143713:neurobiologist
+UK.dic:143724:neurologically
+UK.dic:143727:neuropathology
+UK.dic:143808:nonideological
+UK.dic:143915:ophthalmologic
+UK.dic:143943:ornithological
+UK.dic:143944:ornithologists
+UK.dic:143958:oscillographic
+UK.dic:143973:osteologically
+UK.dic:143980:otolaryngology
+UK.dic:144087:palaeethnology
+UK.dic:144091:palaeotologist
+UK.dic:144102:paleontologist
+UK.dic:144133:parallelograms
+UK.dic:144139:parapsychology
+UK.dic:144142:parasitologies
+UK.dic:144143:parasitologist
+UK.dic:144168:pathologically
+UK.dic:144179:pennologically
+UK.dic:144215:periodontology
+UK.dic:144254:petrologically
+UK.dic:144263:pharmacologias
+UK.dic:144264:pharmacologies
+UK.dic:144265:pharmacologist
+UK.dic:144272:pharyngologies
+UK.dic:144273:pharyngologist
+UK.dic:144279:phenologically
+UK.dic:144290:philologically
+UK.dic:144302:phonologically
+UK.dic:144316:photobiologies
+UK.dic:144317:photobiologist
+UK.dic:144351:phraseological
+UK.dic:144356:phthisiologies
+UK.dic:144357:phthisiologist
+UK.dic:144365:phytopathology
+UK.dic:144366:phytosociology
+UK.dic:144374:planetologists
+UK.dic:144403:pneumatologist
+UK.dic:144677:protistologies
+UK.dic:144678:protistologist
+UK.dic:144685:protozoologies
+UK.dic:144686:protozoologist
+UK.dic:144718:psychlologised
+UK.dic:144726:psychobiologic
+UK.dic:144734:psychologising
+UK.dic:144735:psychologistic
+UK.dic:144736:psychologizing
+UK.dic:144751:pteridological
+UK.dic:144753:ptyalographies
+UK.dic:144804:radiobiologies
+UK.dic:144805:radiobiologist
+UK.dic:144809:radioecologies
+UK.dic:144810:radioecologist
+UK.dic:144812:radiologically
+UK.dic:144923:reflexological
+UK.dic:144924:reflexologists
+UK.dic:145060:rheumatologies
+UK.dic:145061:rheumatologist
+UK.dic:145075:roentgenologic
+UK.dic:145264:sociologically
+UK.dic:145273:somatotypology
+UK.dic:145280:soteriological
+UK.dic:145381:stomatological
+UK.dic:145382:stomatologists
+UK.dic:145459:suicidologists
+UK.dic:145566:symptomatology
+UK.dic:145582:syphilographer
+UK.dic:145583:syphilologists
+UK.dic:145592:tautologically
+UK.dic:145602:teleologically
+UK.dic:145618:terminological
+UK.dic:145619:terminologists
+UK.dic:145620:terotechnology
+UK.dic:145639:theologisation
+UK.dic:145640:theologization
+UK.dic:145646:thermatologies
+UK.dic:145770:traumatologies
+UK.dic:145858:unapologetical
+UK.dic:146074:venereological
+UK.dic:146075:venereologists
+UK.dic:146078:ventriculogram
+UK.dic:146095:vesiculography
+UK.dic:146110:vitaminologies
+UK.dic:146111:vitellogeneses
+UK.dic:146112:vitellogenesis
+UK.dic:146123:volcanological
+UK.dic:146124:volcanologists
+UK.dic:146128:vulcanological
+UK.dic:146153:zoopathologies
+UK.dic:146183:acropathologies
+UK.dic:146231:anaesthesiology
+UK.dic:146248:anthropological
+UK.dic:146249:anthropologists
+UK.dic:146270:antilogarithmic
+UK.dic:146320:astrobiological
+UK.dic:146321:astrobiologists
+UK.dic:146323:astrogeologists
+UK.dic:146347:bacteriological
+UK.dic:146348:bacteriologists
+UK.dic:146367:biopsychologies
+UK.dic:146369:biotechnologies
+UK.dic:146459:characterologic
+UK.dic:146504:chromatologists
+UK.dic:146511:chronobiologist
+UK.dic:146513:chronologically
+UK.dic:146716:craniologically
+UK.dic:146724:crystallography
+UK.dic:146734:cytopathologies
+UK.dic:146747:dactylographies
+UK.dic:146809:demythologising
+UK.dic:146810:demythologizing
+UK.dic:146873:dialectological
+UK.dic:146874:dialectologists
+UK.dic:146993:dysteleological
+UK.dic:146994:dysteleologists
+UK.dic:146997:ecclesiological
+UK.dic:146998:ecclesiologists
+UK.dic:147000:ecophysiologist
+UK.dic:147034:embryologically
+UK.dic:147039:encephalographs
+UK.dic:147040:encephalography
+UK.dic:147042:endocrinologies
+UK.dic:147043:endocrinologist
+UK.dic:147054:entomologically
+UK.dic:147057:epidemiological
+UK.dic:147058:epidemiologists
+UK.dic:147066:epistemological
+UK.dic:147067:epistemologists
+UK.dic:147073:epizootiologies
+UK.dic:147093:ethnomusicology
+UK.dic:147193:geomorphologist
+UK.dic:147211:grammatologists
+UK.dic:147246:helminthologies
+UK.dic:147247:helminthologist
+UK.dic:147303:histopathologic
+UK.dic:147304:histophysiology
+UK.dic:147308:holographically
+UK.dic:147331:hydrogeological
+UK.dic:147332:hydrogeologists
+UK.dic:147442:immunohistology
+UK.dic:147443:immunologically
+UK.dic:147444:immunopathology
+UK.dic:147711:kinesiologicing
+UK.dic:147718:kremlinologists
+UK.dic:147763:logographically
+UK.dic:147853:morphologically
+UK.dic:147870:neologistically
+UK.dic:147881:neurobiological
+UK.dic:147882:neurobiologists
+UK.dic:147895:neuropathologic
+UK.dic:147896:neurophysiology
+UK.dic:147898:neuropsychology
+UK.dic:148005:numerologically
+UK.dic:148006:numismatologist
+UK.dic:148038:ophthalmologies
+UK.dic:148039:ophthalmologist
+UK.dic:148061:oscillographies
+UK.dic:148148:palaeontologist
+UK.dic:148150:palaeotological
+UK.dic:148151:palaeozoologist
+UK.dic:148158:paleontologists
+UK.dic:148177:parasitological
+UK.dic:148178:parasitologists
+UK.dic:148203:pathomorphology
+UK.dic:148204:pathophysiology
+UK.dic:148205:pathopsychology
+UK.dic:148258:pharmacological
+UK.dic:148259:pharmacologists
+UK.dic:148264:pharyngological
+UK.dic:148268:phenomenologist
+UK.dic:148302:photobiological
+UK.dic:148303:photobiologists
+UK.dic:148336:phrenologically
+UK.dic:148337:phthisiologists
+UK.dic:148342:physiologically
+UK.dic:148343:physiopathology
+UK.dic:148351:phytopathologic
+UK.dic:148382:pneumatological
+UK.dic:148505:protistologists
+UK.dic:148508:protozoologists
+UK.dic:148540:psychobiologies
+UK.dic:148541:psychobiologist
+UK.dic:148552:psychologically
+UK.dic:148554:psychopathology
+UK.dic:148602:radiobiological
+UK.dic:148603:radiobiologists
+UK.dic:148606:radioecologists
+UK.dic:148726:rheumatological
+UK.dic:148727:rheumatologists
+UK.dic:148737:roentgenologies
+UK.dic:148738:roentgenologist
+UK.dic:148787:seismologically
+UK.dic:148878:splanchnologies
+UK.dic:148903:stoichiological
+UK.dic:148998:syllepsiologies
+UK.dic:148999:syllogistically
+UK.dic:149013:symptomatologic
+UK.dic:149022:syphilographies
+UK.dic:149031:technologically
+UK.dic:149066:thanatobiologic
+UK.dic:149110:toxicologically
+UK.dic:149256:unphysiological
+UK.dic:149373:aerobiologically
+UK.dic:149387:anesthesiologies
+UK.dic:149388:anesthesiologist
+UK.dic:149422:archaeologically
+UK.dic:149424:archaeozoologist
+UK.dic:149450:biochemorphology
+UK.dic:149451:bioclimatologies
+UK.dic:149457:biotechnological
+UK.dic:149492:characterologies
+UK.dic:149493:characterologist
+UK.dic:149531:chronobiologists
+UK.dic:149553:climatologically
+UK.dic:149651:criminologically
+UK.dic:149652:cryobiologically
+UK.dic:149654:crystallographer
+UK.dic:149655:crystallographic
+UK.dic:149659:cystopyelography
+UK.dic:149662:cytomorphologies
+UK.dic:149664:cytotechnologies
+UK.dic:149665:cytotechnologist
+UK.dic:149696:dendrochronology
+UK.dic:149712:dermatohistology
+UK.dic:149713:dermatopathology
+UK.dic:149798:ecophysiologists
+UK.dic:149803:electrobiologies
+UK.dic:149813:electrooculogram
+UK.dic:149825:encephalographic
+UK.dic:149830:endocrinological
+UK.dic:149831:endocrinologists
+UK.dic:149855:eschatologically
+UK.dic:149860:ethnomethodology
+UK.dic:149909:gastroenterology
+UK.dic:149911:geochronological
+UK.dic:149912:geomorphological
+UK.dic:149913:geomorphologists
+UK.dic:149916:glottochronology
+UK.dic:149937:helminthological
+UK.dic:149938:helminthologists
+UK.dic:149957:herpetologically
+UK.dic:149969:histopathologies
+UK.dic:149970:histopathologist
+UK.dic:149971:histophysiologic
+UK.dic:149981:hydrometeorology
+UK.dic:150025:ichthyologically
+UK.dic:150033:immunohematology
+UK.dic:150034:immunohistologic
+UK.dic:150035:immunopathologic
+UK.dic:150211:laryngologically
+UK.dic:150216:laryngorhinology
+UK.dic:150252:macrosociologies
+UK.dic:150272:medicopsychology
+UK.dic:150283:methodologically
+UK.dic:150305:neuropathologies
+UK.dic:150306:neuropathologist
+UK.dic:150307:neurophysiologic
+UK.dic:150333:nonphysiological
+UK.dic:150344:numismatologists
+UK.dic:150358:ophthalmological
+UK.dic:150359:ophthalmologists
+UK.dic:150374:ornithologically
+UK.dic:150380:oscillographical
+UK.dic:150389:otolaryngologies
+UK.dic:150390:otolaryngologist
+UK.dic:150421:palaeethnologist
+UK.dic:150422:palaeontological
+UK.dic:150423:palaeontologists
+UK.dic:150424:palaeozoological
+UK.dic:150441:parapsychologies
+UK.dic:150442:parapsychologist
+UK.dic:150450:pathomorphologic
+UK.dic:150451:pathophysiologic
+UK.dic:150459:periodontologies
+UK.dic:150481:phenomenological
+UK.dic:150535:phraseologically
+UK.dic:150537:physiopathologic
+UK.dic:150541:phytopathologies
+UK.dic:150542:phytopathologist
+UK.dic:150543:phytosociologist
+UK.dic:150637:psychobiological
+UK.dic:150638:psychobiologists
+UK.dic:150644:psychopathologic
+UK.dic:150647:psychophysiology
+UK.dic:150689:reflexologically
+UK.dic:150716:rhinolaryngology
+UK.dic:150724:roentgenological
+UK.dic:150725:roentgenologists
+UK.dic:150750:selenomorphology
+UK.dic:150777:somatotypologies
+UK.dic:150870:symptomatologies
+UK.dic:150891:terminologically
+UK.dic:150975:unapologetically
+UK.dic:151051:ventriculography
+UK.dic:151055:vesiculographies
+UK.dic:151077:anesthesiologists
+UK.dic:151082:anthropologically
+UK.dic:151100:archaeozoologists
+UK.dic:151104:astrobiologically
+UK.dic:151113:bacteriologically
+UK.dic:151138:characterological
+UK.dic:151139:characterologists
+UK.dic:151176:clinicopathologic
+UK.dic:151245:crystallographers
+UK.dic:151246:crystallographies
+UK.dic:151251:cytomorphological
+UK.dic:151254:cytotechnologists
+UK.dic:151275:demythologisation
+UK.dic:151276:demythologization
+UK.dic:151300:dialectologically
+UK.dic:151333:ecclesiologically
+UK.dic:151351:electrophysiology
+UK.dic:151356:electrotechnology
+UK.dic:151361:encephalographies
+UK.dic:151371:epidemiologically
+UK.dic:151373:epistemologically
+UK.dic:151378:ethnomusicologist
+UK.dic:151426:histopathological
+UK.dic:151427:histopathologists
+UK.dic:151428:histophysiologies
+UK.dic:151454:immunohematologic
+UK.dic:151455:immunohistologies
+UK.dic:151456:immunopathologies
+UK.dic:151457:immunopathologist
+UK.dic:151588:logogrammatically
+UK.dic:151606:macrosociological
+UK.dic:151632:neuropathological
+UK.dic:151633:neuropathologists
+UK.dic:151634:neuropharmacology
+UK.dic:151635:neurophysiologies
+UK.dic:151636:neurophysiologist
+UK.dic:151639:neuropsychologies
+UK.dic:151640:neuropsychologist
+UK.dic:151685:otolaryngological
+UK.dic:151686:otolaryngologists
+UK.dic:151702:palaeethnological
+UK.dic:151703:palaeoclimatology
+UK.dic:151707:palaeotologically
+UK.dic:151712:parapsychological
+UK.dic:151713:parapsychologists
+UK.dic:151722:pathomorphologies
+UK.dic:151723:pathophysiologies
+UK.dic:151724:pathopsychologies
+UK.dic:151738:pharmacologically
+UK.dic:151766:physiopathologies
+UK.dic:151769:phytopathological
+UK.dic:151770:phytopathologists
+UK.dic:151771:phytopharmacology
+UK.dic:151772:phytosociological
+UK.dic:151832:psychopathologies
+UK.dic:151833:psychopathologist
+UK.dic:151834:psychophysiologic
+UK.dic:151846:radiobiologically
+UK.dic:151953:symptomatological
+UK.dic:152075:biochemorphologies
+UK.dic:152132:crystallographical
+UK.dic:152135:cystopyelographies
+UK.dic:152143:demythologisations
+UK.dic:152144:demythologizations
+UK.dic:152145:dendrochronologist
+UK.dic:152148:dermatohistologies
+UK.dic:152149:dermatopathologies
+UK.dic:152175:electrooculography
+UK.dic:152185:esthesiophysiology
+UK.dic:152186:ethnomusicologists
+UK.dic:152193:gastroenterologies
+UK.dic:152194:gastroenterologist
+UK.dic:152195:geomorphologically
+UK.dic:152220:histophysiological
+UK.dic:152222:hydrometeorlogical
+UK.dic:152245:immunohematologies
+UK.dic:152246:immunohematologist
+UK.dic:152247:immunohistological
+UK.dic:152248:immunopathological
+UK.dic:152249:immunopathologists
+UK.dic:152298:laryngorhinologies
+UK.dic:152311:medicopsychologies
+UK.dic:152315:neuroendocrinology
+UK.dic:152320:neuropharmacologic
+UK.dic:152321:neurophysiological
+UK.dic:152322:neurophysiologists
+UK.dic:152325:neuropsychological
+UK.dic:152326:neuropsychologists
+UK.dic:152332:nonphysiologically
+UK.dic:152339:oscillographically
+UK.dic:152362:palaeoanthropology
+UK.dic:152371:pathomorphological
+UK.dic:152372:pathophysiological
+UK.dic:152382:phenomenologically
+UK.dic:152400:physiopathological
+UK.dic:152429:psychobiologically
+UK.dic:152431:psychopathological
+UK.dic:152432:psychopathologists
+UK.dic:152433:psychopharmacology
+UK.dic:152435:psychophysiologies
+UK.dic:152436:psychophysiologist
+UK.dic:152450:rhinolaryngologies
+UK.dic:152454:roentgenologically
+UK.dic:152470:sociopsychological
+UK.dic:152553:ureteropyelography
+UK.dic:152557:ventriculographies
+UK.dic:152566:anatomicopathologic
+UK.dic:152579:characterologically
+UK.dic:152593:clinicopathological
+UK.dic:152614:dendrochronological
+UK.dic:152615:dendrochronologists
+UK.dic:152631:echoencephalography
+UK.dic:152645:electrophysiologies
+UK.dic:152646:electrophysiologist
+UK.dic:152648:electrotechnologies
+UK.dic:152661:gastroenterologists
+UK.dic:152672:histopathologically
+UK.dic:152688:immunohematological
+UK.dic:152689:immunohematologists
+UK.dic:152723:neuropharmacologies
+UK.dic:152724:neuropharmacologist
+UK.dic:152737:otorhinolaryngology
+UK.dic:152766:phytopharmacologies
+UK.dic:152769:phytosociologically
+UK.dic:152772:pneumoencephalogram
+UK.dic:152791:pseudopsychological
+UK.dic:152792:psychopharmacologic
+UK.dic:152793:psychophysiological
+UK.dic:152825:symptomatologically
+UK.dic:152881:crystallographically
+UK.dic:152899:electroencephalogram
+UK.dic:152902:electrooculographies
+UK.dic:152903:electrophysiological
+UK.dic:152904:electrophysiologists
+UK.dic:152907:encephalographically
+UK.dic:152908:esthesiophysiologies
+UK.dic:152926:immunohistologically
+UK.dic:152950:neuroendocrinologies
+UK.dic:152952:neuropharmacological
+UK.dic:152953:neuropharmacologists
+UK.dic:152954:neurophysiologically
+UK.dic:152979:pneumoencephalograph
+UK.dic:152986:psychopharmacologies
+UK.dic:152987:psychopharmacologist
+UK.dic:153016:ureteropyelographies
+UK.dic:153045:echoencephalographies
+UK.dic:153050:electroencephalograms
+UK.dic:153051:electroencephalograph
+UK.dic:153081:otorhinolaryngologies
+UK.dic:153090:pneumoencephalography
+UK.dic:153094:psychopharmacological
+UK.dic:153095:psychopharmacologists
+UK.dic:153131:electroencephalographs
+UK.dic:153132:electroencephalography
+UK.dic:153152:pneumoencephalographic
+UK.dic:153174:electroencephalographes
+UK.dic:153175:electroencephalographic
+UK.dic:153184:pneumoencephalographies
+UK.dic:153195:electroencephalographies
+UK.dic:153203:pneumoencephalographical
+UK.dic:153208:electroencephalographical
+UK.dic:153218:pneumoencephalographically
+UK.dic:153219:electroencephalographically
+tags:262:<space>gl	C:\Users\Cyril\vimfiles\plugins\settingsSecondary.vim	/^nnoremap <space>gl :silent! Glog<CR>:bot copen<CR>$/;"	m
+tags:287:Action	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\autoload\lh\buffer\dialog.vim	/^function! Action(results)$/;"	f
+tags:593:Display	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\autoload\lh\buffer\dialog.vim	/^function! s:Display(dialog, atitle)$/;"	f
+tags:608:DoTestOrder	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\tests\lh\topological-sort.vim	/^function! s:DoTestOrder(elements)$/;"	f
+tags:699:Fetch	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\tests\lh\topological-sort.vim	/^function! Fetch(node)$/;"	f
+tags:865:Help_NbL	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\autoload\lh\buffer\dialog.vim	/^function! s:Help_NbL()$/;"	f
+tags:1041:Mappings	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\autoload\lh\buffer\dialog.vim	/^function! s:Mappings(abuffer)$/;"	f
+tags:1143:NextChoice	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\autoload\lh\buffer\dialog.vim	/^function! s:NextChoice(direction)$/;"	f
+tags:1453:RedisplayHelp	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\autoload\lh\buffer\dialog.vim	/^function! s:RedisplayHelp(dialog)$/;"	f
+tags:1490:RunReflection	C:\Users\Cyril\vimfiles\plugged\vim-javacomplete2\autoload\javacomplete.vim	/^fu! s:RunReflection(option, args, log)$/;"	f
+tags:1562:Setup	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\tests\lh\topological-sort.vim	/^function! s:Setup()$/;"	f
+tags:1913:Teardown	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\tests\lh\topological-sort.vim	/^function! s:Teardown()$/;"	f
+tags:1933:TestDAG_breadth	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\tests\lh\topological-sort.vim	/^function! s:TestDAG_breadth()$/;"	f
+tags:1934:TestDAG_depth	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\tests\lh\topological-sort.vim	/^function! s:TestDAG_depth()$/;"	f
+tags:1935:TestDAG_fetch	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\tests\lh\topological-sort.vim	/^function! s:TestDAG_fetch()$/;"	f
+tags:1936:TestDCG_breadth	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\tests\lh\topological-sort.vim	/^function! s:TestDCG_breadth()$/;"	f
+tags:1937:TestDCG_depth	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\tests\lh\topological-sort.vim	/^function! s:TestDCG_depth()$/;"	f
+tags:2027:ToggleHelp	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\autoload\lh\buffer\dialog.vim	/^function! s:ToggleHelp(bufferId)$/;"	f
+tags:2030:ToggleTag	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\autoload\lh\buffer\dialog.vim	/^function! s:ToggleTag(lineNum)$/;"	f
+tags:2202:Verbose	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\autoload\lh\buffer\dialog.vim	/^function! s:Verbose(expr)$/;"	f
+tags:3339:changelog	C:\Users\Cyril\vimfiles\plugged\gundo.vim\site\index.html	/^                <a name="changelog"><\/a>$/;"	a
+tags:5975:lh#buffer#dialog#Select	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\autoload\lh\buffer\dialog.vim	/^function! lh#buffer#dialog#Select(line, bufferId, ...)$/;"	f
+tags:5976:lh#buffer#dialog#add_help	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\autoload\lh\buffer\dialog.vim	/^function! lh#buffer#dialog#add_help(abuffer, text, help_type)$/;"	f
+tags:5977:lh#buffer#dialog#debug	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\autoload\lh\buffer\dialog.vim	/^function! lh#buffer#dialog#debug(expr)$/;"	f
+tags:5978:lh#buffer#dialog#new	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\autoload\lh\buffer\dialog.vim	/^function! lh#buffer#dialog#new(bname, title, where, support_tagging, action, choices)$/;"	f
+tags:5979:lh#buffer#dialog#quit	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\autoload\lh\buffer\dialog.vim	/^function! lh#buffer#dialog#quit()$/;"	f
+tags:5980:lh#buffer#dialog#select	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\autoload\lh\buffer\dialog.vim	/^function! lh#buffer#dialog#select(line, bufferId, ...)$/;"	f
+tags:5981:lh#buffer#dialog#toggle_help	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\autoload\lh\buffer\dialog.vim	/^function! lh#buffer#dialog#toggle_help() dict$/;"	f
+tags:5982:lh#buffer#dialog#update	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\autoload\lh\buffer\dialog.vim	/^function! lh#buffer#dialog#update(dialog)$/;"	f
+tags:5983:lh#buffer#dialog#verbose	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\autoload\lh\buffer\dialog.vim	/^function! lh#buffer#dialog#verbose(level)$/;"	f
+tags:6174:log	C:\Users\Cyril\vimfiles\autoload\plug.vim	/^function! s:log(bullet, name, lines)$/;"	f
+tags:6175:logpos	C:\Users\Cyril\vimfiles\autoload\plug.vim	/^function! s:logpos(name)$/;"	f
+tags:6180:m.n	C:\Users\Cyril\vimfiles\plugged\gundo.vim\site\less.js	/^(function(a,b){function c(b){return a.less[b.split("\/")[1]]}function l(){var a=document.getElementsByTagName("style");for(var b=0;b<a.length;b++)a[b].type.match(j)&&(new d.Parser).parse(a[b].innerHTML||"",function(c,d){var e=d.toCSS(),f=a[b];f.type="text\/css",f.styleSheet?f.styleSheet.cssText=e:f.innerHTML=e})}function m(a,b){for(var c=0;c<d.sheets.length;c++)n(d.sheets[c],a,b,d.sheets.length-(c+1))}function n(b,c,e,f){var h=a.location.href.replace(\/[#?].*$\/,""),i=b.href.replace(\/\\?.*$\/,""),j=g&&g.getItem(i),k=g&&g.getItem(i+":timestamp"),l={css:j,timestamp:k};\/^(https?|file):\/.test(i)||(i.charAt(0)=="\/"?i=a.location.protocol+"\/\/"+a.location.host+i:i=h.slice(0,h.lastIndexOf("\/")+1)+i);var m=i.match(\/([^\\\/]+)$\/)[1];q(b.href,b.type,function(a,g){if(!e&&l&&g&&(new Date(g)).valueOf()===(new Date(l.timestamp)).valueOf())p(l.css,b),c(null,null,a,b,{local:!0,remaining:f});else try{(new d.Parser({optimization:d.optimization,paths:[i.replace(\/[\\w\\.-]+$\/,"")],mime:b.type,filename:m})).parse(a,function(d,e){if(d)return u(d,i);try{c(d,e,a,b,{local:!1,lastModified:g,remaining:f}),s(document.getElementById("less-error-message:"+o(i)))}catch(d){u(d,i)}})}catch(h){u(h,i)}},function(a,b){throw new Error("Couldn't load "+b+" ("+a+")")})}function o(a){return a.replace(\/^[a-z]+:\\\/\\\/?[^\\\/]+\/,"").replace(\/^\\\/\/,"").replace(\/\\?.*$\/,"").replace(\/\\.[^\\.\\\/]+$\/,"").replace(\/[^\\.\\w-]+\/g,"-").replace(\/\\.\/g,":")}function p(a,b,c){var d,e=b.href?b.href.replace(\/\\?.*$\/,""):"",f="less:"+(b.title||o(e));(d=document.getElementById(f))===null&&(d=document.createElement("style"),d.type="text\/css",d.media=b.media||"screen",d.id=f,document.getElementsByTagName("head")[0].appendChild(d));if(d.styleSheet)try{d.styleSheet.cssText=a}catch(h){throw new Error("Couldn't reassign styleSheet.cssText.")}else(function(a){d.childNodes.length>0?d.firstChild.nodeValue!==a.nodeValue&&d.replaceChild(a,d.firstChild):d.appendChild(a)})(document.createTextNode(a));c&&g&&(t("saving "+e+" to cache."),g.setItem(e,a),g.setItem(e+":timestamp",c))}function q(a,b,c,e){function i(b,c,d){b.status>=200&&b.status<300?c(b.responseText,b.getResponseHeader("Last-Modified")):typeof d=="function"&&d(b.status,a)}var g=r(),h=f?!1:d.async;typeof g.overrideMimeType=="function"&&g.overrideMimeType("text\/css"),g.open("GET",a,h),g.setRequestHeader("Accept",b||"text\/x-less, text\/css; q=0.9, *\/*; q=0.5"),g.send(null),f?g.status===0||g.status>=200&&g.status<300?c(g.responseText):e(g.status,a):h?g.onreadystatechange=function(){g.readyState==4&&i(g,c,e)}:i(g,c,e)}function r(){if(a.XMLHttpRequest)return new XMLHttpRequest;try{return new ActiveXObject("MSXML2.XMLHTTP.3.0")}catch(b){return t("browser doesn't support AJAX."),null}}function s(a){return a&&a.parentNode.removeChild(a)}function t(a){d.env=="development"&&typeof console!="undefined"&&console.log("less: "+a)}function u(a,b){var c="less-error-message:"+o(b),e='<li><label>{line}<\/label><pre class="{class}">{content}<\/pre><\/li>',f=document.createElement("div"),g,h,i=[],j=a.filename||b;f.id=c,f.className="less-error-message",h="<h3>"+(a.message||"There is an error in your .less file")+"<\/h3>"+'<p>in <a href="'+j+'">'+j+"<\/a> ";var k=function(a,b,c){a.extract[b]&&i.push(e.replace(\/\\{line\\}\/,parseInt(a.line)+(b-1)).replace(\/\\{class\\}\/,c).replace(\/\\{content\\}\/,a.extract[b]))};a.stack?h+="<br\/>"+a.stack.split("\\n").slice(1).join("<br\/>"):a.extract&&(k(a,0,""),k(a,1,"line"),k(a,2,""),h+="on line "+a.line+", column "+(a.column+1)+":<\/p>"+"<ul>"+i.join("")+"<\/ul>"),f.innerHTML=h,p([".less-error-message ul, .less-error-message li {","list-style-type: none;","margin-right: 15px;","padding: 4px 0;","margin: 0;","}",".less-error-message label {","font-size: 12px;","margin-right: 15px;","padding: 4px 0;","color: #cc7777;","}",".less-error-message pre {","color: #dd6666;","padding: 4px 0;","margin: 0;","display: inline-block;","}",".less-error-message pre.line {","color: #ff0000;","}",".less-error-message h3 {","font-size: 20px;","font-weight: bold;","padding: 15px 0 5px 0;","margin: 0;","}",".less-error-message a {","color: #10a","}",".less-error-message .error {","color: red;","font-weight: bold;","padding-bottom: 2px;","border-bottom: 1px dashed red;","}"].join("\\n"),{title:"error-message"}),f.style.cssText=["font-family: Arial, sans-serif","border: 1px solid #e00","background-color: #eee","border-radius: 5px","-webkit-border-radius: 5px","-moz-border-radius: 5px","color: #e00","padding: 15px","margin-bottom: 15px"].join(";"),d.env=="development"&&(g=setInterval(function(){document.body&&(document.getElementById(c)?document.body.replaceChild(f,document.getElementById(c)):document.body.insertBefore(f,document.body.firstChild),clearInterval(g))},10))}typeof define=="function"&&define.amd&&define("less",[],function(){return d}),Array.isArray||(Array.isArray=function(a){return Object.prototype.toString.call(a)==="[object Array]"||a instanceof Array}),Array.prototype.forEach||(Array.prototype.forEach=function(a,b){var c=this.length>>>0;for(var d=0;d<c;d++)d in this&&a.call(b,this[d],d,this)}),Array.prototype.map||(Array.prototype.map=function(a){var b=this.length>>>0,c=new Array(b),d=arguments[1];for(var e=0;e<b;e++)e in this&&(c[e]=a.call(d,this[e],e,this));return c}),Array.prototype.filter||(Array.prototype.filter=function(a){var b=[],c=arguments[1];for(var d=0;d<this.length;d++)a.call(c,this[d])&&b.push(this[d]);return b}),Array.prototype.reduce||(Array.prototype.reduce=function(a){var b=this.length>>>0,c=0;if(b===0&&arguments.length===1)throw new TypeError;if(arguments.length>=2)var d=arguments[1];else do{if(c in this){d=this[c++];break}if(++c>=b)throw new TypeError}while(!0);for(;c<b;c++)c in this&&(d=a.call(null,d,this[c],c,this));return d}),Array.prototype.indexOf||(Array.prototype.indexOf=function(a){var b=this.length,c=arguments[1]||0;if(!b)return-1;if(c>=b)return-1;c<0&&(c+=b);for(;c<b;c++){if(!Object.prototype.hasOwnProperty.call(this,c))continue;if(a===this[c])return c}return-1}),Object.keys||(Object.keys=function(a){var b=[];for(var c in a)Object.prototype.hasOwnProperty.call(a,c)&&b.push(c);return b}),String.prototype.trim||(String.prototype.trim=function(){return String(this).replace(\/^\\s\\s*\/,"").replace(\/\\s\\s*$\/,"")});var d,e;typeof environment=="object"&&{}.toString.call(environment)==="[object Environment]"?(typeof a=="undefined"?d={}:d=a.less={},e=d.tree={},d.mode="rhino"):typeof a=="undefined"?(d=exports,e=c(".\/tree"),d.mode="node"):(typeof a.less=="undefined"&&(a.less={}),d=a.less,e=a.less.tree={},d.mode="browser"),d.Parser=function v(a){function q(){h=k[g],i=f,l=f}function r(){k[g]=h,f=i,l=f}function s(){f>l&&(k[g]=k[g].slice(f-l),l=f)}function t(a){var c,d,e,h,i,j,n,o;if(a instanceof Function)return a.call(m.parsers);if(typeof a=="string")c=b.charAt(f)===a?a:null,e=1,s();else{s();if(c=a.exec(k[g]))e=c[0].length;else return null}if(c){o=f+=e,j=f+k[g].length-e;while(f<j){h=b.charCodeAt(f);if(h!==32&&h!==10&&h!==9)break;f++}return k[g]=k[g].slice(e+(f-o)),l=f,k[g].length===0&&g<k.length-1&&g++,typeof c=="string"?c:c.length===1?c[0]:c}}function u(a,c){var d=t(a);if(!d)v(c||(typeof a=="string"?"expected '"+a+"' got '"+b.charAt(f)+"'":"unexpected token"));else return d}function v(a,b){throw{index:f,type:b||"Syntax",message:a}}function w(a){return typeof a=="string"?b.charAt(f)===a:a.test(k[g])?!0:!1}function x(a){return d.mode==="node"?c("path").basename(a):a.match(\/[^\\\/]+$\/)[0]}function y(a,c){return a.filename&&c.filename&&a.filename!==c.filename?m.imports.contents[x(a.filename)]:b}function z(a,b){for(var c=a,d=-1;c>=0&&b.charAt(c)!=="\\n";c--)d++;return{line:typeof a=="number"?(b.slice(0,a).match(\/\\n\/g)||"").length:null,column:d}}function A(a,b){var c=y(a,b),d=z(a.index,c),e=d.line,f=d.column,g=c.split("\\n");this.type=a.type||"Syntax",this.message=a.message,this.filename=a.filename||b.filename,this.index=a.index,this.line=typeof e=="number"?e+1:null,this.callLine=a.call&&z(a.call,c).line+1,this.callExtract=g[z(a.call,c).line],this.stack=a.stack,this.column=f,this.extract=[g[e-1],g[e],g[e+1]]}var b,f,g,h,i,j,k,l,m,n=this,o=function(){},p=this.imports={paths:a&&a.paths||[],queue:[],files:{},contents:{},mime:a&&a.mime,error:null,push:function(b,c){var e=this;this.queue.push(b),d.Parser.importer(b,this.paths,function(a,d,f){e.queue.splice(e.queue.indexOf(b),1),e.files[b]=d,e.contents[b]=f,a&&!e.error&&(e.error=a),c(a,d),e.queue.length===0&&o()},a)}};return this.env=a=a||{},this.optimization="optimization"in this.env?this.env.optimization:1,this.env.filename=this.env.filename||null,m={imports:p,parse:function(h,i){var n,p,q,r,s,u,v=[],w,x=null;f=g=l=j=0,b=h.replace(\/\\r\\n\/g,"\\n"),k=function(c){var d=0,e=\/[^"'`\\{\\}\\\/\\(\\)\\\\]+\/g,f=\/\\\/\\*(?:[^*]|\\*+[^\\\/*])*\\*+\\\/|\\\/\\\/.*\/g,g=\/"((?:[^"\\\\\\r\\n]|\\\\.)*)"|'((?:[^'\\\\\\r\\n]|\\\\.)*)'|`((?:[^`\\\\\\r\\n]|\\\\.)*)`\/g,h=0,i,j=c[0],k;for(var l=0,m,n;l<b.length;l++){e.lastIndex=l,(i=e.exec(b))&&i.index===l&&(l+=i[0].length,j.push(i[0])),m=b.charAt(l),f.lastIndex=g.lastIndex=l,(i=g.exec(b))&&i.index===l&&(l+=i[0].length,j.push(i[0]),m=b.charAt(l)),!k&&m==="\/"&&(n=b.charAt(l+1),(n==="\/"||n==="*")&&(i=f.exec(b))&&i.index===l&&(l+=i[0].length,j.push(i[0]),m=b.charAt(l)));switch(m){case"{":if(!k){h++,j.push(m);break};case"}":if(!k){h--,j.push(m),c[++d]=j=[];break};case"(":if(!k){k=!0,j.push(m);break};case")":if(k){k=!1,j.push(m);break};default:j.push(m)}}return h>0&&(x=new A({index:l,type:"Parse",message:"missing closing `}`",filename:a.filename},a)),c.map(function(a){return a.join("")})}([[]]);if(x)return i(x);try{n=new e.Ruleset([],t(this.parsers.primary)),n.root=!0}catch(y){return i(new A(y,a))}n.toCSS=function(b){var f,g,h;return function(f,g){var h=[],i;f=f||{},typeof g=="object"&&!Array.isArray(g)&&(g=Object.keys(g).map(function(a){var b=g[a];return b instanceof e.Value||(b instanceof e.Expression||(b=new e.Expression([b])),b=new e.Value([b])),new e.Rule("@"+a,b,!1,0)}),h=[new e.Ruleset(null,g)]);try{var j=b.call(this,{frames:h}).toCSS([],{compress:f.compress||!1})}catch(k){throw new A(k,a)}if(i=m.imports.error)throw i instanceof A?i:new A(i,a);return f.yuicompress&&d.mode==="node"?c(".\/cssmin").compressor.cssmin(j):f.compress?j.replace(\/(\\s)+\/g,"$1"):j}}(n.eval);if(f<b.length-1){f=j,u=b.split("\\n"),s=(b.slice(0,f).match(\/\\n\/g)||"").length+1;for(var z=f,B=-1;z>=0&&b.charAt(z)!=="\\n";z--)B++;x={type:"Parse",message:"Syntax Error on line "+s,index:f,filename:a.filename,line:s,column:B,extract:[u[s-2],u[s-1],u[s]]}}this.imports.queue.length>0?o=function(){i(x,n)}:i(x,n)},parsers:{primary:function(){var a,b=[];while((a=t(this.mixin.definition)||t(this.rule)||t(this.ruleset)||t(this.mixin.call)||t(this.comment)||t(this.directive))||t(\/^[\\s\\n]+\/))a&&b.push(a);return b},comment:function(){var a;if(b.charAt(f)!=="\/")return;if(b.charAt(f+1)==="\/")return new e.Comment(t(\/^\\\/\\\/.*\/),!0);if(a=t(\/^\\\/\\*(?:[^*]|\\*+[^\\\/*])*\\*+\\\/\\n?\/))return new e.Comment(a)},entities:{quoted:function(){var a,c=f,d;b.charAt(c)==="~"&&(c++,d=!0);if(b.charAt(c)!=='"'&&b.charAt(c)!=="'")return;d&&t("~");if(a=t(\/^"((?:[^"\\\\\\r\\n]|\\\\.)*)"|'((?:[^'\\\\\\r\\n]|\\\\.)*)'\/))return new e.Quoted(a[0],a[1]||a[2],d)},keyword:function(){var a;if(a=t(\/^[_A-Za-z-][_A-Za-z0-9-]*\/))return e.colors.hasOwnProperty(a)?new e.Color(e.colors[a].slice(1)):new e.Keyword(a)},call:function(){var b,c,d=f;if(!(b=\/^([\\w-]+|%|progid:[\\w\\.]+)\\(\/.exec(k[g])))return;b=b[1].toLowerCase();if(b==="url")return null;f+=b.length;if(b==="alpha")return t(this.alpha);t("("),c=t(this.entities.arguments);if(!t(")"))return;if(b)return new e.Call(b,c,d,a.filename)},arguments:function(){var a=[],b;while(b=t(this.entities.assignment)||t(this.expression)){a.push(b);if(!t(","))break}return a},literal:function(){return t(this.entities.dimension)||t(this.entities.color)||t(this.entities.quoted)},assignment:function(){var a,b;if((a=t(\/^\\w+(?=\\s?=)\/i))&&t("=")&&(b=t(this.entity)))return new e.Assignment(a,b)},url:function(){var a;if(b.charAt(f)!=="u"||!t(\/^url\\(\/))return;return a=t(this.entities.quoted)||t(this.entities.variable)||t(this.entities.dataURI)||t(\/^[-\\w%@$\\\/.&=:;#+?~]+\/)||"",u(")"),new e.URL(a.value||a.data||a instanceof e.Variable?a:new e.Anonymous(a),p.paths)},dataURI:function(){var a;if(t(\/^data:\/)){a={},a.mime=t(\/^[^\\\/]+\\\/[^,;)]+\/)||"",a.charset=t(\/^;\\s*charset=[^,;)]+\/)||"",a.base64=t(\/^;\\s*base64\/)||"",a.data=t(\/^,\\s*[^)]+\/);if(a.data)return a}},variable:function(){var c,d=f;if(b.charAt(f)==="@"&&(c=t(\/^@@?[\\w-]+\/)))return new e.Variable(c,d,a.filename)},color:function(){var a;if(b.charAt(f)==="#"&&(a=t(\/^#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})\/)))return new e.Color(a[1])},dimension:function(){var a,c=b.charCodeAt(f);if(c>57||c<45||c===47)return;if(a=t(\/^(-?\\d*\\.?\\d+)(px|%|em|rem|pc|ex|in|deg|s|ms|pt|cm|mm|rad|grad|turn)?\/))return new e.Dimension(a[1],a[2])},javascript:function(){var a,c=f,d;b.charAt(c)==="~"&&(c++,d=!0);if(b.charAt(c)!=="`")return;d&&t("~");if(a=t(\/^`([^`]*)`\/))return new e.JavaScript(a[1],f,d)}},variable:function(){var a;if(b.charAt(f)==="@"&&(a=t(\/^(@[\\w-]+)\\s*:\/)))return a[1]},shorthand:function(){var a,b;if(!w(\/^[@\\w.%-]+\\\/[@\\w.-]+\/))return;if((a=t(this.entity))&&t("\/")&&(b=t(this.entity)))return new e.Shorthand(a,b)},mixin:{call:function(){var c=[],d,g,h,i=f,j=b.charAt(f),k=!1;if(j!=="."&&j!=="#")return;while(d=t(\/^[#.](?:[\\w-]|\\\\(?:[a-fA-F0-9]{1,6} ?|[^a-fA-F0-9]))+\/))c.push(new e.Element(g,d,f)),g=t(">");t("(")&&(h=t(this.entities.arguments))&&t(")"),t(this.important)&&(k=!0);if(c.length>0&&(t(";")||w("}")))return new e.mixin.Call(c,h||[],i,a.filename,k)},definition:function(){var a,c=[],d,g,h,i,j,k=!1;if(b.charAt(f)!=="."&&b.charAt(f)!=="#"||w(\/^[^{]*(;|})\/))return;q();if(d=t(\/^([#.](?:[\\w-]|\\\\(?:[a-fA-F0-9]{1,6} ?|[^a-fA-F0-9]))+)\\s*\\(\/)){a=d[1];do{if(b.charAt(f)==="."&&t(\/^\\.{3}\/)){k=!0;break}if(!(h=t(this.entities.variable)||t(this.entities.literal)||t(this.entities.keyword)))break;if(h instanceof e.Variable)if(t(":"))i=u(this.expression,"expected expression"),c.push({name:h.name,value:i});else{if(t(\/^\\.{3}\/)){c.push({name:h.name,variadic:!0}),k=!0;break}c.push({name:h.name})}else c.push({value:h})}while(t(","));u(")"),t(\/^when\/)&&(j=u(this.conditions,"expected condition")),g=t(this.block);if(g)return new e.mixin.Definition(a,c,g,j,k);r()}}},entity:function(){return t(this.entities.literal)||t(this.entities.variable)||t(this.entities.url)||t(this.entities.call)||t(this.entities.keyword)||t(this.entities.javascript)||t(this.comment)},end:function(){return t(";")||w("}")},alpha:function(){var a;if(!t(\/^\\(opacity=\/i))return;if(a=t(\/^\\d+\/)||t(this.entities.variable))return u(")"),new e.Alpha(a)},element:function(){var a,b,c,d;c=t(this.combinator),a=t(\/^(?:\\d+\\.\\d+|\\d+)%\/)||t(\/^(?:[.#]?|:*)(?:[\\w-]|\\\\(?:[a-fA-F0-9]{1,6} ?|[^a-fA-F0-9]))+\/)||t("*")||t(this.attribute)||t(\/^\\([^)@]+\\)\/),a||t("(")&&(d=t(this.entities.variable))&&t(")")&&(a=new e.Paren(d));if(a)return new e.Element(c,a,f);if(c.value&&c.value.charAt(0)==="&")return new e.Element(c,null,f)},combinator:function(){var a,c=b.charAt(f);if(c===">"||c==="+"||c==="~"){f++;while(b.charAt(f)===" ")f++;return new e.Combinator(c)}if(c==="&"){a="&",f++,b.charAt(f)===" "&&(a="& ");while(b.charAt(f)===" ")f++;return new e.Combinator(a)}return b.charAt(f-1)===" "?new e.Combinator(" "):new e.Combinator(null)},selector:function(){var a,c,d=[],g,h;if(t("("))return a=t(this.entity),u(")"),new e.Selector([new e.Element("",a,f)]);while(c=t(this.element)){g=b.charAt(f),d.push(c);if(g==="{"||g==="}"||g===";"||g===",")break}if(d.length>0)return new e.Selector(d)},tag:function(){return t(\/^[a-zA-Z][a-zA-Z-]*[0-9]?\/)||t("*")},attribute:function(){var a="",b,c,d;if(!t("["))return;if(b=t(\/^[a-zA-Z-]+\/)||t(this.entities.quoted))(d=t(\/^[|~*$^]?=\/))&&(c=t(this.entities.quoted)||t(\/^[\\w-]+\/))?a=[b,d,c.toCSS?c.toCSS():c].join(""):a=b;if(!t("]"))return;if(a)return"["+a+"]"},block:function(){var a;if(t("{")&&(a=t(this.primary))&&t("}"))return a},ruleset:function(){var b=[],c,d,g;q();while(c=t(this.selector)){b.push(c),t(this.comment);if(!t(","))break;t(this.comment)}if(b.length>0&&(d=t(this.block)))return new e.Ruleset(b,d,a.strictImports);j=f,r()},rule:function(){var a,c,d=b.charAt(f),h,l;q();if(d==="."||d==="#"||d==="&")return;if(a=t(this.variable)||t(this.property)){a.charAt(0)!="@"&&(l=\/^([^@+\\\/'"*`(;{}-]*);\/.exec(k[g]))?(f+=l[0].length-1,c=new e.Anonymous(l[1])):a==="font"?c=t(this.font):c=t(this.value),h=t(this.important);if(c&&t(this.end))return new e.Rule(a,c,h,i);j=f,r()}},"import":function(){var a,b,c=f;if(t(\/^@import\\s+\/)&&(a=t(this.entities.quoted)||t(this.entities.url))){b=t(this.mediaFeatures);if(t(";"))return new e.Import(a,p,b,c)}},mediaFeature:function(){var a,b,c=[];do if(a=t(this.entities.keyword))c.push(a);else if(t("(")){b=t(this.property),a=t(this.entity);if(!t(")"))return null;if(b&&a)c.push(new e.Paren(new e.Rule(b,a,null,f,!0)));else if(a)c.push(new e.Paren(a));else return null}while(a);if(c.length>0)return new e.Expression(c)},mediaFeatures:function(){var a,b=[];do if(a=t(this.mediaFeature)){b.push(a);if(!t(","))break}else if(a=t(this.entities.variable)){b.push(a);if(!t(","))break}while(a);return b.length>0?b:null},media:function(){var a,b;if(t(\/^@media\/)){a=t(this.mediaFeatures);if(b=t(this.block))return new e.Media(b,a)}},directive:function(){var a,c,d,g,h,i;if(b.charAt(f)!=="@")return;if(c=t(this["import"])||t(this.media))return c;if(a=t(\/^@page|@keyframes\/)||t(\/^@(?:-webkit-|-moz-|-o-|-ms-)[a-z0-9-]+\/)){g=(t(\/^[^{]+\/)||"").trim();if(d=t(this.block))return new e.Directive(a+" "+g,d)}else if(a=t(\/^@[-a-z]+\/))if(a==="@font-face"){if(d=t(this.block))return new e.Directive(a,d)}else if((c=t(this.entity))&&t(";"))return new e.Directive(a,c)},font:function(){var a=[],b=[],c,d,f,g;while(g=t(this.shorthand)||t(this.entity))b.push(g);a.push(new e.Expression(b));if(t(","))while(g=t(this.expression)){a.push(g);if(!t(","))break}return new e.Value(a)},value:function(){var a,b=[],c;while(a=t(this.expression)){b.push(a);if(!t(","))break}if(b.length>0)return new e.Value(b)},important:function(){if(b.charAt(f)==="!")return t(\/^! *important\/)},sub:function(){var a;if(t("(")&&(a=t(this.expression))&&t(")"))return a},multiplication:function(){var a,b,c,d;if(a=t(this.operand)){while(!w(\/^\\\/\\*\/)&&(c=t("\/")||t("*"))&&(b=t(this.operand)))d=new e.Operation(c,[d||a,b]);return d||a}},addition:function(){var a,c,d,g;if(a=t(this.multiplication)){while((d=t(\/^[-+]\\s+\/)||b.charAt(f-1)!=" "&&(t("+")||t("-")))&&(c=t(this.multiplication)))g=new e.Operation(d,[g||a,c]);return g||a}},conditions:function(){var a,b,c=f,d;if(a=t(this.condition)){while(t(",")&&(b=t(this.condition)))d=new e.Condition("or",d||a,b,c);return d||a}},condition:function(){var a,b,c,d,g=f,h=!1;t(\/^not\/)&&(h=!0),u("(");if(a=t(this.addition)||t(this.entities.keyword)||t(this.entities.quoted))return(d=t(\/^(?:>=|=<|[<=>])\/))?(b=t(this.addition)||t(this.entities.keyword)||t(this.entities.quoted))?c=new e.Condition(d,a,b,g,h):v("expected expression"):c=new e.Condition("=",a,new e.Keyword("true"),g,h),u(")"),t(\/^and\/)?new e.Condition("and",c,t(this.condition)):c},operand:function(){var a,c=b.charAt(f+1);b.charAt(f)==="-"&&(c==="@"||c==="(")&&(a=t("-"));var d=t(this.sub)||t(this.entities.dimension)||t(this.entities.color)||t(this.entities.variable)||t(this.entities.call);return a?new e.Operation("*",[new e.Dimension(-1),d]):d},expression:function(){var a,b,c=[],d;while(a=t(this.addition)||t(this.entity))c.push(a);if(c.length>0)return new e.Expression(c)},property:function(){var a;if(a=t(\/^(\\*?-?[-a-z_0-9]+)\\s*:\/))return a[1]}}}};if(d.mode==="browser"||d.mode==="rhino")d.Parser.importer=function(a,b,c,d){!\/^([a-z]+:)?\\\/\/.test(a)&&b.length>0&&(a=b[0]+a),n({href:a,title:a,type:d.mime},function(e){e&&typeof d.errback=="function"?d.errback.call(null,a,b,c,d):c.apply(null,arguments)},!0)};(function(a){function b(b){return a.functions.hsla(b.h,b.s,b.l,b.a)}function c(b){if(b instanceof a.Dimension)return parseFloat(b.unit=="%"?b.value\/100:b.value);if(typeof b=="number")return b;throw{error:"RuntimeError",message:"color functions take numbers as parameters"}}function d(a){return Math.min(1,Math.max(0,a))}a.functions={rgb:function(a,b,c){return this.rgba(a,b,c,1)},rgba:function(b,d,e,f){var g=[b,d,e].map(function(a){return c(a)}),f=c(f);return new a.Color(g,f)},hsl:function(a,b,c){return this.hsla(a,b,c,1)},hsla:function(a,b,d,e){function h(a){return a=a<0?a+1:a>1?a-1:a,a*6<1?g+(f-g)*a*6:a*2<1?f:a*3<2?g+(f-g)*(2\/3-a)*6:g}a=c(a)%360\/360,b=c(b),d=c(d),e=c(e);var f=d<=.5?d*(b+1):d+b-d*b,g=d*2-f;return this.rgba(h(a+1\/3)*255,h(a)*255,h(a-1\/3)*255,e)},hue:function(b){return new a.Dimension(Math.round(b.toHSL().h))},saturation:function(b){return new a.Dimension(Math.round(b.toHSL().s*100),"%")},lightness:function(b){return new a.Dimension(Math.round(b.toHSL().l*100),"%")},alpha:function(b){return new a.Dimension(b.toHSL().a)},saturate:function(a,c){var e=a.toHSL();return e.s+=c.value\/100,e.s=d(e.s),b(e)},desaturate:function(a,c){var e=a.toHSL();return e.s-=c.value\/100,e.s=d(e.s),b(e)},lighten:function(a,c){var e=a.toHSL();return e.l+=c.value\/100,e.l=d(e.l),b(e)},darken:function(a,c){var e=a.toHSL();return e.l-=c.value\/100,e.l=d(e.l),b(e)},fadein:function(a,c){var e=a.toHSL();return e.a+=c.value\/100,e.a=d(e.a),b(e)},fadeout:function(a,c){var e=a.toHSL();return e.a-=c.value\/100,e.a=d(e.a),b(e)},fade:function(a,c){var e=a.toHSL();return e.a=c.value\/100,e.a=d(e.a),b(e)},spin:function(a,c){var d=a.toHSL(),e=(d.h+c.value)%360;return d.h=e<0?360+e:e,b(d)},mix:function(b,c,d){var e=d.value\/100,f=e*2-1,g=b.toHSL().a-c.toHSL().a,h=((f*g==-1?f:(f+g)\/(1+f*g))+1)\/2,i=1-h,j=[b.rgb[0]*h+c.rgb[0]*i,b.rgb[1]*h+c.rgb[1]*i,b.rgb[2]*h+c.rgb[2]*i],k=b.alpha*e+c.alpha*(1-e);return new a.Color(j,k)},greyscale:function(b){return this.desaturate(b,new a.Dimension(100))},e:function(b){return new a.Anonymous(b instanceof a.JavaScript?b.evaluated:b)},escape:function(b){return new a.Anonymous(encodeURI(b.value).replace(\/=\/g,"%3D").replace(\/:\/g,"%3A").replace(\/#\/g,"%23").replace(\/;\/g,"%3B").replace(\/\\(\/g,"%28").replace(\/\\)\/g,"%29"))},"%":function(b){var c=Array.prototype.slice.call(arguments,1),d=b.value;for(var e=0;e<c.length;e++)d=d.replace(\/%[sda]\/i,function(a){var b=a.match(\/s\/i)?c[e].value:c[e].toCSS();return a.match(\/[A-Z]$\/)?encodeURIComponent(b):b});return d=d.replace(\/%%\/g,"%"),new a.Quoted('"'+d+'"',d)},round:function(a){return this._math("round",a)},ceil:function(a){return this._math("ceil",a)},floor:function(a){return this._math("floor",a)},_math:function(b,d){if(d instanceof a.Dimension)return new a.Dimension(Math[b](c(d)),d.unit);if(typeof d=="number")return Math[b](d);throw{type:"Argument",message:"argument must be a number"}},argb:function(b){return new a.Anonymous(b.toARGB())},percentage:function(b){return new a.Dimension(b.value*100,"%")},color:function(b){if(b instanceof a.Quoted)return new a.Color(b.value.slice(1));throw{type:"Argument",message:"argument must be a string"}},iscolor:function(b){return this._isa(b,a.Color)},isnumber:function(b){return this._isa(b,a.Dimension)},isstring:function(b){return this._isa(b,a.Quoted)},iskeyword:function(b){return this._isa(b,a.Keyword)},isurl:function(b){return this._isa(b,a.URL)},ispixel:function(b){return b instanceof a.Dimension&&b.unit==="px"?a.True:a.False},ispercentage:function(b){return b instanceof a.Dimension&&b.unit==="%"?a.True:a.False},isem:function(b){return b instanceof a.Dimension&&b.unit==="em"?a.True:a.False},_isa:function(b,c){return b instanceof c?a.True:a.False}}})(c(".\/tree")),function(a){a.colors={aliceblue:"#f0f8ff",antiquewhite:"#faebd7",aqua:"#00ffff",aquamarine:"#7fffd4",azure:"#f0ffff",beige:"#f5f5dc",bisque:"#ffe4c4",black:"#000000",blanchedalmond:"#ffebcd",blue:"#0000ff",blueviolet:"#8a2be2",brown:"#a52a2a",burlywood:"#deb887",cadetblue:"#5f9ea0",chartreuse:"#7fff00",chocolate:"#d2691e",coral:"#ff7f50",cornflowerblue:"#6495ed",cornsilk:"#fff8dc",crimson:"#dc143c",cyan:"#00ffff",darkblue:"#00008b",darkcyan:"#008b8b",darkgoldenrod:"#b8860b",darkgray:"#a9a9a9",darkgrey:"#a9a9a9",darkgreen:"#006400",darkkhaki:"#bdb76b",darkmagenta:"#8b008b",darkolivegreen:"#556b2f",darkorange:"#ff8c00",darkorchid:"#9932cc",darkred:"#8b0000",darksalmon:"#e9967a",darkseagreen:"#8fbc8f",darkslateblue:"#483d8b",darkslategray:"#2f4f4f",darkslategrey:"#2f4f4f",darkturquoise:"#00ced1",darkviolet:"#9400d3",deeppink:"#ff1493",deepskyblue:"#00bfff",dimgray:"#696969",dimgrey:"#696969",dodgerblue:"#1e90ff",firebrick:"#b22222",floralwhite:"#fffaf0",forestgreen:"#228b22",fuchsia:"#ff00ff",gainsboro:"#dcdcdc",ghostwhite:"#f8f8ff",gold:"#ffd700",goldenrod:"#daa520",gray:"#808080",grey:"#808080",green:"#008000",greenyellow:"#adff2f",honeydew:"#f0fff0",hotpink:"#ff69b4",indianred:"#cd5c5c",indigo:"#4b0082",ivory:"#fffff0",khaki:"#f0e68c",lavender:"#e6e6fa",lavenderblush:"#fff0f5",lawngreen:"#7cfc00",lemonchiffon:"#fffacd",lightblue:"#add8e6",lightcoral:"#f08080",lightcyan:"#e0ffff",lightgoldenrodyellow:"#fafad2",lightgray:"#d3d3d3",lightgrey:"#d3d3d3",lightgreen:"#90ee90",lightpink:"#ffb6c1",lightsalmon:"#ffa07a",lightseagreen:"#20b2aa",lightskyblue:"#87cefa",lightslategray:"#778899",lightslategrey:"#778899",lightsteelblue:"#b0c4de",lightyellow:"#ffffe0",lime:"#00ff00",limegreen:"#32cd32",linen:"#faf0e6",magenta:"#ff00ff",maroon:"#800000",mediumaquamarine:"#66cdaa",mediumblue:"#0000cd",mediumorchid:"#ba55d3",mediumpurple:"#9370d8",mediumseagreen:"#3cb371",mediumslateblue:"#7b68ee",mediumspringgreen:"#00fa9a",mediumturquoise:"#48d1cc",mediumvioletred:"#c71585",midnightblue:"#191970",mintcream:"#f5fffa",mistyrose:"#ffe4e1",moccasin:"#ffe4b5",navajowhite:"#ffdead",navy:"#000080",oldlace:"#fdf5e6",olive:"#808000",olivedrab:"#6b8e23",orange:"#ffa500",orangered:"#ff4500",orchid:"#da70d6",palegoldenrod:"#eee8aa",palegreen:"#98fb98",paleturquoise:"#afeeee",palevioletred:"#d87093",papayawhip:"#ffefd5",peachpuff:"#ffdab9",peru:"#cd853f",pink:"#ffc0cb",plum:"#dda0dd",powderblue:"#b0e0e6",purple:"#800080",red:"#ff0000",rosybrown:"#bc8f8f",royalblue:"#4169e1",saddlebrown:"#8b4513",salmon:"#fa8072",sandybrown:"#f4a460",seagreen:"#2e8b57",seashell:"#fff5ee",sienna:"#a0522d",silver:"#c0c0c0",skyblue:"#87ceeb",slateblue:"#6a5acd",slategray:"#708090",slategrey:"#708090",snow:"#fffafa",springgreen:"#00ff7f",steelblue:"#4682b4",tan:"#d2b48c",teal:"#008080",thistle:"#d8bfd8",tomato:"#ff6347",turquoise:"#40e0d0",violet:"#ee82ee",wheat:"#f5deb3",white:"#ffffff",whitesmoke:"#f5f5f5",yellow:"#ffff00",yellowgreen:"#9acd32"}}(c(".\/tree")),function(a){a.Alpha=function(a){this.value=a},a.Alpha.prototype={toCSS:function(){return"alpha(opacity="+(this.value.toCSS?this.value.toCSS():this.value)+")"},eval:function(a){return this.value.eval&&(this.value=this.value.eval(a)),this}}}(c("..\/tree")),function(a){a.Anonymous=function(a){this.value=a.value||a},a.Anonymous.prototype={toCSS:function(){return this.value},eval:function(){return this}}}(c("..\/tree")),function(a){a.Assignment=function(a,b){this.key=a,this.value=b},a.Assignment.prototype={toCSS:function(){return this.key+"="+(this.value.toCSS?this.value.toCSS():this.value)},eval:function(a){return this.value.eval&&(this.value=this.value.eval(a)),this}}}(c("..\/tree")),function(a){a.Call=function(a,b,c,d){this.name=a,this.args=b,this.index=c,this.filename=d},a.Call.prototype={eval:function(b){var c=this.args.map(function(a){return a.eval(b)});if(!(this.name in a.functions))return new a.Anonymous(this.name+"("+c.map(function(a){return a.toCSS()}).join(", ")+")");try{return a.functions[this.name].apply(a.functions,c)}catch(d){throw{type:d.type||"Runtime",message:"error evaluating function `"+this.name+"`"+(d.message?": "+d.message:""),index:this.index,filename:this.filename}}},toCSS:function(a){return this.eval(a).toCSS()}}}(c("..\/tree")),function(a){a.Color=function(a,b){Array.isArray(a)?this.rgb=a:a.length==6?this.rgb=a.match(\/.{2}\/g).map(function(a){return parseInt(a,16)}):this.rgb=a.split("").map(function(a){return parseInt(a+a,16)}),this.alpha=typeof b=="number"?b:1},a.Color.prototype={eval:function(){return this},toCSS:function(){return this.alpha<1?"rgba("+this.rgb.map(function(a){return Math.round(a)}).concat(this.alpha).join(", ")+")":"#"+this.rgb.map(function(a){return a=Math.round(a),a=(a>255?255:a<0?0:a).toString(16),a.length===1?"0"+a:a}).join("")},operate:function(b,c){var d=[];c instanceof a.Color||(c=c.toColor());for(var e=0;e<3;e++)d[e]=a.operate(b,this.rgb[e],c.rgb[e]);return new a.Color(d,this.alpha+c.alpha)},toHSL:function(){var a=this.rgb[0]\/255,b=this.rgb[1]\/255,c=this.rgb[2]\/255,d=this.alpha,e=Math.max(a,b,c),f=Math.min(a,b,c),g,h,i=(e+f)\/2,j=e-f;if(e===f)g=h=0;else{h=i>.5?j\/(2-e-f):j\/(e+f);switch(e){case a:g=(b-c)\/j+(b<c?6:0);break;case b:g=(c-a)\/j+2;break;case c:g=(a-b)\/j+4}g\/=6}return{h:g*360,s:h,l:i,a:d}},toARGB:function(){var a=[Math.round(this.alpha*255)].concat(this.rgb);return"#"+a.map(function(a){return a=Math.round(a),a=(a>255?255:a<0?0:a).toString(16),a.length===1?"0"+a:a}).join("")}}}(c("..\/tree")),function(a){a.Comment=function(a,b){this.value=a,this.silent=!!b},a.Comment.prototype={toCSS:function(a){return a.compress?"":this.value},eval:function(){return this}}}(c("..\/tree")),function(a){a.Condition=function(a,b,c,d,e){this.op=a.trim(),this.lvalue=b,this.rvalue=c,this.index=d,this.negate=e},a.Condition.prototype.eval=function(a){var b=this.lvalue.eval(a),c=this.rvalue.eval(a),d=this.index,e,e=function(a){switch(a){case"and":return b&&c;case"or":return b||c;default:if(b.compare)e=b.compare(c);else if(c.compare)e=c.compare(b);else throw{type:"Type",message:"Unable to perform comparison",index:d};switch(e){case-1:return a==="<"||a==="=<";case 0:return a==="="||a===">="||a==="=<";case 1:return a===">"||a===">="}}}(this.op);return this.negate?!e:e}}(c("..\/tree")),function(a){a.Dimension=function(a,b){this.value=parseFloat(a),this.unit=b||null},a.Dimension.prototype={eval:function(){return this},toColor:function(){return new a.Color([this.value,this.value,this.value])},toCSS:function(){var a=this.value+this.unit;return a},operate:function(b,c){return new a.Dimension(a.operate(b,this.value,c.value),this.unit||c.unit)},compare:function(b){return b instanceof a.Dimension?b.value>this.value?-1:b.value<this.value?1:0:-1}}}(c("..\/tree")),function(a){a.Directive=function(b,c,d){this.name=b,Array.isArray(c)?(this.ruleset=new a.Ruleset([],c),this.ruleset.allowImports=!0):this.value=c},a.Directive.prototype={toCSS:function(a,b){return this.ruleset?(this.ruleset.root=!0,this.name+(b.compress?"{":" {\\n  ")+this.ruleset.toCSS(a,b).trim().replace(\/\\n\/g,"\\n  ")+(b.compress?"}":"\\n}\\n")):this.name+" "+this.value.toCSS()+";\\n"},eval:function(a){return a.frames.unshift(this),this.ruleset=this.ruleset&&this.ruleset.eval(a),a.frames.shift(),this},variable:function(b){return a.Ruleset.prototype.variable.call(this.ruleset,b)},find:function(){return a.Ruleset.prototype.find.apply(this.ruleset,arguments)},rulesets:function(){return a.Ruleset.prototype.rulesets.apply(this.ruleset)}}}(c("..\/tree")),function(a){a.Element=function(b,c,d){this.combinator=b instanceof a.Combinator?b:new a.Combinator(b),typeof c=="string"?this.value=c.trim():c?this.value=c:this.value="",this.index=d},a.Element.prototype.eval=function(b){return new a.Element(this.combinator,this.value.eval?this.value.eval(b):this.value,this.index)},a.Element.prototype.toCSS=function(a){return this.combinator.toCSS(a||{})+(this.value.toCSS?this.value.toCSS(a):this.value)},a.Combinator=function(a){a===" "?this.value=" ":a==="& "?this.value="& ":this.value=a?a.trim():""},a.Combinator.prototype.toCSS=function(a){return{"":""," ":" ","&":"","& ":" ",":":" :","+":a.compress?"+":" + ","~":a.compress?"~":" ~ ",">":a.compress?">":" > "}[this.value]}}(c("..\/tree")),function(a){a.Expression=function(a){this.value=a},a.Expression.prototype={eval:function(b){return this.value.length>1?new a.Expression(this.value.map(function(a){return a.eval(b)})):this.value.length===1?this.value[0].eval(b):this},toCSS:function(a){return this.value.map(function(b){return b.toCSS?b.toCSS(a):""}).join(" ")}}}(c("..\/tree")),function(a){a.Import=function(b,c,d,e){var f=this;this.index=e,this._path=b,this.features=d&&new a.Value(d),b instanceof a.Quoted?this.path=\/\\.(le?|c)ss(\\?.*)?$\/.test(b.value)?b.value:b.value+".less":this.path=b.value.value||b.value,this.css=\/css(\\?.*)?$\/.test(this.path),this.css||c.push(this.path,function(b,c){b&&(b.index=e),f.root=c||new a.Ruleset([],[])})},a.Import.prototype={toCSS:function(a){var b=this.features?" "+this.features.toCSS(a):"";return this.css?"@import "+this._path.toCSS()+b+";\\n":""},eval:function(b){var c,d=this.features&&this.features.eval(b);if(this.css)return this;c=new a.Ruleset([],this.root.rules.slice(0));for(var e=0;e<c.rules.length;e++)c.rules[e]instanceof a.Import&&Array.prototype$/;"	f
+tags:6568:print_message_log	C:\Users\Cyril\vimfiles\plugged\unite.vim\autoload\unite\mappings.vim	/^function! s:print_message_log() "{{{$/;"	f
+tags:6992:s:LHdialog	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\autoload\lh\buffer\dialog.vim	/^let s:LHdialog = {}$/;"	v
+tags:7076:s:PROTOTYPE	C:\Users\Cyril\vimfiles\plugged\vim-javacomplete2\autoload\java_parser.vim	/^let s:PROTOTYPE = {'s:options': {}, 'b:buf': '', 'b:buflen': 0, 'b:lines': [], 'b:idxes': [0], 'b:bp': -1, 'b:ch': '', 'b:line': 0, 'b:col': 0, 'b:pos': 0, 'b:endPos': 0, 'b:prevEndPos': 0, 'b:errPos': -1, 'b:errorEndPos': -1, 'b:sbuf': '', 'b:name': '', 'b:token': '', 'b:docComment': '', 'b:radix': 0, 'b:unicodeConversionBp': -1, 'b:scanStrategy': 0, 'b:allowGenerics': 1, 'b:allowVarargs': 1, 'b:allowAsserts': 1, 'b:allowEnums': 1, 'b:allowForeach': 1, 'b:allowStaticImport': 1, 'b:allowAnnotations': 1, 'b:keepDocComments': 1, 'b:mode': 0, 'b:lastmode': 0, 'b:log': [], 'b:et_perf': '', 'b:et_nextToken_count': 0}$/;"	v
+tags:7370:s:called	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\tests\lh\topological-sort.vim	/^let s:called = 0$/;"	v
+tags:7421:s:cpo_save	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\autoload\lh\buffer\dialog.vim	/^let s:cpo_save=&cpo$/;"	v
+tags:7444:s:cpo_save	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\tests\lh\topological-sort.vim	/^let s:cpo_save=&cpo$/;"	v
+tags:7520:s:dag1	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\tests\lh\topological-sort.vim	/^let s:dag1 = {}$/;"	v
+tags:7521:s:dag1	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\tests\lh\topological-sort.vim	/^let s:dag1[11] = [2, 9, 10]$/;"	v
+tags:7522:s:dag1	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\tests\lh\topological-sort.vim	/^let s:dag1[3] = [8, 10]$/;"	v
+tags:7523:s:dag1	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\tests\lh\topological-sort.vim	/^let s:dag1[5] = [11]$/;"	v
+tags:7524:s:dag1	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\tests\lh\topological-sort.vim	/^let s:dag1[7] = [11, 8]$/;"	v
+tags:7525:s:dag1	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\tests\lh\topological-sort.vim	/^let s:dag1[8] = [9]$/;"	v
+tags:7535:s:dcg1	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\tests\lh\topological-sort.vim	/^let s:dcg1 = deepcopy(s:dag1)$/;"	v
+tags:7536:s:dcg1	C:\Users\Cyril\vimfiles\plugged\gundo.vim\tests\bundled\lh-vim-lib\tests\lh\topological-sort.vim	/^let s:dcg1[9] = [11]$/;"	v
+tags:7887:s:log	C:\Users\Cyril\vimfiles\plugged\vim-javacomplete2\autoload\javacomplete.vim	/^let s:log = []$/;"	v
+tags:9532:tablemode#logger#log	C:\Users\Cyril\vimfiles\plugged\vim-table-mode\autoload\tablemode\logger.vim	/^function! tablemode#logger#log(message)$/;"	f
