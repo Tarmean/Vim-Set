@@ -1,16 +1,22 @@
 function! AddPlugins(all)
      call plug#begin('~/vimfiles/plugged')
-     Plug 'PProvost/vim-ps1'
-     Plug 'kovisoft/slimv'
+     Plug 'itchyny/calendar.vim' ", { 'on': 'Calender' }
+     Plug 'vimwiki/vimwiki'
+
+     Plug 'LaTeX-Box-Team/LaTeX-Box', { 'for': 'plaintex' }
+
+     Plug 'tpope/vim-eunuch'
+     Plug 'PProvost/vim-ps1', { 'for': 'ps1' }
+     Plug 'kovisoft/slimv', { 'for': 'scheme' }
      Plug 'AndrewRadev/sideways.vim'
-     Plug 'davidhalter/jedi-vim'
+     Plug 'davidhalter/jedi-vim', { 'for': 'python' } 
      Plug 'wellle/targets.vim'
-     Plug 'terryma/vim-multiple-cursors'
+     " Plug 'terryma/vim-multiple-cursors'
  
      Plug 'arecarn/fold-cycle.vim'
      Plug 'AndrewRadev/splitjoin.vim'
-     Plug 'vim-scripts/repeatable-motions.vim'
-     Plug 'plasticboy/vim-markdown'
+     " Plug 'vim-scripts/repeatable-motions.vim'
+     Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
      Plug 'dhruvasagar/vim-table-mode', { 'on':  'TableModeEnable' }
      " Plug 'KabbAmine/zeavim.vim'
      Plug 'vim-scripts/ReplaceWithRegister'
@@ -44,7 +50,7 @@ function! AddPlugins(all)
      Plug '~/vimOld/bundle/filebeagle/' 
      Plug '~/vimOld/bundle/delimitMate/'
      Plug '~/vimOld/bundle/mixedfunctions/'
-     Plug '~/vimfiles/plugged/ranger.vim/'
+     " Plug '~/vimfiles/plugged/ranger.vim/'
      Plug 'Konfekt/FastFold'
  
      Plug 'glts/vim-textobj-comment'
@@ -57,13 +63,13 @@ function! AddPlugins(all)
      Plug 'Julian/vim-textobj-variable-segment'
      if(a:all)
      "Plug 'junegunn/agl' <actually for command line
-         Plug 'LucHermitte/lh-vim-lib'
-         Plug 'LucHermitte/VimFold4C'
-         Plug 'RyanMcG/vim-j'
-         Plug 'zah/nim.vim'
-         Plug 'junegunn/seoul256.vim'
+         Plug 'LucHermitte/lh-vim-lib', { 'for': 'c' }
+         Plug 'LucHermitte/VimFold4C', { 'for': 'c' }
+         Plug 'RyanMcG/vim-j', { 'for': 'j' }
+         Plug 'zah/nim.vim', { 'for': 'nim' }
+         " Plug 'junegunn/seoul256.vim'
          Plug '~/vimOld/bundle/convertBase/'
-         Plug 'jceb/vim-orgmode'
+         " Plug 'jceb/vim-orgmode'
          "Plug 'junegunn/seoul256.vim'
          "Plug 'lambdalisue/vim-gita'
          " Plug 'vim-scripts/ingo-library'
@@ -72,19 +78,19 @@ function! AddPlugins(all)
          " Plug 'vim-scripts/help_movement'
          " Plug 'vim-scripts/diffwindow_movement'
  
-         Plug 'artur-shaik/vim-javacomplete2'
+         " Plug 'artur-shaik/vim-javacomplete2'
          Plug 'luochen1990/rainbow'
          if(has('gui'))
              let g:rainbow_active = 1
          endif
          Plug 'tpope/vim-fugitive'
          Plug 'gregsexton/gitv', { 'on':  'Gitv' }
-         Plug 'Yggdroot/indentLine'
+         Plug 'Yggdroot/indentLine', { 'on':  'IndentLinesToggle' }
          "Plug 'gelguy/Cmd2.vim'
          "Plug 'junegunn/vim-after-object'
          "Plug 'junegunn/vim-peekaboo'
          Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
-         Plug 'junegunn/vim-easy-align'
+         Plug 'junegunn/vim-easy-align', { 'on': '<Plug>(LiveEasyAlign)' }
  
          " Plug 'xolox/vim-easytags'
          " Plug 'xolox/vim-misc'

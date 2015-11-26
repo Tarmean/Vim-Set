@@ -27,6 +27,8 @@ autocmd FileType python nnoremap <buffer> <leader>a :call jedi#goto()<cr>
 autocmd FileType python nnoremap <buffer> <leader>n :call jedi#show_documentation()<cr>
 autocmd FileType python nnoremap <buffer> <leader><cr> :call jedi#usages()<cr>
 
+autocmd FileType java let b:syntastic_mode="passive"
+
 
 if !has("nvim")
     " "Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
@@ -146,27 +148,27 @@ silent! unmap S
 let g:sneak#s_next=1
 let g:sneak#textobj_z=0
 let g:sneak#use_ic_scs = 1
-"nmap f <Plug>Sneak_f
-"lmap F <Plug>Sneak_F
-"xmap f <Plug>Sneak_f
-"xmap F <Plug>Sneak_F
-"omap f <Plug>Sneak_f
-"omap F <Plug>Sneak_F
-"nmap ö <Plug>Sneak_s
-"nmap Ö <Plug>Sneak_S
+nmap f <Plug>Sneak_f
+lmap F <Plug>Sneak_F
+xmap f <Plug>Sneak_f
+xmap F <Plug>Sneak_F
+omap f <Plug>Sneak_f
+omap F <Plug>Sneak_F
+nmap ö <Plug>Sneak_s
+nmap Ö <Plug>Sneak_S
 "" visual-mode
-"xmap ö <Plug>Sneak_s
-"xmap Ö <Plug>Sneak_S
+xmap ö <Plug>Sneak_s
+xmap Ö <Plug>Sneak_S
 "" operator-pending-mode
-"omap ö <Plug>Sneak_s
-"omap Ö <Plug>Sneak_S
+omap ö <Plug>Sneak_s
+omap Ö <Plug>Sneak_S
 
 nnoremap [w :Obsession<CR>
 nnoremap ]w :Obsession!<CR>
 
 let g:prosession_on_startup = 0
-noremap <leader>w :Prosession 
-noremap <leader>W :Createsession 
+noremap <leader>b :Prosession 
+noremap <leader>B :Createsession 
 
 let g:SuperTabDefaultCompletionType = 'context'
 let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
@@ -291,8 +293,6 @@ nnoremap <leader><c-I> :<C-U>call Clone_rel_tab_backwards(0, v:count)<CR>
 nnoremap <leader>O :<C-U>call Clone_rel_tab_forwards(1, v:count)<CR>
 nnoremap <leader><c-O> :<C-U>call Clone_rel_tab_forwards(0, v:count)<CR>
 nnoremap <silent><leader>o :<C-U>call RelativeNext(v:count1)<CR>
-silent! unmap <space>k
-silent! unmap <space>K
 noremap <silent><leader>h  : call WinMove('h')<cr>
 noremap <silent><leader>k  : call WinMove('k')<cr>
 noremap <silent><leader>l  : call WinMove('l')<cr>
