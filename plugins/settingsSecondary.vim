@@ -33,14 +33,16 @@ let g:fastfold_fold_command_suffixes = []
 let g:fastfold_fold_movement_commands = []
 
 
-nnoremap <silent> <leader>d :call InterestingWords('n')<cr>
-nnoremap <silent> <leader>D :call UncolorAllWords()<cr>
+noremap <silent> <leader>d <Plug>InterestingWords
+noremap <silent> <leader>D <Plug>InterestingWordsClear
+nnoremap <silent> n <Plug>InterestingWordsForeward
+nnoremap <silent> N <Plug>InterestingWordsBackward
 let g:interestingWordsDefaultMappings = 1
 let g:interestingWordsGUIColors = ['#FFF6CC', '#FFD65C', '#8CCBEA', '#A4E57E', '#99FFE6', '#E6FF99', '#FFDB72', '#5CD6FF', '#99FFB3', '#FF7272', '#99FF99', '#99B3FF', '#FFB399']
        
-nnoremap <F4> call javacomplete#AddImport()<cr>
-autocmd FileType java set omnifunc=javacomplete#Complete
-let JavaComplete_LibsPath = "/home/cyril/teamf3/"
+" nnoremap <F4> call javacomplete#AddImport()<cr>
+" autocmd FileType java set omnifunc=javacomplete#Complete
+" let JavaComplete_LibsPath = "/home/cyril/teamf3/"
 
 
 
@@ -285,31 +287,6 @@ else
         map <buffer> <leader><c>   <Plug>(unite_exit)
     endfunction
 endif
-
-
-noremap ]oc :call SetJavaComplete(0)<cr>
-noremap [oc :call SetJavaComplete(1)<cr>
-if(has("unix"))
-    let g:JavaComplete_Home = $HOME . '/vimfiles/plugged/vim-javacomplete2'
-    let $CLASSPATH .= '.:' . $HOME . '/vimfiles/plugged/vim-javacomplete2/libs/javavi/target/classes'
-    let g:JavaComplete_SourcePath = $HOME . '/teamf3/*.jar:' . $HOME . '/teamf3/src/**/*.java'
-endif
-function! SetJavaComplete(bool)
-    augroup JavaComplete
-        au!
-        if(a:bool)
-            au FileType java exec "setlocal omnifunc=javacomplete#Complete"
-            au FileType java exec "setlocal completefunc=javacomplete#CompleteParamsInfo"
-            if(&ft=="java")
-                setlocal omnifunc=javacomplete#Complete
-                setlocal completefunc=javacomplete#CompleteParamsInfo
-            endif
-        else
-            set omnifunc=
-            set completefunc=
-        endif
-    augroup END
-endfunction
 
 
 function! SignifyUpdate(b)

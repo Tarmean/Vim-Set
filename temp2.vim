@@ -1,5 +1,3 @@
-function! s:getInverse()
-endfunction
 function! GetSubRanges(area, ranges)
     let i = 0
     let running = 1
@@ -28,6 +26,45 @@ function! GetSubRanges(area, ranges)
     endif
     return result
 endfunction
+let i = 0
+    let running = 1
+    let inArea = []
+    let result = 
+    let area = a:area
+    while running && i < len(a:ranges)
+        let bigger =  multiselect#comparePosition(area
+, a:ranges
+) == -1
+        let smaller =  multiselect#comparePosition(area
+, a:ranges
+) == 1
+        let running = bigger && smaller
+        if running
+
+            call add(inArea, a:ranges
+)
+            let i += 1
+        endif
+    endwhile
+    " echo inArea
+    " call getchar()
+    if len(inArea) > 0
+
+        call add(result, 
+)
+        let j = 1
+        while j < len(inArea)
+
+            let result = result + s:betweenSlices(inArea
+, inArea
+)
+            let j += 1
+        endwhile
+
+        call add(result, 
+)
+    endif
+    return result
 
 function! s:inc(pos)
     let pos = [a:pos[0], a:pos[1], a:pos[2]+1, a:pos[3]]
