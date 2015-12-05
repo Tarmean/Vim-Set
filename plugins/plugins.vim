@@ -1,5 +1,6 @@
 function! AddPlugins(all)
      call plug#begin('~/vimfiles/plugged')
+     Plug 'jiangmiao/auto-pairs'
      Plug 'itchyny/calendar.vim' ", { 'on': 'Calender' }
      Plug 'vimwiki/vimwiki'
 
@@ -48,7 +49,6 @@ function! AddPlugins(all)
      Plug 'ludovicchabant/vim-gutentags'
      Plug '~/vimOld/bundle/vim-unimpaired-master/'
      Plug '~/vimOld/bundle/filebeagle/' 
-     Plug '~/vimOld/bundle/delimitMate/'
      Plug '~/vimOld/bundle/mixedfunctions/'
      " Plug '~/vimfiles/plugged/ranger.vim/'
      Plug 'Konfekt/FastFold'
@@ -130,6 +130,7 @@ function! AddPlugins(all)
 
         if(has('unix'))
             Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
+            Plug 'junegunn/fzf.vim'
         endif
         if(has('nvim'))
             let g:python_host_prog='/usr/bin/python'

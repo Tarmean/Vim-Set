@@ -1,5 +1,6 @@
 " let g:UltiSnipsJumpForwardTrigger="<tab>"
 " let g:UltiSnipsJumpBackwardTrigger="<c-tab>"
+" let g:gutentags_define_advanced_commands=1
 
 let g:multi_cursor_exit_from_visual_mode = 0
 let g:multi_cursor_exit_from_insert_mode = 0
@@ -132,7 +133,7 @@ nmap vac v<Plug>(textobj-comment-a)
 nmap vic v<Plug>(textobj-comment-i)
 
 nmap _  <Plug>ReplaceWithRegisterOperator
-nmap __  <Plug>ReplaceWithRegisterOperatorik
+nmap __ <Plug>ReplaceWithRegisterOperatorik
 
 noremap ]oz :Goyo!<cr>
 noremap [oz :Goyo<cr>:IndentLinesDisable<cr>
@@ -285,7 +286,7 @@ let g:splice_prefix = "+"
 nnoremap <leader>fb :FileBeagle<cr>
 let g:filebeagle_show_hidden =  1
 
-let delimitMate_expand_cr=1
+" let delimitMate_expand_cr=1
 
 nnoremap <leader>i gT
 nnoremap <leader>I :<C-U>call Clone_rel_tab_backwards(1, v:count)<CR>

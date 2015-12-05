@@ -1,3 +1,32 @@
+let g:calendar_google_calendar = 1
+let g:calendar_google_task = 1
+
+let g:AutoPairsFlyMode = 1
+let g:AutoPairsShortcutBackInsert = '<BS>'
+let g:BracketSwapPairs = {
+            \'ä': '{',
+            \'Ä': '}',
+            \'ö': '(',
+            \'Ö': ')',
+            \'ü': '[',
+            \'Ü': ']',
+        \}
+function! SetCharSwap(bool)
+    if(a:bool)
+        for [l, r] in items(g:BracketSwapPairs)
+            silent! execute "imap " . l . " <C-R>=AutoPairsInsert('" . r . "')<CR>"
+        endfor
+    else
+        for [l, r] in items(g:BracketSwapPairs)
+            silent! execute "iunmap " . l
+        endfor
+    endif
+endfunction
+call SetCharSwap(1)
+noremap [oü :SetCharSwap 1<cr>
+noremap ]oä :SetCharSwap 0<cr>
+
+
 nmap <M-b> <Plug>LLBreakSwitch
 nnoremap <F5> :LLrefresh<CR>
 nnoremap <S-F5> :LLredraw<CR>
@@ -12,17 +41,17 @@ let g:syntastic_mode_map = {
             \ "passive_filetypes": [] }
 
 let g:fold_options = {
-   \ 'show_if_and_else': 1,
-   \ 'strip_template_argurments': 1,
-   \ 'strip_namespaces': 1,
-   \ }
+            \ 'show_if_and_else': 1,
+            \ 'strip_template_argurments': 1,
+            \ 'strip_namespaces': 1,
+            \ }
 
 fun! JumpToDef()
-  if exists("*GotoDefinition_" . &filetype)
-    call GotoDefinition_{&filetype}()
-  else
-    exe "norm! \<C-]>"
-  endif
+    if exists("*GotoDefinition_" . &filetype)
+        call GotoDefinition_{&filetype}()
+    else
+        exe "norm! \<C-]>"
+    endif
 endf
 
 " Jump to tag
@@ -39,7 +68,7 @@ nnoremap <silent> n <Plug>InterestingWordsForeward
 nnoremap <silent> N <Plug>InterestingWordsBackward
 let g:interestingWordsDefaultMappings = 1
 let g:interestingWordsGUIColors = ['#FFF6CC', '#FFD65C', '#8CCBEA', '#A4E57E', '#99FFE6', '#E6FF99', '#FFDB72', '#5CD6FF', '#99FFB3', '#FF7272', '#99FF99', '#99B3FF', '#FFB399']
-       
+
 " nnoremap <F4> call javacomplete#AddImport()<cr>
 " autocmd FileType java set omnifunc=javacomplete#Complete
 " let JavaComplete_LibsPath = "/home/cyril/teamf3/"
@@ -79,192 +108,37 @@ nnoremap <leader>u :GundoToggle<CR>
 
 
 if(has('unix'))
-    nnoremap <silent> <leader>fa :execute "Locate " . expand("~")<cr>
-    nnoremap <silent> <leader><leader> :execute "Locate " . Get_classpath("")<cr>
-    command! -nargs=1 Locate call fzf#run(
-                \ {'source': 'locate <q-args>', 'sink': 'e', 'options': '-m'})
-
-    function! s:buflist()
-        redir => ls
-        silent ls
-        redir END
-        return split(ls, '\n')
+    " let g:fzf_layout = {'window': ''}
+    function! s:fzf_statusline()
+        " Override statusline as you like
+        highlight fzf1 ctermfg=161 ctermbg=251
+        highlight fzf2 ctermfg=23 ctermbg=251
+        highlight fzf3 ctermfg=237 ctermbg=251
+        setlocal statusline=%#fzf1#\ >\ %#fzf2#fz%#fzf3#f
     endfunction
 
-    function! s:bufopen(e)
-        execute 'buffer' matchstr(a:e, '^[ 0-9]*')
-    endfunction
+    autocmd! User FzfStatusLine call <SID>fzf_statusline()
+    " Advanced customization using autoload functions
+    autocmd VimEnter * command! Colors
+      \ call fzf#vim#colors({'buffer': '', 'options': '--reverse --margin 30%,0'})
+    nnoremap <silent> <leader>fc :Colors<cr>
 
-    nnoremap <silent> <Leader><Enter> :call fzf#run({
-                \   'source':  reverse(<sid>buflist()),
-                \   'sink':    function('<sid>bufopen'),
-                \   'options': ' +m',
-                \   'down':    len(<sid>buflist()) + 2
-                \ })<CR>
+    nnoremap <silent> <leader>fa :GitFiles<cr>
+    nnoremap <silent> <leader>fb :Buffers<cr>
+    nnoremap <silent> <leader>fl :BLines<cr>
+    nnoremap <silent> <leader>fL :Lines<cr>
+    nnoremap <silent> <leader>fd :Tags<cr>
+    nnoremap <silent> <leader>fD :BTags<cr>
+    nnoremap <silent> <leader>fm :Marks<cr>
+    nnoremap <silent> <leader>fw :Windows<cr>
+    nnoremap <silent> <leader>fj :Locate ~<cr>
+    nnoremap <silent> <leader>fö :Locate ~/vimfiles/plugged/<cr>
+    nnoremap <silent> <leader>fs :History<cr>
+    nnoremap <silent> <leader>fk :Snippets<cr>
+    nnoremap <silent> <leader>fg :Commits<cr>
+    nnoremap <silent> <leader>fG :BCommits<cr>
+    nnoremap <silent> <leader>fh :Helptags<cr>
 
-
-    nnoremap <silent> <Leader>fs :FZFMru<cr>
-    command! FZFMru call fzf#run({
-                \'source': v:oldfiles,
-                \'sink' : 'e',
-                \'options' : '-m',
-                \})
-
-
-
-    nnoremap <silent> <Leader>fD :call FZFAllTags()<cr>
-    nnoremap <silent> <Leader>fd :call FZFTag()<cr>
-    function! FZFAllTags() 
-        if !empty(tagfiles()) 
-            call fzf#run({
-                    \   'source': "sed '/^\\!/d;s/\t.*//' " . join(tagfiles()) . ' | uniq',
-                    \   'sink':   'tag',
-                    \ }) 
-        else 
-            echo 'No tags' 
-        endif
-    endfunction
-
-    function! FZFTags() 
-        if !empty(tagfiles()) 
-            call fzf#run({
-                    \   'source': "sed '/^\\!/d;s/\t.*//' " . join(tagfiles()) . ' | uniq',
-                    \   'sink':   'tag',
-                    \ }) 
-        else 
-            echo 'No tags' 
-        endif
-    endfunction
-
-    function! s:line_handler(l)
-        let keys = split(a:l, ':\t')
-        exec 'buf ' . keys[0]
-        exec keys[1]
-        normal! ^zz
-    endfunction
-
-    function! s:buffer_lines()
-        let res = []
-        for b in filter(range(1, bufnr('$')), 'buflisted(v:val)')
-            call extend(res, map(getbufline(b,0,"$"), 'b . ":\t" . (v:key + 1) . ":\t" . v:val '))
-        endfor
-        return res
-    endfunction
-    function! s:cur_buffer_lines()
-        let res = []
-        let l:b = bufnr('%')
-        call extend(res, map(getbufline(l:b,0,"$"), 'l:b . ":\t" . (v:key + 1) . ":\t" . v:val '))
-        return res
-    endfunction
-    nnoremap <silent> <Leader>fL :FZFLines<cr>
-    command! FZFLines call fzf#run({
-                \   'source':  <sid>buffer_lines(),
-                \   'sink':    function('<sid>line_handler'),
-                \   'options': '--extended --nth=3..',
-                \})
-
-    nnoremap <silent> <Leader>fl :FZFCurLines<cr>
-    command! FZFCurLines call fzf#run({
-                \   'source':  <sid>cur_buffer_lines(),
-                \   'sink':    function('<sid>line_handler'),
-                \   'options': '--extended --nth=3..',
-                \})
-
-    function! s:ag_handler(lines)
-        if len(a:lines) < 2 | return | endif
-
-        let [key, line] = a:lines[0:1]
-        let [file, line, col] = split(line, ':')[0:2]
-        let cmd = get({'ctrl-x': 'split', 'ctrl-v': 'vertical split', 'ctrl-t': 'tabe'}, key, 'e')
-        execute cmd escape(file, ' %#\')
-        execute line
-        execute 'normal!' col.'|'
-    endfunction
-
-    command! -nargs=1 Agcwd call fzf#run({
-                \ 'source':  'ag --nogroup --column --color "'.escape(<q-args>, '"\').'"',
-                \ 'sink*':    function('<sid>ag_handler'),
-                \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-x --no-multi',
-                \ 'down':    '50%'
-                \ })
-    
-    command! -nargs=1 Ag call fzf#run({
-                \ 'source':  'ag --nogroup --column --color "'.escape(<q-args>, '"\').'" ' . Get_classpath(""),
-                \ 'sink*':    function('<sid>ag_handler'),
-                \ 'options': '--ansi --expect=ctrl-t,ctrl-v,ctrl-a,ctrl-x -x --multi',
-                \ 'down':    '50%'
-                \ })
-
-    cnoremap <silent> <c-l> <c-r>=GetCompletions()<cr>
-    "add an extra <cr> at the end of this line to automatically accept the fzf-selected completions.
-
-    function! Lister()
-        call extend(g:FZF_Cmd_Completion_Pre_List,split(getcmdline(),'\(\\\zs\)\@<!\& '))
-    endfunction
-
-    function! CmdLineDirComplete(prefix, options, rawdir)
-        let l:dirprefix = matchstr(a:rawdir,"^.*/")
-        if isdirectory(expand(l:dirprefix))
-            return join(a:prefix + map(fzf#run({
-                        \'options': a:options . ' --select-1  --query=' .
-                        \ a:rawdir[matchend(a:rawdir,"^.*/"):len(a:rawdir)], 
-                        \'dir': expand(l:dirprefix)
-                        \}), 
-                        \'"' . escape(l:dirprefix, " ") . '" . escape(v:val, " ")'))
-        else
-            return join(a:prefix + map(fzf#run({
-                        \'options': a:options . ' --query='. a:rawdir }),
-                        \'escape(v:val, " ")')) 
-            "dropped --select-1 to speed things up on a long query
-        endif
-    endfunction
-
-    function! GetCompletions()
-        let g:FZF_Cmd_Completion_Pre_List = []
-        let l:cmdline_list = split(getcmdline(), '\(\\\zs\)\@<!\& ', 1)
-        let l:Prefix = l:cmdline_list[0:-2]
-        execute "silent normal! :" . getcmdline() . "\<c-a>\<c-\>eLister()\<cr>\<c-c>"
-        let l:FZF_Cmd_Completion_List = g:FZF_Cmd_Completion_Pre_List[len(l:Prefix):-1]
-        unlet g:FZF_Cmd_Completion_Pre_List
-        echom l:cmdline_list[-1]
-        if len(l:Prefix) > 0 && l:Prefix[0] =~
-                    \ '^ed\=i\=t\=$\|^spl\=i\=t\=$\|^tabed\=i\=t\=$\|^arged\=i\=t\=$\|^vsp\=l\=i\=t\=$'
-            "single-argument file commands
-            return CmdLineDirComplete(l:Prefix, "",l:cmdline_list[-1])
-        elseif len(l:Prefix) > 0 && l:Prefix[0] =~ 
-                    \ '^arg\=s\=$\|^ne\=x\=t\=$\|^sne\=x\=t\=$\|^argad\=d\=$'  
-            "multi-argument file commands
-            return CmdLineDirComplete(l:Prefix, '--multi', l:cmdline_list[-1])
-        endif 
-        return join(l:Prefix + fzf#run({
-                    \'source':l:FZF_Cmd_Completion_List, 
-                    \'options': '--select-1 --query=' . l:cmdline_list[-1]
-                    \})) 
-    endfunction
-
-
-    nnoremap <silent> <Leader>fc :call fzf#run({
-                \   'source':
-                \     map(split(globpath(&rtp, "colors/*.vim"), "\n"),
-                \         "substitute(fnamemodify(v:val, ':t'), '\\..\\{-}$', '', '')"),
-                \   'sink':    'colo',
-                \   'options': '+m',
-                \   'left':    30
-                \ })<CR>
-
-    command! -bar FZFTags if !empty(tagfiles()) | call fzf#run({
-                \   'source': "sed '/^\\!/d;s/\t.*//' " . join(tagfiles()) . ' | uniq',
-                \   'sink':   'tag',
-                \ }) | else | echo 'Tagfile not found or empty!' | endif
-    augroup TagSetter
-        au!
-        au BufEnter * call s:setTags()
-    augroup END
-    function! s:setTags()
-        let string = Get_classpath(".git/tags") . ",~/.vimtags"
-        let &tags= string
-    endfunction  
-    noremap <leader>fd :FZFTags<cr>
 else
     "let g:unite_source_history_yank_enable = 1
     call unite#filters#matcher_default#use(['matcher_fuzzy'])
