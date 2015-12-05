@@ -17,7 +17,7 @@ function! SetCharSwap(bool)
             silent! execute "imap " . l . " <C-R>=AutoPairsInsert('" . r . "')<CR>"
         endfor
     else
-        for [l, r] in items(g:BracketSwapPairs)
+        for [l, r] in items(g:BracketSwapPairs) " i know what keys does but then it wouldn't be symmetric :O
             silent! execute "iunmap " . l
         endfor
     endif
@@ -117,13 +117,31 @@ if(has('unix'))
         setlocal statusline=%#fzf1#\ >\ %#fzf2#fz%#fzf3#f
     endfunction
 
+    function! Git_dir(command)
+        " Try the directory of the current file first, then the cwd
+        let cur_dir = getcwd()
+        cd %:p:h
+        let root = systemlist('git rev-parse --show-toplevel')[0]
+
+        if v:shell_error
+            let root = systemlist('git rev-parse --show-toplevel')[0]
+            if v:shell_error
+                call s:warn('Not in git repo')
+                return
+            endif
+        endif
+
+        execute a:command
+        execute "cd " . cur_dir
+    endfunction
+
     autocmd! User FzfStatusLine call <SID>fzf_statusline()
     " Advanced customization using autoload functions
     autocmd VimEnter * command! Colors
       \ call fzf#vim#colors({'buffer': '', 'options': '--reverse --margin 30%,0'})
     nnoremap <silent> <leader>fc :Colors<cr>
 
-    nnoremap <silent> <leader>fa :GitFiles<cr>
+    nnoremap <silent> <leader>fa :call Git_dir("GitFiles")<cr>
     nnoremap <silent> <leader>fb :Buffers<cr>
     nnoremap <silent> <leader>fl :BLines<cr>
     nnoremap <silent> <leader>fL :Lines<cr>
@@ -135,8 +153,8 @@ if(has('unix'))
     nnoremap <silent> <leader>fö :Locate ~/vimfiles/plugged/<cr>
     nnoremap <silent> <leader>fs :History<cr>
     nnoremap <silent> <leader>fk :Snippets<cr>
-    nnoremap <silent> <leader>fg :Commits<cr>
-    nnoremap <silent> <leader>fG :BCommits<cr>
+    nnoremap <silent> <leader>fg :call Git_dir("Commits")<cr>
+    nnoremap <silent> <leader>fG :call Git_dir("BCommits")<cr>
     nnoremap <silent> <leader>fh :Helptags<cr>
 
 else

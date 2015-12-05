@@ -305,8 +305,6 @@ noremap <silent><leader>J  : wincmd J<cr>
 
 noremap [oI :set autoindent<cr>
 noremap ]oI :set noautoindent<cr>
-noremap [oü :SetCharSwap 1<cr>
-noremap ]oä :SetCharSwap 0<cr>
 noremap ]oN :set foldcolumn=0<cr>
 noremap [oN :set foldcolumn=4<cr>
 noremap <silent> [oA :call SideLineToggle(1)<cr>
