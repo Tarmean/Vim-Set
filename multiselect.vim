@@ -10,6 +10,7 @@ function! ListToString(list) "{{{
     return result . "]"
 endfunction
 "}}}
+let s:default_overrides = ['f', 't']
 function! multiselect#getOmaps() "{{{
     let backup = @a
     redir @a
@@ -23,9 +24,18 @@ function! multiselect#getOmaps() "{{{
         let line = line[2:]
         let pair =  split(line, " ")
         let lhs = pair[0]
-        call add(lhsList, lhs)
-        let rhs = join(pair[1:-1])
-        call add(rhsList, rhs)
+
+        let skip = 0
+        for skippable in s:default_overrides
+            if skippable ==# lhs
+                let skip = 1
+            endif
+        endfor
+        if !skip
+            call add(lhsList, lhs)
+            let rhs = join(pair[1:-1])
+            call add(rhsList, rhs)
+        endif
     endfor
     return lhsList
 endfunction
@@ -157,7 +167,11 @@ function! multiselect#readAndProcess(endCom, ...) "{{{
         elseif result.state == 3
             let area = multiselect#chainMotions(result.chain, area)
         else
-            let command = result.command
+            if has_key(result, "count")
+                let command = result.count . result.command
+            else
+                let command = result.command
+            endif
             if has_key(result, "forceVisual")
                 let forceVisual = result.forceVisual
             else
@@ -463,6 +477,7 @@ function! s:backspace(...) "{{{
                 \"motion": multiselect#getOmaps() + ["w", "iw" ],
                 \"pairs":["[", "(", '"'],
                 \}
+    let default_overrides = ['f', 't']
     "}}}
     function! ReadOp(commandList, stack) "{{{
         let commandStruct = multiselect#initCommandStruct()
@@ -596,15 +611,15 @@ function! s:backspace(...) "{{{
             let result = substitute(s, '^\d*\(.\{-}\)$', '\1', '')
             let start = match(s, '\D')
             let cou = start > 0 ? s[0:start-1] : "1"
-            if (result == "f" || result == "t")
-                redraw | echo base . g:multiselect#prompt . s
-                let d = sneak#util#getchar()
-                let alias = s.d
-                if d == "/"
-                    let d = "\\/"
-                endif
-                return [2, cou . "/\\V" . d . "" , alias]
-            endif
+            " if (result == "f" || result == "t")
+            "     redraw | echo base . g:multiselect#prompt . s
+            "     let d = sneak#util#getchar()
+            "     let alias = s.d
+            "     if d == "/"
+            "         let d = "\\/"
+            "     endif
+            "     return [2, cou . "/\\V" . d . "" , alias]
+            " endif
 
             for mapping in g:predefined
                 if result ==# mapping
@@ -613,8 +628,21 @@ function! s:backspace(...) "{{{
             endfor
 
             for mapping in lhs
-                if result ==# mapping
-                    return [2, s]
+                echom override
+                echom skipped
+                echom result
+                call getchar()
+                let skipped = 0
+                for override in default_overrides
+                    if result ==# override
+                        let skipped = 1
+                        break
+                    endif
+                endfor
+                if result ==# mapping && !skipped
+                    if !skipped
+                        return [2, s]
+                    endif
                 endif
             endfor
             redraw | echo base . g:multiselect#prompt . s
@@ -624,8 +652,9 @@ function! s:backspace(...) "{{{
     "}}}
     "}}}
     "}}}
-    "Main{{{
+"Main{{{
     function! multiselect#apply(command, areas, forceVisual) "{{{
+
         let selection =  {"visual":0, "areas":[], "positions":[]}
         let areaSelection = 0
         if a:areas.visual
@@ -892,7 +921,7 @@ function! s:backspace(...) "{{{
     highlight MultiselectPosition ctermbg=gray guibg=#585559
     let g:multiselect#matchidlist=[]
     "}}}
-    "Utility{{{
+"Utility{{{
     "Highlight{{{
     function! multiselect#highlightArea(area) "{{{
         let [p1, p2] = a:area

@@ -1,10 +1,12 @@
 function! AddPlugins(all)
      call plug#begin('~/vimfiles/plugged')
+     Plug 'lervag/vimtex'
+     Plug 'jreybert/vimagit'
      Plug 'jiangmiao/auto-pairs'
      Plug 'itchyny/calendar.vim' ", { 'on': 'Calender' }
      Plug 'vimwiki/vimwiki'
 
-     Plug 'LaTeX-Box-Team/LaTeX-Box', { 'for': 'plaintex' }
+     " Plug 'LaTeX-Box-Team/LaTeX-Box', { 'for': 'plaintex' }
 
      Plug 'tpope/vim-eunuch'
      Plug 'PProvost/vim-ps1', { 'for': 'ps1' }
@@ -135,8 +137,11 @@ function! AddPlugins(all)
         if(has('nvim'))
             let g:python_host_prog='/usr/bin/python'
 
+            Plug 'Shougo/deoplete.nvim', { 'on': 'DeopleteEnable'}
+            Plug 'Shougo/neco-vim', { 'on': 'DeopleteEnable'}
+
             "Plug 'Valloric/YouCompleteMe'
-            Plug 'critiqjo/lldb.nvim'
+            " Plug 'critiqjo/lldb.nvim'
 
             function! Get_classpath(ending)
                 let project_root = ProjectRootGuess() . "/"
@@ -183,7 +188,3 @@ endif
 
 
 silent! unmap <space>ig
-" On-demand loading
-"Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-"Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
-" Plugin outside ~/vimfiles/plugged with post-update hook

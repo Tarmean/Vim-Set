@@ -11,6 +11,8 @@ let g:BracketSwapPairs = {
             \'ü': '[',
             \'Ü': ']',
         \}
+
+
 function! SetCharSwap(bool)
     if(a:bool)
         for [l, r] in items(g:BracketSwapPairs)
@@ -62,12 +64,13 @@ let g:fastfold_fold_command_suffixes = []
 let g:fastfold_fold_movement_commands = []
 
 
-noremap <silent> <leader>d <Plug>InterestingWords
-noremap <silent> <leader>D <Plug>InterestingWordsClear
-nnoremap <silent> n <Plug>InterestingWordsForeward
-nnoremap <silent> N <Plug>InterestingWordsBackward
+nnoremap <silent> <leader>d :call InterestingWords('n')<cr>
+vnoremap <silent> <leader>d :call InterestingWords('n')<cr>
+noremap  <silent> <leader>D :call UncolorAllWords()<cr>
+noremap  <silent> n :call WordNavigation('forward')<cr>
+noremap  <silent> N :call WordNavigation('backward')<cr>
 let g:interestingWordsDefaultMappings = 1
-let g:interestingWordsGUIColors = ['#FFF6CC', '#FFD65C', '#8CCBEA', '#A4E57E', '#99FFE6', '#E6FF99', '#FFDB72', '#5CD6FF', '#99FFB3', '#FF7272', '#99FF99', '#99B3FF', '#FFB399']
+let g:interestingWordsGUIColors = ["#FFF6CC", "#FFD65C", "#8CCBEA", "#A4E57E", "#99FFE6", "#E6FF99", "#FFDB72", "#5CD6FF", "#99FFB3", "#FF7272", "#99FF99", "#99B3FF", "#FFB399"]
 
 " nnoremap <F4> call javacomplete#AddImport()<cr>
 " autocmd FileType java set omnifunc=javacomplete#Complete
@@ -108,6 +111,7 @@ nnoremap <leader>u :GundoToggle<CR>
 
 
 if(has('unix'))
+    let g:python3_host_prog = '/usr/bin/python3.5'
     " let g:fzf_layout = {'window': ''}
     function! s:fzf_statusline()
         " Override statusline as you like
@@ -141,13 +145,14 @@ if(has('unix'))
       \ call fzf#vim#colors({'buffer': '', 'options': '--reverse --margin 30%,0'})
     nnoremap <silent> <leader>fc :Colors<cr>
 
-    nnoremap <silent> <leader>fa :call Git_dir("GitFiles")<cr>
-    nnoremap <silent> <leader>fb :Buffers<cr>
+    nnoremap <silent> <leader><leader> :call Git_dir("GitFiles")<cr>
+    nnoremap <silent> <leader>fa :Marks<cr>
+    nnoremap <silent> <leader>ff :Buffers<cr>
+    nnoremap <silent> <leader>fc :Commands<cr>
     nnoremap <silent> <leader>fl :BLines<cr>
     nnoremap <silent> <leader>fL :Lines<cr>
     nnoremap <silent> <leader>fd :Tags<cr>
     nnoremap <silent> <leader>fD :BTags<cr>
-    nnoremap <silent> <leader>fm :Marks<cr>
     nnoremap <silent> <leader>fw :Windows<cr>
     nnoremap <silent> <leader>fj :Locate ~<cr>
     nnoremap <silent> <leader>fö :Locate ~/vimfiles/plugged/<cr>

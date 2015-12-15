@@ -144,8 +144,8 @@ let gutentags_tagfile=".git/tags"
 
 let g:sneak#streak=1
 let g:sneak#streak_esc = "\<esc>"
-silent! unmap s
-silent! unmap S
+" silent! nunmap s
+" silent! nunmap S
 let g:sneak#s_next=1
 let g:sneak#textobj_z=0
 let g:sneak#use_ic_scs = 1
