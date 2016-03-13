@@ -2,7 +2,8 @@ set nocompatible
 let mapleader = "\<space>"
 source ~/vimfiles/plugins/plugins.vim
 call AddPlugins(1)
-source ~/vimfiles/plugins/settings.vim
+source ~/vimfiles/plugins/pluginsConfig.vim
 source ~/vimfiles/plugins/settingsSecondary.vim
 source ~/vimfiles/settings/core.vim
+source ~/vimfiles/settings/keybindings.vim
 source ~/vimfiles/settings/secondary.vim

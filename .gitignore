@@ -8,3 +8,5 @@ Session.vim
 **/*.orig
 plugged/*
 bundle/*
+nimcache/
+.gitignore

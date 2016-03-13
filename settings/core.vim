@@ -27,7 +27,7 @@ set fillchars+=vert:\ "█
 set backupdir=~/.vim/backups//,.
 set undodir=~/.vim/undodir//,.
 set directory=~/.vim/swaps//,.
-set foldmethod=syntax "overwritten by fastfold in almost all cases
+set foldmethod=syntax "taken care of by fast fold most of the time
 set noerrorbells visualbell t_vb=
 set foldlevel=1
 set foldclose=""
@@ -37,6 +37,9 @@ set virtualedit=block
 set tabstop=4
 set shiftwidth=4
 set expandtab
+set ssop-=options "do not store global and local values in a session
+set ssop-=folds   "do not store folds
+set listchars=eol:⏎,tab:␉·,trail:␠,nbsp:
 source ~\pcSpecificVimrc.vim
 
 highlight diffAdded guifg=#00bf00
@@ -87,10 +90,6 @@ function! LeftOrElse()
 endfunc
 command! LeftOr call LeftOrElse()
 
-"noremap J L
-"noremap K H
-"noremap <c-j> J
-"nnoremap + <c-^>
 nnoremap j gj
 nnoremap k gk
 nnoremap <silent> <esc> :noh<return><esc>
@@ -172,6 +171,7 @@ if has("autocmd")
   autocmd BufNewFile,BufRead *.asm set ft=nasm
   autocmd GUIEnter * set visualbell t_vb=
 
+  nnoremap Q q:
   augroup commandWin
       au!
       autocmd CmdwinEnter * map <buffer> <CR> <CR>q:
@@ -180,7 +180,5 @@ if has("autocmd")
 
   autocmd BufEnter *.hs set formatprg=pointfree\ --stdin
 else
-
     set autoindent" always set autoindenting on
-
 endif 

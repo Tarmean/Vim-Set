@@ -1,3 +1,12 @@
+" Z - cd to recent / frequent directories
+
+if !exists('g:neocomplete#sources#omni#input_patterns')
+let g:deoplete#sources#omni#input_patterns = {}
+endif
+let g:deoplete#sources#omni#input_patterns.tex =
+    \ '\v\\\a*(ref|cite)\a*([^]]*\])?\{([^}]*,)*[^}]*'
+let g:vimtex_fold_enabled=1
+
 let g:calendar_google_calendar = 1
 let g:calendar_google_task = 1
 
@@ -72,14 +81,6 @@ noremap  <silent> N :call WordNavigation('backward')<cr>
 let g:interestingWordsDefaultMappings = 1
 let g:interestingWordsGUIColors = ["#FFF6CC", "#FFD65C", "#8CCBEA", "#A4E57E", "#99FFE6", "#E6FF99", "#FFDB72", "#5CD6FF", "#99FFB3", "#FF7272", "#99FF99", "#99B3FF", "#FFB399"]
 
-" nnoremap <F4> call javacomplete#AddImport()<cr>
-" autocmd FileType java set omnifunc=javacomplete#Complete
-" let JavaComplete_LibsPath = "/home/cyril/teamf3/"
-
-
-
-
-
 noremap ]oL :RainbowToggle<cr>
 
 vmap <leader>r <Plug>(EasyAlign)
@@ -87,31 +88,22 @@ nmap <leader>r <Plug>(EasyAlign)
 nmap <leader>r <Plug>(LiveEasyAlign)
 vmap <leader>r <Plug>(LiveEasyAlign)
 
-" autocmd VimEnter * call after_object#enable('=')
-
-
-
-let g:indentLine_char = '︙'
-let g:indentLine_enabled = 0
-noremap [oL :IndentLinesToggle<cr>
-set list lcs+=tab:\|\ 
-set nolist
-nnoremap <leader>u :GundoToggle<CR>
-
-
-"let g:tagbar_left=1
-"let g:tagbar_autoclose=0
-"let g:tagbar_autofocus=1
-"let g:tagbar_iconchars = ['▶', '▼']
-"nnoremap <leader>a :Tagbar<cr>
-"noremap ]oa :TagbarTogglePause<cr>
-"noremap [oa :TagbarGetTypeConfig<cr>
-
-
 
 
 if(has('unix'))
-    let g:python3_host_prog = '/usr/bin/python3.5'
+    command! -nargs=* Z :call Z(<f-args>)
+    function! Z(...)
+        let cmd = 'fasd -d -e printf'
+        for arg in a:000
+            let cmd = cmd . ' ' . arg
+        endfor
+        let path = system(cmd)
+        if isdirectory(path)
+            echo path
+            exec 'cd ' . path
+        endif
+    endfunction
+
     " let g:fzf_layout = {'window': ''}
     function! s:fzf_statusline()
         " Override statusline as you like
@@ -156,7 +148,8 @@ if(has('unix'))
     nnoremap <silent> <leader>fw :Windows<cr>
     nnoremap <silent> <leader>fj :Locate ~<cr>
     nnoremap <silent> <leader>fö :Locate ~/vimfiles/plugged/<cr>
-    nnoremap <silent> <leader>fs :History<cr>
+    nnoremap <silent> <leader>fs :FASD<cr>
+    nnoremap <silent> <leader>fS :History<cr>
     nnoremap <silent> <leader>fk :Snippets<cr>
     nnoremap <silent> <leader>fg :call Git_dir("Commits")<cr>
     nnoremap <silent> <leader>fG :call Git_dir("BCommits")<cr>
@@ -202,8 +195,6 @@ function! SignifyUpdate(b)
     call SignifyAutocommands()
     return
 endfunction
-
-nnoremap <silent> <space>+ :exec "cd " . Get_classpath("")<cr>
 
 noremap [oG :call SignifyUpdate(1)<cr>
 noremap ]oG :call SignifyUpdate(0)<cr>

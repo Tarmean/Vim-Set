@@ -1,41 +1,3 @@
-nnoremap <leader>q :tab sp<CR>
-nnoremap <leader>e :redraw<CR>:ls<CR>
-
-
-silent noremap <leader>a <c-]>zMzvzz15<c-e>:silent Pulse<cr>
-silent noremap <leader><s-a> <c-t>zMzvzz15<c-e>:silent Pulse<cr>
-
-nnoremap Q q:
-
-
-"session stuff, probably managed by obsession
-set ssop-=options    " do not store global and local values in a session
-set ssop-=folds      " do not store folds
-
-"F2 for paste mode so pasted stuff isn't indented
-set pastetoggle=<F2>
-
-"F11 show current buffer in the explorer
-nmap <F11> :!start explorer /e,/select,%:p<CR>
-imap <F11> <Esc><F11>
-
-
-
-
-silent nmap <leader>s zMzvzz15<c-e>:silent Pulse<cr>
-function! s:Pulse() " {{{
-    redir => old_hi
-        silent execute 'hi CursorLine'
-    redir END
-    let old_hi = split(old_hi, '\n')[0]
-    let old_hi = substitute(old_hi, 'xxx', '', '')
-
-    hi CursorLine guibg=#1c1c1c
-    redraw
-    sleep 80m
-    execute 'hi ' . old_hi
-endfunction " }}}
-command! -nargs=0 Pulse call s:Pulse()
 function! MyFoldText() " {{{
     let line = getline(v:foldstart)
 
@@ -52,7 +14,6 @@ function! MyFoldText() " {{{
     return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
 endfunction " }}}
 set foldtext=MyFoldText()
-" Visual Mode */# from Scrooloose {{{
 
 function! s:VSetSearch()
   let temp = @@
