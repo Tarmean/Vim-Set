@@ -1,4 +1,6 @@
 nnoremap <space>u :UndotreeToggle<cr>
+let g:undotree_SetFocusWhenToggle = 1
+
 func! Seek(line, col, syn, dir)
     let line = a:line
     let col = a:col

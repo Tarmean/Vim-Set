@@ -1,5 +1,44 @@
+cnoremap %s/ %s/\v
+cnoremap  w!! w !sudo tee % > /dev/null
+
+nnoremap j gj
+nnoremap k gk
+
+nnoremap <silent> <esc> :noh<return><esc>
+nnoremap <Leader>ö :w<CR>
+map  <leader>Ü :e $MYVIMRC<CR>
+map  <leader>Ä :so $MYVIMRC<CR>
+map ü [
+map ä ]
+map Ä }
+map Ü {
+nnoremap <cr> :
+vnoremap <cr> :
+nnoremap / /\v
+
+imap ä [
+imap Ä ]
+imap ü {
+imap Ü }
+imap ö (
+imap Ö )
+
+noremap H ^
+noremap L $
+nnoremap gI `.
+
+nnoremap =<space>p "+]p=']
+nnoremap =<space>P "+[p=']
+vnoremap <Leader>y "+y
+nnoremap <Leader>y "+y
+nnoremap <Leader>p "+p
+nnoremap <Leader>P "+P
+vnoremap <Leader>p "+p
+vnoremap <Leader>P "+P
+
+nnoremap Y y$
+
 nnoremap <leader>q :tab sp<CR>
-nnoremap <leader>e :redraw<CR>:ls<CR>
 
 nnoremap <leader>i gT
 nnoremap <leader>I :<C-U>call Clone_rel_tab_backwards(1, v:count)<CR>
@@ -16,10 +55,10 @@ noremap <silent><leader>K  : wincmd K<cr>
 noremap <silent><leader>L  : wincmd L<cr>
 noremap <silent><leader>J  : wincmd J<cr>
 
-map <space><c-j> :SidewaysLeft<cr>
-map <space><c-k> :SidewaysRight<cr>
-map <space><c-h> :SidewaysJumpLeft<cr>
-map <space><c-l> :SidewaysJumpRight<cr>
+nnoremap <leader>v <C-w>v
+nnoremap <leader>V <C-w>s
+nnoremap <leader>c <C-w>c
+nnoremap <leader>C :bd!<CR> 
 
 noremap [oI :set autoindent<cr>
 noremap ]oI :set noautoindent<cr>

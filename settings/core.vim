@@ -39,7 +39,10 @@ set shiftwidth=4
 set expandtab
 set ssop-=options "do not store global and local values in a session
 set ssop-=folds   "do not store folds
-set listchars=eol:⏎,tab:␉·,trail:␠,nbsp:
+set list
+set lcs=eol:⏎,tab:␉·,trail:␠,nbsp:⎵
+set nolist
+
 source ~\pcSpecificVimrc.vim
 
 highlight diffAdded guifg=#00bf00
@@ -71,71 +74,12 @@ endif
 
 let $MYVIMRC='~/vimfiles/.vimrc'
 
-function! RightOrElse()
-    let c = col(".")
-    echo c
-    norm $
-    if c == col(".")
-        silent! norm zo
-    endif
-endfunc
-command! RightOr call RightOrElse()
 
-function! LeftOrElse()
-    let c = col(".")
-    norm ^
-    if c == col(".")
-        silent! norm zc
-    endif
-endfunc
-command! LeftOr call LeftOrElse()
 
-nnoremap j gj
-nnoremap k gk
-nnoremap <silent> <esc> :noh<return><esc>
-nnoremap <Leader>ö :w<CR>
-map  <leader>Ü :e $MYVIMRC<CR>
-map  <leader>Ä :so $MYVIMRC<CR>
-nnoremap <leader>v <C-w>v
-nnoremap <leader>V <C-w>s
-nnoremap <leader>c <C-w>c
-nnoremap <leader>C :bd!<CR> 
-map ü [
-map ä ]
-map Ä }
-map Ü {
-nnoremap <cr> :
-vnoremap <cr> :
-nnoremap / /\v
-
-noremap H ^
-noremap L $
-nnoremap gI `.
-
-nnoremap =<space>p ]p=']
-nnoremap =<space>P [p=']
-vnoremap <Leader>y "+y
-nnoremap <Leader>y "+y
-nnoremap <Leader>p "+p
-nnoremap <Leader>P "+P
-vnoremap <Leader>p "+p
-vnoremap <Leader>P "+P
-
-cnoremap %s/ %s/\v
-cnoremap  w!! w !sudo tee % > /dev/null
-nnoremap Y y$
-
-vnoremap * :<C-u>call <SID>VSetSearch()<CR>//<CR><c-o>
-vnoremap # :<C-u>call <SID>VSetSearch()<CR>??<CR><c-o>
 
 " }}}
 nnoremap <silent><leader>/ :execute 'vimgrep /'.@/.'/g %'<cr>:copen<cr>
 nnoremap <silent><leader>? :execute "Ag '" .  substitute(substitute(substitute(@/, "\\\\<", "\\\\b", ""), "\\\\>", "\\\\b", ""), "\\\\v", "", "") . "'"<cr>
-
-nnoremap <left>  :cprev<cr>zvzz
-nnoremap <right> :cnext<cr>zvzz
-nnoremap <up>    :lprev<cr>zvzz
-nnoremap <down>  :lnext<cr>zvzz
 
 
 if !exists(":DiffOrig")

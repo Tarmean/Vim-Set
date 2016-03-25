@@ -3,8 +3,9 @@ function! AddPlugins(all)
      Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
      Plug 'itchyny/calendar.vim'
      Plug 'justinmk/vim-dirvish' 
+     Plug 'sk1418/HowMuch', { 'on': 'HowMuch' }
 
-     Plug 'labdalisue/vim-unified-diff'
+     " Plug 'labdalisue/vim-unified-diff'
      Plug '~/vimOld/bundle/mixedfunctions/'
      Plug 'Konfekt/FastFold'
 
@@ -15,17 +16,22 @@ function! AddPlugins(all)
      Plug 'tpope/vim-obsession', { 'on':  'Obsession' }
      Plug 'dhruvasagar/vim-prosession' 
      Plug 'arecarn/fold-cycle.vim'
-     Plug 'jiangmiao/auto-pairs'
+     " Plug 'jiangmiao/auto-pairs'
+
+     Plug 'LucHermitte/lh-vim-lib'
+     Plug 'LucHermitte/lh-tags'
+     Plug 'LucHermitte/lh-dev'
+     Plug 'LucHermitte/lh-brackets'    
 
      Plug 'ludovicchabant/vim-gutentags'
      Plug 'dbakker/vim-projectroot'
      Plug 'vasconcelloslf/vim-interestingwords'
      Plug 'ervandew/supertab'
 
-     if (has('python'))
-         Plug 'SirVer/ultisnips'
-         Plug 'honza/vim-snippets'
-     endif
+    if (has('python'))
+        " Plug 'SirVer/ultisnips'
+        Plug 'honza/vim-snippets'
+    endif
      Plug '~/vimOld/bundle/convertBase/'
 
      Plug 'mhinz/vim-signify'
@@ -78,7 +84,7 @@ function! AddPlugins(all)
         if(has('nvim'))
             tnoremap ö <C-\><C-n>
 
-            let g:python3_host_prog = '/usr/bin/python3.5'
+            let g:python3_host_prog='/usr/bin/python3'
             let g:python_host_prog='/usr/bin/python'
             Plug 'Shougo/deoplete.nvim', { 'on': 'DeopleteEnable'}
             Plug 'Shougo/neco-vim', { 'on': 'DeopleteEnable'}

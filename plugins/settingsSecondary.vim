@@ -10,8 +10,6 @@ let g:vimtex_fold_enabled=1
 let g:calendar_google_calendar = 1
 let g:calendar_google_task = 1
 
-let g:AutoPairsFlyMode = 1
-let g:AutoPairsShortcutBackInsert = '<BS>'
 let g:BracketSwapPairs = {
             \'ä': '{',
             \'Ä': '}',

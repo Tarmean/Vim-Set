@@ -879,6 +879,7 @@ function! s:backspace(...) "{{{
             endif
             let areas = multiselect#applyCommand(command, areas)
             call multiselect#applySelection(areas)
+            redraw
         endwhile
         call multiselect#clearHighlights()
     endfunction
