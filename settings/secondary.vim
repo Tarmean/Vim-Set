@@ -1,5 +1,10 @@
 nnoremap <leader>q :tab sp<CR>
-nnoremap <leader>e :redraw<CR>:ls<CR>
+
+
+nnoremap <leader>e :set operatorfunc=CalcOp<cr>g@
+func! CalcOp(type)
+  '<'>!bc
+endfunc
 
 
 noremap <leader>a <c-]>mzzMzvzz15<c-e>`z:Pulse<cr>

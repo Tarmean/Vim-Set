@@ -9,7 +9,7 @@ set smartcase
 set hlsearch
 set showmatch
 set incsearch
-set undofile
+" set undofile
 set showcmd
 set wildmenu
 set wildmode:full
@@ -110,7 +110,7 @@ vnoremap <cr> :
 nnoremap / /\v
 
 noremap H ^
-noremap L $
+noremap L g_
 nnoremap gI `.
 
 nnoremap =<space>p ]p=']

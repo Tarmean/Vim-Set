@@ -62,10 +62,10 @@ let g:fastfold_fold_command_suffixes = []
 let g:fastfold_fold_movement_commands = []
 
 
-noremap <silent> <leader>d <Plug>InterestingWords
-noremap <silent> <leader>D <Plug>InterestingWordsClear
-nnoremap <silent> n <Plug>InterestingWordsForeward
-nnoremap <silent> N <Plug>InterestingWordsBackward
+" noremap <silent> <leader>d <Plug>InterestingWords
+" noremap <silent> <leader>D <Plug>InterestingWordsClear
+" nnoremap <silent> n <Plug>InterestingWordsForeward
+" nnoremap <silent> N <Plug>InterestingWordsBackward
 let g:interestingWordsDefaultMappings = 1
 let g:interestingWordsGUIColors = ['#FFF6CC', '#FFD65C', '#8CCBEA', '#A4E57E', '#99FFE6', '#E6FF99', '#FFDB72', '#5CD6FF', '#99FFB3', '#FF7272', '#99FF99', '#99B3FF', '#FFB399']
 
@@ -93,7 +93,7 @@ let g:indentLine_enabled = 0
 noremap [oL :IndentLinesToggle<cr>
 set list lcs+=tab:\|\ 
 set nolist
-nnoremap <leader>u :GundoToggle<CR>
+nnoremap <leader>u :UndotreeToggle<CR>
 
 
 "let g:tagbar_left=1

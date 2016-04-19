@@ -1,5 +1,6 @@
 function! AddPlugins(all)
      call plug#begin('~/vimfiles/plugged')
+     Plug 'jdonaldson/vaxe', { 'for': 'haxe' }
      Plug 'jiangmiao/auto-pairs'
      Plug 'itchyny/calendar.vim' ", { 'on': 'Calender' }
      Plug 'vimwiki/vimwiki'
@@ -38,6 +39,7 @@ function! AddPlugins(all)
      Plug 'tpope/vim-obsession', { 'on':  'Obsession' }
      Plug 'dhruvasagar/vim-prosession' 
      Plug 'ervandew/supertab'
+     Plug '~/vimfiles/plugged/print_bw'
      Plug 'morhetz/gruvbox'
      ""Plug 'bling/vim-airline'
      Plug 'itchyny/lightline.vim'
@@ -48,7 +50,8 @@ function! AddPlugins(all)
  
      Plug 'ludovicchabant/vim-gutentags'
      Plug '~/vimOld/bundle/vim-unimpaired-master/'
-     Plug '~/vimOld/bundle/filebeagle/' 
+     " Plug '~/vimOld/bundle/filebeagle/' 
+     Plug 'justinmk/vim-dirvish' 
      Plug '~/vimOld/bundle/mixedfunctions/'
      " Plug '~/vimfiles/plugged/ranger.vim/'
      Plug 'Konfekt/FastFold'
@@ -89,7 +92,8 @@ function! AddPlugins(all)
          "Plug 'gelguy/Cmd2.vim'
          "Plug 'junegunn/vim-after-object'
          "Plug 'junegunn/vim-peekaboo'
-         Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
+         Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
+         " Plug 'sjl/gundo.vim', { 'on': 'GundoToggle' }
          Plug 'junegunn/vim-easy-align', { 'on': '<Plug>(LiveEasyAlign)' }
  
          " Plug 'xolox/vim-easytags'

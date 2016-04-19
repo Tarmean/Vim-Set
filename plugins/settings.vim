@@ -1,3 +1,43 @@
+noremap <silent> <leader>sb :<C-u>let @z=&so<CR>:set so=0 noscb<CR>:bo vs<CR>:norm! Ljzt<cr>:setl scb<CR><C-w>p:setl scb<CR>:let &so=@z<CR>
+
+noremap <silent> - :call Dirvish_wrap_up('%')<cr>
+if !exists("g:Dirvish_Added")
+    let g:Dirvish_Added = 1
+    au FileType Dirvish call s:dirvish_init()
+endif
+func! s:dirvish_init()
+    noremap <buffer><silent> - :call Dirvish_wrap_up('%:h:h')<cr>
+    noremap <buffer><silent> h :call Dirvish_wrap_up('%:h:h')<cr>
+    nnoremap <buffer><silent>  l :<c-u>.call dirvish#open("edit", 0)<cr>
+    xnoremap <buffer><silent>  l :call dirvish#open("edit", 0)<cr>
+    noremap <buffer> <cr> :
+
+    noremap <buffer> + :e %/
+    nmap <expr><buffer> <esc> v:hlsearch?":noh\<cr>":"\<Plug>(dirvish_quit)"
+
+    nnoremap <buffer> / /
+    nnoremap <buffer> ? ?
+    cnoremap <expr><buffer> <cr> Dirvish_append_search()
+
+    set ma
+    sort r /[^\/]$/
+endfunc
+func! Dirvish_wrap_up(path) " automatically seek the directory or file when going up
+    let loc = escape(bufname("%"), '\')
+    silent! execute "Dirvish " . a:path
+    call search(loc)
+endfunc
+func! Dirvish_append_search()
+    let isEx = !(getcmdtype() == "/" || getcmdtype() == "?") 
+    let isEscaped = getcmdline() =~# '\ze[^\/]*[\/]\=\$$'
+
+    if isEx || isEscaped
+        return "\<cr>"
+    else
+        return '\ze[^\/]*[\/]\=$'
+    endif
+endfunc
+
 " let g:UltiSnipsJumpForwardTrigger="<tab>"
 " let g:UltiSnipsJumpBackwardTrigger="<c-tab>"
 " let g:gutentags_define_advanced_commands=1
@@ -114,15 +154,12 @@ if !has("nvim")
     " " https://github.com/c9s/perlomni.vim
 endif
 
-let g:skip_default_textobj_word_column_mappings=1
-nnoremap <silent> vav :call TextObjWordBasedColumn("aw")<cr>
-nnoremap <silent> vaV :call TextObjWordBasedColumn("aW")<cr>
-nnoremap <silent> viv :call TextObjWordBasedColumn("iw")<cr>
-nnoremap <silent> viV :call TextObjWordBasedColumn("iW")<cr>
-onoremap <silent> av  :call TextObjWordBasedColumn("aw")<cr>
-onoremap <silent> aV  :call TextObjWordBasedColumn("aW")<cr>
-onoremap <silent> iv  :call TextObjWordBasedColumn("iw")<cr>
-onoremap <silent> iV  :call TextObjWordBasedColumn("iW")<cr>
+call textobj#user#plugin('variable', {
+    \ '-': {
+    \     'sfile': expand('<sfile>:p'),
+    \     'select-a': 'ad',  'select-a-function': 's:select_a',
+    \     'select-i': 'id',  'select-i-function': 's:select_i',
+    \ }})
 
 let g:textobj_comment_no_default_key_mappings = 1
 omap aC <Plug>(textobj-comment-big-a)
