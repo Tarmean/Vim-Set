@@ -1,44 +1,61 @@
 function! AddPlugins(all)
      call plug#begin('~/vimfiles/plugged')
+     Plug 'lervag/vimtex'
+     Plug 'junegunn/vim-github-dashboard'
+     Plug 'equalsraf/neovim-gui-shim'
+     Plug 'Tarmean/multi'
+     Plug 'phildawes/racer'
+     " Plug '/home/cyril/.cargo/registry/src/github.com-88ac128001ac3a9a/racer-1.2.10/'
+    if (has('python'))
+        Plug 'SirVer/ultisnips'
+        Plug 'honza/vim-snippets'
+    endif
+     Plug 'ervandew/supertab'
+
+     Plug 'rust-lang/rust.vim'
+     " Plug 'janko-m/vim-test'
+     " Plug 'vim-scripts/ConvertBase.vim'
+     " Plug 'xolox/vim-misc',
+     " Plug 'vim-scripts/luarefvim',
+     " Plug 'xolox/vim-lua-ftplugin',
+     
+     " Plug 'tpope/vim-endwise',
+     " Plug 'tmhedberg/matchit',
+     " Plug 'xolox/vim-lua-inspect',
+
      Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
      Plug 'itchyny/calendar.vim'
      Plug 'justinmk/vim-dirvish' 
-     Plug 'sk1418/HowMuch', { 'on': 'HowMuch' }
+     " Plug 'sk1418/HowMuch', { 'on': 'HowMuch' }
 
      " Plug 'labdalisue/vim-unified-diff'
      Plug '~/vimOld/bundle/mixedfunctions/'
      Plug 'Konfekt/FastFold'
 
-     Plug '~/vimOld/bundle/vim-unimpaired-master/'
+     " Plug '~/vimOld/bundle/vim-unimpaired-master/'
+     Plug 'tpope/vim-unimpaired'
      Plug 'tpope/vim-eunuch'
-     Plug 'tpope/vim-abolish', { 'on':  'S' }
+     " Plug 'tpope/vim-abolish', { 'on':  'S' }
      Plug 'tpope/vim-repeat'
      Plug 'tpope/vim-obsession', { 'on':  'Obsession' }
      Plug 'dhruvasagar/vim-prosession' 
-     Plug 'arecarn/fold-cycle.vim'
+     " Plug 'arecarn/fold-cycle.vim'
      " Plug 'jiangmiao/auto-pairs'
 
-     Plug 'LucHermitte/lh-vim-lib'
-     Plug 'LucHermitte/lh-tags'
-     Plug 'LucHermitte/lh-dev'
-     Plug 'LucHermitte/lh-brackets'    
+     " Plug 'LucHermitte/lh-vim-lib'
+     " Plug 'LucHermitte/lh-tags'
+     " Plug 'LucHermitte/lh-dev'
+     " Plug 'LucHermitte/lh-brackets'    
 
      Plug 'ludovicchabant/vim-gutentags'
      Plug 'dbakker/vim-projectroot'
-     Plug 'vasconcelloslf/vim-interestingwords'
-     Plug 'ervandew/supertab'
 
-    if (has('python'))
-        " Plug 'SirVer/ultisnips'
-        Plug 'honza/vim-snippets'
-    endif
-     Plug '~/vimOld/bundle/convertBase/'
-
-     Plug 'mhinz/vim-signify'
+     " Plug '~/vimOld/bundle/convertBase/'
+     Plug 'airblade/vim-gitgutter'
      Plug 'tpope/vim-fugitive'
      Plug 'gregsexton/gitv', { 'on':  'Gitv' }
      Plug 'jreybert/vimagit'
-     Plug 'sjl/splice.vim'
+     " Plug 'sjl/splice.vim'
 
      Plug 'tpope/vim-surround'
      Plug 'tpope/vim-commentary'
@@ -46,9 +63,9 @@ function! AddPlugins(all)
      Plug 'justinmk/vim-sneak'
      Plug 'wellle/targets.vim'
      Plug 'vim-scripts/ReplaceWithRegister'
-     Plug 'bruno-/vim-vertical-move'
+     " Plug 'bruno-/vim-vertical-move'
      Plug 'tommcdo/vim-exchange'
-     Plug 'AndrewRadev/splitjoin.vim'
+     " Plug 'AndrewRadev/splitjoin.vim'
 
      Plug 'kana/vim-textobj-user'
      Plug 'glts/vim-textobj-comment'
@@ -60,10 +77,10 @@ function! AddPlugins(all)
      Plug 'Julian/vim-textobj-variable-segment'
      Plug 'junegunn/vim-easy-align', { 'on': '<Plug>(LiveEasyAlign)' }
 
-     Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+     " Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
      Plug 'dhruvasagar/vim-table-mode', { 'on':  'TableModeEnable' }
-     Plug 'LucHermitte/VimFold4C', { 'for': 'c' }
-     Plug 'RyanMcG/vim-j', { 'for': 'j' }
+     " Plug 'LucHermitte/VimFold4C', { 'for': 'c' }
+     " Plug 'RyanMcG/vim-j', { 'for': 'j' }
      Plug 'zah/nim.vim', { 'for': 'nim' }
 
      Plug 'morhetz/gruvbox'
@@ -71,7 +88,7 @@ function! AddPlugins(all)
      Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
      Plug 'junegunn/limelight.vim', { 'on':  'Goyo' }
      let g:limelight_conceal_ctermfg = 242
-     Plug 'luochen1990/rainbow'
+     " Plug 'luochen1990/rainbow'
      if(has('gui'))
          let g:rainbow_active = 1
      endif
@@ -86,12 +103,20 @@ function! AddPlugins(all)
 
             let g:python3_host_prog='/usr/bin/python3'
             let g:python_host_prog='/usr/bin/python'
-            Plug 'Shougo/deoplete.nvim', { 'on': 'DeopleteEnable'}
-            Plug 'Shougo/neco-vim', { 'on': 'DeopleteEnable'}
-            Plug 'zchee/deoplete-jedi', { 'on': 'DeopleteEnable'}
 
+            function! DoRemote()
+              UpdateRemotePlugins
+            endfunction
+            Plug 'Valloric/YouCompleteMe'
+            " Plug 'Shougo/deoplete.nvim'
+
+            " command! DeopleteEnable echo "enabled"
+            " Plug 'vhakulinen/neovim-intellij-complete-deoplete', { 'on': 'DeopleteEnable'}
+            Plug 'Shougo/neco-vim', { 'on': 'DeopleteEnable'}
+            " Plug 'zchee/deoplete-jedi', { 'on': 'DeopleteEnable'}
+            Plug 'davidhalter/jedi-vim'
             Plug 'benekastah/neomake'
-            autocmd BufWritePost * Neomake
+            " autocmd BufWritePost * Neomake
 
             function! Get_classpath(ending)
                 let project_root = ProjectRootGuess() . "/"
@@ -110,33 +135,6 @@ function! AddPlugins(all)
         endif
     endif
  
-     if(a:all)
-        " Plug 'kshenoy/vim-signature'
-        " let g:SignatureMap = {
-        "             \ 'Leader'             :  "m",
-        "             \ 'PlaceNextMark'      :  "m,",
-        "             \ 'ToggleMarkAtLine'   :  "m.",
-        "             \ 'PurgeMarksAtLine'   :  "m-",
-        "             \ 'DeleteMark'         :  "dm",
-        "             \ 'PurgeMarks'         :  "m<Space>",
-        "             \ 'PurgeMarkers'       :  "m<BS>",
-        "             \ 'GotoNextLineAlpha'  :  "']",
-        "             \ 'GotoPrevLineAlpha'  :  "'[",
-        "             \ 'GotoNextSpotAlpha'  :  "`]",
-        "             \ 'GotoPrevSpotAlpha'  :  "`[",
-        "             \ 'GotoNextLineByPos'  :  "]'",
-        "             \ 'GotoPrevLineByPos'  :  "['",
-        "             \ 'GotoNextSpotByPos'  :  "]ä",
-        "             \ 'GotoPrevSpotByPos'  :  "[ü",
-        "             \ 'GotoNextMarker'     :  "]ü",
-        "             \ 'GotoPrevMarker'     :  "[ä",
-        "             \ 'GotoNextMarkerAny'  :  "]Ä",
-        "             \ 'GotoPrevMarkerAny'  :  "[Ü",
-        "             \ 'ListLocalMarks'     :  "<space>m",
-        "             \ 'ListLocalMarkers'   :  "<space>M"
-        "             \ }
-
-    endif
     call plug#end()
 endfunction
 

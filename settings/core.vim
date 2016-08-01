@@ -1,5 +1,6 @@
 set guifont=Sauce_Code_Powerline:h9:cANSI
 
+set termguicolors
 set autoindent
 set lazyredraw
 set hidden
@@ -43,8 +44,6 @@ set list
 set lcs=eol:⏎,tab:␉·,trail:␠,nbsp:⎵
 set nolist
 
-source ~\pcSpecificVimrc.vim
-
 highlight diffAdded guifg=#00bf00
 highlight diffRemoved guifg=#bf0000
 highlight diffAdded ctermfg=34
@@ -64,8 +63,6 @@ if &t_Co > 2 || has("gui_running") || has("unix")
   if(!exists("g:seoul256_background"))
     let g:seoul256_background = 234
   endif
-  colorscheme gruvbox
-  set background=dark
   au GUIEnter * simalt ~x
   syntax on 
   set hlsearch

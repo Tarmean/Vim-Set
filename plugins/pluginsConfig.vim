@@ -1,3 +1,46 @@
+command! DeopleteEnable call deoplete#enable()
+command! DeopleteDisable call deoplete#disable()
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_smart_case = 1
+
+inoremap <expr><C-g>     deoplete#mappings#undo_completion()
+
+" autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
+autocmd CompleteDone * if pumvisible() == 0 | pclose | endif
+let g:racer_cmd = "/home/cyril/.cargo/bin/racer"
+let $RUST_SRC_PATH="/home/cyril/rustc-1.9.0/src/"
+let g:deoplete#enable_at_startup = 1
+if !exists('g:deoplete#omni#input_patterns')
+  let g:deoplete#omni#input_patterns = {}
+endif
+
+
+    
+            
+
+
+let g:gitgutter_map_keys = 0
+nmap [c <Plug>GitGutterPrevHunk
+nmap ]c <Plug>GitGutterNextHunk
+
+nmap <Leader>gp <Plug>GitGutterStageHunk
+nmap <Leader>go <Plug>GitGutterUndoHunk
+nmap <Leader>gP <Plug>GitGutterPreviewHunk
+omap ix <Plug>GitGutterTextObjectInnerPending
+omap ax <Plug>GitGutterTextObjectOuterPending
+xmap ix <Plug>GitGutterTextObjectInnerVisual
+xmap ax <Plug>GitGutterTextObjectOuterVisual
+
+
+" let g:ulti_expand_or_jump_res = 0 "default value, just set once
+" function! Ulti_ExpandOrJump_and_getRes()
+"  call UltiSnips#ExpandSnippetOrJump()
+"  return g:ulti_expand_or_jump_res
+" endfunction
+
+
+" inoremap <NL> <C-R>=(Ulti_ExpandOrJump_and_getRes() > 0)?"":IMAP_Jumpfunc('', 0)<CR>
+
 nnoremap <space>u :UndotreeToggle<cr>
 let g:undotree_SetFocusWhenToggle = 1
 
@@ -34,36 +77,47 @@ call textobj#user#plugin('highlight', {
 \   },
 \ })
 
-map - :Dirvish %<cr>
+
+noremap <silent> - :call Dirvish_wrap_up('%')<cr>
+if !exists("g:Dirvish_Added")
+    let g:Dirvish_Added = 1
+    au FileType dirvish call s:dirvish_init()
+endif
 func! s:dirvish_init()
-       " directories first
-    if !exists('b:dirvish_highlight')
-        let b:dirvish_highlight = 1
-        au QuickFixCmdPre <buffer> call s:dirvish_highlight()
-        au BufWinLeave <buffer> call clearmatches()
-    endif
+    noremap <buffer><silent> - :call Dirvish_wrap_up('%:h:h')<cr>
+    noremap <buffer><silent> h :call Dirvish_wrap_up('%:h:h')<cr>
+    nnoremap <buffer><silent>  l :<c-u>.call dirvish#open("edit", 0)<cr>
+    xnoremap <buffer><silent>  l :call dirvish#open("edit", 0)<cr>
+    noremap <buffer> <cr> :
+
+    nnoremap <buffer> + :e %/
+    nmap <expr><buffer> <esc> v:hlsearch?":noh\<cr>":"\<Plug>(dirvish_quit)"
+
+    " skip both dirvish's and my mappings because \v isn't needed for file paths
+    nnoremap <buffer> / /
+    nnoremap <buffer> ? ?
+    cnoremap <expr><buffer> <cr> Dirvish_append_search()
+
     set ma
     sort r /[^\/]$/
 endfunc
-func! s:dirvish_highlight()
-    call clearmatches()
-    for entry in getloclist(0)
-        call matchaddpos("Search", [entry.lnum])
-    endfor
+func! Dirvish_wrap_up(path) " automatically seek the directory or file when going up
+    let loc = escape(bufname("%"), '\')
+    silent! execute "Dirvish " . a:path
+    execute "lcd ".a:path
+    call search( loc . '$')
+endfunc
+func! Dirvish_append_search()
+    let isSearch = !(getcmdtype() == "/" || getcmdtype() == "?") 
+    let isEscaped = getcmdline() =~# '\ze[^\/]*[\/]\=\$$'
+
+    if isSearch || isEscaped
+        return "\<cr>"
+    else
+        return '\ze[^\/]*[\/]\=$'
+    endif
 endfunc
 
-let g:dirvish#locationHighlight = 1
-if !exists('g:dirvish_settings_init')
-    let g:dirvish_settings_init = 1
-    auto FileType dirvish call s:dirvish_init()
-endif
-
-
-
-
-let g:fold_cycle_default_mapping = 0 "disable default mappings 
-nmap <silent> <space>ü :<C-u>call fold_cycle#close()<CR>
-nmap <silent> <space>ä :<C-u>call fold_cycle#open()<CR>
 
 let g:splitjoin_split_mapping = ''
 let g:splitjoin_join_mapping = ''
@@ -75,10 +129,10 @@ let g:tf_workaround= 0
 autocmd FileType java let b:syntastic_mode="passive"
 
 let g:textobj_comment_no_default_key_mappings = 1
-omap aC <Plug>(textobj-comment-big-a)
+omap Ac <Plug>(textobj-comment-big-a)
 omap ac <Plug>(textobj-comment-a)
 omap ic <Plug>(textobj-comment-i)
-nmap vaC v<Plug>(textobj-comment-big-a)
+nmap vAc v<Plug>(textobj-comment-big-a)
 nmap vac v<Plug>(textobj-comment-a)
 nmap vic v<Plug>(textobj-comment-i)
 
@@ -126,6 +180,7 @@ let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', '&completefunc']
 let g:SuperTabContextDiscoverDiscovery =
             \ ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>"]
 
+      " \ 'colorscheme': 'solarized_light',
 let g:lightline = {
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
@@ -159,15 +214,15 @@ let g:lightline = {
       \ 'subseparator': { 'left': '', 'right': '' }
       \ }
 
-	let g:syntastic_mode_map = { 'mode': 'passive' }
-	augroup AutoSyntastic
-	  autocmd!
-	  autocmd BufWritePost *.c,*.cpp call s:syntastic()
-	augroup END
-	function! s:syntastic()
-	  SyntasticCheck
-	  call lightline#update()
-	endfunction
+	" let g:syntastic_mode_map = { 'mode': 'passive' }
+	" augroup AutoSyntastic
+	"   autocmd!
+	"   autocmd BufWritePost *.c,*.cpp call s:syntastic()
+	" augroup END
+	" function! s:syntastic()
+	"   SyntasticCheck
+	"   call lightline#update()
+	" endfunction
     " function! GitStatus() " {{{
     "     let branch =  winwidth(0) > 70 ?  gita#statusline#format(' %lb%{ ⇄ |}rn%{/|}rb') : ''
     "     let traffic =  winwidth(0) > 70 ?  gita#statusline#format('%{￩| }ic%{￫}og') : ''

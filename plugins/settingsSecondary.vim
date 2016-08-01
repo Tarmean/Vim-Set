@@ -1,59 +1,6 @@
-" Z - cd to recent / frequent directories
-
-if !exists('g:neocomplete#sources#omni#input_patterns')
-let g:deoplete#sources#omni#input_patterns = {}
-endif
-let g:deoplete#sources#omni#input_patterns.tex =
-    \ '\v\\\a*(ref|cite)\a*([^]]*\])?\{([^}]*,)*[^}]*'
-let g:vimtex_fold_enabled=1
 
 let g:calendar_google_calendar = 1
 let g:calendar_google_task = 1
-
-let g:BracketSwapPairs = {
-            \'ä': '{',
-            \'Ä': '}',
-            \'ö': '(',
-            \'Ö': ')',
-            \'ü': '[',
-            \'Ü': ']',
-        \}
-
-
-function! SetCharSwap(bool)
-    if(a:bool)
-        for [l, r] in items(g:BracketSwapPairs)
-            silent! execute "imap " . l . " <C-R>=AutoPairsInsert('" . r . "')<CR>"
-        endfor
-    else
-        for [l, r] in items(g:BracketSwapPairs) " i know what keys does but then it wouldn't be symmetric :O
-            silent! execute "iunmap " . l
-        endfor
-    endif
-endfunction
-call SetCharSwap(1)
-noremap [oü :SetCharSwap 1<cr>
-noremap ]oä :SetCharSwap 0<cr>
-
-
-nmap <M-b> <Plug>LLBreakSwitch
-nnoremap <F5> :LLrefresh<CR>
-nnoremap <S-F5> :LLredraw<CR>
-nnoremap <F8> :LLcontinue<CR>
-nnoremap <F9> :LLprint <C-R>=expand('<cword>')<CR>
-vnoremap <F9> :<C-U>LLprint <C-R>=lldb#util#get_selection()<CR>
-
-
-let g:syntastic_mode_map = {
-            \ "mode": "active",
-            \ "active_filetypes": [],
-            \ "passive_filetypes": [] }
-
-let g:fold_options = {
-            \ 'show_if_and_else': 1,
-            \ 'strip_template_argurments': 1,
-            \ 'strip_namespaces': 1,
-            \ }
 
 fun! JumpToDef()
     if exists("*GotoDefinition_" . &filetype)
@@ -64,27 +11,12 @@ fun! JumpToDef()
 endf
 
 " Jump to tag
-nn <M-g> :call JumpToDef()<cr>
-ino <M-g> <esc>:call JumpToDef()<cr>i
 
 let g:fastfold_fold_command_suffixes = []
 let g:fastfold_fold_movement_commands = []
 
 
-nnoremap <silent> <leader>d :call InterestingWords('n')<cr>
-vnoremap <silent> <leader>d :call InterestingWords('n')<cr>
-noremap  <silent> <leader>D :call UncolorAllWords()<cr>
-noremap  <silent> n :call WordNavigation('forward')<cr>
-noremap  <silent> N :call WordNavigation('backward')<cr>
-let g:interestingWordsDefaultMappings = 1
-let g:interestingWordsGUIColors = ["#FFF6CC", "#FFD65C", "#8CCBEA", "#A4E57E", "#99FFE6", "#E6FF99", "#FFDB72", "#5CD6FF", "#99FFB3", "#FF7272", "#99FF99", "#99B3FF", "#FFB399"]
 
-noremap ]oL :RainbowToggle<cr>
-
-vmap <leader>r <Plug>(EasyAlign)
-nmap <leader>r <Plug>(EasyAlign)
-nmap <leader>r <Plug>(LiveEasyAlign)
-vmap <leader>r <Plug>(LiveEasyAlign)
 
 
 
@@ -112,37 +44,38 @@ if(has('unix'))
     endfunction
 
     function! Git_dir(command)
-        " Try the directory of the current file first, then the cwd
-        let cur_dir = getcwd()
-        cd %:p:h
-        let root = systemlist('git rev-parse --show-toplevel')[0]
-
-        if v:shell_error
-            let root = systemlist('git rev-parse --show-toplevel')[0]
-            if v:shell_error
-                call s:warn('Not in git repo')
-                return
-            endif
-        endif
-
+        cd %:h
         execute a:command
-        execute "cd " . cur_dir
+        cd -
     endfunction
+
+    let g:fzf_layout = { 'window': 'enew' }
 
     autocmd! User FzfStatusLine call <SID>fzf_statusline()
     " Advanced customization using autoload functions
-    autocmd VimEnter * command! Colors
-      \ call fzf#vim#colors({'buffer': '', 'options': '--reverse --margin 30%,0'})
-    nnoremap <silent> <leader>fc :Colors<cr>
+    func! Fzf_remap()
+          command! BTags call fzf#vim#btags(<q-args>, { 'window': 'enew' })
+    endfunc
+    " call Fzf_remap()
+
+    function! Tag_or_reload(command)
+        if (&tags == '')
+            call gutentags#rescan()
+        endif
+        execute a:command
+    endfunc
 
     nnoremap <silent> <leader><leader> :call Git_dir("GitFiles")<cr>
-    nnoremap <silent> <leader>fa :Marks<cr>
+    " nnoremap <silent> <leader><cr> :call Git_dir("GitStatus")<cr>
+
+    nnoremap <silent> <leader>fa :call Git_dir("GitStatus")<cr>
+    nnoremap <silent> <leader>fm :Marks<cr>
     nnoremap <silent> <leader>ff :Buffers<cr>
     nnoremap <silent> <leader>fc :Commands<cr>
     nnoremap <silent> <leader>fl :BLines<cr>
     nnoremap <silent> <leader>fL :Lines<cr>
-    nnoremap <silent> <leader>fd :Tags<cr>
-    nnoremap <silent> <leader>fD :BTags<cr>
+    nnoremap <silent> <leader>fd :call Tag_or_reload("Tags")<cr>
+    nnoremap <silent> <leader>d :call Tag_or_reload("BTags")<cr>
     nnoremap <silent> <leader>fw :Windows<cr>
     nnoremap <silent> <leader>fj :Locate ~<cr>
     nnoremap <silent> <leader>fö :Locate ~/vimfiles/plugged/<cr>
