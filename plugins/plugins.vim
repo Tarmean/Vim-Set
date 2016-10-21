@@ -1,5 +1,9 @@
 function! AddPlugins(all)
      call plug#begin('~/vimfiles/plugged')
+     Plug 'tpope/vim-classpath'
+     Plug 'tpope/vim-fireplace'
+     Plug 'guns/vim-clojure-static'
+     Plug 'guns/vim-sexp'
      Plug 'lervag/vimtex'
      Plug 'junegunn/vim-github-dashboard'
      Plug 'equalsraf/neovim-gui-shim'
@@ -70,7 +74,7 @@ function! AddPlugins(all)
      Plug 'kana/vim-textobj-user'
      Plug 'glts/vim-textobj-comment'
      Plug 'kana/vim-textobj-fold'
-     Plug 'kana/vim-textobj-function'
+     " Plug 'kana/vim-textobj-function'
      Plug 'kana/vim-textobj-indent'
      Plug 'kana/vim-textobj-line'
      Plug 'kana/vim-textobj-entire'
@@ -123,16 +127,16 @@ function! AddPlugins(all)
                 let project_root .= a:ending
                 return project_root
             endfunction
-        else
-            Plug 'Shougo/unite.vim', 
-            noremap <leader>fc :<c-u>Unite colorscheme<cr>
-            Plug 'tsukkee/unite-tag'
-            Plug 'ujihisa/unite-colorscheme'
-            Plug 'Shougo/neomru.vim'
-            Plug 'scrooloose/syntastic' 
-            let g:syntastic_check_on_wq = 0
-             noremap cos :SyntasticToggleMode<cr>
         endif
+    else
+        Plug 'Shougo/unite.vim', 
+        noremap <leader>fc :<c-u>Unite colorscheme<cr>
+        Plug 'tsukkee/unite-tag'
+        Plug 'ujihisa/unite-colorscheme'
+        Plug 'Shougo/neomru.vim'
+        Plug 'scrooloose/syntastic' 
+        let g:syntastic_check_on_wq = 0
+         noremap cos :SyntasticToggleMode<cr>
     endif
  
     call plug#end()

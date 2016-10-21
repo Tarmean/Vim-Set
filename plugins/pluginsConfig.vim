@@ -119,10 +119,10 @@ func! Dirvish_append_search()
 endfunc
 
 
-let g:splitjoin_split_mapping = ''
-let g:splitjoin_join_mapping = ''
-nmap K :SplitjoinJoin<cr>
-nmap J :SplitjoinSplit<cr>
+" let g:splitjoin_split_mapping = ''
+" let g:splitjoin_join_mapping = ''
+" nmap K :SplitjoinJoin<cr>
+" nmap J :SplitjoinSplit<cr>
 
 let g:tf_workaround= 0
 
