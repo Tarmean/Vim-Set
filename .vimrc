@@ -9,7 +9,3 @@ source ~/vimfiles/plugins/settingsSecondary.vim
 source ~/vimfiles/settings/core.vim
 source ~/vimfiles/settings/keybindings.vim
 source ~/vimfiles/settings/secondary.vim
-" augroup FZF_DELETE
-"     au!
-"     au BufHidden term.*fzf bd <afile>
-" augroup END

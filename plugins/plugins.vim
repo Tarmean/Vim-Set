@@ -39,7 +39,7 @@ function! AddPlugins(all)
      " Plug '~/vimOld/bundle/vim-unimpaired-master/'
      Plug 'tpope/vim-unimpaired'
      Plug 'tpope/vim-eunuch'
-     " Plug 'tpope/vim-abolish', { 'on':  'S' }
+     Plug 'tpope/vim-abolish', { 'on':  'S' }
      Plug 'tpope/vim-repeat'
      Plug 'tpope/vim-obsession', { 'on':  'Obsession' }
      Plug 'dhruvasagar/vim-prosession' 
@@ -136,7 +136,6 @@ function! AddPlugins(all)
         Plug 'Shougo/neomru.vim'
         Plug 'scrooloose/syntastic' 
         let g:syntastic_check_on_wq = 0
-         noremap cos :SyntasticToggleMode<cr>
     endif
  
     call plug#end()

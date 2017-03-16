@@ -40,8 +40,8 @@ set shiftwidth=4
 set expandtab
 set ssop-=options "do not store global and local values in a session
 set ssop-=folds   "do not store folds
-set list
-set lcs=eol:⏎,tab:␉·,trail:␠,nbsp:⎵
+" set list
+" set lcs=eol:⏎,tab:␉·,trail:␠,nbsp:⎵
 set nolist
 
 highlight diffAdded guifg=#00bf00

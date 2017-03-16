@@ -1,3 +1,5 @@
+nmap s <Plug>Ysurround
+nmap ss <Plug>Yssurround
 autocmd FileType c nnoremap <buffer> <silent> <C-]> :YcmCompleter GoTo<cr>
 
 let g:BracketSwapPairs = {
@@ -62,11 +64,32 @@ nnoremap <Leader>e :cd %:h\|execute "term"\|cd -<cr>
 nnoremap =<space>p "+]p=']
 nnoremap =<space>P "+[p=']
 vnoremap <Leader>y "+y
-nnoremap <Leader>y "+y
+nnoremap <silent> <Leader>y :call Prep_yank('"+')<cr>g@
+nnoremap <silent> y :call Prep_yank('')<cr>g@
+nnoremap <silent> yy yy
 nnoremap <Leader>p "+p
 nnoremap <Leader>P "+P
 vnoremap <Leader>p "+p
 vnoremap <Leader>P "+P
+
+func! Prep_yank(reg)
+    let g:preyankpos = winsaveview()
+    let g:yankreg = a:reg
+    set opfunc=Yank
+endfunc
+func! Yank(type, ...)
+	let sel_save = &selection
+	let &selection = "inclusive"
+
+    if a:type == 'line' 
+      silent exe "normal! '[V']".g:yankreg."y"
+    else
+      silent exe "normal! `[v`]".g:yankreg."y"
+    endif
+    call winrestview(g:preyankpos)
+
+	let &selection = sel_save
+endfunc
 
 nnoremap Y y$
 
