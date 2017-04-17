@@ -1,7 +1,0 @@
-set runtimepath +=~/vimfiles
-set nocompatible
-let mapleader = "\<space>"
-source ~/vimfiles/plugins/plugins.vim
-call AddPlugins(0)
-source ~/vimfiles/plugins/settings.vim
-source ~/vimfiles/settings/core.vim
