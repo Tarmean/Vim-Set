@@ -65,6 +65,7 @@ nnoremap =<space>p "+]p=']
 nnoremap =<space>P "+[p=']
 vnoremap <Leader>y "+y
 nnoremap <silent> <Leader>y :call Prep_yank('"+')<cr>g@
+nnoremap <silent> <Leader>yy "+yy
 nnoremap <silent> y :call Prep_yank('')<cr>g@
 nnoremap <silent> yy yy
 nnoremap <Leader>p "+p
