@@ -5,7 +5,10 @@ if (has('nvim'))
     silent! tnoremap ö <C-\><C-n><c-w>p
     silent! tnoremap <esc> <C-\><C-n>
     func! TermOpen()
-        if (exists("g:cur_term")&&bufexists(g:cur_term))
+        if (&buftype == 'terminal')
+            let g:cur_term = bufnr("")
+            norm! i
+        elseif (exists("g:cur_term")&&bufexists(g:cur_term))
             let wins = win_findbuf(g:cur_term)
             if (len(wins) > 0)
                 call win_gotoid(wins[0])
