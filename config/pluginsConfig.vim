@@ -1,18 +1,12 @@
+nmap s <Plug>Ysurround
+nmap ss <Plug>Yssurround
+
 command! DeopleteEnable call deoplete#enable()
 command! DeopleteDisable call deoplete#disable()
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_smart_case = 1
 
 inoremap <expr><C-g>     deoplete#mappings#undo_completion()
-
-" autocmd InsertLeave,CompleteDone * if pumvisible() == 0 | pclose | endif
-autocmd CompleteDone * if pumvisible() == 0 | pclose | endif
-let g:racer_cmd = "/home/cyril/.cargo/bin/racer"
-let $RUST_SRC_PATH="/home/cyril/rustc-1.9.0/src/"
-let g:deoplete#enable_at_startup = 1
-if !exists('g:deoplete#omni#input_patterns')
-  let g:deoplete#omni#input_patterns = {}
-endif
 
 let g:gitgutter_map_keys = 0
 nmap [c <Plug>GitGutterPrevHunk
@@ -61,7 +55,6 @@ call textobj#user#plugin('highlight', {
 \     'select-i': 'ih',
 \   },
 \ })
-
 
 noremap <silent> - :call Dirvish_wrap_up('%')<cr>
 if !exists("g:Dirvish_Added")
@@ -137,14 +130,15 @@ xmap f <Plug>Sneak_f
 xmap F <Plug>Sneak_F
 omap f <Plug>Sneak_f
 omap F <Plug>Sneak_F
-nmap ö <Plug>Sneak_s
-nmap Ö <Plug>Sneak_S
-"" visual-mode
-xmap ö <Plug>Sneak_s
-xmap Ö <Plug>Sneak_S
-"" operator-pending-mode
-omap ö <Plug>Sneak_s
-omap Ö <Plug>Sneak_S
+
+" nmap ö <Plug>Sneak_s
+" nmap Ö <Plug>Sneak_S
+" "" visual-mode
+" xmap ö <Plug>Sneak_s
+" xmap Ö <Plug>Sneak_S
+" "" operator-pending-mode
+" omap ö <Plug>Sneak_s
+" omap Ö <Plug>Sneak_S
 
 nnoremap [w :Obsession<CR>
 nnoremap ]w :Obsession!<CR>
@@ -331,7 +325,6 @@ xmap ax <plug>(signify-motion-outer-visual)
 
 let g:signify_vcs_list = ['git']
 
-
 cabbrev git Git
 nnoremap <space>ga :execute 'Git add ' . expand('%:p')<CR>
 nnoremap <space>gs :Gstatus<CR>
@@ -356,4 +349,7 @@ nnoremap <leader>gV :Gitv --all<cr>
 nnoremap <leader>gv :Gitv! --all<cr>
 vnoremap <leader>gv :Gitv! --all<cr>
 
-
+vmap <leader>r <Plug>(EasyAlign)
+nmap <leader>r <Plug>(EasyAlign)
+nmap <leader>r <Plug>(LiveEasyAlign)
+vmap <leader>r <Plug>(LiveEasyAlign)

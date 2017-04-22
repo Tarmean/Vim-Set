@@ -1,6 +1,39 @@
-nmap s <Plug>Ysurround
-nmap ss <Plug>Yssurround
-autocmd FileType c nnoremap <buffer> <silent> <C-]> :YcmCompleter GoTo<cr>
+if (has('nvim'))
+    nnoremap ö :call TermOpen()<cr>
+    noremap Ö <C-\><C-n>:call TermClose(0)<cr>
+    tnoremap Ö <C-\><C-n>:call TermClose(1)<cr>
+    tnoremap ö <C-\><C-n><c-w>p
+    func! TermOpen()
+        if (exists("g:cur_term")&&bufexists(g:cur_term))
+            let wins = win_findbuf(g:cur_term)
+            if (len(wins) > 0)
+                call win_gotoid(wins[0])
+                norm! i
+            else
+                vs
+                exec "buf " . g:cur_term
+                norm! i
+            endif
+        else
+            vs
+            term
+            let g:cur_term = bufnr("$")
+        endif
+    endfunc
+    func! TermClose(active)
+        if (a:active)
+            let active_win = winnr("#")
+        else
+            let active_win = winnr()
+        endif
+        let term_wins = win_findbuf(g:cur_term)
+        for i in term_wins
+            call win_gotoid(i)
+            wincmd c
+        endfor
+        call win_gotoid(active_win)
+    endfunc
+endif
 
 let g:BracketSwapPairs = {
             \'ä': '{',
@@ -10,7 +43,6 @@ let g:BracketSwapPairs = {
             \'ü': '[',
             \'Ü': ']',
         \}
-
 function! SetCharSwap(bool)
     if(a:bool)
         for [l, r] in items(g:BracketSwapPairs)
@@ -23,6 +55,10 @@ function! SetCharSwap(bool)
     endif
 endfunction
 call SetCharSwap(1)
+nnoremap äoä :call SetCharSwap(0)<cr>
+nnoremap üoü :call SetCharSwap(1)
+silent! unmap [o
+silent! unmap ]o
 
 cnoremap %s/ %s/\v
 cnoremap  w!! w !sudo tee % > /dev/null
@@ -34,10 +70,6 @@ nnoremap <silent> <esc> :noh<return><esc>
 nnoremap <Leader>ö :w<CR>
 noremap  <leader>ü :e $MYVIMRC<CR>
 noremap  <leader>ä :so $MYVIMRC<CR>
-map ü [
-map ä ]
-map Ä }
-map Ü {
 
 nnoremap <cr> :
 vnoremap <cr> :
@@ -52,6 +84,7 @@ nnoremap <Leader>e :cd %:h\|execute "term"\|cd -<cr>
 nnoremap =<space>p "+]p=']
 nnoremap =<space>P "+[p=']
 vnoremap <Leader>y "+y
+nnoremap <Leader>yy "+yy
 nnoremap <silent> <Leader>y :call Prep_yank('"+')<cr>g@
 nnoremap <silent> y :call Prep_yank('')<cr>g@
 nnoremap <silent> yy yy
@@ -59,6 +92,7 @@ nnoremap <Leader>p "+p
 nnoremap <Leader>P "+P
 vnoremap <Leader>p "+p
 vnoremap <Leader>P "+P
+nnoremap Y y$
 
 func! Prep_yank(reg)
     let g:preyankpos = winsaveview()
@@ -79,12 +113,11 @@ func! Yank(type, ...)
 	let &selection = sel_save
 endfunc
 
-nnoremap Y y$
-
 nnoremap <leader>q :tab sp<CR>
-
-noremap <silent><leader>i gT
-noremap <silent><space>o :exec "tabnext " . ((tabpagenr() + (v:count?v:count-1:0)) % (tabpagenr("$"))+1)<cr>
+nnoremap <leader>v <C-w>v
+nnoremap <leader>V <C-w>s
+nnoremap <leader>c <C-w>c
+nnoremap <leader>C :bd!<CR> 
 
 noremap <silent><leader>h  : call WinMove('h')<cr>
 noremap <silent><leader>k  : call WinMove('k')<cr>
@@ -94,11 +127,55 @@ noremap <silent><leader>H  : wincmd H<cr>
 noremap <silent><leader>K  : wincmd K<cr>
 noremap <silent><leader>L  : wincmd L<cr>
 noremap <silent><leader>J  : wincmd J<cr>
+function! WinMove(key)
+    let t:curwin = winnr()
+    exec "wincmd ".a:key
+    if (t:curwin == winnr())
+        if (match(a:key,'[jk]'))
+            wincmd v
+        else
+            wincmd s
+        endif
+        exec "wincmd ".a:key
+    endif
+endfunction
 
-nnoremap <leader>v <C-w>v
-nnoremap <leader>V <C-w>s
-nnoremap <leader>c <C-w>c
-nnoremap <leader>C :bd!<CR> 
+noremap <silent><leader>i gT
+noremap <silent><space>o :exec "tabnext " . ((tabpagenr() + (v:count?v:count-1:0)) % (tabpagenr("$"))+1)<cr>
+noremap <silent> <space>I :call TabCopy(1, tabpagenr()-1)<cr>
+noremap <silent> <space>O :call TabCopy(1, tabpagenr()+1)<cr>
+noremap <silent> <space><C-I> :call TabCopy(0, tabpagenr()-1)<cr>
+noremap <silent> <space><C-O> :call TabCopy(0, tabpagenr()+1)<cr>
+func! TabCopy(move, tab)
+    let cur_buffer = bufnr('%')
+
+    let tab_count = tabpagenr('$')
+    let win_count = winnr("$")
+
+    let target_tab = a:tab
+
+    if a:move
+        if win_count == 1 
+            if tab_count == 1
+                return
+            endif
+
+            if target_tab > tabpagenr()
+                let target_tab -= 1 
+            endif
+        endif
+
+        wincmd c
+    endif
+
+    if target_tab <= 0 || target_tab > tab_count
+        silent! exe target_tab . "tab sb" . cur_buffer
+    else
+        silent! exe target_tab . "tabn"
+        silent! vs|wincmd H
+        silent! exe "b " . cur_buffer
+    endif
+endfunc
 
 noremap [oI :set autoindent<cr>
 noremap ]oI :set noautoindent<cr>
@@ -114,9 +191,9 @@ fun! JumpToDef()
     exe "norm! \<C-]>"
   endif
 endf
-silent noremap <silent><leader>a :call JumpToDef()<cr>zMzvzz15<c-e>:silent Pulse<cr>
-silent noremap <silent><leader><s-a> <c-t>zMzvzz15<c-e>:silent Pulse<cr>
-silent nmap <leader>s zMzvzz15<c-e>:silent Pulse<cr>
+silent noremap <silent><leader>a :call JumpToDef()<cr>zz:silent Pulse<cr>
+silent noremap <silent><leader><s-a> <c-t>zMzvzz15<c-e>zz:silent Pulse<cr>
+silent nmap <leader>s zz:silent Pulse<cr>
 function! s:Pulse() " {{{
     redir => old_hi
         silent execute 'hi CursorLine'
@@ -130,82 +207,6 @@ function! s:Pulse() " {{{
     execute 'hi ' . old_hi
 endfunction " }}}
 command! -nargs=0 Pulse call s:Pulse()
-
-cabbrev git Git
-nnoremap <space>ga :execute 'Git add ' . expand('%:p')<CR>
-nnoremap <space>gs :Gstatus<CR>
-nnoremap <space>gc :Gcommit -v -q<CR>
-nnoremap <space>gt :Gcommit -v -q %:p<CR>
-nnoremap <space>gd :Gdiff<CR>
-nnoremap <space>ge :Gedit<CR>
-nnoremap <space>gr :Gread<CR>
-nnoremap <space>gw :Gwrite<CR><CR>
-nnoremap <space>gl :silent! Glog<CR>:bot copen<CR>
-noremap <space>gf :Ggrep<Space>
-nnoremap <space>gm :Gmove<Space>
-nnoremap <space>gb :Git branch<Space>
-nnoremap <space>gB :Gblame<CR>
-vnoremap dp :diffput<cr>
-vnoremap do :diffget<cr>
-
-nnoremap <leader>gV :Gitv --all<cr>
-nnoremap <leader>gv :Gitv! --all<cr>
-vnoremap <leader>gv :Gitv! --all<cr>
-
-vmap <leader>r <Plug>(EasyAlign)
-nmap <leader>r <Plug>(EasyAlign)
-nmap <leader>r <Plug>(LiveEasyAlign)
-vmap <leader>r <Plug>(LiveEasyAlign)
-
-func! TabCopy(move, tab)
-    let cur_buffer = bufnr('%')
-
-    let tab_count = tabpagenr('$')
-    let win_count = winnr("$")
-
-    let target_tab = a:tab
-
-    if a:move
-        if win_count == 1 
-            if tab_count == 1  " closing the tab would fail and would be pointless anyway
-                return
-            endif
-
-            if target_tab > tabpagenr()
-                let target_tab -= 1 
-            endif
-        endif
-
-        wincmd c
-    endif
-
-
-    if target_tab <= 0 || target_tab > tab_count
-        silent! exe target_tab . "tab sb" . cur_buffer
-    else
-        silent! exe target_tab . "tabn"
-        silent! vs|wincmd H
-        silent! exe "b " . cur_buffer
-    endif
-endfunc
-noremap <silent> <space>I :call TabCopy(1, tabpagenr()-1)<cr>
-noremap <silent> <space>O :call TabCopy(1, tabpagenr()+1)<cr>
-noremap <silent> <space><C-I> :call TabCopy(0, tabpagenr()-1)<cr>
-noremap <silent> <space><C-O> :call TabCopy(0, tabpagenr()+1)<cr>
-
-"move windows around:
-function! WinMove(key)
-    let t:curwin = winnr()
-    exec "wincmd ".a:key
-    if (t:curwin == winnr()) "we havent moved
-        if (match(a:key,'[jk]')) "were we going up/down
-            wincmd v
-        else
-            wincmd s
-        endif
-        exec "wincmd ".a:key
-    endif
-endfunction
 
 nnoremap <silent> g: :set opfunc=SourceVimscript<cr>g@
 vnoremap <silent> g: :<c-U>call SourceVimscript("visual")<cr>

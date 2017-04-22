@@ -8,6 +8,7 @@ endif
 Plug 'ervandew/supertab'
 
 Plug 'rust-lang/rust.vim'
+Plug 'spwhitt/vim-nix'
 
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'itchyny/calendar.vim'
@@ -65,8 +66,6 @@ if(has('unix'))
     Plug 'nhooyr/fasd.vim'
 
     if(has('nvim'))
-        tnoremap ö <C-\><C-n>
-
         let g:python3_host_prog='/usr/bin/python3'
         let g:python_host_prog='/usr/bin/python'
 
