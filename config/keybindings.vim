@@ -1,8 +1,9 @@
 if (has('nvim'))
-    nnoremap ö :call TermOpen()<cr>
-    noremap Ö <C-\><C-n>:call TermClose(0)<cr>
-    tnoremap Ö <C-\><C-n>:call TermClose(1)<cr>
-    tnoremap ö <C-\><C-n><c-w>p
+    silent! nnoremap ö :call TermOpen()<cr>
+    silent! noremap Ö :call TermClose(0)<cr>
+    silent! tnoremap Ö <C-\><C-n>:call TermClose(1)<cr>
+    silent! tnoremap ö <C-\><C-n><c-w>p
+    silent! tnoremap <esc> <C-\><C-n>
     func! TermOpen()
         if (exists("g:cur_term")&&bufexists(g:cur_term))
             let wins = win_findbuf(g:cur_term)
@@ -49,14 +50,14 @@ function! SetCharSwap(bool)
             silent! execute "imap " . l . " " . r
         endfor
     else
-        for [l, r] in items(g:BracketSwapPairs) " i know what keys does but then it wouldn't be symmetric :O
+        for [l, r] in items(g:BracketSwapPairs) 
             silent! execute "iunmap " . l
         endfor
     endif
 endfunction
 call SetCharSwap(1)
 nnoremap äoä :call SetCharSwap(0)<cr>
-nnoremap üoü :call SetCharSwap(1)
+nnoremap üoü :call SetCharSwap(1)<cr>
 silent! unmap [o
 silent! unmap ]o
 
@@ -86,6 +87,7 @@ nnoremap =<space>P "+[p=']
 vnoremap <Leader>y "+y
 nnoremap <Leader>yy "+yy
 nnoremap <silent> <Leader>y :call Prep_yank('"+')<cr>g@
+nnoremap <silent> <Leader>yy "+yy
 nnoremap <silent> y :call Prep_yank('')<cr>g@
 nnoremap <silent> yy yy
 nnoremap <Leader>p "+p

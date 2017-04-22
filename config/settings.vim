@@ -113,10 +113,6 @@ if has("autocmd")
       autocmd CmdwinEnter * map <buffer> <CR> <CR>q:
       autocmd CmdwinEnter * map <buffer> <esc> :quit<CR>
   augroup END
-
-  autocmd BufEnter *.hs set formatprg=pointfree\ --stdin
-else
-    set autoindent" always set autoindenting on
 endif 
 
 function! MyFoldText() " {{{
@@ -142,4 +138,3 @@ function! s:VSetSearch()
   let @/ = '\V' . substitute(escape(@@, '\'), '\n', '\\n', 'g')
   let @@ = temp
 endfunction
-
