@@ -9,6 +9,7 @@ if (has('python'))
 endif
 Plug 'ervandew/supertab'
 
+Plug 'Shirk/vim-gas'
 Plug 'rust-lang/rust.vim'
 Plug 'spwhitt/vim-nix'
 
