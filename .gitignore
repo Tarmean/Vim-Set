@@ -10,3 +10,4 @@ plugged/*
 bundle/*
 nimcache/
 .gitignore
+*.dic
