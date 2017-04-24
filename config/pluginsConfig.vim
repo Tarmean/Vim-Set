@@ -353,3 +353,10 @@ vmap <leader>r <Plug>(EasyAlign)
 nmap <leader>r <Plug>(EasyAlign)
 nmap <leader>r <Plug>(LiveEasyAlign)
 vmap <leader>r <Plug>(LiveEasyAlign)
+
+if has("autocmd") && exists("+omnifunc")
+autocmd Filetype *
+        \	if &omnifunc == "" |
+        \		setlocal omnifunc=syntaxcomplete#Complete |
+        \	endif
+endif

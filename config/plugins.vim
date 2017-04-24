@@ -1,12 +1,15 @@
 call plug#begin('~/vimfiles/plugged')
 Plug 'equalsraf/neovim-gui-shim'
 Plug 'Tarmean/multi'
+let g:python3_host_prog="C:\\Python36\\python.exe"
+let g:python_host_prog="C:\\Python27\\python.exe"
 if (has('python'))
     Plug 'SirVer/ultisnips'
     Plug 'honza/vim-snippets'
 endif
 Plug 'ervandew/supertab'
 
+Plug 'Shirk/vim-gas'
 Plug 'rust-lang/rust.vim'
 Plug 'spwhitt/vim-nix'
 

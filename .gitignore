@@ -11,3 +11,4 @@ bundle/*
 nimcache/
 .gitignore
 *.dic
+plug.vim.old
