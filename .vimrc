@@ -1,5 +1,6 @@
 set nocompatible
 let mapleader = "\<space>"
+let g:gutentags_cache_dir="~\\.vim\\tags\\"
 source ~/vimfiles/config/plugins.vim
 set background=dark
 colorscheme gruvbox

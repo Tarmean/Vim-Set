@@ -117,7 +117,7 @@ noremap [oz :Goyo<cr>:IndentLinesDisable<cr>
 autocmd User GoyoEnter Limelight
 autocmd User GoyoLeave Limelight!
 
-let gutentags_ctags_tagfile=".git/tags"
+" let gutentags_ctags_tagfile=".git/tags"
 
 let g:sneak#streak=1
 let g:sneak#streak_esc = "\<esc>"
