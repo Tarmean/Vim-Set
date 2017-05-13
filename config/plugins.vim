@@ -56,7 +56,7 @@ Plug 'dhruvasagar/vim-table-mode', { 'on':  'TableModeEnable' }
 Plug 'zah/nim.vim', { 'for': 'nim' }
 
 Plug 'morhetz/gruvbox'
-Plug 'shinchu/lightline-gruvbox.vim'
+Plug 'Tarmean/lightline-gruvbox.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
 Plug 'junegunn/vim-peekaboo'
