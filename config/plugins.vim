@@ -29,6 +29,7 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'dbakker/vim-projectroot'
 
 Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-fugitive'
 Plug 'gregsexton/gitv', { 'on':  'Gitv' }
 Plug 'jreybert/vimagit'
@@ -55,34 +56,35 @@ Plug 'dhruvasagar/vim-table-mode', { 'on':  'TableModeEnable' }
 Plug 'zah/nim.vim', { 'for': 'nim' }
 
 Plug 'morhetz/gruvbox'
+Plug 'Tarmean/lightline-gruvbox.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
+Plug 'junegunn/vim-peekaboo'
 Plug 'junegunn/limelight.vim', { 'on':  'Goyo' }
 let g:limelight_conceal_ctermfg = 242
 if(has('gui'))
     let g:rainbow_active = 1
 endif
 
+if(has('nvim'))
+    " let g:python3_host_prog='/usr/bin/python3'
+    " let g:python_host_prog='/usr/bin/python'
+    let g:python3_host_prog='/home/cyril/.nix-profile/bin/python3'
+
+    " let g:python_host_prog='/home/cyril/.nix-profile/bin/python'
+    function! DoRemote()
+        UpdateRemotePlugins
+    endfunction
+
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
+    Plug 'benekastah/neomake'
+endif
+
 if(has('unix'))
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
     Plug 'junegunn/fzf.vim'
     Plug 'nhooyr/fasd.vim'
-
-    if(has('nvim'))
-        let g:python3_host_prog='/usr/bin/python3'
-        let g:python_host_prog='/usr/bin/python'
-
-        function! DoRemote()
-            UpdateRemotePlugins
-        endfunction
-
-        Plug 'benekastah/neomake'
-        function! Get_classpath(ending)
-            let project_root = ProjectRootGuess() . "/"
-            let project_root .= a:ending
-            return project_root
-        endfunction
-    endif
 else
     Plug 'Shougo/unite.vim', 
     noremap <leader>fc :<c-u>Unite colorscheme<cr>
