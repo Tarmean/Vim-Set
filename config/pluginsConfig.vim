@@ -292,7 +292,7 @@ if(has('unix'))
     nnoremap <silent> <leader>fd :call Tag_or_reload("Tags")<cr>
     nnoremap <silent> <leader>d :call Tag_or_reload("BTags")<cr>
     nnoremap <silent> <leader>fw :Windows<cr>
-    nnoremap <silent> <leader>fj :Locate ~<cr>
+    nnoremap <silent> <leader>fj :call fzf#vim#locate("~")<cr>
     nnoremap <silent> <leader>fö :Locate ~/vimfiles/plugged/<cr>
     nnoremap <silent> <leader>fs :FASD<cr>
     nnoremap <silent> <leader>fS :History<cr>
