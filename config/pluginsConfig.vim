@@ -6,6 +6,8 @@ command! DeopleteDisable call deoplete#disable()
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_smart_case = 1
 
+autocmd! BufWritePost * Neomake
+
 inoremap <expr><C-g>     deoplete#mappings#undo_completion()
 
 let g:gitgutter_map_keys = 0
@@ -153,8 +155,8 @@ let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', '&completefunc']
 let g:SuperTabContextDiscoverDiscovery =
             \ ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>"]
 
-      " \ 'colorscheme': 'solarized_light',
 let g:lightline = {
+      \ 'colorscheme': 'gruvbox',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'GitStatus' ],
@@ -186,6 +188,28 @@ let g:lightline = {
       \ 'separator': { 'left': '', 'right': '' },
       \ 'subseparator': { 'left': '', 'right': '' }
       \ }
+
+augroup LightlineColorscheme
+    autocmd!
+    autocmd ColorScheme * call s:lightline_update()
+augroup END
+function! s:lightline_update()
+    if !exists('g:loaded_lightline')
+        return
+    endif
+    try
+        call LoadLightlineGruvbox()
+        if g:colors_name =~# 'wombat\|solarized\|landscape\|jellybeans\|seoul256\|Tomorrow\|gruvbox'
+
+          let g:lightline.colorscheme =
+            \substitute(substitute(g:colors_name, '-', '_', 'g'), '256.*', '', '')
+          call lightline#init()
+          call lightline#colorscheme()
+          call lightline#update()
+    endif
+  catch
+  endtry
+endfunction
 
 let unified_diff#executable = 'git'
 let unified_diff#arguments = [

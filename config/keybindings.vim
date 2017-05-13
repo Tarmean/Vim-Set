@@ -1,13 +1,11 @@
 if (has('nvim'))
-    nnoremap ö :call TermOpen()<cr>
-    noremap Ö :call TermClose(0)<cr>
-    tnoremap Ö <C-\><C-n>:call TermClose(1)<cr>
-    tnoremap ö <C-\><C-n><c-w>p<c-l>
-    tnoremap <esc> <C-\><C-n>
-    func! TermOpen()
+    nnoremap ö :call TermToggle()<cr>
+    noremap Ö :call TermToggle()<cr><C-\><C-n>
+    tnoremap ö <C-\><C-n>:call TermClose(1)<cr>
+    tnoremap Ö <C-\><C-n> 
+    func! TermToggle()
         if (&buftype == 'terminal')
-            let g:cur_term = bufnr("")
-            norm! i
+            call TermClose(1)
         elseif (exists("g:cur_term")&&bufexists(g:cur_term))
             let wins = win_findbuf(g:cur_term)
             if (len(wins) > 0)
@@ -20,7 +18,7 @@ if (has('nvim'))
             endif
         else
             vs
-            term powershell
+            term
             let g:cur_term = bufnr("$")
         endif
     endfunc
