@@ -1,12 +1,38 @@
 call plug#begin('~/vimfiles/plugged')
-Plug 'equalsraf/neovim-gui-shim'
-Plug 'Tarmean/multi'
-let g:python3_host_prog="C:\\Python36\\python.exe"
-let g:python_host_prog="C:\\Python27\\python.exe"
+if(has('nvim'))
+    function! DoRemote()
+        UpdateRemotePlugins
+    endfunction
+
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
+    Plug 'equalsraf/neovim-gui-shim'
+    Plug 'benekastah/neomake'
+endif
+
+if(has('unix'))
+    let g:python3_host_prog='/home/cyril/.nix-profile/bin/python3'
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
+    Plug 'junegunn/fzf.vim'
+    Plug 'nhooyr/fasd.vim'
+else
+    let g:python3_host_prog="C:\\Users\\Cyril\\AppData\\Local\\Programs\\Python\\Python36-32\\python.exe"
+    let g:python_host_prog="C:\\Python27\\python.exe"
+
+    Plug 'Shougo/denite.nvim', 
+    " Plug 'Shougo/unite.vim', 
+    " noremap <leader>fc :<c-u>Unite colorscheme<cr>
+    " Plug 'tsukkee/unite-tag'
+    " Plug 'ujihisa/unite-colorscheme'
+    " Plug 'Shougo/neomru.vim'
+endif
 if (has('python'))
     Plug 'SirVer/ultisnips'
     Plug 'honza/vim-snippets'
 endif
+
+
+Plug 'Tarmean/multi'
 Plug 'ervandew/supertab'
 
 Plug 'Shirk/vim-gas'
@@ -62,38 +88,6 @@ Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
 Plug 'junegunn/vim-peekaboo'
 Plug 'junegunn/limelight.vim', { 'on':  'Goyo' }
 let g:limelight_conceal_ctermfg = 242
-if(has('gui'))
-    let g:rainbow_active = 1
-endif
-
-if(has('nvim'))
-    " let g:python3_host_prog='/usr/bin/python3'
-    " let g:python_host_prog='/usr/bin/python'
-    let g:python3_host_prog='/home/cyril/.nix-profile/bin/python3'
-
-    " let g:python_host_prog='/home/cyril/.nix-profile/bin/python'
-    function! DoRemote()
-        UpdateRemotePlugins
-    endfunction
-
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-
-    Plug 'benekastah/neomake'
-endif
-
-if(has('unix'))
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
-    Plug 'junegunn/fzf.vim'
-    Plug 'nhooyr/fasd.vim'
-else
-    Plug 'Shougo/unite.vim', 
-    noremap <leader>fc :<c-u>Unite colorscheme<cr>
-    Plug 'tsukkee/unite-tag'
-    Plug 'ujihisa/unite-colorscheme'
-    Plug 'Shougo/neomru.vim'
-    Plug 'scrooloose/syntastic' 
-    let g:syntastic_check_on_wq = 0
-endif
 
 call plug#end()
 
