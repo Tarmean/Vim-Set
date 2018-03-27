@@ -1,5 +1,6 @@
-set guifont=Sauce_Code_Powerline:h9:cANSI
+set guifont=Sauce_Code_Powerline:h13:cANSI
 
+set inccommand=nosplit
 set termguicolors
 set autoindent
 set lazyredraw

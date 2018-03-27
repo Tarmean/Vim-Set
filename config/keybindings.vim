@@ -1,12 +1,10 @@
 if (has('nvim'))
     nnoremap ö :call TermToggle()<cr>
-    noremap Ö :call TermToggle()<cr><C-\><C-n>
-    tnoremap ö <C-\><C-n>:call TermClose(1)<cr>
-    tnoremap Ö <C-\><C-n> 
+    noremap Ö :call TermClose(1)<cr><C-\><C-n>
+    tnoremap ö <C-\><C-n><c-w><c-w><cr>
+    tnoremap Ö <C-\><C-n>:call TermClose(1)<cr>
     func! TermToggle()
-        if (&buftype == 'terminal')
-            call TermClose(1)
-        elseif (exists("g:cur_term")&&bufexists(g:cur_term))
+        if (exists("g:cur_term")&&bufexists(g:cur_term))
             let wins = win_findbuf(g:cur_term)
             if (len(wins) > 0)
                 call win_gotoid(wins[0])
@@ -18,7 +16,8 @@ if (has('nvim'))
             endif
         else
             vs
-            term
+            exec ("term powershell -noexit -command \"cd \\\"" . expand("%:p:h") . "\\\"\"" )
+            norm i
             let g:cur_term = bufnr("$")
         endif
     endfunc
@@ -45,6 +44,8 @@ let g:BracketSwapPairs = {
             \'ü': '[',
             \'Ü': ']',
         \}
+nmap ü [
+nmap ä ]
 function! SetCharSwap(bool)
     if(a:bool)
         for [l, r] in items(g:BracketSwapPairs)
@@ -62,8 +63,10 @@ nnoremap üoü :call SetCharSwap(1)<cr>
 silent! unmap [o
 silent! unmap ]o
 
-cnoremap %s/ %s/\v
-cnoremap  w!! w !sudo tee % > /dev/null
+if (has('vim') || has ('nvim'))
+    cnoremap %s/ %s/\v
+    cnoremap  w!! w !sudo tee % > /dev/null
+endif
 
 nnoremap j gj
 nnoremap k gk
