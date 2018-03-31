@@ -1,14 +1,105 @@
+augroup Rust
+    au!
+    au FileType rust nnoremap <buffer> <silent> K :call LanguageClient_textDocument_hover()<CR>
+    au FileType rust nnoremap <buffer> <silent> gd :call LanguageClient_textDocument_definition()<CR>
+    au FileType rust nnoremap <buffer> <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+augroup END
+
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['rustup', 'run', 'stable', 'rls'],
+    \ 'javascript': ['javascript-typescript-stdio'],
+    \ 'javascript.jsx': ['javascript-typescript-stdio'],
+    \ }
+
+
+
 nmap s <Plug>Ysurround
 nmap ss <Plug>Yssurround
 
-command! DeopleteEnable call deoplete#enable()
-command! DeopleteDisable call deoplete#disable()
+"command! DeopleteEnable call deoplete#enable()
+"command! DeopleteDisable call deoplete#disable()
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#enable_smart_case = 1
 
-autocmd! BufWritePost * Neomake
+"let g:deoplete#omni#functions = get(g:, 'deoplete#omni#functions', {})
+"let g:deoplete#omni#functions.css = 'csscomplete#CompleteCSS'
+"let g:deoplete#omni#functions.html = 'htmlcomplete#CompleteTags'
+"let g:deoplete#omni#functions.markdown = 'htmlcomplete#CompleteTags'
+"" let g:deoplete#omni#functions.javascript =
+""	\ [ 'tern#Complete', 'jspc#omni', 'javascriptcomplete#CompleteJS' ]
+"" Difference: omni_patterns replaces deoplete features with vim's omni complete
+"" omni#input_patterns polls the omni func as additional source
 
-inoremap <expr><C-g>     deoplete#mappings#undo_completion()
+"let g:deoplete#omni_patterns = get(g:, 'deoplete#omni_patterns', {})
+"let g:deoplete#omni_patterns.html = '<[^>]*'
+"" let g:deoplete#omni_patterns.javascript = '[^. *\t]\.\w*'
+"" let g:deoplete#omni_patterns.javascript = '[^. \t]\.\%\(\h\w*\)\?'
+"let g:deoplete#omni_patterns.php =
+"	\ '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
+
+"let g:deoplete#omni#input_patterns = get(g:, 'deoplete#omni#input_patterns', {})
+"let g:deoplete#omni#input_patterns.xml = '<[^>]*'
+"let g:deoplete#omni#input_patterns.md = '<[^>]*'
+"let g:deoplete#omni#input_patterns.css  = '^\s\+\w\+\|\w\+[):;]\?\s\+\w*\|[@!]'
+"let g:deoplete#omni#input_patterns.scss = '^\s\+\w\+\|\w\+[):;]\?\s\+\w*\|[@!]'
+"let g:deoplete#omni#input_patterns.sass = '^\s\+\w\+\|\w\+[):;]\?\s\+\w*\|[@!]'
+"let g:deoplete#omni#input_patterns.python = ''
+"let g:deoplete#omni#input_patterns.javascript = ''
+
+"call deoplete#custom#set('omni',          'mark', '⌾')
+"call deoplete#custom#set('ternjs',        'mark', '⌁')
+"call deoplete#custom#set('jedi',          'mark', '⌁')
+"call deoplete#custom#set('vim',           'mark', '⌁')
+"call deoplete#custom#set('ultisnips',     'mark', '⌘')
+"call deoplete#custom#set('tag',           'mark', '⌦')
+"call deoplete#custom#set('around',        'mark', '↻')
+"call deoplete#custom#set('buffer',        'mark', 'ℬ')
+"call deoplete#custom#set('tmux-complete', 'mark', '⊶')
+"call deoplete#custom#set('syntax',        'mark', '♯')
+
+"call deoplete#custom#set('vim',           'rank', 630)
+"call deoplete#custom#set('ternjs',        'rank', 620)
+"call deoplete#custom#set('jedi',          'rank', 610)
+"call deoplete#custom#set('omni',          'rank', 600)
+"call deoplete#custom#set('ultisnips',     'rank', 510)
+"call deoplete#custom#set('member',        'rank', 500)
+"call deoplete#custom#set('file_include',  'rank', 420)
+"call deoplete#custom#set('file',          'rank', 410)
+"call deoplete#custom#set('tag',           'rank', 400)
+"call deoplete#custom#set('around',        'rank', 330)
+"call deoplete#custom#set('buffer',        'rank', 320)
+"call deoplete#custom#set('dictionary',    'rank', 310)
+"call deoplete#custom#set('tmux-complete', 'rank', 300)
+"call deoplete#custom#set('syntax',        'rank', 200)
+
+"call deoplete#custom#set('ultisnips', 'matchers', ['matcher_fuzzy'])
+
+"augroup DeopleteCustom
+"    au!
+"    autocmd CompleteDone * silent! pclose!
+"augroup END
+
+"let g:ulti_expand_or_jump_res = 0 "default value, just set once
+"function! Ulti_ExpandOrJump_and_getRes()
+" call UltiSnips#ExpandSnippetOrJump()
+" return g:ulti_expand_or_jump_res
+"endfunction
+
+
+" smap <silent><expr><Tab> pumvisible() ? "\<Down>"
+" 	\ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
+" 	\ : (<SID>is_whitespace() ? "\<Tab>"
+" 	\ : deoplete#manual_complete()))
+
+" inoremap <expr><S-Tab>  pumvisible() ? "\<Up>" : "\<C-h>"
+
+" function! s:is_whitespace()
+" 	let col = col('.') - 1
+" 	return ! col || getline('.')[col - 1] =~? '\s'
+" endfunction
+
+" inoremap <expr><C-g> deoplete#mappings#undo_completion()
+
 
 let g:gitgutter_map_keys = 0
 nmap [c <Plug>GitGutterPrevHunk
@@ -120,6 +211,7 @@ autocmd User GoyoEnter Limelight
 autocmd User GoyoLeave Limelight!
 
 " let gutentags_ctags_tagfile=".git/tags"
+let g:gutentags_cache_dir="~\\.vim\\tags\\"
 
 let g:sneak#streak=1
 let g:sneak#streak_esc = "\<esc>"
@@ -160,11 +252,11 @@ let g:lightline = {
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'GitStatus' ],
-      \             [ 'readonly', 'filename', 'modified' ] ],
+      \             [ 'readonly', 'filename', 'modified', 'fileformat'] ],
       \   'right': [ [ 'lineinfo', 'percent' ],
       \              [ 'neomake' , 'syntastic'],
       \              [ 'tags' ],
-      \              [ 'filetype' ] ]
+      \              [ 'filetype' ]] 
       \ },
       \ 'component_function': {
       \   'neomake': 'neomake#statusline#LoclistStatus',

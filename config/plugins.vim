@@ -1,31 +1,10 @@
 call plug#begin('~/vimfiles/plugged')
-if(has('nvim'))
-    function! DoRemote()
-        UpdateRemotePlugins
-    endfunction
+let g:python3_host_prog="C:\\Python36\\python3.6.exe"
+let g:python_host_prog="C:\\Python27\\python.exe"
 
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
-    Plug 'equalsraf/neovim-gui-shim'
-    Plug 'benekastah/neomake'
-endif
-
-if(has('unix'))
-    let g:python3_host_prog='/home/cyril/.nix-profile/bin/python3'
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
-    Plug 'junegunn/fzf.vim'
-    Plug 'nhooyr/fasd.vim'
-else
-    let g:python3_host_prog="C:\\Users\\Cyril\\AppData\\Local\\Programs\\Python\\Python36-32\\python.exe"
-    let g:python_host_prog="C:\\Python27\\python.exe"
-
-    Plug 'Shougo/denite.nvim', 
-    " Plug 'Shougo/unite.vim', 
-    " noremap <leader>fc :<c-u>Unite colorscheme<cr>
-    " Plug 'tsukkee/unite-tag'
-    " Plug 'ujihisa/unite-colorscheme'
-    " Plug 'Shougo/neomru.vim'
-endif
+Plug 'equalsraf/neovim-gui-shim'
+Plug 'Tarmean/multi'
 if (has('python'))
     Plug 'SirVer/ultisnips'
     Plug 'honza/vim-snippets'
@@ -37,10 +16,13 @@ Plug 'ervandew/supertab'
 
 Plug 'Shirk/vim-gas'
 Plug 'rust-lang/rust.vim'
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'install.ps1',
+    \ }
 Plug 'spwhitt/vim-nix'
 
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
-Plug 'itchyny/calendar.vim'
 Plug 'justinmk/vim-dirvish' 
 Plug 'Konfekt/FastFold'
 
@@ -55,7 +37,6 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'dbakker/vim-projectroot'
 
 Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-rhubarb'
 Plug 'tpope/vim-fugitive'
 Plug 'gregsexton/gitv', { 'on':  'Gitv' }
 Plug 'jreybert/vimagit'
@@ -79,15 +60,57 @@ Plug 'Julian/vim-textobj-variable-segment'
 Plug 'junegunn/vim-easy-align', { 'on': '<Plug>(LiveEasyAlign)' }
 
 Plug 'dhruvasagar/vim-table-mode', { 'on':  'TableModeEnable' }
-Plug 'zah/nim.vim', { 'for': 'nim' }
 
 Plug 'morhetz/gruvbox'
 Plug 'Tarmean/lightline-gruvbox.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
-Plug 'junegunn/vim-peekaboo'
 Plug 'junegunn/limelight.vim', { 'on':  'Goyo' }
+Plug 'junegunn/vim-peekaboo'
 let g:limelight_conceal_ctermfg = 242
+<<<<<<< HEAD
+=======
+if(has('gui'))
+    let g:rainbow_active = 1
+endif
+
+Plug 'kern/vim-es7'
+Plug 'othree/es.next.syntax.vim'
+Plug 'zah/nim.vim', { 'for': 'nim' }
+
+Plug 'junegunn/fzf'
+if(has('nvim'))
+    " let g:python3_host_prog='/usr/bin/python3'
+    " let g:python_host_prog='/usr/bin/python'
+
+    " let g:python_host_prog='/home/cyril/.nix-profile/bin/python'
+    function! DoRemote()
+        UpdateRemotePlugins
+    endfunction
+
+    Plug 'Shougo/neco-syntax'
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+
+    Plug 'w0rp/ale'
+else
+    Plug 'scrooloose/syntastic' 
+    let g:syntastic_check_on_wq = 0
+endif
+
+if(has('unix'))
+    let g:python3_host_prog='/home/cyril/.nix-profile/bin/python3'
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
+    Plug 'junegunn/fzf.vim'
+    Plug 'nhooyr/fasd.vim'
+else
+    Plug 'Shougo/unite.vim', 
+    noremap <leader>fc :<c-u>Unite colorscheme<cr>
+    Plug 'tsukkee/unite-tag'
+    Plug 'ujihisa/unite-colorscheme'
+    Plug 'Shougo/neomru.vim'
+endif
+>>>>>>> a5962ff3818c5ec7a6ef3d2f0e11a359bf587e5d
+
 
 call plug#end()
 
