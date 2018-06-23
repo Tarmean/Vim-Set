@@ -68,8 +68,6 @@ Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
 Plug 'junegunn/limelight.vim', { 'on':  'Goyo' }
 Plug 'junegunn/vim-peekaboo'
 let g:limelight_conceal_ctermfg = 242
-<<<<<<< HEAD
-=======
 if(has('gui'))
     let g:rainbow_active = 1
 endif
@@ -97,19 +95,18 @@ else
     let g:syntastic_check_on_wq = 0
 endif
 
+Plug 'junegunn/fzf.vim'
 if(has('unix'))
     let g:python3_host_prog='/home/cyril/.nix-profile/bin/python3'
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
-    Plug 'junegunn/fzf.vim'
     Plug 'nhooyr/fasd.vim'
 else
-    Plug 'Shougo/unite.vim', 
-    noremap <leader>fc :<c-u>Unite colorscheme<cr>
-    Plug 'tsukkee/unite-tag'
-    Plug 'ujihisa/unite-colorscheme'
-    Plug 'Shougo/neomru.vim'
+    " Plug 'Shougo/unite.vim', 
+    " noremap <leader>fc :<c-u>Unite colorscheme<cr>
+    " Plug 'tsukkee/unite-tag'
+    " Plug 'ujihisa/unite-colorscheme'
+    " Plug 'Shougo/neomru.vim'
 endif
->>>>>>> a5962ff3818c5ec7a6ef3d2f0e11a359bf587e5d
 
 
 call plug#end()

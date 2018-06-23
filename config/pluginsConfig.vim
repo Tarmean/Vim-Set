@@ -330,7 +330,7 @@ endf
 let g:fastfold_fold_command_suffixes = []
 let g:fastfold_fold_movement_commands = []
 
-if(has('unix'))
+if(has('nvim'))
     command! -nargs=* Z :call Z(<f-args>)
     function! Z(...)
         let cmd = 'fasd -d -e printf'
@@ -386,16 +386,12 @@ if(has('unix'))
     nnoremap <silent> <leader>fw :Windows<cr>
     nnoremap <silent> <leader>fj :call fzf#vim#locate("~")<cr>
     nnoremap <silent> <leader>fö :Locate ~/vimfiles/plugged/<cr>
-    nnoremap <silent> <leader>fs :FASD<cr>
-    nnoremap <silent> <leader>fS :History<cr>
+    nnoremap <silent> <leader>fs :History<cr>
     nnoremap <silent> <leader>fk :Snippets<cr>
     nnoremap <silent> <leader>fg :call Git_dir("Commits")<cr>
     nnoremap <silent> <leader>fG :call Git_dir("BCommits")<cr>
     nnoremap <silent> <leader>fh :Helptags<cr>
 
-else
-    nnoremap <leader>fs :<C-u>Denite file_old<cr>
-    nnoremap <leader>ff :<C-u>Denite buffer<cr>
 endif
 
 

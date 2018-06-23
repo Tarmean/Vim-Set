@@ -1,7 +1,7 @@
 if (has('nvim'))
     nnoremap ö :call TermToggle()<cr>
     noremap Ö :call TermClose(1)<cr><C-\><C-n>
-    tnoremap ö <C-\><C-n><c-w><c-w><cr>
+    tnoremap ö <C-\><C-n><c-w><c-w>
     tnoremap Ö <C-\><C-n>:call TermClose(1)<cr>
     func! TermToggle()
         if (exists("g:cur_term")&&bufexists(g:cur_term))
