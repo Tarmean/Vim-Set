@@ -330,7 +330,7 @@ endf
 let g:fastfold_fold_command_suffixes = []
 let g:fastfold_fold_movement_commands = []
 
-if(has('unix'))
+if(has('nvim'))
     command! -nargs=* Z :call Z(<f-args>)
     function! Z(...)
         let cmd = 'fasd -d -e printf'
@@ -386,30 +386,12 @@ if(has('unix'))
     nnoremap <silent> <leader>fw :Windows<cr>
     nnoremap <silent> <leader>fj :call fzf#vim#locate("~")<cr>
     nnoremap <silent> <leader>fö :Locate ~/vimfiles/plugged/<cr>
-    nnoremap <silent> <leader>fs :FASD<cr>
-    nnoremap <silent> <leader>fS :History<cr>
+    nnoremap <silent> <leader>fs :History<cr>
     nnoremap <silent> <leader>fk :Snippets<cr>
     nnoremap <silent> <leader>fg :call Git_dir("Commits")<cr>
     nnoremap <silent> <leader>fG :call Git_dir("BCommits")<cr>
     nnoremap <silent> <leader>fh :Helptags<cr>
 
-else
-    nnoremap <leader>fJ :Unite -buffer-name=files   -start-insert file_rec:!<cr>
-    nnoremap <leader>fj :<C-u>Unite -buffer-name=files   -start-insert file<cr>
-    nnoremap <leader>fs :<C-u>Unite -buffer-name=mru     -start-insert file_mru<cr>
-    nnoremap <leader>fd :<C-u>Unite -buffer-name=tags     -start-insert tag<cr>
-    nnoremap <leader>fk :<C-u>Unite -buffer-name=outline -start-insert outline<cr>
-    nnoremap <leader>fy :<C-u>Unite -buffer-name=yank    history/yank<cr>
-    nnoremap <leader>ff :<C-u>Unite -buffer-name=buffer  buffer<cr>
-    nnoremap <leader>fl :<C-u>Unite -buffer-name=buffer -start-insert -no-split line<cr>
-    autocmd FileType unite call s:unite_settings()
-    function! s:unite_settings()
-        let b:SuperTabDisabled=1
-        imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-        imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-        nmap <buffer> <esc>   <Plug>(unite_exit)
-        map <buffer> <leader><c>   <Plug>(unite_exit)
-    endfunction
 endif
 
 

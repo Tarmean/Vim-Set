@@ -9,6 +9,9 @@ if (has('python'))
     Plug 'SirVer/ultisnips'
     Plug 'honza/vim-snippets'
 endif
+
+
+Plug 'Tarmean/multi'
 Plug 'ervandew/supertab'
 
 Plug 'Shirk/vim-gas'
@@ -92,17 +95,17 @@ else
     let g:syntastic_check_on_wq = 0
 endif
 
+Plug 'junegunn/fzf.vim'
 if(has('unix'))
     let g:python3_host_prog='/home/cyril/.nix-profile/bin/python3'
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
-    Plug 'junegunn/fzf.vim'
     Plug 'nhooyr/fasd.vim'
 else
-    Plug 'Shougo/unite.vim', 
-    noremap <leader>fc :<c-u>Unite colorscheme<cr>
-    Plug 'tsukkee/unite-tag'
-    Plug 'ujihisa/unite-colorscheme'
-    Plug 'Shougo/neomru.vim'
+    " Plug 'Shougo/unite.vim', 
+    " noremap <leader>fc :<c-u>Unite colorscheme<cr>
+    " Plug 'tsukkee/unite-tag'
+    " Plug 'ujihisa/unite-colorscheme'
+    " Plug 'Shougo/neomru.vim'
 endif
 
 
