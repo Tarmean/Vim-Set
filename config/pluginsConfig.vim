@@ -263,7 +263,6 @@ let g:lightline = {
       \   'GitStatus': 'GitStatus',
       \ },
       \ 'component': {
-      \   'tags':     '%{gutentags#statusline("[tags]")}',
       \   'readonly': '%{&filetype=="help"?"":&readonly?"":""}',
       \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}'},
       \ 'component_expand': {

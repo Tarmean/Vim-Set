@@ -1,3 +1,11 @@
+func! OpenTerm()
+    if (has('unix'))
+        exec "term zsh " 
+        "-command \"cd \\\"" . expand("%:p:h") . "\\\"\""
+    else
+        exec "term powershell -noexit -command \"cd \\\"" . expand("%:p:h") . "\\\"\""
+    endif
+endfunction
 if (has('nvim'))
     nnoremap ö :call TermToggle()<cr>
     noremap Ö :call TermClose(1)<cr><C-\><C-n>
@@ -16,7 +24,7 @@ if (has('nvim'))
             endif
         else
             vs
-            exec ("term powershell -noexit -command \"cd \\\"" . expand("%:p:h") . "\\\"\"" )
+            call OpenTerm()
             norm i
             let g:cur_term = bufnr("$")
         endif
