@@ -1,5 +1,6 @@
 set nocompatible
 let mapleader = "\<space>"
+let maplocalleader = ","
 source ~/vimfiles/config/plugins.vim
 set background=light
 colorscheme gruvbox

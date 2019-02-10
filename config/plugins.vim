@@ -3,6 +3,7 @@ let g:python3_host_prog="C:\\Python36\\python3.6.exe"
 let g:python_host_prog="C:\\Python27\\python.exe"
 
 
+Plug 'idris-hackers/idris-vim'
 Plug 'equalsraf/neovim-gui-shim'
 Plug 'Tarmean/multi'
 if (has('python'))
@@ -89,7 +90,7 @@ if(has('nvim'))
     Plug 'Shougo/neco-syntax'
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
-    Plug 'w0rp/ale'
+    Plug 'neomake/neomake'
 else
     Plug 'scrooloose/syntastic' 
     let g:syntastic_check_on_wq = 0

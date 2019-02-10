@@ -1,3 +1,5 @@
+call neomake#configure#automake('w')
+
 augroup Rust
     au!
     au FileType rust nnoremap <buffer> <silent> K :call LanguageClient_textDocument_hover()<CR>
@@ -251,16 +253,19 @@ let g:lightline = {
       \ 'colorscheme': 'gruvbox',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'GitStatus' ],
+      \             [ 'gitversion', 'GitStatus' ],
       \             [ 'readonly', 'filename', 'modified', 'fileformat'] ],
       \   'right': [ [ 'lineinfo', 'percent' ],
       \              [ 'neomake' , 'syntastic'],
       \              [ 'tags' ],
       \              [ 'filetype' ]] 
       \ },
+      \	'inactive': {
+            \ 'left': [ ['gitversion', 'filename']],
+		    \ 'right': [ [ 'lineinfo', 'percent' ], [], [], [] ] },
       \ 'component_function': {
       \   'neomake': 'neomake#statusline#LoclistStatus',
-      \   'GitStatus': 'GitStatus',
+      \   'gitversion': 'LightLineGitversion',
       \ },
       \ 'component': {
       \   'tags':     '%{gutentags#statusline("[tags]")}',
@@ -281,6 +286,22 @@ let g:lightline = {
       \ 'subseparator': { 'left': '', 'right': '' }
       \ }
 
+function! LightLineGitversion()
+  let l:idx = matchstr(expand('%'), 'fugitive:[/,\\][/,\\].*[/,\\]\.git[/,\\][/,\\]\zs.\{-1,}\ze[/,\\].*')
+  if l:idx == ''
+      if &diff
+          return 'working copy'
+      endif
+      return ''
+  elseif l:idx == 0
+      return 'git index'
+  elseif l:idx == 2
+      return 'git target'
+  elseif l:idx == 3
+      return 'git merge'
+  endif
+  return 'commit: ' . l:idx
+endfunction
 augroup LightlineColorscheme
     autocmd!
     autocmd ColorScheme * call s:lightline_update()

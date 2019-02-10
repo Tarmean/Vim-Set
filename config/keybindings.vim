@@ -1,3 +1,5 @@
+map <f1> <esc>
+tnoremap <s-space> <space>
 if (has('nvim'))
     nnoremap ö :call TermToggle()<cr>
     noremap Ö :call TermClose(1)<cr><C-\><C-n>
