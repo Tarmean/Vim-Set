@@ -28,7 +28,7 @@ let g:deoplete#enable_smart_case = 1
 "let g:deoplete#omni#functions.html = 'htmlcomplete#CompleteTags'
 "let g:deoplete#omni#functions.markdown = 'htmlcomplete#CompleteTags'
 "" let g:deoplete#omni#functions.javascript =
-""	\ [ 'tern#Complete', 'jspc#omni', 'javascriptcomplete#CompleteJS' ]
+""  \ [ 'tern#Complete', 'jspc#omni', 'javascriptcomplete#CompleteJS' ]
 "" Difference: omni_patterns replaces deoplete features with vim's omni complete
 "" omni#input_patterns polls the omni func as additional source
 
@@ -37,7 +37,7 @@ let g:deoplete#enable_smart_case = 1
 "" let g:deoplete#omni_patterns.javascript = '[^. *\t]\.\w*'
 "" let g:deoplete#omni_patterns.javascript = '[^. \t]\.\%\(\h\w*\)\?'
 "let g:deoplete#omni_patterns.php =
-"	\ '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
+"   \ '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
 
 "let g:deoplete#omni#input_patterns = get(g:, 'deoplete#omni#input_patterns', {})
 "let g:deoplete#omni#input_patterns.xml = '<[^>]*'
@@ -89,15 +89,15 @@ let g:deoplete#enable_smart_case = 1
 
 
 " smap <silent><expr><Tab> pumvisible() ? "\<Down>"
-" 	\ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
-" 	\ : (<SID>is_whitespace() ? "\<Tab>"
-" 	\ : deoplete#manual_complete()))
+"   \ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
+"   \ : (<SID>is_whitespace() ? "\<Tab>"
+"   \ : deoplete#manual_complete()))
 
 " inoremap <expr><S-Tab>  pumvisible() ? "\<Up>" : "\<C-h>"
 
 " function! s:is_whitespace()
-" 	let col = col('.') - 1
-" 	return ! col || getline('.')[col - 1] =~? '\s'
+"   let col = col('.') - 1
+"   return ! col || getline('.')[col - 1] =~? '\s'
 " endfunction
 
 " inoremap <expr><C-g> deoplete#mappings#undo_completion()
@@ -187,7 +187,7 @@ func! Dirvish_append_search()
     if isSearch || isEscaped
         return "\<cr>"
     else
-        return '\ze[^\/]*[\/]\=$'
+        return '\ze[^\/]*[\/]\=$'
     endif
 endfunc
 
@@ -260,9 +260,9 @@ let g:lightline = {
       \              [ 'tags' ],
       \              [ 'filetype' ]] 
       \ },
-      \	'inactive': {
+      \ 'inactive': {
             \ 'left': [ ['gitversion', 'filename']],
-		    \ 'right': [ [ 'lineinfo', 'percent' ], [], [], [] ] },
+            \ 'right': [ [ 'lineinfo', 'percent' ], [], [], [] ] },
       \ 'component_function': {
       \   'neomake': 'neomake#statusline#LoclistStatus',
       \   'gitversion': 'LightLineGitversion',
@@ -475,7 +475,7 @@ vmap <leader>r <Plug>(LiveEasyAlign)
 
 if has("autocmd") && exists("+omnifunc")
 autocmd Filetype *
-        \	if &omnifunc == "" |
-        \		setlocal omnifunc=syntaxcomplete#Complete |
-        \	endif
+        \   if &omnifunc == "" |
+        \       setlocal omnifunc=syntaxcomplete#Complete |
+        \   endif
 endif

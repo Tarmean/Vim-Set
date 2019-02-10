@@ -1,6 +1,6 @@
 call plug#begin('~/vimfiles/plugged')
-let g:python3_host_prog="C:\\Python36\\python3.6.exe"
-let g:python_host_prog="C:\\Python27\\python.exe"
+let g:python3_host_prog="/usr/bin/python3"
+let g:python_host_prog="/usr/bin/python2"
 
 
 Plug 'idris-hackers/idris-vim'
@@ -16,12 +16,12 @@ Plug 'Tarmean/multi'
 Plug 'ervandew/supertab'
 
 Plug 'Shirk/vim-gas'
-Plug 'rust-lang/rust.vim'
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'install.ps1',
-    \ }
-Plug 'spwhitt/vim-nix'
+" Plug 'rust-lang/rust.vim'
+" Plug 'autozimu/LanguageClient-neovim', {
+"     \ 'branch': 'next',
+"     \ 'do': 'install.ps1',
+"     \ }
+" Plug 'spwhitt/vim-nix'
 
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'justinmk/vim-dirvish' 
@@ -34,7 +34,7 @@ Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-obsession', { 'on':  'Obsession' }
 Plug 'dhruvasagar/vim-prosession' 
 
-Plug 'ludovicchabant/vim-gutentags'
+" Plug 'ludovicchabant/vim-gutentags'
 Plug 'dbakker/vim-projectroot'
 
 Plug 'airblade/vim-gitgutter'
@@ -79,10 +79,6 @@ Plug 'zah/nim.vim', { 'for': 'nim' }
 
 Plug 'junegunn/fzf'
 if(has('nvim'))
-    " let g:python3_host_prog='/usr/bin/python3'
-    " let g:python_host_prog='/usr/bin/python'
-
-    " let g:python_host_prog='/home/cyril/.nix-profile/bin/python'
     function! DoRemote()
         UpdateRemotePlugins
     endfunction
@@ -98,7 +94,7 @@ endif
 
 Plug 'junegunn/fzf.vim'
 if(has('unix'))
-    let g:python3_host_prog='/home/cyril/.nix-profile/bin/python3'
+    let g:python3_host_prog='/usr/bin/python3'
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
     Plug 'nhooyr/fasd.vim'
 else
