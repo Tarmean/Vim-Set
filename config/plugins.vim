@@ -17,11 +17,11 @@ Plug 'ervandew/supertab'
 
 Plug 'Shirk/vim-gas'
 " Plug 'rust-lang/rust.vim'
-" Plug 'autozimu/LanguageClient-neovim', {
-"     \ 'branch': 'next',
-"     \ 'do': 'install.ps1',
-"     \ }
-" Plug 'spwhitt/vim-nix'
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'install.ps1',
+    \ }
+Plug 'spwhitt/vim-nix'
 
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'justinmk/vim-dirvish' 
@@ -32,7 +32,7 @@ Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-abolish', { 'on':  'S' }
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-obsession', { 'on':  'Obsession' }
-Plug 'dhruvasagar/vim-prosession' 
+" Plug 'dhruvasagar/vim-prosession' 
 
 " Plug 'ludovicchabant/vim-gutentags'
 Plug 'dbakker/vim-projectroot'

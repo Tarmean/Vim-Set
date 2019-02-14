@@ -1,12 +1,14 @@
 map <f1> <esc>
 tnoremap <s-space> <space>
 func! OpenTerm()
+    let l:oldcd = getcwd()
+    exec "cd " . expand("%:p:h")
     if (has('unix'))
         exec "term zsh " 
-        "-command \"cd \\\"" . expand("%:p:h") . "\\\"\""
     else
-        exec "term powershell -noexit -command \"cd \\\"" . expand("%:p:h") . "\\\"\""
+        exec "term"
     endif
+    exec "cd " . l:oldcd
 endfunction
 if (has('nvim'))
     nnoremap ö :call TermToggle()<cr>
