@@ -1,16 +1,13 @@
 call neomake#configure#automake('w')
 
-augroup Rust
-    au!
-    au FileType rust nnoremap <buffer> <silent> K :call LanguageClient_textDocument_hover()<CR>
-    au FileType rust nnoremap <buffer> <silent> gd :call LanguageClient_textDocument_definition()<CR>
-    au FileType rust nnoremap <buffer> <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
-augroup END
+nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+" Or map each action separately
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
 
 let g:LanguageClient_serverCommands = {
-    \ 'rust': ['rustup', 'run', 'stable', 'rls'],
-    \ 'javascript': ['javascript-typescript-stdio'],
-    \ 'javascript.jsx': ['javascript-typescript-stdio'],
+    \ 'haskell': ['hie'],
     \ }
 
 
@@ -257,7 +254,6 @@ let g:lightline = {
       \             [ 'readonly', 'filename', 'modified', 'fileformat'] ],
       \   'right': [ [ 'lineinfo', 'percent' ],
       \              [ 'neomake' , 'syntastic'],
-      \              [ 'tags' ],
       \              [ 'filetype' ]] 
       \ },
       \ 'inactive': {

@@ -1,8 +1,8 @@
-set guifont=Sauce_Code_Powerline:h13:cANSI
+" set guifont=Sauce_Code_Powerline:h13:cANSI
 
 if has("windows")
     set shell=powershell shellquote=( shellpipe=\| shellredir=> shellxquote=
-    set shellcmdflag=-NoLogo\ -NoProfile\ -ExecutionPolicy\ RemoteSigned\ -Command
+    " set shellcmdflag=-NoLogo\ -NoProfile\ -ExecutionPolicy\ RemoteSigned\ -Command
 endif
 set inccommand=nosplit
 set termguicolors
