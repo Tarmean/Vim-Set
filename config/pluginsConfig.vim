@@ -1,18 +1,21 @@
-augroup Rust
-    au!
-    au FileType rust nnoremap <buffer> <silent> K :call LanguageClient_textDocument_hover()<CR>
-    au FileType rust nnoremap <buffer> <silent> gd :call LanguageClient_textDocument_definition()<CR>
-    au FileType rust nnoremap <buffer> <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
-augroup END
+call neomake#configure#automake('w')
 
-let g:LanguageClient_serverCommands = {
-    \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-    \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
-    \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
-    \ 'python': ['/usr/local/bin/pyls'],
-    \ 'php': ['php', '/vendor/felixfbecker/language-server/bin/php-language-server.php'],
-    \ 'haskell': ['/home/cyril/.stack/compiler-tools/x86_64-linux/ghc-8.6.2/bin/hie-wrapper']
-    \ }
+
+if has('linux')
+    let g:LanguageClient_serverCommands = {
+        \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+        \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
+        \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
+        \ 'python': ['/usr/local/bin/pyls'],
+        \ 'php': ['php', '/vendor/felixfbecker/language-server/bin/php-language-server.php'],
+        \ 'haskell': ['/home/cyril/.stack/compiler-tools/x86_64-linux/ghc-8.6.2/bin/hie-wrapper']
+        \ }
+else
+    let g:LanguageClient_serverCommands = {
+        \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+        \ 'haskell': ['hie'],
+        \ }
+endif
 
 
 
@@ -29,7 +32,7 @@ let g:deoplete#enable_smart_case = 1
 "let g:deoplete#omni#functions.html = 'htmlcomplete#CompleteTags'
 "let g:deoplete#omni#functions.markdown = 'htmlcomplete#CompleteTags'
 "" let g:deoplete#omni#functions.javascript =
-""	\ [ 'tern#Complete', 'jspc#omni', 'javascriptcomplete#CompleteJS' ]
+""  \ [ 'tern#Complete', 'jspc#omni', 'javascriptcomplete#CompleteJS' ]
 "" Difference: omni_patterns replaces deoplete features with vim's omni complete
 "" omni#input_patterns polls the omni func as additional source
 
@@ -38,7 +41,7 @@ let g:deoplete#enable_smart_case = 1
 "" let g:deoplete#omni_patterns.javascript = '[^. *\t]\.\w*'
 "" let g:deoplete#omni_patterns.javascript = '[^. \t]\.\%\(\h\w*\)\?'
 "let g:deoplete#omni_patterns.php =
-"	\ '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
+"   \ '\h\w*\|[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
 
 "let g:deoplete#omni#input_patterns = get(g:, 'deoplete#omni#input_patterns', {})
 "let g:deoplete#omni#input_patterns.xml = '<[^>]*'
@@ -90,15 +93,15 @@ let g:deoplete#enable_smart_case = 1
 
 
 " smap <silent><expr><Tab> pumvisible() ? "\<Down>"
-" 	\ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
-" 	\ : (<SID>is_whitespace() ? "\<Tab>"
-" 	\ : deoplete#manual_complete()))
+"   \ : (neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
+"   \ : (<SID>is_whitespace() ? "\<Tab>"
+"   \ : deoplete#manual_complete()))
 
 " inoremap <expr><S-Tab>  pumvisible() ? "\<Up>" : "\<C-h>"
 
 " function! s:is_whitespace()
-" 	let col = col('.') - 1
-" 	return ! col || getline('.')[col - 1] =~? '\s'
+"   let col = col('.') - 1
+"   return ! col || getline('.')[col - 1] =~? '\s'
 " endfunction
 
 " inoremap <expr><C-g> deoplete#mappings#undo_completion()
@@ -188,7 +191,7 @@ func! Dirvish_append_search()
     if isSearch || isEscaped
         return "\<cr>"
     else
-        return '\ze[^\/]*[\/]\=$'
+        return '\ze[^\/]*[\/]\=$'
     endif
 endfunc
 
@@ -254,13 +257,16 @@ let g:lightline = {
       \ 'colorscheme': 'gruvbox',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'GitStatus' ],
+      \             [ 'gitversion', 'GitStatus' ],
       \             [ 'readonly', 'filename', 'modified', 'fileformat'] ],
       \   'right': [ [ 'lineinfo', 'percent' ],
       \              [ 'neomake' , 'syntastic'],
       \              [ 'lang_server' ],
       \              [ 'filetype' ]] 
       \ },
+      \ 'inactive': {
+            \ 'left': [ ['gitversion', 'filename']],
+            \ 'right': [ [ 'lineinfo', 'percent' ], [], [], [] ] },
       \ 'component_function': {
       \   'neomake': 'neomake#statusline#LoclistStatus',
       \   'GitStatus': 'GitStatus',
@@ -283,7 +289,24 @@ let g:lightline = {
       \ 'separator': { 'left': '', 'right': '' },
       \ 'subseparator': { 'left': '', 'right': '' }
       \ }
-" \   'tags':     '%{gutentags#statusline("[tags]")}',
+
+function! LightLineGitversion()
+  let l:idx = matchstr(expand('%'), 'fugitive:[/,\\][/,\\].*[/,\\]\.git[/,\\][/,\\]\zs.\{-1,}\ze[/,\\].*')
+  if l:idx == ''
+      if &diff
+          return 'working copy'
+      endif
+      return ''
+  elseif l:idx == 0
+      return 'git index'
+  elseif l:idx == 2
+      return 'git target'
+  elseif l:idx == 3
+      return 'git merge'
+  endif
+  return 'commit: ' . l:idx
+endfunction
+>>>>>>> 9ae5c3e787c6835251b7776e36362eb1552cc014
 augroup LightlineColorscheme
     autocmd!
     autocmd ColorScheme * call s:lightline_update()

@@ -1,10 +1,14 @@
+map <f1> <esc>
+tnoremap <s-space> <space>
 func! OpenTerm()
+    let l:oldcd = getcwd()
+    exec "cd " . expand("%:p:h")
     if (has('unix'))
         exec "term zsh " 
-        "-command \"cd \\\"" . expand("%:p:h") . "\\\"\""
     else
-        exec "term powershell -noexit -command \"cd \\\"" . expand("%:p:h") . "\\\"\""
+        exec "term"
     endif
+    exec "cd " . l:oldcd
 endfunction
 nnoremap <up> <c-w>-
 nnoremap <down> <c-w>+
@@ -14,7 +18,7 @@ nnoremap <right> <c-w>>
 if (has('nvim'))
     nnoremap ö :call TermToggle()<cr>
     noremap Ö :call TermClose(1)<cr><C-\><C-n>
-    tnoremap ö <C-\><C-n><c-w><c-w>
+    tnoremap ö <C-\><C-n><c-w><c-p>
     tnoremap Ö <C-\><C-n>:call TermClose(1)<cr>
     func! TermToggle()
         if (exists("g:cur_term")&&bufexists(g:cur_term))
