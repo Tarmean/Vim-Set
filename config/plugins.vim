@@ -88,7 +88,6 @@ Plug 'othree/es.next.syntax.vim'
 Plug 'zah/nim.vim', { 'for': 'nim' }
 Plug 'StanAngeloff/php.vim', { 'for': 'php' }
 
-Plug 'junegunn/fzf'
 if(has('nvim'))
     function! DoRemote()
         UpdateRemotePlugins
@@ -103,10 +102,9 @@ else
     let g:syntastic_check_on_wq = 0
 endif
 
-Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf'
 if(has('unix'))
     let g:python3_host_prog='/usr/bin/python3'
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
     Plug 'nhooyr/fasd.vim'
 else
     " Plug 'Shougo/unite.vim', 

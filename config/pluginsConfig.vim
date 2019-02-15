@@ -1,6 +1,5 @@
 call neomake#configure#automake('w')
 
-
 if has('linux')
     let g:LanguageClient_serverCommands = {
         \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
@@ -306,7 +305,6 @@ function! LightLineGitversion()
   endif
   return 'commit: ' . l:idx
 endfunction
->>>>>>> 9ae5c3e787c6835251b7776e36362eb1552cc014
 augroup LightlineColorscheme
     autocmd!
     autocmd ColorScheme * call s:lightline_update()
