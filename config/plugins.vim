@@ -2,6 +2,8 @@ call plug#begin('~/vimfiles/plugged')
 let g:python3_host_prog="/usr/bin/python3"
 let g:python_host_prog="/usr/bin/python2"
 
+Plug 'vim-vdebug/vdebug'
+Plug 'lumiliet/vim-twig'
 
 Plug 'equalsraf/neovim-gui-shim'
 Plug 'Tarmean/multi'
@@ -15,11 +17,12 @@ Plug 'Tarmean/multi'
 Plug 'ervandew/supertab'
 
 Plug 'Shirk/vim-gas'
-" Plug 'rust-lang/rust.vim'
-" Plug 'autozimu/LanguageClient-neovim', {
-"     \ 'branch': 'next',
-"     \ 'do': 'install.ps1',
-"     \ }
+Plug 'rust-lang/rust.vim'
+Plug 'autozimu/LanguageClient-neovim', {
+    \ 'branch': 'next',
+    \ 'do': 'bash install.sh',
+    \ }
+Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer run-script parse-stubs'}
 " Plug 'spwhitt/vim-nix'
 
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
@@ -75,6 +78,7 @@ endif
 Plug 'kern/vim-es7'
 Plug 'othree/es.next.syntax.vim'
 Plug 'zah/nim.vim', { 'for': 'nim' }
+Plug 'StanAngeloff/php.vim', { 'for': 'php' }
 
 Plug 'junegunn/fzf'
 if(has('nvim'))
