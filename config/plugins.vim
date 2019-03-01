@@ -7,6 +7,8 @@ else
     let g:python_host_prog="/usr/bin/python2"
 endif
 
+Plug 'vim-vdebug/vdebug'
+Plug 'lumiliet/vim-twig'
 
 Plug 'idris-hackers/idris-vim'
 Plug 'equalsraf/neovim-gui-shim'
@@ -21,12 +23,20 @@ Plug 'Tarmean/multi'
 Plug 'ervandew/supertab'
 
 Plug 'Shirk/vim-gas'
-" Plug 'rust-lang/rust.vim'
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'install.ps1',
-    \ }
-Plug 'spwhitt/vim-nix'
+Plug 'rust-lang/rust.vim'
+if has('linux')
+    Plug 'autozimu/LanguageClient-neovim', {
+        \ 'branch': 'next',
+        \ 'do': 'bash install.sh',
+        \ }
+else
+    Plug 'autozimu/LanguageClient-neovim', {
+        \ 'branch': 'next',
+        \ 'do': 'install.ps1',
+        \ }
+endif
+Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer run-script parse-stubs'}
+" Plug 'spwhitt/vim-nix'
 
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'justinmk/vim-dirvish' 
@@ -81,6 +91,7 @@ endif
 Plug 'kern/vim-es7'
 Plug 'othree/es.next.syntax.vim'
 Plug 'zah/nim.vim', { 'for': 'nim' }
+Plug 'StanAngeloff/php.vim', { 'for': 'php' }
 
 if(has('nvim'))
     function! DoRemote()
@@ -96,7 +107,7 @@ else
     let g:syntastic_check_on_wq = 0
 endif
 
-Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf'
 if(has('unix'))
     let g:python3_host_prog='/usr/bin/python3'
     Plug 'nhooyr/fasd.vim'

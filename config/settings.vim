@@ -1,6 +1,6 @@
 " set guifont=Sauce_Code_Powerline:h13:cANSI
 
-if has("windows")
+if !has("unix")
     set shell=powershell shellquote=( shellpipe=\| shellredir=> shellxquote=
     " set shellcmdflag=-NoLogo\ -NoProfile\ -ExecutionPolicy\ RemoteSigned\ -Command
 endif

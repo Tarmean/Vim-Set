@@ -1,14 +1,20 @@
 call neomake#configure#automake('w')
 
-nnoremap <F5> :call LanguageClient_contextMenu()<CR>
-" Or map each action separately
-nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
-
-let g:LanguageClient_serverCommands = {
-    \ 'haskell': ['hie'],
-    \ }
+if has('linux')
+    let g:LanguageClient_serverCommands = {
+        \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+        \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
+        \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
+        \ 'python': ['/usr/local/bin/pyls'],
+        \ 'php': ['php', '/vendor/felixfbecker/language-server/bin/php-language-server.php'],
+        \ 'haskell': ['/home/cyril/.stack/compiler-tools/x86_64-linux/ghc-8.6.2/bin/hie-wrapper']
+        \ }
+else
+    let g:LanguageClient_serverCommands = {
+        \ 'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+        \ 'haskell': ['hie'],
+        \ }
+endif
 
 
 
@@ -210,7 +216,7 @@ autocmd User GoyoEnter Limelight
 autocmd User GoyoLeave Limelight!
 
 " let gutentags_ctags_tagfile=".git/tags"
-let g:gutentags_cache_dir="~\\.vim\\tags\\"
+let g:gutentags_cache_dir="~/.vim/tags/"
 
 let g:sneak#streak=1
 let g:sneak#streak_esc = "\<esc>"
@@ -254,6 +260,7 @@ let g:lightline = {
       \             [ 'readonly', 'filename', 'modified', 'fileformat'] ],
       \   'right': [ [ 'lineinfo', 'percent' ],
       \              [ 'neomake' , 'syntastic'],
+      \              [ 'lang_server' ],
       \              [ 'filetype' ]] 
       \ },
       \ 'inactive': {
@@ -261,10 +268,10 @@ let g:lightline = {
             \ 'right': [ [ 'lineinfo', 'percent' ], [], [], [] ] },
       \ 'component_function': {
       \   'neomake': 'neomake#statusline#LoclistStatus',
-      \   'gitversion': 'LightLineGitversion',
+      \   'GitStatus': 'GitStatus',
+      \   'lang_server': 'LanguageClient#statusLine'
       \ },
-      \ 'component': {
-      \   'tags':     '%{gutentags#statusline("[tags]")}',
+      \ 'component': { 
       \   'readonly': '%{&filetype=="help"?"":&readonly?"":""}',
       \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}'},
       \ 'component_expand': {
@@ -370,9 +377,14 @@ if(has('nvim'))
     endfunction
 
     function! Git_dir(command)
-        cd %:h
+        let l:old_cd = getcwd()
+        let l:new_root = ProjectRootGet()
+        if ('' == l:new_root)
+            let l:new_root = l:old_cd
+        endif
+        execute 'cd '.l:new_root
         execute a:command
-        cd -
+        execute 'cd '.l:old_cd
     endfunction
 
     let g:fzf_layout = { 'window': 'enew' }
@@ -397,7 +409,6 @@ if(has('nvim'))
     nnoremap <silent> <leader>ff :Buffers<cr>
     nnoremap <silent> <leader>fc :Commands<cr>
     nnoremap <silent> <leader>fl :BLines<cr>
-    nnoremap <silent> <leader>fL :Lines<cr>
     nnoremap <silent> <leader>fd :call Tag_or_reload("Tags")<cr>
     nnoremap <silent> <leader>d :call Tag_or_reload("BTags")<cr>
     nnoremap <silent> <leader>fw :Windows<cr>
@@ -469,9 +480,41 @@ nmap <leader>r <Plug>(EasyAlign)
 nmap <leader>r <Plug>(LiveEasyAlign)
 vmap <leader>r <Plug>(LiveEasyAlign)
 
-if has("autocmd") && exists("+omnifunc")
-autocmd Filetype *
-        \   if &omnifunc == "" |
-        \       setlocal omnifunc=syntaxcomplete#Complete |
-        \   endif
+let g:php_cs_fixer_path="/home/cyril/.composer/vendor/bin/php-cs-fixer fix "
+func! PHPFixF()
+    exec "w"
+    echo system(g:php_cs_fixer_path . expand('%:p'))
+    exec "e"
+endfunc
+function! LC_maps()
+  if has_key(g:LanguageClient_serverCommands, &filetype)
+    silent! nunmap <leader>s
+    silent! nunmap <leader>a
+    silent! nunmap <leader>d
+    " silent! nunmap gd
+    nnoremap <buffer> <silent> K :call LanguageClient#textDocument_hover()<cr>
+    nnoremap <buffer> <silent> <leader>a :call LanguageClient#textDocument_definition()<CR>
+    nnoremap <buffer> <silent> <leader>s :call LanguageClient#textDocument_references()<cr>
+    nnoremap <buffer> <silent> <leader>m :call LanguageClient_contextMenu()<cr>
+    nnoremap <buffer> <silent> <leader>d :call LanguageClient#textDocument_documentSymbol()<cr>
+    " nnoremap <buffer> <silent> gd :call LanguageClient#textDocument_documentHighlight()<cr>
+    " nnoremap <buffer> <silent> <esc> :LanguageClient#clearDocumentHighlight()<cr><esc>
+    " nnoremap <buffer> <silent> leader<mr> :call LanguageClient#textDocument_rename()<CR>
+  endif
+endfunction
+autocmd FileType * call LC_maps()
+
+command! PhpFix call PHPFixF()
+if has("autocmd")
+    augroup PLUG_CONFIG
+        au!
+
+        " autocmd BufWritePost *.php silent! call PHPFixF()
+        if exists('+omnifunc') 
+            autocmd Filetype *
+                    \	if &omnifunc == "" |
+                    \		setlocal omnifunc=syntaxcomplete#Complete |
+                    \	endif
+        endif
+    augroup END
 endif

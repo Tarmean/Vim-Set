@@ -10,6 +10,11 @@ func! OpenTerm()
     endif
     exec "cd " . l:oldcd
 endfunction
+nnoremap <up> <c-w>-
+nnoremap <down> <c-w>+
+nnoremap <left> <c-w><
+nnoremap <right> <c-w>>
+
 if (has('nvim'))
     nnoremap ö :call TermToggle()<cr>
     noremap Ö :call TermClose(1)<cr><C-\><C-n>
@@ -209,22 +214,31 @@ fun! JumpToDef()
     exe "norm! \<C-]>"
   endif
 endf
-silent noremap <silent><leader>a :call JumpToDef()<cr>zz:silent Pulse<cr>
 silent noremap <silent><leader><s-a> <c-t>zMzvzz15<c-e>zz:silent Pulse<cr>
-silent nmap <leader>s zz:silent Pulse<cr>
-function! s:Pulse() " {{{
+fun! DoAg(pat, args)
+    call Git_dir("call fzf#vim#ag('" .a:pat."',".a:args.')') 
+endfun
+command!      -bang -nargs=* Ag  call DoAg(<q-args>, <bang>0)
+command!      -bang -nargs=* Agl  call fzf#vim#ag(<q-args>, <bang>0)
+silent nmap <leader>s :Ag =expand('<cword>')<cr><cr>
+silent nmap <leader>a :silent Pulse<cr>
+function! Pulse() " {{{
     redir => old_hi
         silent execute 'hi CursorLine'
     redir END
     let old_hi = split(old_hi, '\n')[0]
     let old_hi = substitute(old_hi, 'xxx', '', '')
 
+
     hi CursorLine guibg=#1c1c1c
+    let l:old_cursorline = &cursorline
+    set cursorline
     redraw
     sleep 80m
+    let &cursorline = l:old_cursorline
     execute 'hi ' . old_hi
 endfunction " }}}
-command! -nargs=0 Pulse call s:Pulse()
+command! -nargs=0 Pulse call Pulse()
 
 nnoremap <silent> g: :set opfunc=SourceVimscript<cr>g@
 vnoremap <silent> g: :<c-U>call SourceVimscript("visual")<cr>
