@@ -1,6 +1,11 @@
 call plug#begin('~/vimfiles/plugged')
-let g:python3_host_prog="/usr/bin/python3"
-let g:python_host_prog="/usr/bin/python2"
+if has('windows')
+    let g:python_host_prog="C:\\Python27\\python.exe"
+    let g:python3_host_prog="C:\\Python36\\python3.6.exe"
+else
+    let g:python3_host_prog="/usr/bin/python3"
+    let g:python_host_prog="/usr/bin/python2"
+endif
 
 
 Plug 'idris-hackers/idris-vim'
@@ -77,7 +82,6 @@ Plug 'kern/vim-es7'
 Plug 'othree/es.next.syntax.vim'
 Plug 'zah/nim.vim', { 'for': 'nim' }
 
-Plug 'junegunn/fzf'
 if(has('nvim'))
     function! DoRemote()
         UpdateRemotePlugins
@@ -95,14 +99,10 @@ endif
 Plug 'junegunn/fzf.vim'
 if(has('unix'))
     let g:python3_host_prog='/usr/bin/python3'
-    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
     Plug 'nhooyr/fasd.vim'
+    Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
 else
-    " Plug 'Shougo/unite.vim', 
-    " noremap <leader>fc :<c-u>Unite colorscheme<cr>
-    " Plug 'tsukkee/unite-tag'
-    " Plug 'ujihisa/unite-colorscheme'
-    " Plug 'Shougo/neomru.vim'
+    Plug 'junegunn/fzf'
 endif
 
 

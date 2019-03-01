@@ -184,7 +184,7 @@ func! Dirvish_append_search()
     if isSearch || isEscaped
         return "\<cr>"
     else
-        return '\ze[^\/]*[\/]\=$'
+        return '\ze[^\/]*[\/]\=$'
     endif
 endfunc
 
