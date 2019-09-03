@@ -1,9 +1,13 @@
 " set guifont=Sauce_Code_Powerline:h13:cANSI
 
 if !has("unix")
-    set shell=powershell shellquote=( shellpipe=\| shellredir=> shellxquote=
-    " set shellcmdflag=-NoLogo\ -NoProfile\ -ExecutionPolicy\ RemoteSigned\ -Command
+		" set shell=powershell shellquote=( shellpipe=\| shellredir=> shellxquote=
+		" set shellcmdflag=-NoLogo\ -NoProfile\ -ExecutionPolicy\ RemoteSigned\ -Command
 endif
+
+" don't give |ins-completion-menu| messages.
+set cmdheight=2
+set shortmess+=c
 set inccommand=nosplit
 set termguicolors
 set autoindent
@@ -45,9 +49,8 @@ set shiftwidth=4
 set expandtab
 set ssop-=options "do not store global and local values in a session
 set ssop-=folds   "do not store folds
-" set list
-" set lcs=eol:⏎,tab:␉·,trail:␠,nbsp:⎵
-set nolist
+set list
+set lcs=eol:⏎,tab:␉·,trail:␠,nbsp:⎵
 
 highlight diffAdded guifg=#00bf00
 highlight diffRemoved guifg=#bf0000
@@ -100,6 +103,7 @@ if has("autocmd")
         \   exe 'normal g`"zvzz' |
         \ endif
 
+      autocmd GUIEnter * set visualbell t_vb=
   augroup END
 
   if !exists('numBlacklist')
@@ -107,10 +111,6 @@ if has("autocmd")
   endif
   let numBlacklist += ['help', 'filebeagle']
 
-  autocmd FileType FileBeagle map <buffer> <leader><c> q
-  autocmd BufNewFile,BufRead *.nasm set ft=nasm
-  autocmd BufNewFile,BufRead *.asm set ft=nasm
-  autocmd GUIEnter * set visualbell t_vb=
 
   nnoremap Q q:
   augroup commandWin

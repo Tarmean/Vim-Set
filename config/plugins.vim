@@ -1,58 +1,57 @@
 call plug#begin('~/vimfiles/plugged')
 if has('windows')
-    let g:python_host_prog="C:\\Python27\\python.exe"
-    let g:python3_host_prog="C:\\Python36\\python3.6.exe"
+    " let g:python_host_prog="C:\\Python27\\python.exe"
+    let g:python3_host_prog="C:\\Python37\\python.exe"
 else
     let g:python3_host_prog="/usr/bin/python3"
     let g:python_host_prog="/usr/bin/python2"
 endif
 
+Plug 'Tarmean/fzf-session.vim'
+Plug 'tpope/vim-obsession'
+Plug 'Tarmean/CsvHack.vim'
+Plug 'dhruvasagar/vim-table-mode', { 'on':  ['TableModeEnable', 'TableModeRealign'] }
+
+Plug 'jiangmiao/auto-pairs'
+Plug 'yaymukund/vim-haxe'
+Plug 'rayburgemeestre/phpfolding.vim'
+Plug '2072/PHP-Indenting-for-VIm'
+Plug 'chrisbra/Recover.vim'
+Plug 'rhysd/git-messenger.vim'
+" Plug 'roryokane/detectindent'
 Plug 'vim-vdebug/vdebug'
 Plug 'lumiliet/vim-twig'
+Plug 'neoclide/coc.nvim', {'do': './install.cmd nightly'}
 
 Plug 'idris-hackers/idris-vim'
 Plug 'equalsraf/neovim-gui-shim'
 Plug 'Tarmean/multi'
-if (has('python'))
+if (has('python3'))
     Plug 'SirVer/ultisnips'
     Plug 'honza/vim-snippets'
 endif
 
 
 Plug 'Tarmean/multi'
-Plug 'ervandew/supertab'
+" Plug 'ervandew/supertab'
 
 Plug 'Shirk/vim-gas'
 Plug 'rust-lang/rust.vim'
-if has('linux')
-    Plug 'autozimu/LanguageClient-neovim', {
-        \ 'branch': 'next',
-        \ 'do': 'bash install.sh',
-        \ }
-else
-    Plug 'autozimu/LanguageClient-neovim', {
-        \ 'branch': 'next',
-        \ 'do': 'install.ps1',
-        \ }
-endif
-Plug 'roxma/LanguageServer-php-neovim',  {'do': 'composer install && composer run-script parse-stubs'}
-" Plug 'spwhitt/vim-nix'
 
 Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
 Plug 'justinmk/vim-dirvish' 
-Plug 'Konfekt/FastFold'
+" Plug 'Konfekt/FastFold'
 
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-abolish', { 'on':  'S' }
 Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-obsession', { 'on':  'Obsession' }
 " Plug 'dhruvasagar/vim-prosession' 
 
 " Plug 'ludovicchabant/vim-gutentags'
 Plug 'dbakker/vim-projectroot'
 
-Plug 'airblade/vim-gitgutter'
+" Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'gregsexton/gitv', { 'on':  'Gitv' }
 Plug 'jreybert/vimagit'
@@ -75,7 +74,6 @@ Plug 'Julian/vim-textobj-variable-segment'
 
 Plug 'junegunn/vim-easy-align', { 'on': '<Plug>(LiveEasyAlign)' }
 
-Plug 'dhruvasagar/vim-table-mode', { 'on':  'TableModeEnable' }
 
 Plug 'morhetz/gruvbox'
 Plug 'Tarmean/lightline-gruvbox.vim'
@@ -98,18 +96,16 @@ if(has('nvim'))
         UpdateRemotePlugins
     endfunction
 
-    Plug 'Shougo/neco-syntax'
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    " Plug 'Shougo/neco-syntax'
+    " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
-    Plug 'neomake/neomake'
 else
-    Plug 'scrooloose/syntastic' 
-    let g:syntastic_check_on_wq = 0
+    " Plug 'scrooloose/syntastic' 
+    " let g:syntastic_check_on_wq = 0
 endif
 
-Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 if(has('unix'))
-    let g:python3_host_prog='/usr/bin/python3'
     Plug 'nhooyr/fasd.vim'
     Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
 else
