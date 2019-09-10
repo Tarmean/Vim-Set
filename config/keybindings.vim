@@ -1,3 +1,6 @@
+let mapleader = "\<space>"
+let maplocalleader = ","
+
 map <f1> <esc>
 tnoremap <s-space> <space>
 func! OpenTerm()
@@ -17,13 +20,15 @@ nnoremap <right> <c-w>>
 
 tnoremap <c-v> <c-\><c-n>"+pi
 if (has('nvim'))
+    let g:close_term = v:true
+    command! TermCloseNot let g:close_term = v:false
     nnoremap ö :call TermToggle('insert')<cr>
     noremap Ö :call TermToggle('normal')<cr>
     tnoremap ö <C-\><C-n>:call TermClose(v:true)<cr>
     tnoremap Ö <C-\><C-n>
     func! GotoOldWin(close_cur)
         let [tab, win] = win_id2tabwin(g:old_win)
-        let close = a:close_cur && (tabpagenr() == tab)
+        let close = a:close_cur && (tabpagenr() == tab) && g:close_term
         if close
             let term_wins = win_findbuf(g:cur_term)
             for i in term_wins
@@ -38,6 +43,10 @@ if (has('nvim'))
     endfunc
 
 
+    func! CurTerm()
+        vs
+        exec "buf " . g:cur_term
+    endfunc
     func! TermToggle(arg)
         if (exists("g:cur_term")&&bufexists(g:cur_term))
             if(g:cur_term == bufnr(""))
@@ -53,8 +62,7 @@ if (has('nvim'))
             if (len(wins) > 0)
                 call win_gotoid(wins[0])
             else
-                vs
-                exec "buf " . g:cur_term
+                call CurTerm()
             endif
         else
             let g:old_win = win_getid()
@@ -67,7 +75,6 @@ if (has('nvim'))
         endif
     endfunc
     func! TermClose(active)
-
         call GotoOldWin(v:true)
     endfunc
 endif
@@ -251,12 +258,16 @@ fun! JumpToDef()
 endf
 silent noremap <silent><leader><s-a> <c-t>zMzvzz15<c-e>zz:silent Pulse<cr>
 fun! DoAg(pat, args)
-    call Git_dir("call fzf#vim#ag('" .a:pat."',".a:args.')') 
+    if a:args
+        call fzf#vim#ag(a:pat)
+    else
+        call Git_dir("call fzf#vim#ag('" .a:pat."',".a:args.')') 
+    endif
 endfun
 command!      -bang -nargs=* Ag  call DoAg(<q-args>, <bang>0)
-command!      -bang -nargs=* Agl  call fzf#vim#ag(<q-args>, <bang>0)
+" command!      -bang -nargs=* Agl  call fzf#vim#ag(<q-args>, <bang>0)
 silent nmap <leader>s :Ag =expand('<cword>')<cr><cr>
-silent nmap <leader>a :silent Pulse<cr>
+nnoremap <silent> <leader>a :ArgWrap<CR>
 function! Pulse() " {{{
     redir => old_hi
         silent execute 'hi CursorLine'

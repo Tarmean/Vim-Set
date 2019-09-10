@@ -4,8 +4,10 @@ if !has("unix")
 		" set shell=powershell shellquote=( shellpipe=\| shellredir=> shellxquote=
 		" set shellcmdflag=-NoLogo\ -NoProfile\ -ExecutionPolicy\ RemoteSigned\ -Command
 endif
+colorscheme gruvbox
 
 " don't give |ins-completion-menu| messages.
+set background=light
 set cmdheight=2
 set shortmess+=c
 set inccommand=nosplit

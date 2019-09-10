@@ -1,4 +1,4 @@
-let g:obsession_no_bufenter = 1
+" let g:obsession_no_bufenter = 1
 if exists(':Delete')
     delcommand Delete
 endif
@@ -385,3 +385,12 @@ vmap <leader>r <Plug>(LiveEasyAlign)
 
 nnoremap <a-j> <c-e>
 nnoremap <a-k> <c-y>
+
+if (!exists('g:first_load'))
+    if v:vim_did_enter
+      SessionLoad
+    else
+     au VimEnter * SessionLoad
+    endif
+endif
+let g:first_load = v:false

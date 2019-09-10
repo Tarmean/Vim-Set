@@ -12,6 +12,7 @@ Plug 'tpope/vim-obsession'
 Plug 'Tarmean/CsvHack.vim'
 Plug 'dhruvasagar/vim-table-mode', { 'on':  ['TableModeEnable', 'TableModeRealign'] }
 
+Plug 'FooSoft/vim-argwrap'
 Plug 'jiangmiao/auto-pairs'
 Plug 'yaymukund/vim-haxe'
 Plug 'rayburgemeestre/phpfolding.vim'
@@ -19,7 +20,7 @@ Plug '2072/PHP-Indenting-for-VIm'
 Plug 'chrisbra/Recover.vim'
 Plug 'rhysd/git-messenger.vim'
 " Plug 'roryokane/detectindent'
-Plug 'vim-vdebug/vdebug'
+" Plug 'vim-vdebug/vdebug'
 Plug 'lumiliet/vim-twig'
 Plug 'neoclide/coc.nvim', {'do': './install.cmd nightly'}
 
@@ -66,7 +67,6 @@ Plug 'tommcdo/vim-exchange'
 
 Plug 'kana/vim-textobj-user'
 Plug 'glts/vim-textobj-comment'
-Plug 'kana/vim-textobj-fold'
 Plug 'kana/vim-textobj-indent'
 Plug 'kana/vim-textobj-line'
 Plug 'kana/vim-textobj-entire'
@@ -80,7 +80,7 @@ Plug 'Tarmean/lightline-gruvbox.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
 Plug 'junegunn/limelight.vim', { 'on':  'Goyo' }
-Plug 'junegunn/vim-peekaboo'
+" Plug 'junegunn/vim-peekaboo'
 let g:limelight_conceal_ctermfg = 242
 if(has('gui'))
     let g:rainbow_active = 1
