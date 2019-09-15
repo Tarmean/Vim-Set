@@ -321,7 +321,7 @@ nnoremap <space>gc :Gcommit -v -q<CR>
 nnoremap <space>gd :Gdiff<CR>
 nnoremap <space>ge :Gedit<CR>
 nnoremap <space>gw :Gwrite<CR><CR>
-nnoremap <space>gu :Flogsplit -path=% -all<cr>
+nnoremap <space>gu :Flogsplit -path=% -all -open-cmd=above\ split<cr>
 nnoremap <space>gl :Flog -all<cr>
 vnoremap <space>gu :call LineLog()<cr>
 function! Flogdiff(mods) abort
@@ -335,10 +335,21 @@ function! Flogdiff(mods) abort
         call flog#preview(a:mods . ' split ' . l:path . ' | Gvdiff ' . l:commit)
     endif
 endfunction
+function! FlogDWIMEnter()
+    if len(flog#get_state().path) == 0
+        exec "norm @<Plug>FlogVsplitcommitright"
+        return
+    endif
 
+    let l:path = fnameescape(flog#get_state().path[0])
+    let l:commit = flog#get_commit_data(line('.')).short_commit_hash
+    call flog#preview(' split ' . l:path . ' | Gedit ' . l:commit . ':%')
+endfunction
 augroup flog
     au!
-    autocmd FileType floggraph nnoremap D :call Flogdiff("")<cr>
+    autocmd FileType floggraph nnoremap <buffer> D :call Flogdiff("")<cr>
+    autocmd FileType floggraph nmap <buffer> <s-cr> <Plug>FlogVsplitcommitright
+    autocmd FileType floggraph nnoremap <buffer> <cr> :call FlogDWIMEnter()<cr>
 augroup END
 function! FileToTabWin(path)
     let normalized_path = fnameescape(fnamemodify(a:path, ':p'))
@@ -369,7 +380,7 @@ function! FileToTabWin(path)
 endfunc
 function! LineLog()
     vs 
-    let cmd = 'term git log -L '. getpos("'<")[1] . ',' . getpos("'<")[1] . ':' . expand("%")
+    let cmd = 'term git log -L '. getpos("'<")[1] . ',' . getpos("'>")[1] . ':' . expand("%")
     call Git_dir(cmd)
     norm! i
 endfunc
