@@ -54,7 +54,6 @@ Plug 'tpope/vim-repeat'
 Plug 'dbakker/vim-projectroot'
 
 Plug 'tpope/vim-fugitive'
-Plug 'rbong/vim-flog'
 
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'

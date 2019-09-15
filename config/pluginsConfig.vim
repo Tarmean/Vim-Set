@@ -301,15 +301,14 @@ if(has('nvim'))
     nnoremap <silent> <leader>fm :Marks<cr>
     nnoremap <silent> <leader>ff :Buffers<cr>
     nnoremap <silent> <leader>fc :Commands<cr>
-    nnoremap <silent> <leader>fl :BLines<cr>
     nnoremap <silent> <leader>fd :call Tag_or_reload("Tags")<cr>
     nnoremap <silent> <leader>d :call Tag_or_reload("BTags")<cr>
     nnoremap <silent> <leader>fw :Windows<cr>
     nnoremap <silent> <leader>fö :Locate ~/vimfiles/plugged/<cr>
     nnoremap <silent> <leader>fs :History<cr>
     nnoremap <silent> <leader>fk :Snippets<cr>
-    nnoremap <silent> <leader>fg :call Git_dir("Commits")<cr>
-    nnoremap <silent> <leader>fG :call Git_dir("BCommits")<cr>
+    nnoremap <silent> <leader>fl :call Git_dir("Commits")<cr>
+    nnoremap <silent> <leader>gl :call Git_dir("BCommits")<cr>
     nnoremap <silent> <leader>fh :Helptags<cr>
 endif
 
@@ -321,63 +320,8 @@ nnoremap <space>gc :Gcommit -v -q<CR>
 nnoremap <space>gd :Gdiff<CR>
 nnoremap <space>ge :Gedit<CR>
 nnoremap <space>gw :Gwrite<CR><CR>
-nnoremap <space>gu :Flogsplit -path=% -all -open-cmd=above\ split<cr>
-nnoremap <space>gl :Flog -all<cr>
-vnoremap <space>gu :call LineLog()<cr>
-function! Flogdiff(mods) abort
-    let l:path = fnameescape(flog#get_state().path[0])
-    let l:commit = flog#get_commit_data(line('.')).short_commit_hash
-    let [tab, win] = FileToTabWin(l:path)
-    if tab == tabpagenr()
-        exec win . 'wincmd w' 
-        exec 'Gvdiff ' . l:commit
-    else
-        call flog#preview(a:mods . ' split ' . l:path . ' | Gvdiff ' . l:commit)
-    endif
-endfunction
-function! FlogDWIMEnter()
-    if len(flog#get_state().path) == 0
-        exec "norm @<Plug>FlogVsplitcommitright"
-        return
-    endif
-
-    let l:path = fnameescape(flog#get_state().path[0])
-    let l:commit = flog#get_commit_data(line('.')).short_commit_hash
-    call flog#preview(' split ' . l:path . ' | Gedit ' . l:commit . ':%')
-endfunction
-augroup flog
-    au!
-    autocmd FileType floggraph nnoremap <buffer> D :call Flogdiff("")<cr>
-    autocmd FileType floggraph nmap <buffer> <s-cr> <Plug>FlogVsplitcommitright
-    autocmd FileType floggraph nnoremap <buffer> <cr> :call FlogDWIMEnter()<cr>
-augroup END
-function! FileToTabWin(path)
-    let normalized_path = fnameescape(fnamemodify(a:path, ':p'))
-    let buf = -1
-    for b in getbufinfo()
-        if fnameescape(b.name) == normalized_path
-            let buf = b.bufnr
-            break
-        endif
-    endfor
-    if buf != -1
-        let target_wins = win_findbuf(buf)
-        if len(target_wins) > 0
-            let min_distance = 100
-            let cur_tab = tabpagenr()
-            let best = target_wins[0]
-            for a in target_wins
-                let [tab, win] = win_id2tabwin(a)
-                if abs(tab - cur_tab) < min_distance
-                    let best = a
-                endif
-            endfor
-            let [tab, win] = win_id2tabwin(best)
-            return [tab, win]
-        endif
-    endif
-    return [0,0]
-endfunc
+vnoremap <space>fl :call LineLog()<cr>
+vnoremap <space>gl :call LineLog()<cr>
 function! LineLog()
     vs 
     let cmd = 'term git log -L '. getpos("'<")[1] . ',' . getpos("'>")[1] . ':' . expand("%")
