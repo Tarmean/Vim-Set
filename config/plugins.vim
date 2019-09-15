@@ -53,10 +53,8 @@ Plug 'tpope/vim-repeat'
 " Plug 'ludovicchabant/vim-gutentags'
 Plug 'dbakker/vim-projectroot'
 
-" Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
-Plug 'gregsexton/gitv', { 'on':  'Gitv' }
-" Plug 'jreybert/vimagit'
+Plug 'rbong/vim-flog'
 
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'

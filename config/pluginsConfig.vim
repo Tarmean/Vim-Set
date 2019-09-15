@@ -3,27 +3,15 @@ if exists(':Delete')
 endif
 augroup DirvishMappings
   autocmd!
-  autocmd FileType dirvish nmap <buffer> q <Plug>(dirvish_quit)
-  autocmd BufReadPost fugitive://* set bufhidden=delete
-augroup END
-let g:snips_author= 'Cyril'
+  autocmd filetype dirvish nmap <buffer> q <plug>(dirvish_quit)
+  autocmd bufreadpost fugitive://* set bufhidden=delete
+augroup end
+let g:snips_author= 'cyril'
 let g:snips_email='cyrilfahlenbock@outlook.com'
 let g:snips_github='https:github.com/Tarmean'
 nmap s <Plug>Ysurround
 nmap ss <Plug>Yssurround
 
-
-let g:gitgutter_map_keys = 0
-nmap [c <Plug>GitGutterPrevHunk
-nmap ]c <Plug>GitGutterNextHunk
-
-nmap <Leader>gp <Plug>GitGutterStageHunk
-nmap <Leader>go <Plug>GitGutterUndoHunk
-nmap <Leader>gP <Plug>GitGutterPreviewHunk
-omap ix <Plug>GitGutterTextObjectInnerPending
-omap ax <Plug>GitGutterTextObjectOuterPending
-xmap ix <Plug>GitGutterTextObjectInnerVisual
-xmap ax <Plug>GitGutterTextObjectOuterVisual
 
 nnoremap <space>u :UndotreeToggle<cr>
 let g:undotree_SetFocusWhenToggle = 1
@@ -283,16 +271,6 @@ if(has('nvim'))
         setlocal statusline=%#fzf1#\ >\ %#fzf2#fz%#fzf3#f
     endfunction
 
-    " function! ProjectRootGet()
-    "     if exists("g:WorkspaceFolders")
-    "         for i in (g:WorkspaceFolders) 
-    "             if (i !=? expand("~"))
-    "                 return i
-    "             end
-    "         endfor
-    "     endif
-    "     return expand("%:h")
-    " endfunction
     function! Git_dir(command)
         let l:old_cd = getcwd()
         let l:new_root = ProjectRootGet()
@@ -333,61 +311,70 @@ if(has('nvim'))
     nnoremap <silent> <leader>fg :call Git_dir("Commits")<cr>
     nnoremap <silent> <leader>fG :call Git_dir("BCommits")<cr>
     nnoremap <silent> <leader>fh :Helptags<cr>
-
 endif
 
-
-function! SignifyUpdate(b)
-    if(a:b)
-        let g:signify_cursorhold_insert=1
-        let g:signify_cursorhold_normal=1
-        let g:signify_update_on_bufenter=1
-        let g:signify_update_on_focusgained=1
-        call SignifyAutocommands()
-        return
-    endif
-    let g:signify_cursorhold_insert=0
-    let g:signify_cursorhold_normal=0
-    let g:signify_update_on_bufenter=0
-    let g:signify_update_on_focusgained=0
-    call SignifyAutocommands()
-    return
-endfunction
-
-noremap [oG :call SignifyUpdate(1)<cr>
-noremap ]oG :call SignifyUpdate(0)<cr>
-noremap [og :SignifyToggle<cr>
-noremap ]og :SignifyToggleHighlight<cr>:noh<esc>
-omap ix <plug>(signify-motion-inner-pending)
-xmap ix <plug>(signify-motion-inner-visual)
-omap ax <plug>(signify-motion-outer-pending)
-xmap ax <plug>(signify-motion-outer-visual)
-
-let g:signify_vcs_list = ['git']
 
 cabbrev git Git
 nnoremap <space>ga :execute 'Git add ' . expand('%:p')<CR>
 nnoremap <space>gs :Gstatus<CR>
 nnoremap <space>gc :Gcommit -v -q<CR>
-nnoremap <space>gt :Gcommit -v -q %:p<CR>
 nnoremap <space>gd :Gdiff<CR>
 nnoremap <space>ge :Gedit<CR>
-nnoremap <space>gr :Gread<CR>
 nnoremap <space>gw :Gwrite<CR><CR>
-nnoremap <space>gl :silent! Glog<CR>:bot copen<CR>
-noremap <space>gf :Ggrep<Space>
-nnoremap <space>gm :Gmove<Space>
-nnoremap <space>gb :Git branch<Space>
-nnoremap <space>gB :Gblame<CR>
-nnoremap <space>go :Git checkout<Space>
-nnoremap <space>ggP :Dispatch! git push<CR>
-nnoremap <space>ggp :Dispatch! git pull<CR>
+nnoremap <space>gu :Flogsplit -path=% -all<cr>
+nnoremap <space>gl :Flog -all<cr>
+vnoremap <space>gu :call LineLog()<cr>
+function! Flogdiff(mods) abort
+    let l:path = fnameescape(flog#get_state().path[0])
+    let l:commit = flog#get_commit_data(line('.')).short_commit_hash
+    let [tab, win] = FileToTabWin(l:path)
+    if tab == tabpagenr()
+        exec win . 'wincmd w' 
+        exec 'Gvdiff ' . l:commit
+    else
+        call flog#preview(a:mods . ' split ' . l:path . ' | Gvdiff ' . l:commit)
+    endif
+endfunction
+
+augroup flog
+    au!
+    autocmd FileType floggraph nnoremap D :call Flogdiff("")<cr>
+augroup END
+function! FileToTabWin(path)
+    let normalized_path = fnameescape(fnamemodify(a:path, ':p'))
+    let buf = -1
+    for b in getbufinfo()
+        if fnameescape(b.name) == normalized_path
+            let buf = b.bufnr
+            break
+        endif
+    endfor
+    if buf != -1
+        let target_wins = win_findbuf(buf)
+        if len(target_wins) > 0
+            let min_distance = 100
+            let cur_tab = tabpagenr()
+            let best = target_wins[0]
+            for a in target_wins
+                let [tab, win] = win_id2tabwin(a)
+                if abs(tab - cur_tab) < min_distance
+                    let best = a
+                endif
+            endfor
+            let [tab, win] = win_id2tabwin(best)
+            return [tab, win]
+        endif
+    endif
+    return [0,0]
+endfunc
+function! LineLog()
+    vs 
+    let cmd = 'term git log -L '. getpos("'<")[1] . ',' . getpos("'<")[1] . ':' . expand("%")
+    call Git_dir(cmd)
+    norm! i
+endfunc
 vnoremap dp :diffput<cr>
 vnoremap do :diffget<cr>
-
-nnoremap <leader>gV :Gitv --all<cr>
-nnoremap <leader>gv :Gitv! --all<cr>
-vnoremap <leader>gv :Gitv! --all<cr>
 
 vmap <leader>r <Plug>(EasyAlign)
 nmap <leader>r <Plug>(EasyAlign)
