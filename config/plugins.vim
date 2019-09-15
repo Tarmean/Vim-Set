@@ -7,6 +7,7 @@ else
     let g:python_host_prog="/usr/bin/python2"
 endif
 
+Plug 'tveskag/nvim-blame-line'
 Plug 'Tarmean/fzf-session.vim'
 Plug 'tpope/vim-obsession'
 Plug 'Tarmean/CsvHack.vim'
@@ -55,12 +56,12 @@ Plug 'dbakker/vim-projectroot'
 " Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'gregsexton/gitv', { 'on':  'Gitv' }
-Plug 'jreybert/vimagit'
+" Plug 'jreybert/vimagit'
 
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-speeddating'
-Plug 'justinmk/vim-sneak'
+" Plug 'justinmk/vim-sneak'
 Plug 'wellle/targets.vim'
 Plug 'vim-scripts/ReplaceWithRegister'
 Plug 'tommcdo/vim-exchange'

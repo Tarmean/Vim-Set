@@ -1,10 +1,10 @@
-" let g:obsession_no_bufenter = 1
 if exists(':Delete')
     delcommand Delete
 endif
 augroup DirvishMappings
   autocmd!
   autocmd FileType dirvish nmap <buffer> q <Plug>(dirvish_quit)
+  autocmd BufReadPost fugitive://* set bufhidden=delete
 augroup END
 let g:snips_author= 'Cyril'
 let g:snips_email='cyrilfahlenbock@outlook.com'
@@ -152,18 +152,18 @@ let g:lightline = {
       \ 'colorscheme': 'gruvbox',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitversion'  ],
-      \             [ 'cocstatus', 'readonly', 'filename', 'modified', 'fileformat'] ],
-      \   'right': [ [ 'lineinfo', 'percent' ],
+      \             [ 'cocstatus'], ['readonly', 'gitversion', 'filename'] ],
+      \   'right': [ [ 'lineinfo', 'percent', 'modified' ],
       \              [ 'filetype' ]] 
       \ },
       \ 'inactive': {
             \ 'left': [ ['gitversion', 'filename']],
             \ 'right': [ [ 'lineinfo', 'percent' ], [], [], [] ] },
       \ 'component_function': {
-      \   'cocstatus': 'coc#status'
+      \   'cocstatus': 'coc#status',
       \ },
       \ 'component': { 
+      \   'gitversion': '%{LightLineGitversion()}',
       \   'readonly': '%{&filetype=="help"?"":&readonly?"":""}',
       \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}'},
       \ 'component_expand': {
@@ -179,22 +179,34 @@ let g:lightline = {
       \ 'separator': { 'left': '', 'right': '' },
       \ 'subseparator': { 'left': '', 'right': '' }
       \ }
-
+function! LightLineGitversionMatch()
+  let p = tr(expand("%"), '\', '/')
+  return matchlist(p, '\c^fugitive:\%(//\)\=\(.\{-\}\)\%(//\|::\)\(\x\{40,\}\|[0-3]\)\(/.*\)\=$')
+endfunc
 function! LightLineGitversion()
-  let l:idx = matchstr(expand('%'), 'fugitive:[/,\\][/,\\].*[/,\\]\.git[/,\\][/,\\]\zs.\{-1,}\ze[/,\\].*')
-  if l:idx == ''
+  let l:ls = LightLineGitversionMatch()
+  if len(l:ls) == 0
       if &diff
-          return 'working copy'
+          let out = 'working copy'
+      else
+          let out = FugitiveHead(7)
       endif
-      return ''
-  elseif l:idx == 0
-      return 'git index'
-  elseif l:idx == 2
-      return 'git target'
-  elseif l:idx == 3
-      return 'git merge'
+  else
+      let l:idx = l:ls[2]
+      if l:idx == '0'
+          let out = 'index'
+      elseif l:idx == '2'
+          let out = 'target'
+      elseif l:idx == '3'
+          let out = 'merge'
+      else
+          let out = l:idx[0:6]
+      endif
   endif
-  return 'commit: ' . l:idx
+  if (len(out) != 0)
+      let out = '[' . out . ']'
+  endif
+  return out
 endfunction
 augroup PluginAutocomands
     autocmd!
@@ -386,11 +398,3 @@ vmap <leader>r <Plug>(LiveEasyAlign)
 nnoremap <a-j> <c-e>
 nnoremap <a-k> <c-y>
 
-if (!exists('g:first_load'))
-    if v:vim_did_enter
-      SessionLoad
-    else
-     au VimEnter * SessionLoad
-    endif
-endif
-let g:first_load = v:false
