@@ -52,7 +52,7 @@ call textobj#user#plugin('highlight', {
 \   },
 \ })
 
-noremap <silent> - :call Dirvish_wrap_up('%')<cr>
+noremap <silent> - :call Dirvish_wrap_up(expand('%'))<cr>
 if !exists("g:Dirvish_Added")
     let g:Dirvish_Added = 1
     au FileType dirvish call s:dirvish_init()
@@ -75,7 +75,7 @@ func! s:dirvish_init()
     set ma
     sort r /[^\/]$/
 endfunc
-func! Dirvish_wrap_up(path) " automatically seek the directory or file when going up
+func! Dirvish_wrap_up(path) " au */tomatically seek the directory or file when going up
     let loc = escape(substitute(expand("%:p"), '/', '\', 'g'), '\')
     silent! execute "Dirvish " . a:path
     " execute "lcd ".a:path
@@ -275,16 +275,6 @@ if(has('nvim'))
         setlocal statusline=%#fzf1#\ >\ %#fzf2#fz%#fzf3#f
     endfunction
 
-    function! Git_dir(command)
-        let l:old_cd = getcwd()
-        let l:new_root = ProjectRootGet()
-        if ('' == l:new_root)
-            let l:new_root = l:old_cd
-        endif
-        execute 'cd '.l:new_root
-        execute a:command
-        execute 'cd '.l:old_cd
-    endfunction
 
     let g:fzf_layout = { 'window': 'enew' }
 
@@ -306,8 +296,8 @@ if(has('nvim'))
     nnoremap <silent> <leader>ff :Buffers<cr>
     nnoremap <silent> <leader>fw :Windows<cr>
     nnoremap <silent> <leader>fs :History<cr>
-    nnoremap <silent> <leader>gl :call Git_dir("Commits")<cr>
-    nnoremap <silent> <leader>fl :call Git_dir("BCommits")<cr>
+    nnoremap <silent> <leader>fc :call Git_dir("Commits")<cr>
+    nnoremap <silent> <leader>fb :call Git_dir("Commits")<cr>
 endif
 au VimEnter * let g:fzf_commits_log_options = '--all --color=always '.fzf#shellescape('--format=%C(auto)%h%d %s %C(green)%cr')
 
@@ -319,16 +309,23 @@ nnoremap <space>gc :Gcommit -v -q<CR>
 nnoremap <space>gd :Gdiff<CR>
 nnoremap <space>ge :Gedit<CR>
 nnoremap <space>gw :Gwrite<CR><CR>
-" nnoremap <space>fl :Flog<cr>
+nnoremap <silent> <leader>gb :Gblame -wccc<cr>
+nnoremap <space>fl :Flog<cr>
 vnoremap <space>fl :Flog<cr>
 
-vnoremap <space>gl :call SetupGistory()<cr>
-function! SetupGistory()
+vnoremap <space>gl :Gistory<cr>
+nnoremap <space>gl :Gistory<cr>
+command! -nargs=* -range=% Gistory call SetupGistory(<line1>, <line2>, <f-args>)
+function! SetupGistory(l1, l2, ...)
     tab split
     let t:diff_tab = tabpagenr()
-    '<,'>Glog -w
-    " Gdiff !~
+    if (a:l1 != 1) || (a:l2 != line("$"))
+        exec a:l1 . "," . a:l2 . "Glog -w " . join(a:000, " ")
+    else
+        exec "0Glog -w " . join(a:000, " ")
+    endif
     call SetupDiff()
+    let g:last_known = getqflist({'id':0, 'changedtick': 0, 'idx': 0}) 
     augroup Gistory
         au!
         autocmd TabLeave * tabc | augroup Gistory | au! | augroup END
@@ -366,7 +363,7 @@ function! SetupDiff()
             let paired_buf_ident = paired_fug_data[2] . ':' . paired_buf_path
             let g:ident = paired_buf_ident
         else
-            let g:last_known = getqflist({'id':0, 'changedtick': 0, 'idx': 0}) 
+            let g:last_known = getqflist({'id':0, 'changedtick': 0, 'idx': 0})
             return
         endif
     endif
@@ -374,7 +371,32 @@ function! SetupDiff()
     cw
     wincmd w
     cc
-    call feedkeys( ":Gdiffsplit " . paired_buf_ident . "|wincmd w\<cr>", 'n')
+    exec 'Gdiffsplit ' . paired_buf_ident
+
+    silent! call NormalizeWhitespace() 
+    wincmd w
+    silent! call NormalizeWhitespace()
+endfunc
+function! NormalizeWhitespace()
+    let oldmodifiable = &modifiable
+    let oldreadonly = &readonly
+    let oldwinid = win_getid()
+    set modifiable
+    set noreadonly
+    let buf = getline(1, '$')
+    let ft= &ft
+    vsplit enew
+    call setline(1, buf)
+    let &ft = ft
+    sleep 10m
+    call CocAction("format")
+    let buf = getline(1, '$')
+    bw!
+    call setline(1, buf)
+    set nomodified
+    let &modifiable = oldmodifiable
+    let &readonly = oldreadonly
+    call win_gotoid(oldwinid)
 endfunc
 function! s:Slash(path) abort
   if exists('+shellslash')
@@ -383,23 +405,38 @@ function! s:Slash(path) abort
     return a:path
   endif
 endfunction
-command! -range=% -nargs=? Flog call LineLog('<line1>', '<line2>', '<args>')
-function! LineLog(top, bot, a)
+command! -bang -range=% -nargs=? Flog call LineLog(<bang>0, '<line1>', '<line2>', '<args>')
+function! LineLog(bang, top, bot, a)
     vs 
     let file = expand("%:p")
-    let cmd = 'term git log'
+    let cmd = 'git log -w'
+    if !empty(a:a)
+        let cmd .= " -S" . a:a
+    endif
     if a:top != 1 || a:bot != line("$")
         let cmd .= ' -L '. a:top . ',' . a:bot . ':' . file
     else
         let cmd .= ' -p '.  file
     endif
-    if !empty(a:a)
-        let cmd .= " -G" . a:a
+    if !a:bang
+        echo cmd
+        call Git_dir('term ' . cmd)
+        norm! i
+    else
+        call Git_dir('term')
+        call feedkeys("i" . cmd, 'n')
     endif
-    echo cmd
-    call Git_dir(cmd)
-    norm! i
 endfunc
+function! Git_dir(command)
+    let l:old_cd = getcwd()
+    let l:new_root = FugitiveWorkTree()
+    if ('' == l:new_root)
+        let l:new_root = l:old_cd
+    endif
+    execute 'lcd '.l:new_root
+    execute a:command
+    execute 'lcd '.l:old_cd
+endfunction
 vnoremap dp :diffput<cr>
 vnoremap do :diffget<cr>
 
