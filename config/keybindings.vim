@@ -79,33 +79,10 @@ if (has('nvim'))
     endfunc
 endif
 
-let g:BracketSwapPairs = {
-            \'ä': '{',
-            \'Ä': '}',
-            \'ö': '(',
-            \'Ö': ')',
-            \'ü': '[',
-            \'Ü': ']',
-        \}
-nmap ü [
-nmap ä ]
-
-function! SetCharSwap(bool)
-    if(a:bool)
-        for [l, r] in items(g:BracketSwapPairs)
-            silent! execute "imap " . l . " " . r
-        endfor
-    else
-        for [l, r] in items(g:BracketSwapPairs) 
-            silent! execute "iunmap " . l
-        endfor
-    endif
-endfunction
-call SetCharSwap(1)
-nnoremap äoä :call SetCharSwap(0)<cr>
-nnoremap üoü :call SetCharSwap(1)<cr>
 silent! unmap [o
 silent! unmap ]o
+nmap ü [
+nmap + ]
 
 if (has('vim') || has ('nvim'))
     cnoremap %s/ %s/\v
