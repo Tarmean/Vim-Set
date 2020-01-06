@@ -5,6 +5,8 @@ inoremap <silent><expr> <c-space> coc#refresh()
 " Coc only does snippet and additional edit on confirm.
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
+
+
 " Use `[c` and `]c` to navigate diagnostics
 nmap <silent> [c <Plug>(coc-diagnostic-prev)
 nmap <silent> ]c <Plug>(coc-diagnostic-next)
@@ -19,6 +21,7 @@ endfunc
 function! s:BufferConfig()
     " Remap keys for gotos
     nmap <buffer> <silent> gd <Plug>(coc-definition)
+    nmap <buffer> <silent> gD <Plug>(coc-declaration)
     nmap <buffer> <silent> gy <Plug>(coc-type-definition)
     nmap <buffer> <silent> gi <Plug>(coc-implementation)
     nmap <buffer> <silent> gr <Plug>(coc-references)
@@ -34,6 +37,7 @@ function! s:BufferConfig()
           \ coc#refresh()
     inoremap <buffer> <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 endfunc
+let g:coc_snippet_next = '<c-j>'
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 function! s:check_back_space() abort
@@ -49,13 +53,14 @@ augroup end
 " Remap for rename current word
 nmap <localleader>r <Plug>(coc-rename)
 " Remap for do codeAction of current line
-" nmap <localleader>ac  <Plug>(coc-codeaction)
+nmap <localleader>a  <Plug>(coc-codeaction)
 " Fix autofix problem of current line
 " nmap <localleader>qf  <Plug>(coc-fix-current)
 
 " Remap for format selected region
-xmap <localleader>f  <Plug>(coc-format-selected)
+nmap <tab>  <Plug>(coc-codelens-action)
 nmap <localleader>f  <Plug>(coc-format-selected)
+vmap <localleader>f  <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!
@@ -77,7 +82,7 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 " use `:OR` for organize import of current buffer
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
-nnoremap <silent> <localleader>a  :<C-u>CocList actions<cr>
+nnoremap <silent> <a-cr>  :<C-u>CocList actions<cr>
 nnoremap <silent> <localleader>d  :<C-u>CocList diagnostics<cr>
 " Manage extensions
 nnoremap <silent> <localleader>e  :<C-u>CocList extensions<cr>
@@ -93,11 +98,11 @@ nnoremap <silent> <localleader>j  :<C-u>CocNext<CR>
 nnoremap <silent> <localleader>k  :<C-u>CocPrev<CR>
 " Resume latest coc list
 nnoremap <silent> <localleader>l  :<C-u>CocListResume<CR>
+xmap if <Plug>(coc-funcobj-i)
+xmap af <Plug>(coc-funcobj-a)
+omap if <Plug>(coc-funcobj-i)
+omap af <Plug>(coc-funcobj-a)
 
-
-" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
 
 " Use K to show documentation in preview window
 nnoremap <silent> K :call <SID>show_documentation()<CR>
@@ -109,3 +114,72 @@ function! s:show_documentation()
     call CocAction('doHover')
   endif
 endfunction
+
+augroup Agda
+    au!
+    au BufNewfile,BufRead *.agda setf agda
+    au FileType agda call SetupAgda()
+augroup END
+
+func! SetupAgda()
+    " command! -buffer -nargs=0 Load call Load(0)
+    " command! -buffer AgdaVersion call AgdaVersion(0)
+    " command! -buffer Reload silent! make!|redraw!
+    " command! -buffer RestartAgda exec s:python_cmd 'RestartAgda()'
+    " command! -buffer ShowImplicitArguments exec s:python_cmd "sendCommand('ShowImplicitArgs True')"
+    " command! -buffer HideImplicitArguments exec s:python_cmd "sendCommand('ShowImplicitArgs False')"
+    " command! -buffer ToggleImplicitArguments exec s:python_cmd "sendCommand('ToggleImplicitArgs')"
+    " command! -buffer Constraints exec s:python_cmd "sendCommand('Cmd_constraints')"
+    " command! -buffer Metas exec s:python_cmd "sendCommand('Cmd_metas')"
+    " command! -buffer SolveAll exec s:python_cmd "sendCommand('Cmd_solveAll')"
+    " command! -buffer ShowModule call ShowModule(<args>)
+    " command! -buffer WhyInScope call WhyInScope(<args>)
+    " command! -buffer SetRewriteMode exec s:python_cmd "setRewriteMode('<args>')"
+    " command! -buffer SetRewriteModeAsIs exec s:python_cmd "setRewriteMode('AsIs')"
+    " command! -buffer SetRewriteModeNormalised exec s:python_cmd "setRewriteMode('Normalised')"
+    " command! -buffer SetRewriteModeSimplified exec s:python_cmd "setRewriteMode('Simplified')"
+    " command! -buffer SetRewriteModeHeadNormal exec s:python_cmd "setRewriteMode('HeadNormal')"
+    " command! -buffer SetRewriteModeInstantiated exec s:python_cmd "setRewriteMode('Instantiated')"
+
+    " " C-c C-l -> \l
+    " nnoremap <buffer> <LocalLeader>l :Reload<CR>
+    " " C-c C-d -> \t
+    " nnoremap <buffer> <LocalLeader>t :call Infer()<CR>
+    " " C-c C-r -> \r
+    " nnoremap <buffer> <LocalLeader>r :call Refine("False")<CR>
+    " nnoremap <buffer> <LocalLeader>R :call Refine("True")<CR>
+    " " C-c C-space -> \g
+    " nnoremap <buffer> <LocalLeader>g :call Give()<CR>
+    " " C-c C-g -> \c
+    " nnoremap <buffer> <LocalLeader>c :call MakeCase()<CR>
+    " " C-c C-a -> \a
+    " nnoremap <buffer> <LocalLeader>a :call Auto()<CR>
+    " " C-c C-, -> \e
+    " nnoremap <buffer> <LocalLeader>e :call Context()<CR>
+    " " C-u C-c C-n -> \n
+    " nnoremap <buffer> <LocalLeader>n :call Normalize("False")<CR>
+    " " C-c C-n -> \N
+    " nnoremap <buffer> <LocalLeader>N :call Normalize("True")<CR>
+    " nnoremap <buffer> <LocalLeader>M :call ShowModule('')<CR>
+    " " C-c C-w -> \y
+    " nnoremap <buffer> <LocalLeader>y :call WhyInScope('')<CR>
+    " nnoremap <buffer> <LocalLeader>h :call HelperFunction()<CR>
+    " " M-. -> \d
+    " nnoremap <buffer> <LocalLeader>d :call GotoAnnotation()<CR>
+    " " C-c C-? -> \m
+    " nnoremap <buffer> <LocalLeader>m :Metas<CR>
+
+    " " Show/reload metas
+    " " C-c C-? -> C-e
+    " nnoremap <buffer> <C-e> :Metas<CR>
+    " inoremap <buffer> <C-e> <C-o>:Metas<CR>
+
+    " " Go to next/previous meta
+    " " C-c C-f -> C-g
+    " nnoremap <buffer> <silent> <C-g>  :let _s=@/<CR>/ {!\\| ?<CR>:let @/=_s<CR>2l
+    " inoremap <buffer> <silent> <C-g>  <C-o>:let _s=@/<CR><C-o>/ {!\\| ?<CR><C-o>:let @/=_s<CR><C-o>2l
+
+    " " C-c C-b -> C-y
+    " nnoremap <buffer> <silent> <C-y>  2h:let _s=@/<CR>? {!\\| \?<CR>:let @/=_s<CR>2l
+    " inoremap <buffer> <silent> <C-y>  <C-o>2h<C-o>:let _s=@/<CR><C-o>? {!\\| \?<CR><C-o>:let @/=_s<CR><C-o>2l
+endfunc
