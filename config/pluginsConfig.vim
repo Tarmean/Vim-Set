@@ -4,7 +4,10 @@ endif
 augroup DirvishMappings
   autocmd!
   autocmd filetype dirvish nmap <buffer> q <plug>(dirvish_quit)
-  autocmd bufreadpost fugitive://* set bufhidden=delete
+  " autocmd bufreadpost fugitive://* set bufhidden=wipe
+  autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
+  autocmd BufReadPost quickfix nnoremap <buffer> J :cnext<cr>
+  autocmd BufReadPost quickfix nnoremap <buffer> K :cprev<cr>
 augroup end
 let g:snips_author= 'cyril'
 let g:snips_email='cyrilfahlenbock@outlook.com'
@@ -167,12 +170,13 @@ let g:lightline = {
       \ 'separator': { 'left': '', 'right': '' },
       \ 'subseparator': { 'left': '', 'right': '' }
       \ }
-function! LightLineGitversionMatch()
-  let p = tr(expand("%"), '\', '/')
+function! FugitiveBufferIdent(...)
+  let path = a:0 > 0 ? a:1 : expand("%")
+  let p = tr(path, '\', '/')
   return matchlist(p, '\c^fugitive:\%(//\)\=\(.\{-\}\)\%(//\|::\)\(\x\{40,\}\|[0-3]\)\(/.*\)\=$')
 endfunc
 function! LightLineGitversion()
-  let l:ls = LightLineGitversionMatch()
+  let l:ls = FugitiveBufferIdent()
   if len(l:ls) == 0
       if &diff
           let out = 'working copy'
@@ -300,17 +304,12 @@ if(has('nvim'))
 
     nnoremap <silent> <leader>fm :Marks<cr>
     nnoremap <silent> <leader>ff :Buffers<cr>
-    nnoremap <silent> <leader>fc :Commands<cr>
-    nnoremap <silent> <leader>fd :call Tag_or_reload("Tags")<cr>
-    nnoremap <silent> <leader>d :call Tag_or_reload("BTags")<cr>
     nnoremap <silent> <leader>fw :Windows<cr>
-    nnoremap <silent> <leader>fö :Locate ~/vimfiles/plugged/<cr>
     nnoremap <silent> <leader>fs :History<cr>
-    nnoremap <silent> <leader>fk :Snippets<cr>
-    nnoremap <silent> <leader>fl :call Git_dir("Commits")<cr>
-    nnoremap <silent> <leader>gl :call Git_dir("BCommits")<cr>
-    nnoremap <silent> <leader>fh :Helptags<cr>
+    nnoremap <silent> <leader>gl :call Git_dir("Commits")<cr>
+    nnoremap <silent> <leader>fl :call Git_dir("BCommits")<cr>
 endif
+au VimEnter * let g:fzf_commits_log_options = '--all --color=always '.fzf#shellescape('--format=%C(auto)%h%d %s %C(green)%cr')
 
 
 cabbrev git Git
@@ -320,11 +319,84 @@ nnoremap <space>gc :Gcommit -v -q<CR>
 nnoremap <space>gd :Gdiff<CR>
 nnoremap <space>ge :Gedit<CR>
 nnoremap <space>gw :Gwrite<CR><CR>
-vnoremap <space>fl :call LineLog()<cr>
-vnoremap <space>gl :call LineLog()<cr>
-function! LineLog()
+" nnoremap <space>fl :Flog<cr>
+vnoremap <space>fl :Flog<cr>
+
+vnoremap <space>gl :call SetupGistory()<cr>
+function! SetupGistory()
+    tab split
+    let t:diff_tab = tabpagenr()
+    '<,'>Glog -w
+    " Gdiff !~
+    call SetupDiff()
+    augroup Gistory
+        au!
+        autocmd TabLeave * tabc | augroup Gistory | au! | augroup END
+        autocmd BufEnter  * call QueueUpDiff()
+        autocmd CursorMoved  * call QueueUpDiff()
+    augroup END
+endfunc
+" nnoremap ]q :cnext<cr>:call SetupDiff()<cr>
+" nnoremap [q :cprev<cr>:call SetupDiff()<cr>
+function! QueueUpDiff()
+    if exists('g:last_known') && g:last_known == getqflist({'id':0, 'changedtick': 0, 'idx': 0})
+        return
+    endif
+    let g:last_known = getqflist({'id':0, 'changedtick': 0, 'idx': 0}) 
+    call feedkeys(":call SetupDiff()\<cr>", 'n')
+endfunc
+function! SetupDiff()
+    if !exists("t:diff_tab")
+        echo "2"
+        return
+    endif
+    if t:diff_tab != tabpagenr()
+        echo "setup_diff wrong tabpagenr"
+        return
+    endif
+    let qf = getqflist({'idx':0, 'items': 0}) 
+    if qf['idx'] == len(qf['items'])
+        let paired_buf_ident = '!^'
+    else
+        let paired_buf = qf['items'][qf['idx']]['bufnr']
+        let paired_buf_name = bufname(paired_buf)
+        let paired_fug_data = FugitiveBufferIdent(paired_buf_name)
+        if len(paired_fug_data) != 0
+            let paired_buf_path = s:Slash(paired_fug_data[1][0:-6] . paired_fug_data[3])
+            let paired_buf_ident = paired_fug_data[2] . ':' . paired_buf_path
+            let g:ident = paired_buf_ident
+        else
+            let g:last_known = getqflist({'id':0, 'changedtick': 0, 'idx': 0}) 
+            return
+        endif
+    endif
+    only
+    cw
+    wincmd w
+    cc
+    call feedkeys( ":Gdiffsplit " . paired_buf_ident . "|wincmd w\<cr>", 'n')
+endfunc
+function! s:Slash(path) abort
+  if exists('+shellslash')
+    return tr(a:path, '\', '/')
+  else
+    return a:path
+  endif
+endfunction
+command! -range=% -nargs=? Flog call LineLog('<line1>', '<line2>', '<args>')
+function! LineLog(top, bot, a)
     vs 
-    let cmd = 'term git log -L '. getpos("'<")[1] . ',' . getpos("'>")[1] . ':' . expand("%")
+    let file = expand("%:p")
+    let cmd = 'term git log'
+    if a:top != 1 || a:bot != line("$")
+        let cmd .= ' -L '. a:top . ',' . a:bot . ':' . file
+    else
+        let cmd .= ' -p '.  file
+    endif
+    if !empty(a:a)
+        let cmd .= " -G" . a:a
+    endif
+    echo cmd
     call Git_dir(cmd)
     norm! i
 endfunc

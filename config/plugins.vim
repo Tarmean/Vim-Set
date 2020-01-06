@@ -1,12 +1,13 @@
 call plug#begin('~/vimfiles/plugged')
 if has('windows')
-    " let g:python_host_prog="C:\\Python27\\python.exe"
+    let g:python_host_prog="C:\\Python27\\python.exe"
     let g:python3_host_prog="C:\\Python37\\python.exe"
 else
     let g:python3_host_prog="/usr/bin/python3"
     let g:python_host_prog="/usr/bin/python2"
 endif
 
+Plug 'derekelkins/agda-vim'
 Plug 'tveskag/nvim-blame-line'
 Plug 'Tarmean/fzf-session.vim'
 Plug 'tpope/vim-obsession'
@@ -14,16 +15,16 @@ Plug 'Tarmean/CsvHack.vim'
 Plug 'dhruvasagar/vim-table-mode', { 'on':  ['TableModeEnable', 'TableModeRealign'] }
 
 Plug 'FooSoft/vim-argwrap'
-Plug 'jiangmiao/auto-pairs'
+" Plug 'jiangmiao/auto-pairs'
 Plug 'yaymukund/vim-haxe'
-Plug 'rayburgemeestre/phpfolding.vim'
+" Plug 'rayburgemeestre/phpfolding.vim'
 Plug '2072/PHP-Indenting-for-VIm'
 Plug 'chrisbra/Recover.vim'
 Plug 'rhysd/git-messenger.vim'
 " Plug 'roryokane/detectindent'
 " Plug 'vim-vdebug/vdebug'
 Plug 'lumiliet/vim-twig'
-Plug 'neoclide/coc.nvim', {'do': './install.cmd nightly'}
+Plug 'neoclide/coc.nvim', {'do': './install.cmd nightly', 'tag': '*', 'branch': 'release'}
 
 Plug 'idris-hackers/idris-vim'
 Plug 'equalsraf/neovim-gui-shim'
