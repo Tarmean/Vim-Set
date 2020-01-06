@@ -7,6 +7,7 @@ endif
 colorscheme gruvbox
 
 " don't give |ins-completion-menu| messages.
+set mouse +=a
 set background=light
 set cmdheight=2
 set shortmess+=c
@@ -86,8 +87,8 @@ nnoremap <silent><leader>/ :execute 'vimgrep /'.@/.'/g %'<cr>:copen<cr>
 nnoremap <silent><leader>? :execute "Ag '" .  substitute(substitute(substitute(@/, "\\\\<", "\\\\b", ""), "\\\\>", "\\\\b", ""), "\\\\v", "", "") . "'"<cr>
 
 
-if !exists(":DiffOrig")
-    command DiffOrig vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
+if !exists(":DiffUnsaved")
+    command DiffUnsaved vert new | set bt=nofile | r ++edit # | 0d_ | diffthis
                 \ | wincmd p | diffthis
 endif
 
