@@ -1,6 +1,23 @@
 if exists(':Delete')
     delcommand Delete
 endif
+
+let g:textobj_comment_no_default_key_mappings = 1
+omap Ac <Plug>(textobj-comment-big-a)
+omap ac <Plug>(textobj-comment-a)
+omap ic <Plug>(textobj-comment-i)
+nmap vAc v<Plug>(textobj-comment-big-a)
+nmap vac v<Plug>(textobj-comment-a)
+nmap vic v<Plug>(textobj-comment-i)
+
+nmap _  <Plug>ReplaceWithRegisterOperator
+nmap __ <Plug>ReplaceWithRegisterOperatorik
+nmap <space>_ "+_
+
+if exists("g:vscode")
+    finish
+endif
+
 augroup DirvishMappings
   autocmd!
   autocmd filetype dirvish nmap <buffer> q <plug>(dirvish_quit)
@@ -94,18 +111,6 @@ endfunc
 
 let g:tf_workaround= 0
 
-
-let g:textobj_comment_no_default_key_mappings = 1
-omap Ac <Plug>(textobj-comment-big-a)
-omap ac <Plug>(textobj-comment-a)
-omap ic <Plug>(textobj-comment-i)
-nmap vAc v<Plug>(textobj-comment-big-a)
-nmap vac v<Plug>(textobj-comment-a)
-nmap vic v<Plug>(textobj-comment-i)
-
-nmap _  <Plug>ReplaceWithRegisterOperator
-nmap __ <Plug>ReplaceWithRegisterOperatorik
-nmap <space>_ "+_
 
 noremap ]oz :Goyo!<cr>
 noremap [oz :Goyo<cr>:IndentLinesDisable<cr>
@@ -388,10 +393,15 @@ function! NormalizeWhitespace()
     vsplit enew
     call setline(1, buf)
     let &ft = ft
+    sleep 100m
+    retab
+    sleep 10m
+    %s/^\s*\n\|\s*$//
     sleep 10m
     call CocAction("format")
     let buf = getline(1, '$')
     bw!
+    0,$d
     call setline(1, buf)
     set nomodified
     let &modifiable = oldmodifiable

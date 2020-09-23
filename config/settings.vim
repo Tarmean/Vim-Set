@@ -53,7 +53,8 @@ set expandtab
 set ssop-=options "do not store global and local values in a session
 set ssop-=folds   "do not store folds
 set list
-set lcs=eol:⏎,tab:␉·,trail:␠,nbsp:⎵
+set lcs=tab:␉·,trail:␠,nbsp:⎵
+
 
 highlight diffAdded guifg=#00bf00
 highlight diffRemoved guifg=#bf0000
@@ -97,14 +98,17 @@ if has("autocmd")
 
   augroup vimrcEx
   au!
+      autocmd filetype haskell set shiftwidth=2 tabstop=2
 
       " When    editing a file, always jump to the last known cursor position.
       " Don't do it when the position is invalid or when inside an event handler
       " (happens when dropping a file on gvim).
-      autocmd BufReadPost *
-        \ if line("'\"") > 0 && line("'\"") <= line("$") |
-        \   exe 'normal g`"zvzz' |
-        \ endif
+      if (!exists("g:vscode"))
+          autocmd BufReadPost *
+            \ if line("'\"") > 0 && line("'\"") <= line("$") |
+            \   exe 'normal g`"zvzz' |
+            \ endif
+      endif
 
       autocmd GUIEnter * set visualbell t_vb=
   augroup END
