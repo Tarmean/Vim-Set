@@ -1,8 +1,10 @@
 let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
+
 source ~/vimfiles/config/plugins.vim
 source ~/vimfiles/config/settings.vim
 source ~/vimfiles/config/keybindings.vim
 source ~/vimfiles/config/pluginsconfig.vim
+
 
 if !exists('g:vscode')
     source ~/vimfiles/config/cocconfig.vim

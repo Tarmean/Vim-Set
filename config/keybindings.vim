@@ -3,13 +3,18 @@ let maplocalleader = ","
 
 map <f1> <esc>
 tnoremap <s-space> <space>
-func! OpenTerm()
+cnoremap term Term
+command! -nargs=? Term call OpenTerm(<q-args>)
+func! OpenTerm(args)
     let l:oldcd = getcwd()
     exec "cd " . expand("%:p:h")
     if (has('unix'))
         exec "term zsh " 
     else
         exec "term powershell"
+    endif
+    if (type(a:args) == type("") && a:args != "")
+        call feedkeys("i" . a:args . "Ö")
     endif
     exec "cd " . l:oldcd
 endfunction
@@ -67,7 +72,7 @@ if (has('nvim'))
         else
             let g:old_win = win_getid()
             vs
-            call OpenTerm()
+            call OpenTerm(0)
             let g:cur_term = bufnr("$")
         endif
         if a:arg == 'insert' 
@@ -92,7 +97,7 @@ endif
 nnoremap j gj
 nnoremap k gk
 
-nnoremap <silent> <esc> :noh<return><esc>
+nnoremap <silent> <esc> :call coc#float#close_all()<cr>:noh<return><esc>
 nnoremap <Leader>ö :w<CR>
 noremap  <leader>ü :e $MYVIMRC<CR>
 noremap  <leader>ä :so $MYVIMRC<CR>
@@ -132,6 +137,8 @@ func! Yank(type, ...)
 
     if a:type == 'line' 
       silent exe "normal! '[V']".g:yankreg."y"
+    elseif a:type == 'block'
+      silent exe "normal! '[']".g:yankreg."y"
     else
       silent exe "normal! `[v`]".g:yankreg."y"
     endif

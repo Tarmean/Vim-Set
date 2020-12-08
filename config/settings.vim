@@ -2,13 +2,18 @@
 
 if !has("unix")
 		" set shell=powershell shellquote=( shellpipe=\| shellredir=> shellxquote=
-		" set shellcmdflag=-NoLogo\ -NoProfile\ -ExecutionPolicy\ RemoteSigned\ -Command
+		"      set shellcmdflag=-NoLogo\ -NoProfile\ -ExecutionPolicy\ RemoteSigned\ -Command
 endif
 colorscheme gruvbox
 
+" The haskell syntax highlighting has cError highlighting for c preprocessor
+" directives. Hashes at the start of the line error, this breaks with overloadedlabels like
+"     #nodes . at k .= Nothing
+let hs_allow_hash_operator=1
+
 " don't give |ins-completion-menu| messages.
 set mouse +=a
-set background=light
+set background=dark
 set cmdheight=2
 set shortmess+=c
 set inccommand=nosplit

@@ -1,4 +1,5 @@
 " Use <c-space> to trigger completion.
+nmap gK <Plug>(coc-float-jump)
 inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
@@ -6,10 +7,19 @@ inoremap <silent><expr> <c-space> coc#refresh()
 inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 
+nmap <localleader>r <Plug>(coc-rename)
+nmap <silent> <localleader>R <Plug>(coc-refactor)
 
-" Use `[c` and `]c` to navigate diagnostics
-nmap <silent> [c <Plug>(coc-diagnostic-prev)
-nmap <silent> ]c <Plug>(coc-diagnostic-next)
+nmap <silent> <c-k> <Plug>(coc-diagnostic-prev)
+nmap <silent> <c-j> <Plug>(coc-diagnostic-next)
+nmap <silent> <tab> <Plug>(coc-codeaction-line)
+vmap <silent> <tab> <Plug>(coc-codeaction-selected)
+nmap <silent> <localleader>a  <Plug>(coc-codeaction)
+
+nmap <s-tab>  <Plug>(coc-codelens-action)
+vmap <s-tab>  <Plug>(coc-codelens-action)
+nmap <localleader>f  <Plug>(coc-format-selected)
+vmap <localleader>f  <Plug>(coc-format-selected)
 
 let s:supported = ['php', 'haskell']
 let s:fast = ['php']
@@ -50,17 +60,8 @@ augroup CocBufferConfig
     autocmd CursorHold  * silent call CocActionAsync('highlight')
 augroup end
 
-" Remap for rename current word
-nmap <localleader>r <Plug>(coc-rename)
-" Remap for do codeAction of current line
-nmap <localleader>a  <Plug>(coc-codeaction)
-" Fix autofix problem of current line
-" nmap <localleader>qf  <Plug>(coc-fix-current)
 
 " Remap for format selected region
-nmap <tab>  <Plug>(coc-codelens-action)
-nmap <localleader>f  <Plug>(coc-format-selected)
-vmap <localleader>f  <Plug>(coc-format-selected)
 
 augroup mygroup
   autocmd!

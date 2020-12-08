@@ -118,17 +118,17 @@ noremap [oz :Goyo<cr>:IndentLinesDisable<cr>
 " let gutentags_ctags_tagfile=".git/tags"
 let g:gutentags_cache_dir="~/.vim/tags/"
 
-let g:sneak#streak=1
-let g:sneak#streak_esc = "\<esc>"
-let g:sneak#s_next=1
-let g:sneak#textobj_z=0
-let g:sneak#use_ic_scs = 1
-nmap f <Plug>Sneak_f
-lmap F <Plug>Sneak_F
-xmap f <Plug>Sneak_f
-xmap F <Plug>Sneak_F
-omap f <Plug>Sneak_f
-omap F <Plug>Sneak_F
+" let g:sneak#streak=1
+" let g:sneak#streak_esc = "\<esc>"
+" let g:sneak#s_next=1
+" let g:sneak#textobj_z=0
+" let g:sneak#use_ic_scs = 1
+" nmap f <Plug>Sneak_f
+" lmap F <Plug>Sneak_F
+" xmap f <Plug>Sneak_f
+" xmap F <Plug>Sneak_F
+" omap f <Plug>Sneak_f
+" omap F <Plug>Sneak_F
 
 
 nnoremap [w :Obsession<CR>
@@ -299,6 +299,7 @@ if(has('nvim'))
 
     nnoremap <silent> <leader>fm :Marks<cr>
     nnoremap <silent> <leader>ff :Buffers<cr>
+    nnoremap <silent> <leader>fl :BLines<cr>
     nnoremap <silent> <leader>fw :Windows<cr>
     nnoremap <silent> <leader>fs :History<cr>
     nnoremap <silent> <leader>fc :call Git_dir("Commits")<cr>
@@ -315,8 +316,6 @@ nnoremap <space>gd :Gdiff<CR>
 nnoremap <space>ge :Gedit<CR>
 nnoremap <space>gw :Gwrite<CR><CR>
 nnoremap <silent> <leader>gb :Gblame -wccc<cr>
-nnoremap <space>fl :Flog<cr>
-vnoremap <space>fl :Flog<cr>
 
 vnoremap <space>gl :Gistory<cr>
 nnoremap <space>gl :Gistory<cr>
@@ -459,3 +458,57 @@ vmap <leader>r <Plug>(LiveEasyAlign)
 nnoremap <a-j> <c-e>
 nnoremap <a-k> <c-y>
 
+
+
+function! GitBuf(object, title)
+    let g:command = "Gread " . a:object
+    exec g:command
+    exec "set ft=" . expand("%:e", a:title) 
+    retab
+    norm ,fie
+    sleep 100m
+    diffthis
+    exec "file " . a:title
+    setlocal buftype=nofile
+    setlocal bufhidden=wipe
+    setlocal noswapfile
+endfunction
+
+let g:diff_view_buffer = {}
+function! DiffViewFor(path, title)
+    if (has_key(g:diff_view_buffer, a:path) && bufexists(g:diff_view_buffer[a:path]))
+        echom "cached " . a:path . " => " . g:diff_view_buffer[a:path]
+        exec "b " . g:diff_view_buffer[a:path]
+        return
+    endif
+    call GitBuf(a:path, a:title)
+    let g:diff_view_buffer[a:path] = bufnr()
+endfunc
+ 
+command! ThreeWay call DiffView()
+function! DiffView()
+    let s:current_file=expand('%:p')
+    let s:title=expand('%:t')
+    let s:past = ":1:" . s:current_file
+    let s:me = ":2:" . s:current_file
+    let s:you = ":3:" . s:current_file
+    let s:future = s:current_file
+
+    exec "tabnew"
+    call DiffViewFor(s:you, "you " . s:title)
+    wincmd v
+    enew
+    call DiffViewFor(s:me, "me " . s:title)
+
+    exec "tabnew"
+    call DiffViewFor(s:past, "past " . s:title)
+    wincmd v
+    enew
+    call DiffViewFor(s:me, "me " . s:title)
+
+    exec "tabnew"
+    call DiffViewFor(s:past, "past " . s:title)
+    wincmd v
+    enew
+    call DiffViewFor(s:you, "you " . s:title)
+endfunction

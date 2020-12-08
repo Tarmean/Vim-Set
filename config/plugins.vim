@@ -1,5 +1,8 @@
 call plug#begin('~/vimfiles/plugged')
 
+Plug 'kien/rainbow_parentheses.vim'
+Plug 'guns/vim-sexp'
+Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'wellle/targets.vim'
@@ -15,6 +18,7 @@ Plug 'Julian/vim-textobj-variable-segment'
 
 if !exists('g:vscode')
     Plug 'puremourning/vimspector'
+    Plug 'tpope/vim-fireplace'
     Plug 'tpope/vim-repeat'
 
     if has('windows')
@@ -26,7 +30,7 @@ if !exists('g:vscode')
     endif
 
     Plug 'derekelkins/agda-vim'
-    Plug 'tveskag/nvim-blame-line'
+    " Plug 'tveskag/nvim-blame-line'
     Plug 'Tarmean/fzf-session.vim'
     Plug 'tpope/vim-obsession'
     Plug 'Tarmean/CsvHack.vim'
