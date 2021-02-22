@@ -1,7 +1,6 @@
 if exists(':Delete')
     delcommand Delete
 endif
-
 let g:textobj_comment_no_default_key_mappings = 1
 omap Ac <Plug>(textobj-comment-big-a)
 omap ac <Plug>(textobj-comment-a)
@@ -9,15 +8,12 @@ omap ic <Plug>(textobj-comment-i)
 nmap vAc v<Plug>(textobj-comment-big-a)
 nmap vac v<Plug>(textobj-comment-a)
 nmap vic v<Plug>(textobj-comment-i)
-
 nmap _  <Plug>ReplaceWithRegisterOperator
 nmap __ <Plug>ReplaceWithRegisterOperatorik
 nmap <space>_ "+_
-
 if exists("g:vscode")
     finish
 endif
-
 augroup DirvishMappings
   autocmd!
   autocmd filetype dirvish nmap <buffer> q <plug>(dirvish_quit)
@@ -31,11 +27,8 @@ let g:snips_email='cyrilfahlenbock@outlook.com'
 let g:snips_github='https:github.com/Tarmean'
 nmap s <Plug>Ysurround
 nmap ss <Plug>Yssurround
-
-
 nnoremap <space>u :UndotreeToggle<cr>
 let g:undotree_SetFocusWhenToggle = 1
-
 func! Seek(line, col, syn, dir)
     let line = a:line
     let col = a:col
@@ -44,7 +37,7 @@ func! Seek(line, col, syn, dir)
       if (col == 0) || (col ==  col('$'))
           let line += a:dir
       endif
-    endwhile 
+    endwhile
     return [0, line, col, 0]
 endfunc
 func! SelectHighlight()
@@ -54,7 +47,6 @@ func! SelectHighlight()
    if cs == 0
        return
    endif
-
    let start = Seek(cl, cc, cs, -1)
    let end = Seek(cl, cc, cs, 1)
    return ['v', start, end]
@@ -80,15 +72,12 @@ func! s:dirvish_init()
     nnoremap <buffer><silent>  l :<c-u>.call dirvish#open("edit", 0)<cr>
     xnoremap <buffer><silent>  l :call dirvish#open("edit", 0)<cr>
     noremap <buffer> <cr> :
-
     nnoremap <buffer> + :e %/
     nmap <expr><buffer> <esc> v:hlsearch?":noh\<cr>":"\<Plug>(dirvish_quit)"
-
     " skip both dirvish's and my mappings because \v isn't needed for file paths
     nnoremap <buffer> / /
     nnoremap <buffer> ? ?
     cnoremap <expr><buffer> <cr> Dirvish_append_search()
-
     set ma
     sort r /[^\/]$/
 endfunc
@@ -99,25 +88,19 @@ func! Dirvish_wrap_up(path) " au */tomatically seek the directory or file when g
     call search( loc . '$')
 endfunc
 func! Dirvish_append_search()
-    let isSearch = !(getcmdtype() == "/" || getcmdtype() == "?") 
+    let isSearch = !(getcmdtype() == "/" || getcmdtype() == "?")
     let isEscaped = getcmdline() =~# '\ze[^\/]*[\/]\=\$$'
-
     if isSearch || isEscaped
         return "\<cr>"
     else
         return '\ze[^\/]*[\/]\=$'
     endif
 endfunc
-
 let g:tf_workaround= 0
-
-
 noremap ]oz :Goyo!<cr>
 noremap [oz :Goyo<cr>:IndentLinesDisable<cr>
-
 " let gutentags_ctags_tagfile=".git/tags"
 let g:gutentags_cache_dir="~/.vim/tags/"
-
 " let g:sneak#streak=1
 " let g:sneak#streak_esc = "\<esc>"
 " let g:sneak#s_next=1
@@ -129,28 +112,23 @@ let g:gutentags_cache_dir="~/.vim/tags/"
 " xmap F <Plug>Sneak_F
 " omap f <Plug>Sneak_f
 " omap F <Plug>Sneak_F
-
-
 nnoremap [w :Obsession<CR>
 nnoremap ]w :Obsession!<CR>
-
 let g:prosession_on_startup = 0
-noremap <leader>b :Prosession 
-noremap <leader>B :Createsession 
-
+noremap <leader>b :Prosession
+noremap <leader>B :Createsession
 let g:SuperTabDefaultCompletionType = 'context'
 let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
 let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', '&completefunc']
 let g:SuperTabContextDiscoverDiscovery =
             \ ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>"]
-
 let g:lightline = {
       \ 'colorscheme': 'gruvbox',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'cocstatus'], ['readonly', 'gitversion', 'filename'] ],
       \   'right': [ [ 'lineinfo', 'percent', 'modified' ],
-      \              [ 'filetype' ]] 
+      \              [ 'filetype' ]]
       \ },
       \ 'inactive': {
             \ 'left': [ ['gitversion', 'filename']],
@@ -158,7 +136,7 @@ let g:lightline = {
       \ 'component_function': {
       \   'cocstatus': 'coc#status',
       \ },
-      \ 'component': { 
+      \ 'component': {
       \   'gitversion': '%{LightLineGitversion()}',
       \   'readonly': '%{&filetype=="help"?"":&readonly?"":""}',
       \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}'},
@@ -220,7 +198,6 @@ function! s:lightline_update()
     try
         call LoadLightlineGruvbox()
         if g:colors_name =~# 'wombat\|solarized\|landscape\|jellybeans\|seoul256\|Tomorrow\|gruvbox'
-
           let g:lightline.colorscheme =
             \substitute(substitute(g:colors_name, '-', '_', 'g'), '256.*', '', '')
           call lightline#init()
@@ -230,7 +207,6 @@ function! s:lightline_update()
   catch
   endtry
 endfunction
-
 let unified_diff#executable = 'git'
 let unified_diff#arguments = [
             \   'diff', '--no-index', '--no-color', '--no-ext-diff', '--unified=0',
@@ -238,13 +214,9 @@ let unified_diff#arguments = [
 let unified_diff#iwhite_arguments = [
             \   '--ignore--all-space',
             \ ]
-
 let g:splice_prefix = "+"
-
-
 let g:calendar_google_calendar = 1
 let g:calendar_google_task = 1
-
 fun! JumpToDef()
     if exists("*GotoDefinition_" . &filetype)
         call GotoDefinition_{&filetype}()
@@ -252,12 +224,9 @@ fun! JumpToDef()
         exe "norm! \<C-]>"
     endif
 endf
-
 " Jump to tag
-
 let g:fastfold_fold_command_suffixes = []
 let g:fastfold_fold_movement_commands = []
-
 if(has('nvim'))
     command! -nargs=* Z :call Z(<f-args>)
     function! Z(...)
@@ -271,7 +240,6 @@ if(has('nvim'))
             exec 'cd ' . path
         endif
     endfunction
-
     function! s:fzf_statusline()
         " Override statusline as you like
         highlight fzf1 ctermfg=161 ctermbg=251
@@ -279,24 +247,18 @@ if(has('nvim'))
         highlight fzf3 ctermfg=237 ctermbg=251
         setlocal statusline=%#fzf1#\ >\ %#fzf2#fz%#fzf3#f
     endfunction
-
-
     let g:fzf_layout = { 'window': 'enew' }
-
     " Advanced customization using autoload functions
     func! Fzf_remap()
           command! BTags call fzf#vim#btags(<q-args>, { 'window': 'enew' })
     endfunc
-
     function! Tag_or_reload(command)
         if (&tags == '')
             call gutentags#rescan()
         endif
         execute a:command
     endfunc
-
     nnoremap <silent> <leader><leader> :call Git_dir('GitFiles')<cr>
-
     nnoremap <silent> <leader>fm :Marks<cr>
     nnoremap <silent> <leader>ff :Buffers<cr>
     nnoremap <silent> <leader>fl :BLines<cr>
@@ -306,8 +268,6 @@ if(has('nvim'))
     nnoremap <silent> <leader>fb :call Git_dir("Commits")<cr>
 endif
 au VimEnter * let g:fzf_commits_log_options = '--all --color=always '.fzf#shellescape('--format=%C(auto)%h%d %s %C(green)%cr')
-
-
 cabbrev git Git
 nnoremap <space>ga :execute 'Git add ' . expand('%:p')<CR>
 nnoremap <space>gs :Gstatus<CR>
@@ -316,7 +276,6 @@ nnoremap <space>gd :Gdiff<CR>
 nnoremap <space>ge :Gedit<CR>
 nnoremap <space>gw :Gwrite<CR><CR>
 nnoremap <silent> <leader>gb :Gblame -wccc<cr>
-
 vnoremap <space>gl :Gistory<cr>
 nnoremap <space>gl :Gistory<cr>
 command! -nargs=* -range=% Gistory call SetupGistory(<line1>, <line2>, <f-args>)
@@ -329,7 +288,7 @@ function! SetupGistory(l1, l2, ...)
         exec "0Glog -w " . join(a:000, " ")
     endif
     call SetupDiff()
-    let g:last_known = getqflist({'id':0, 'changedtick': 0, 'idx': 0}) 
+    let g:last_known = getqflist({'id':0, 'changedtick': 0, 'idx': 0})
     augroup Gistory
         au!
         autocmd TabLeave * tabc | augroup Gistory | au! | augroup END
@@ -343,7 +302,7 @@ function! QueueUpDiff()
     if exists('g:last_known') && g:last_known == getqflist({'id':0, 'changedtick': 0, 'idx': 0})
         return
     endif
-    let g:last_known = getqflist({'id':0, 'changedtick': 0, 'idx': 0}) 
+    let g:last_known = getqflist({'id':0, 'changedtick': 0, 'idx': 0})
     call feedkeys(":call SetupDiff()\<cr>", 'n')
 endfunc
 function! SetupDiff()
@@ -355,7 +314,7 @@ function! SetupDiff()
         echo "setup_diff wrong tabpagenr"
         return
     endif
-    let qf = getqflist({'idx':0, 'items': 0}) 
+    let qf = getqflist({'idx':0, 'items': 0})
     if qf['idx'] == len(qf['items'])
         let paired_buf_ident = '!^'
     else
@@ -376,8 +335,7 @@ function! SetupDiff()
     wincmd w
     cc
     exec 'Gdiffsplit ' . paired_buf_ident
-
-    silent! call NormalizeWhitespace() 
+    silent! call NormalizeWhitespace()
     wincmd w
     silent! call NormalizeWhitespace()
 endfunc
@@ -416,7 +374,7 @@ function! s:Slash(path) abort
 endfunction
 command! -bang -range=% -nargs=? Flog call LineLog(<bang>0, '<line1>', '<line2>', '<args>')
 function! LineLog(bang, top, bot, a)
-    vs 
+    vs
     let file = expand("%:p")
     let cmd = 'git log -w'
     if !empty(a:a)
@@ -448,15 +406,10 @@ function! Git_dir(command)
 endfunction
 vnoremap dp :diffput<cr>
 vnoremap do :diffget<cr>
-
 vmap <leader>r <Plug>(EasyAlign)
 nmap <leader>r <Plug>(EasyAlign)
 nmap <leader>r <Plug>(LiveEasyAlign)
 vmap <leader>r <Plug>(LiveEasyAlign)
-
-
 nnoremap <a-j> <c-e>
 nnoremap <a-k> <c-y>
-
-
 

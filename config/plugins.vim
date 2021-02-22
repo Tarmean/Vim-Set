@@ -1,4 +1,5 @@
 call plug#begin('~/vimfiles/plugged')
+Plug 'Tarmean/Gistory'
 Plug 'guns/vim-sexp'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'tpope/vim-surround'
@@ -12,7 +13,6 @@ Plug 'kana/vim-textobj-indent'
 Plug 'kana/vim-textobj-line'
 Plug 'kana/vim-textobj-entire'
 Plug 'Julian/vim-textobj-variable-segment'
-Plug 'Tarmean/Gistory'
 if !exists('g:vscode')
     Plug 'puremourning/vimspector'
     Plug 'tpope/vim-fireplace'
