@@ -377,7 +377,6 @@ function! SetupDiff()
     cc
     exec 'Gdiffsplit ' . paired_buf_ident
 
-
     silent! call NormalizeWhitespace() 
     wincmd w
     silent! call NormalizeWhitespace()
@@ -461,55 +460,3 @@ nnoremap <a-k> <c-y>
 
 
 
-function! GitBuf(object, title)
-    let g:command = "Gread " . a:object
-    exec g:command
-    exec "set ft=" . expand("%:e", a:title) 
-    retab
-    silent! call NormalizeWhiteSpace()
-    sleep 100m
-    diffthis
-    exec "file " . a:title
-    setlocal buftype=nofile
-    setlocal bufhidden=wipe
-    setlocal noswapfile
-endfunction
-
-let g:diff_view_buffer = {}
-function! DiffViewFor(path, title)
-    if (has_key(g:diff_view_buffer, a:path) && bufexists(g:diff_view_buffer[a:path]))
-        echom "cached " . a:path . " => " . g:diff_view_buffer[a:path]
-        exec "b " . g:diff_view_buffer[a:path]
-        return
-    endif
-    call GitBuf(a:path, a:title)
-    let g:diff_view_buffer[a:path] = bufnr()
-endfunc
- 
-command! ThreeWay call DiffView()
-function! DiffView()
-    let s:current_file=expand('%:p')
-    let s:title=expand('%:t')
-    let s:past = ":1:" . s:current_file
-    let s:me = ":2:" . s:current_file
-    let s:you = ":3:" . s:current_file
-    let s:future = s:current_file
-
-    exec "tabnew"
-    call DiffViewFor(s:you, "you " . s:title)
-    wincmd v
-    enew
-    call DiffViewFor(s:me, "me " . s:title)
-
-    exec "tabnew"
-    call DiffViewFor(s:past, "past " . s:title)
-    wincmd v
-    enew
-    call DiffViewFor(s:me, "me " . s:title)
-
-    exec "tabnew"
-    call DiffViewFor(s:past, "past " . s:title)
-    wincmd v
-    enew
-    call DiffViewFor(s:you, "you " . s:title)
-endfunction
