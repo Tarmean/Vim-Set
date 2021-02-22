@@ -1,6 +1,9 @@
 let mapleader = "\<space>"
 let maplocalleader = ","
 
+auto Filetype clojure nmap cii yaf]][[%opc!!
+auto Filetype clojure nmap K <Plug>FireplaceK
+
 map <f1> <esc>
 tnoremap <s-space> <space>
 cnoremap term Term
@@ -291,3 +294,26 @@ function! SourceVimscript(type)
   let &selection = sel_save
   let @" = reg_save
 endfunction
+
+
+function! OnBuffEnter()
+  let l:new_buf = bufnr()
+  if (exists("g:last_buffer"))
+    execute g:last_buf . "b"
+    diffoff
+    execute l:new_buf . "b"
+  endif
+  let g:last_buf = l:new_buf
+  if (exists("g:diff_buf"))
+      exec g:diff_buf."bw"
+  endif
+  vert new | diffthis | set buftype=nofile|read ++edit # | 0d_
+  let g:diff_buf = bufnr()
+  wincmd p
+  diffthis
+endfunction
+augroup diffing
+  au!
+  " au BufEnter * call OnBuffEnter()
+  " au BufWritePost * call OnBuffEnter()
+augroup END
