@@ -40,7 +40,7 @@ if !exists('g:vscode')
     " Plug 'roryokane/detectindent'
     " Plug 'vim-vdebug/vdebug'
     Plug 'lumiliet/vim-twig'
-    Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': 'yarn install --melted-icecream-lockfile'}
     Plug 'idris-hackers/idris-vim'
     Plug 'equalsraf/neovim-gui-shim'
     Plug 'Tarmean/multi'
