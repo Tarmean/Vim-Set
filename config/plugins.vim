@@ -1,5 +1,4 @@
 call plug#begin('~/vimfiles/plugged')
-Plug 'kien/rainbow_parentheses.vim'
 Plug 'guns/vim-sexp'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'tpope/vim-surround'
@@ -41,7 +40,7 @@ if !exists('g:vscode')
     " Plug 'roryokane/detectindent'
     " Plug 'vim-vdebug/vdebug'
     Plug 'lumiliet/vim-twig'
-    Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc.nvim', {'branch': 'release', 'do': 'yarn install --frozen-lockfile'}
     Plug 'idris-hackers/idris-vim'
     Plug 'equalsraf/neovim-gui-shim'
     Plug 'Tarmean/multi'
