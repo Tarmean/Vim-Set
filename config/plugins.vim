@@ -20,7 +20,7 @@ if !exists('g:vscode')
     Plug 'tpope/vim-repeat'
     if has('windows')
         let g:python_host_prog="C:\\Python27\\python.exe"
-        let g:python3_host_prog="C:\\Python38\\python.exe"
+        let g:python3_host_prog="C:\\Python37\\python3.exe"
     else
         let g:python3_host_prog="/usr/bin/python3"
         let g:python_host_prog="/usr/bin/python2"
@@ -32,7 +32,7 @@ if !exists('g:vscode')
     Plug 'Tarmean/CsvHack.vim'
     Plug 'dhruvasagar/vim-table-mode', { 'on':  ['TableModeEnable', 'TableModeRealign'] }
     Plug 'FooSoft/vim-argwrap'
-    " Plug 'jiangmiao/auto-pairs'
+    Plug 'jiangmiao/auto-pairs'
     Plug 'yaymukund/vim-haxe'
     " Plug 'rayburgemeestre/phpfolding.vim'
     Plug '2072/PHP-Indenting-for-VIm'
