@@ -377,6 +377,7 @@ function! SetupDiff()
     cc
     exec 'Gdiffsplit ' . paired_buf_ident
 
+
     silent! call NormalizeWhitespace() 
     wincmd w
     silent! call NormalizeWhitespace()
@@ -465,7 +466,7 @@ function! GitBuf(object, title)
     exec g:command
     exec "set ft=" . expand("%:e", a:title) 
     retab
-    norm ,fie
+    silent! call NormalizeWhiteSpace()
     sleep 100m
     diffthis
     exec "file " . a:title
