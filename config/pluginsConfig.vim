@@ -86,6 +86,7 @@ func! Dirvish_wrap_up(path) " au */tomatically seek the directory or file when g
     silent! execute "Dirvish " . a:path
     " execute "lcd ".a:path
     call search( loc . '$')
+    silent! exec "lcd " .a:path
 endfunc
 func! Dirvish_append_search()
     let isSearch = !(getcmdtype() == "/" || getcmdtype() == "?")
