@@ -19,7 +19,7 @@ if !exists('g:vscode')
     Plug 'tpope/vim-repeat'
     if has('windows')
         let g:python_host_prog="C:\\Python27\\python.exe"
-        let g:python3_host_prog="C:\\Python37\\python3.exe"
+        let g:python3_host_prog="C:\\Python38\\python.exe"
     else
         let g:python3_host_prog="/usr/bin/python3"
         let g:python_host_prog="/usr/bin/python2"
@@ -45,8 +45,8 @@ if !exists('g:vscode')
     Plug 'equalsraf/neovim-gui-shim'
     Plug 'Tarmean/multi'
     if (has('python3'))
-        Plug 'SirVer/ultisnips'
-        Plug 'honza/vim-snippets'
+        " Plug 'SirVer/ultisnips'
+        " Plug 'honza/vim-snippets'
     endif
     Plug 'Tarmean/multi'
     " Plug 'ervandew/supertab'

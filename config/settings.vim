@@ -13,7 +13,7 @@ let hs_allow_hash_operator=1
 
 " don't give |ins-completion-menu| messages.
 set mouse +=a
-set background=dark
+set background=light
 set cmdheight=2
 set shortmess+=c
 set inccommand=nosplit

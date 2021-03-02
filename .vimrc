@@ -3,6 +3,7 @@ source ~/vimfiles/config/plugins.vim
 source ~/vimfiles/config/settings.vim
 source ~/vimfiles/config/keybindings.vim
 source ~/vimfiles/config/pluginsconfig.vim
+set diffopt+=iwhiteall
 if !exists('g:vscode')
     source ~/vimfiles/config/cocconfig.vim
 else

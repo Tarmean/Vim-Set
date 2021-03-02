@@ -28,6 +28,7 @@ function! HighlightWord()
     let @/ = '\<' . expand('<cword>') . '\>'
     call feedkeys(":setlocal hls\r", 'n')
 endfunc
+nnoremap ' :Rg =expand("<cword>")<cr><cr>
 function! s:BufferConfig()
     " Remap keys for gotos
     nmap <buffer> <silent> gd <Plug>(coc-definition)
@@ -55,10 +56,10 @@ function! s:check_back_space() abort
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 augroup CocBufferConfig 
-    autocmd!
+    au!
     au FileType * call s:BufferConfig()
-    autocmd CursorHold  * silent call CocActionAsync('highlight')
-augroup end
+    au CursorHold * silent! call CocActionAsync('highlight')
+augroup END
 
 
 " Remap for format selected region
@@ -70,7 +71,7 @@ augroup mygroup
   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
   " Update signature help on jump placeholder
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
+augroup END
 
 
 " Use `:Format` to format current buffer

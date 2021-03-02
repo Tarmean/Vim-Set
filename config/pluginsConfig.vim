@@ -17,6 +17,8 @@ endif
 augroup DirvishMappings
   autocmd!
   autocmd filetype dirvish nmap <buffer> q <plug>(dirvish_quit)
+  autocmd filetype dirvish  exec "lcd " .expand("%:p")
+    
   " autocmd bufreadpost fugitive://* set bufhidden=wipe
   autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
   autocmd BufReadPost quickfix nnoremap <buffer> J :cnext<cr>
@@ -86,7 +88,6 @@ func! Dirvish_wrap_up(path) " au */tomatically seek the directory or file when g
     silent! execute "Dirvish " . a:path
     " execute "lcd ".a:path
     call search( loc . '$')
-    silent! exec "lcd " .a:path
 endfunc
 func! Dirvish_append_search()
     let isSearch = !(getcmdtype() == "/" || getcmdtype() == "?")
@@ -414,3 +415,10 @@ vmap <leader>r <Plug>(LiveEasyAlign)
 nnoremap <a-j> <c-e>
 nnoremap <a-k> <c-y>
 
+function! s:in_root(e)
+  let old = getcwd()
+  exec "cd " . FugitiveExtractGitDir(expand('%:p')) . "/.."
+  exec a:e
+  exec "cd " . l:old
+endfunc
+command!      -bang -nargs=* Rg  call s:in_root('call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case -- ".shellescape(<q-args>), 1, fzf#vim#with_preview(), <bang>0)')

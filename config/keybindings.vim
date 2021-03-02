@@ -25,6 +25,10 @@ nnoremap <up> <c-w>-
 nnoremap <down> <c-w>+
 nnoremap <left> <c-w><
 nnoremap <right> <c-w>>
+nnoremap <a-h> 20zh
+nnoremap <a-l> 20zl
+nnoremap <a-j> 8<c-e>
+nnoremap <a-k> 8<c-y>
 
 tnoremap <c-v> <c-\><c-n>"+pi
 if (has('nvim'))
