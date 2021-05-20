@@ -84,8 +84,8 @@ func! s:dirvish_init()
     sort r /[^\/]$/
 endfunc
 func! Dirvish_wrap_up(path) " au */tomatically seek the directory or file when going up
-    let loc = escape(substitute(expand("%:p"), '/', '\', 'g'), '\')
     silent! execute "Dirvish " . a:path
+    let loc = escape(substitute(expand("%:p"), '/', '\', 'g'), '\')
     " execute "lcd ".a:path
     call search( loc . '$')
 endfunc
@@ -101,29 +101,8 @@ endfunc
 let g:tf_workaround= 0
 noremap ]oz :Goyo!<cr>
 noremap [oz :Goyo<cr>:IndentLinesDisable<cr>
-" let gutentags_ctags_tagfile=".git/tags"
-let g:gutentags_cache_dir="~/.vim/tags/"
-" let g:sneak#streak=1
-" let g:sneak#streak_esc = "\<esc>"
-" let g:sneak#s_next=1
-" let g:sneak#textobj_z=0
-" let g:sneak#use_ic_scs = 1
-" nmap f <Plug>Sneak_f
-" lmap F <Plug>Sneak_F
-" xmap f <Plug>Sneak_f
-" xmap F <Plug>Sneak_F
-" omap f <Plug>Sneak_f
-" omap F <Plug>Sneak_F
-nnoremap [w :Obsession<CR>
-nnoremap ]w :Obsession!<CR>
 let g:prosession_on_startup = 0
-noremap <leader>b :Prosession
-noremap <leader>B :Createsession
-let g:SuperTabDefaultCompletionType = 'context'
-let g:SuperTabCompletionContexts = ['s:ContextText', 's:ContextDiscover']
-let g:SuperTabContextTextOmniPrecedence = ['&omnifunc', '&completefunc']
-let g:SuperTabContextDiscoverDiscovery =
-            \ ["&completefunc:<c-x><c-u>", "&omnifunc:<c-x><c-o>"]
+
 let g:lightline = {
       \ 'colorscheme': 'gruvbox',
       \ 'active': {
@@ -189,7 +168,6 @@ augroup PluginAutocomands
     autocmd!
     autocmd User GoyoEnter Limelight
     autocmd User GoyoLeave Limelight!
-    " autocmd BufReadPost * DetectIndent
     autocmd User FzfStatusLine call <SID>fzf_statusline()
     autocmd ColorScheme * call s:lightline_update()
 augroup END
@@ -209,16 +187,6 @@ function! s:lightline_update()
   catch
   endtry
 endfunction
-let unified_diff#executable = 'git'
-let unified_diff#arguments = [
-            \   'diff', '--no-index', '--no-color', '--no-ext-diff', '--unified=0',
-            \ ]
-let unified_diff#iwhite_arguments = [
-            \   '--ignore--all-space',
-            \ ]
-let g:splice_prefix = "+"
-let g:calendar_google_calendar = 1
-let g:calendar_google_task = 1
 fun! JumpToDef()
     if exists("*GotoDefinition_" . &filetype)
         call GotoDefinition_{&filetype}()
@@ -226,9 +194,6 @@ fun! JumpToDef()
         exe "norm! \<C-]>"
     endif
 endf
-" Jump to tag
-let g:fastfold_fold_command_suffixes = []
-let g:fastfold_fold_movement_commands = []
 if(has('nvim'))
     command! -nargs=* Z :call Z(<f-args>)
     function! Z(...)
@@ -280,100 +245,7 @@ nnoremap <space>gw :Gwrite<CR><CR>
 nnoremap <silent> <leader>gb :Gblame -wccc<cr>
 vnoremap <space>gl :Gistory<cr>
 nnoremap <space>gl :Gistory<cr>
-command! -nargs=* -range=% Gistory call SetupGistory(<line1>, <line2>, <f-args>)
-function! SetupGistory(l1, l2, ...)
-    tab split
-    let t:diff_tab = tabpagenr()
-    if (a:l1 != 1) || (a:l2 != line("$"))
-        exec a:l1 . "," . a:l2 . "Glog -w " . join(a:000, " ")
-    else
-        exec "0Glog -w " . join(a:000, " ")
-    endif
-    call SetupDiff()
-    let g:last_known = getqflist({'id':0, 'changedtick': 0, 'idx': 0})
-    augroup Gistory
-        au!
-        autocmd TabLeave * tabc | augroup Gistory | au! | augroup END
-        autocmd BufEnter  * call QueueUpDiff()
-        autocmd CursorMoved  * call QueueUpDiff()
-    augroup END
-endfunc
-" nnoremap ]q :cnext<cr>:call SetupDiff()<cr>
-" nnoremap [q :cprev<cr>:call SetupDiff()<cr>
-function! QueueUpDiff()
-    if exists('g:last_known') && g:last_known == getqflist({'id':0, 'changedtick': 0, 'idx': 0})
-        return
-    endif
-    let g:last_known = getqflist({'id':0, 'changedtick': 0, 'idx': 0})
-    call feedkeys(":call SetupDiff()\<cr>", 'n')
-endfunc
-function! SetupDiff()
-    if !exists("t:diff_tab")
-        echo "2"
-        return
-    endif
-    if t:diff_tab != tabpagenr()
-        echo "setup_diff wrong tabpagenr"
-        return
-    endif
-    let qf = getqflist({'idx':0, 'items': 0})
-    if qf['idx'] == len(qf['items'])
-        let paired_buf_ident = '!^'
-    else
-        let paired_buf = qf['items'][qf['idx']]['bufnr']
-        let paired_buf_name = bufname(paired_buf)
-        let paired_fug_data = FugitiveBufferIdent(paired_buf_name)
-        if len(paired_fug_data) != 0
-            let paired_buf_path = s:Slash(paired_fug_data[1][0:-6] . paired_fug_data[3])
-            let paired_buf_ident = paired_fug_data[2] . ':' . paired_buf_path
-            let g:ident = paired_buf_ident
-        else
-            let g:last_known = getqflist({'id':0, 'changedtick': 0, 'idx': 0})
-            return
-        endif
-    endif
-    only
-    cw
-    wincmd w
-    cc
-    exec 'Gdiffsplit ' . paired_buf_ident
-    silent! call NormalizeWhitespace()
-    wincmd w
-    silent! call NormalizeWhitespace()
-endfunc
-function! NormalizeWhitespace()
-    let oldmodifiable = &modifiable
-    let oldreadonly = &readonly
-    let oldwinid = win_getid()
-    set modifiable
-    set noreadonly
-    let buf = getline(1, '$')
-    let ft= &ft
-    vsplit enew
-    call setline(1, buf)
-    let &ft = ft
-    sleep 100m
-    retab
-    sleep 10m
-    %s/^\s*\n\|\s*$//
-    sleep 10m
-    call CocAction("format")
-    let buf = getline(1, '$')
-    bw!
-    0,$d
-    call setline(1, buf)
-    set nomodified
-    let &modifiable = oldmodifiable
-    let &readonly = oldreadonly
-    call win_gotoid(oldwinid)
-endfunc
-function! s:Slash(path) abort
-  if exists('+shellslash')
-    return tr(a:path, '\', '/')
-  else
-    return a:path
-  endif
-endfunction
+
 command! -bang -range=% -nargs=? Flog call LineLog(<bang>0, '<line1>', '<line2>', '<args>')
 function! LineLog(bang, top, bot, a)
     vs
@@ -421,4 +293,6 @@ function! s:in_root(e)
   exec a:e
   exec "cd " . l:old
 endfunc
+command! -nargs=* InRoot call s:in_root(<q-args>)
 command!      -bang -nargs=* Rg  call s:in_root('call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case -- ".shellescape(<q-args>), 1, fzf#vim#with_preview(), <bang>0)')
+let g:fzf_preview_window = []

@@ -42,23 +42,23 @@ function! s:BufferConfig()
             au!
         augroup END
     endif
-    inoremap <buffer> <silent><expr> <TAB>
-          \ pumvisible() ? "\<C-n>" :
-          \ <SID>check_back_space() ? "\<TAB>" :
-          \ coc#refresh()
-    inoremap <buffer> <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+    inoremap <silent><expr> <TAB>
+		  \ pumvisible() ? "\<C-n>" :
+		  \ <SID>check_back_space() ? "\<TAB>" :
+		  \ coc#refresh()
 endfunc
-let g:coc_snippet_next = '<c-j>'
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
+let g:coc_snippet_next = '<c-j>'
+
 augroup CocBufferConfig 
     au!
     au FileType * call s:BufferConfig()
-    au CursorHold * silent! call CocActionAsync('highlight')
+    au CocBufferConfig CursorHold * silent! call CocActionAsync('highlight')
 augroup END
 
 

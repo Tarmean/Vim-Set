@@ -6,21 +6,6 @@ auto Filetype clojure nmap K <Plug>FireplaceK
 
 map <f1> <esc>
 tnoremap <s-space> <space>
-cnoremap term Term
-command! -nargs=? Term call OpenTerm(<q-args>)
-func! OpenTerm(args)
-    let l:oldcd = getcwd()
-    exec "cd " . expand("%:p:h")
-    if (has('unix'))
-        exec "term zsh " 
-    else
-        exec "term powershell"
-    endif
-    if (type(a:args) == type("") && a:args != "")
-        call feedkeys("i" . a:args . "Ö")
-    endif
-    exec "cd " . l:oldcd
-endfunction
 nnoremap <up> <c-w>-
 nnoremap <down> <c-w>+
 nnoremap <left> <c-w><
@@ -31,16 +16,55 @@ nnoremap <a-j> 8<c-e>
 nnoremap <a-k> 8<c-y>
 
 tnoremap <c-v> <c-\><c-n>"+pi
+
 if (has('nvim'))
-    let g:close_term = v:true
-    command! TermCloseNot let g:close_term = v:false
+    command! -nargs=? -bang Autoreload call Autoreload("<bang>", "<args>")
+    function! Autoreload(disabled, command)
+        augroup HaskellReload
+            au!
+            if (""==a:disabled)
+               exec "au BufWritePost <buffer> call s:ReloadHaskell('" . a:command . "')"
+            endif
+        augroup END
+    endfunc
+    function! s:ReloadHaskell(arg)
+         let l:arg = a:arg == "" ? ":r" : a:arg
+        call feedkeys(":call TermToggle('insert')\<cr>" . l:arg . "\<cr>\<C-\>\<C-n>:call GotoOldWin(v:false)\<cr>")
+    endfunc
     nnoremap ö :call TermToggle('insert')<cr>
     noremap Ö :call TermToggle('normal')<cr>
-    tnoremap ö <C-\><C-n>:call TermClose(v:true)<cr>
+    tnoremap ö <C-\><C-n>:call GotoOldWin(v:false)<cr>
     tnoremap Ö <C-\><C-n>
+
+    cnoremap term Term
+    command! -nargs=? RTerm call s:root_term(<q-args>)
+    func! s:root_term(arg)
+        vsplit
+        exec "InRoot Term! " . a:arg
+        SetCurrentTerm
+    endfunc
+    command! PHPShell RTerm php -a -d auto_prepend_file=bootstrap_application.php
+
+
+    command! -bang -nargs=? Term call OpenTerm("<bang>", <q-args>)
+    func! OpenTerm(bang, args)
+        let l:oldcd = getcwd()
+        if a:bang == ""
+            exec "cd " . expand("%:p:h")
+        end
+        if (has('unix'))
+            exec "term zsh " 
+        else
+            exec "term powershell"
+        endif
+        if (type(a:args) == type("") && a:args != "")
+            call feedkeys("i" . a:args . "Ö")
+        endif
+        exec "cd " . l:oldcd
+    endfunction
     func! GotoOldWin(close_cur)
         let [tab, win] = win_id2tabwin(g:old_win)
-        let close = a:close_cur && (tabpagenr() == tab) && g:close_term
+        let close = a:close_cur && (tabpagenr() == tab)
         if close
             let term_wins = win_findbuf(g:cur_term)
             for i in term_wins
@@ -53,7 +77,7 @@ if (has('nvim'))
             exec win . "wincmd w"
         endif
     endfunc
-
+    command! SetCurrentTerm let g:cur_term=bufnr("")
 
     func! CurTerm()
         vs
@@ -63,7 +87,7 @@ if (has('nvim'))
         if (exists("g:cur_term")&&bufexists(g:cur_term))
             if(g:cur_term == bufnr(""))
                 if a:arg == 'insert'
-                    call TermClose(v:true)
+                    call GotoOldWin(v:true)
                 else
                     call GotoOldWin(v:false)
                 endif
@@ -79,15 +103,12 @@ if (has('nvim'))
         else
             let g:old_win = win_getid()
             vs
-            call OpenTerm(0)
+            call OpenTerm("", 0)
             let g:cur_term = bufnr("$")
         endif
         if a:arg == 'insert' 
             norm! i 
         endif
-    endfunc
-    func! TermClose(active)
-        call GotoOldWin(v:true)
     endfunc
 endif
 
@@ -257,7 +278,6 @@ fun! DoAg(pat, args)
 endfun
 command!      -bang -nargs=* Ag  call DoAg(<q-args>, <bang>0)
 " command!      -bang -nargs=* Agl  call fzf#vim#ag(<q-args>, <bang>0)
-silent nmap <leader>s :Ag =expand('<cword>')<cr><cr>
 nnoremap <silent> <leader>a :ArgWrap<CR>
 function! Pulse() " {{{
     redir => old_hi
