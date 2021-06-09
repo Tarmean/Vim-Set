@@ -28,6 +28,7 @@ function! HighlightWord()
     let @/ = '\<' . expand('<cword>') . '\>'
     call feedkeys(":setlocal hls\r", 'n')
 endfunc
+nnoremap ' :Rg =expand("<cword>")<cr><cr>
 function! s:BufferConfig()
     " Remap keys for gotos
     nmap <buffer> <silent> gd <Plug>(coc-definition)
@@ -41,24 +42,24 @@ function! s:BufferConfig()
             au!
         augroup END
     endif
-    inoremap <buffer> <silent><expr> <TAB>
-          \ pumvisible() ? "\<C-n>" :
-          \ <SID>check_back_space() ? "\<TAB>" :
-          \ coc#refresh()
-    inoremap <buffer> <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+    inoremap <silent><expr> <TAB>
+		  \ pumvisible() ? "\<C-n>" :
+		  \ <SID>check_back_space() ? "\<TAB>" :
+		  \ coc#refresh()
 endfunc
-let g:coc_snippet_next = '<c-j>'
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
+let g:coc_snippet_next = '<c-j>'
+
 augroup CocBufferConfig 
-    autocmd!
+    au!
     au FileType * call s:BufferConfig()
-    autocmd CursorHold  * silent call CocActionAsync('highlight')
-augroup end
+    au CocBufferConfig CursorHold * silent! call CocActionAsync('highlight')
+augroup END
 
 
 " Remap for format selected region
@@ -70,7 +71,7 @@ augroup mygroup
   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
   " Update signature help on jump placeholder
   autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
+augroup END
 
 
 " Use `:Format` to format current buffer

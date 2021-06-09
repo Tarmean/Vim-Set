@@ -13,7 +13,7 @@ let hs_allow_hash_operator=1
 
 " don't give |ins-completion-menu| messages.
 set mouse +=a
-set background=dark
+set background=light
 set cmdheight=2
 set shortmess+=c
 set inccommand=nosplit
@@ -103,7 +103,7 @@ if has("autocmd")
 
   augroup vimrcEx
   au!
-      autocmd filetype haskell set shiftwidth=2 tabstop=2
+      " autocmd filetype haskell set shiftwidth=2 tabstop=2
 
       " When    editing a file, always jump to the last known cursor position.
       " Don't do it when the position is invalid or when inside an event handler
