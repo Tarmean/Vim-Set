@@ -18,8 +18,8 @@ if !exists('g:vscode')
     Plug 'tpope/vim-fireplace'
     Plug 'tpope/vim-repeat'
     if has('windows')
-        let g:python_host_prog="C:\\Python27\\python.exe"
-        let g:python3_host_prog="C:\\Python37\\python3.exe"
+        " let g:python_host_prog="C:\\Python27\\python.exe"
+        let g:python3_host_prog="C:\\Python39\\python.exe"
     else
         let g:python3_host_prog="/usr/bin/python3"
         let g:python_host_prog="/usr/bin/python2"
