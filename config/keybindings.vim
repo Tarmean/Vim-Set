@@ -37,13 +37,15 @@ if (has('nvim'))
     tnoremap Ö <C-\><C-n>
 
     cnoremap term Term
-    command! -nargs=? RTerm call s:root_term(<q-args>)
-    func! s:root_term(arg)
+    command! -bang -nargs=? RTerm call s:root_term("<bang>", <q-args>)
+    func! s:root_term(bang, arg)
         vsplit
+        if a:bang != ""
+            ActiveTerm
+        endif
         exec "InRoot Term! " . a:arg
-        SetCurrentTerm
     endfunc
-    command! PHPShell RTerm php -a -d auto_prepend_file=bootstrap_application.php
+    command! -bang PHPShell RTerm<bang> php -a -d auto_prepend_file=bootstrap_application.php
 
 
     command! -bang -nargs=? Term call OpenTerm("<bang>", <q-args>)
@@ -77,7 +79,7 @@ if (has('nvim'))
             exec win . "wincmd w"
         endif
     endfunc
-    command! SetCurrentTerm let g:cur_term=bufnr("")
+    command! ActiveTerm let g:cur_term=bufnr("")
 
     func! CurTerm()
         vs
@@ -268,7 +270,6 @@ fun! JumpToDef()
     exe "norm! \<C-]>"
   endif
 endf
-silent noremap <silent><leader><s-a> <c-t>zMzvzz15<c-e>zz:silent Pulse<cr>
 fun! DoAg(pat, args)
     if a:args
         call fzf#vim#ag(a:pat)

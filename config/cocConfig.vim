@@ -85,13 +85,13 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
 nnoremap <silent> <a-cr>  :<C-u>CocList actions<cr>
-nnoremap <silent> <localleader>d  :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <localleader>s  :<C-u>CocList diagnostics<cr>
 " Manage extensions
 nnoremap <silent> <localleader>e  :<C-u>CocList extensions<cr>
 " Show commands
 nnoremap <silent> <localleader>c  :<C-u>CocList commands<cr>
 " Find symbol of current document
-nnoremap <silent> <localleader>s  :<C-u>CocList outline<cr>
+nnoremap <silent> <leader>d  :<C-u>CocList outline<cr>
 " Search workspace symbols
 " nnoremap <silent> <localleader>s  :<C-u>CocList -I symbols<cr>
 " Do default action for next item.
@@ -185,3 +185,66 @@ func! SetupAgda()
     " nnoremap <buffer> <silent> <C-y>  2h:let _s=@/<CR>? {!\\| \?<CR>:let @/=_s<CR>2l
     " inoremap <buffer> <silent> <C-y>  <C-o>2h<C-o>:let _s=@/<CR><C-o>? {!\\| \?<CR><C-o>:let @/=_s<CR><C-o>2l
 endfunc
+
+nnoremap <silent> [C :CocFirst
+nnoremap <silent> [c :CocPrev
+nnoremap <silent> ]c :CocNext
+nnoremap <silent> ]C :CocLast
+
+" " <leader>d to perform a pattern match, <leader>n to fill a hole
+" augroup HaskellMappings
+"     au!
+"     au Filetype haskell call s:WingmanConfig()
+" augroup END
+
+" function s:WingmanConfig()
+"     if (exists("b:loaded"))
+"         return
+"     endif
+"     nnoremap <buffer> <silent> <leader>d  :<C-u>set operatorfunc=<SID>WingmanDestruct<CR>g@vl
+"     nnoremap <buffer> <silent> <leader>D  :<C-u>set operatorfunc=<SID>WingmanDestructAll<CR>g@vl
+"     nnoremap <buffer> <silent> <leader>A  :<C-u>set operatorfunc=<SID>WingmanFillHole<CR>g@vl
+"     nnoremap <buffer> <silent> <leader>a  :<C-u>set operatorfunc=<SID>WingmanRefine<CR>g@l
+"     nnoremap <buffer> <silent> <leader>s  :<C-u>set operatorfunc=<SID>WingmanUseCtor<CR>g@vl
+"     unmap <buffer> <tab>
+"     nmap <buffer> <silent> <tab>  v<Plug>(coc-codeaction-selected)
+"     let b:loaded = 1
+" endfunc
+
+
+" function! s:JumpToNextHole()
+"   call CocActionAsync('diagnosticNext', 'hint')
+" endfunction
+
+" function! s:GotoNextHole()
+"   " wait for the hole diagnostics to reload
+"   sleep 500m
+"   " and then jump to the next hole
+"   normal 0
+"   call <SID>JumpToNextHole()
+" endfunction
+
+" function! s:WingmanRefine(type)
+"   call CocAction('codeAction', a:type, ['refactor.wingman.refine'])
+"   call <SID>GotoNextHole()
+" endfunction
+
+" function! s:WingmanDestruct(type)
+"   call CocAction('codeAction', a:type, ['refactor.wingman.caseSplit'])
+"   call <SID>GotoNextHole()
+" endfunction
+
+" function! s:WingmanDestructAll(type)
+"   call CocAction('codeAction', a:type, ['refactor.wingman.splitFuncArgs'])
+"   call <SID>GotoNextHole()
+" endfunction
+
+" function! s:WingmanFillHole(type)
+"   call CocAction('codeAction', a:type, ['refactor.wingman.fillHole'])
+"   call <SID>GotoNextHole()
+" endfunction
+
+" function! s:WingmanUseCtor(type)
+"   call CocAction('codeAction', a:type, ['refactor.wingman.useConstructor'])
+"   call <SID>GotoNextHole()
+" endfunction

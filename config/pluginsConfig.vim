@@ -229,6 +229,7 @@ if(has('nvim'))
     nnoremap <silent> <leader>fm :Marks<cr>
     nnoremap <silent> <leader>ff :Buffers<cr>
     nnoremap <silent> <leader>fl :BLines<cr>
+    nnoremap <silent> <leader>fd :Buffers term://<cr>
     nnoremap <silent> <leader>fw :Windows<cr>
     nnoremap <silent> <leader>fs :History<cr>
     nnoremap <silent> <leader>fc :call Git_dir("Commits")<cr>
@@ -294,5 +295,19 @@ function! s:in_root(e)
   exec "cd " . l:old
 endfunc
 command! -nargs=* InRoot call s:in_root(<q-args>)
-command!      -bang -nargs=* Rg  call s:in_root('call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case -- ".shellescape(<q-args>), 1, fzf#vim#with_preview(), <bang>0)')
+function! s:rg_in_root(args, bang)
+      let old = getcwd()
+      let pat = a:args
+      let cmd = "rg --column --line-number --no-heading --color=always --smart-case "
+      while (l:pat[0] == '-')
+          let head = matchstr(l:pat, "-\\S\\+\\s*")
+          let pat = pat[len(l:head):]
+          let cmd = l:cmd . " " . l:head
+      endwhile
+      let cmd = l:cmd . " -- "
+      exec "cd " . FugitiveExtractGitDir(expand('%:p')) . "/.."
+      call fzf#vim#grep(l:cmd . '"' . escape(l:pat, "\"'")  . '"', 1, fzf#vim#with_preview(),  a:bang )
+      exec "cd " . l:old
+endfunc
+command!      -bang -nargs=* Rg  call s:rg_in_root(<q-args>, <bang>0)
 let g:fzf_preview_window = []
