@@ -74,7 +74,7 @@ func! s:dirvish_init()
     nnoremap <buffer><silent>  l :<c-u>.call dirvish#open("edit", 0)<cr>
     xnoremap <buffer><silent>  l :call dirvish#open("edit", 0)<cr>
     noremap <buffer> <cr> :
-    nnoremap <buffer> + :e %/
+    nnoremap <buffer> + :e %
     nmap <expr><buffer> <esc> v:hlsearch?":noh\<cr>":"\<Plug>(dirvish_quit)"
     " skip both dirvish's and my mappings because \v isn't needed for file paths
     nnoremap <buffer> / /
@@ -302,6 +302,9 @@ function! s:rg_in_root(args, bang)
       while (l:pat[0] == '-')
           let head = matchstr(l:pat, "-\\S\\+\\s*")
           let pat = pat[len(l:head):]
+          if (l:head[:3] == '-- ')
+              break
+          endif
           let cmd = l:cmd . " " . l:head
       endwhile
       let cmd = l:cmd . " -- "
