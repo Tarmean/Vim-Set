@@ -107,10 +107,10 @@ omap af <Plug>(coc-funcobj-a)
 
 
 " Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+nnoremap <silent> K :call cocConfig#show_documentation()<CR>
 
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
+function! cocConfig#show_documentation()
+  if (index(['help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
   else
     call CocAction('doHover')
@@ -248,3 +248,59 @@ nnoremap <silent> ]C :CocLast
 "   call CocAction('codeAction', a:type, ['refactor.wingman.useConstructor'])
 "   call <SID>GotoNextHole()
 " endfunction
+"
+"
+lua << LUA_END
+my_namespace78 = {}
+function my_namespace78.setup_path()
+  local split_paths = vim.split(package.path, ";")
+
+  local paths = {}
+  for _, v in ipairs(split_paths) do
+    table.insert(paths, vim.fn.fnamemodify(v, ":p:h"))
+  end
+
+  local concat_paths = table.concat(paths, ",")
+
+  -- TODO: Make sure we don't put this in over and over and over...
+  vim.bo.path = concat_paths .. "," .. vim.o.path
+end
+function my_namespace78.get_lua_runtime()
+	my_namespace78.setup_path()
+	local result = {};
+	for _, path in pairs(vim.api.nvim_list_runtime_paths()) do
+		local lua_path = path .. "/lua/";
+		if vim.fn.isdirectory(lua_path) then
+			result[lua_path] = true
+		end
+	end
+
+	-- This loads the `lua` files from nvim into the runtime.
+	result[vim.fn.expand("$VIMRUNTIME/lua")] = true
+
+	-- TODO: Figure out how to get these to work...
+	--  Maybe we need to ship these instead of putting them in `src`?...
+	result[vim.fn.expand("~/Neovim/share/nvim/runtime/lua/")] = true
+
+	return result;
+end
+LUA_END
+
+call coc#config('Lua', {
+    \              "workspace": {
+    \                   "library": v:lua.my_namespace78.get_lua_runtime(),
+    \                   "maxPreload": 1000,
+    \                   "preloadFileSize": 1000
+    \               },
+    \               "runtime": {
+    \                   "version": "Lua 5.1"
+    \               },
+    \               "diagnostics": {
+    \                   "enable": v:true,
+    \                   "globals": ["hs", "vim", "it", "describe", "before_each", "after_each"],
+    \                   "disable": ["lowercase-global"]
+    \               },
+    \               "completion": {
+    \                   "keywordSnippet": "Disable"
+    \               }
+  \})

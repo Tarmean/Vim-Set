@@ -1,5 +1,7 @@
 call plug#begin('~/vimfiles/plugged')
+Plug 'tpope/vim-sleuth'
 Plug 'guns/vim-sexp'
+Plug 'Tarmean/term-utils.nvim'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
@@ -19,7 +21,7 @@ if !exists('g:vscode')
     Plug 'tpope/vim-repeat'
     if has('windows')
         " let g:python_host_prog="C:\\Python27\\python.exe"
-        let g:python3_host_prog="C:\\Python38\\python.exe"
+        let g:python3_host_prog="C:\\Python310\\python.exe"
     else
         let g:python3_host_prog="/usr/bin/python3"
         " let g:python_host_prog="/usr/bin/python2"

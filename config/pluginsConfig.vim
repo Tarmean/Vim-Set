@@ -1,6 +1,24 @@
 if exists(':Delete')
     delcommand Delete
 endif
+
+if (has('nvim'))
+    command! -bang PHPShell RTerm<bang> php php -a -d auto_prepend_file=bootstrap_application.php
+    nnoremap ö :call term_utils#term_toggle('insert', term_utils#guess_term_tag(), v:false)<cr>
+    noremap Ö :call term_utils#term_toggle('normal', term_utils#guess_term_tag(), v:true)<cr>
+    tnoremap ö <C-\><C-n>:call term_utils#goto_old_win(v:false)<cr>
+    tnoremap Ö <C-\><C-n>
+    cnoremap term Term
+endif
+
+let g:sleuth_automatic = 0
+let g:detect_indent_files = {'php': 1}
+augroup IndentDetect
+  au!
+  auto BufReadPost,BufNewFile *.php Sleuth
+augroup END
+
+nnoremap gx :exec "!&'C:\\Program Files\\Mozilla Firefox\\firefox.exe' " . expand("<cfile>") <cr>
 let g:textobj_comment_no_default_key_mappings = 1
 omap Ac <Plug>(textobj-comment-big-a)
 omap ac <Plug>(textobj-comment-a)
@@ -108,8 +126,8 @@ let g:lightline = {
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'cocstatus'], ['readonly', 'gitversion', 'filename'] ],
-      \   'right': [ [ 'lineinfo', 'percent', 'modified' ],
-      \              [ 'filetype' ]]
+      \   'right': [ [ 'sleuth', 'lineinfo', 'percent', 'modified' ],
+      \              [ 'filetype']]
       \ },
       \ 'inactive': {
             \ 'left': [ ['gitversion', 'filename']],
@@ -118,9 +136,10 @@ let g:lightline = {
       \   'cocstatus': 'coc#status',
       \ },
       \ 'component': {
-      \   'gitversion': '%{LightLineGitversion()}',
+      \   'gitversion': '%{has_key(detect_indent_files, &filetype) ? LightLineGitversion() : ""}',
       \   'readonly': '%{&filetype=="help"?"":&readonly?"":""}',
-      \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}'},
+      \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
+      \   'sleuth': '%{SleuthIndicator()}'},
       \ 'component_expand': {
       \ },
       \ 'component_type': {
