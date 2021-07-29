@@ -229,6 +229,7 @@ if(has('nvim'))
     nnoremap <silent> <leader>fm :Marks<cr>
     nnoremap <silent> <leader>ff :Buffers<cr>
     nnoremap <silent> <leader>fl :BLines<cr>
+    nnoremap <silent> <leader>fd :Buffers term://<cr>
     nnoremap <silent> <leader>fw :Windows<cr>
     nnoremap <silent> <leader>fs :History<cr>
     nnoremap <silent> <leader>fc :call Git_dir("Commits")<cr>
@@ -280,10 +281,10 @@ function! Git_dir(command)
 endfunction
 vnoremap dp :diffput<cr>
 vnoremap do :diffget<cr>
-vmap <leader>r <Plug>(EasyAlign)
-nmap <leader>r <Plug>(EasyAlign)
-nmap <leader>r <Plug>(LiveEasyAlign)
-vmap <leader>r <Plug>(LiveEasyAlign)
+" vmap <leader>r <Plug>(EasyAlign)
+" nmap <leader>r <Plug>(EasyAlign)
+" nmap <leader>r <Plug>(LiveEasyAlign)
+" vmap <leader>r <Plug>(LiveEasyAlign)
 nnoremap <a-j> <c-e>
 nnoremap <a-k> <c-y>
 
@@ -293,6 +294,36 @@ function! s:in_root(e)
   exec a:e
   exec "cd " . l:old
 endfunc
+function! pluginsConfig#get_visual_selection()
+    let [line_start, column_start] = getpos("'<")[1:2]
+    let [line_end, column_end] = getpos("'>")[1:2]
+    let lines = getline(line_start, line_end)
+    if len(lines) == 0
+        return ''
+    endif
+    let lines[-1] = lines[-1][: column_end - 1]
+    let lines[0] = lines[0][column_start - 1:]
+    return join(lines, "\n")
+endfunction
+vnoremap ' :Rg =pluginsConfig#get_visual_selection()<cr><cr>
+nnoremap ' :Rg =expand("<cword>")<cr><cr>
+
 command! -nargs=* InRoot call s:in_root(<q-args>)
-command!      -bang -nargs=* Rg  call s:in_root('call fzf#vim#grep("rg --column --line-number --no-heading --color=always --smart-case -- ".shellescape(<q-args>), 1, fzf#vim#with_preview(), <bang>0)')
+function! s:rg_in_root(args, bang)
+      let old = getcwd()
+      let pat = a:args
+      let cmd = "rg --column --line-number --no-heading --color=always --smart-case "
+      while (l:pat[0] == '-')
+          let head = matchstr(l:pat, "-\\S\\+\\s*")
+          let pat = pat[len(l:head):]
+          let cmd = l:cmd . " " . l:head
+      endwhile
+      let cmd = l:cmd . " -- "
+      if !a:bang
+          exec "cd " . FugitiveExtractGitDir(expand('%:p')) . "/.."
+      endif
+      call fzf#vim#grep(l:cmd . '"' . escape(l:pat, "\"")  . '"', 1, fzf#vim#with_preview(),  0 )
+      exec "cd " . l:old
+endfunc
+command!      -bang -nargs=* Rg  call s:rg_in_root(<q-args>, <bang>0)
 let g:fzf_preview_window = []

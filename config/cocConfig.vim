@@ -12,9 +12,14 @@ nmap <silent> <localleader>R <Plug>(coc-refactor)
 
 nmap <silent> <c-k> <Plug>(coc-diagnostic-prev)
 nmap <silent> <c-j> <Plug>(coc-diagnostic-next)
-nmap <silent> <tab> <Plug>(coc-codeaction-line)
+nmap <silent> <tab> v<Plug>(coc-codeaction-selected)
 vmap <silent> <tab> <Plug>(coc-codeaction-selected)
 nmap <silent> <localleader>a  <Plug>(coc-codeaction)
+
+augroup HaskellFixTab
+    au!
+    au BufReadPost *.hs nmap <buffer> <silent> <tab> v<Plug>(coc-codeaction-selected)
+augroup END
 
 nmap <s-tab>  <Plug>(coc-codelens-action)
 vmap <s-tab>  <Plug>(coc-codelens-action)
@@ -28,7 +33,6 @@ function! HighlightWord()
     let @/ = '\<' . expand('<cword>') . '\>'
     call feedkeys(":setlocal hls\r", 'n')
 endfunc
-nnoremap ' :Rg =expand("<cword>")<cr><cr>
 function! s:BufferConfig()
     " Remap keys for gotos
     nmap <buffer> <silent> gd <Plug>(coc-definition)
@@ -91,7 +95,7 @@ nnoremap <silent> <localleader>e  :<C-u>CocList extensions<cr>
 " Show commands
 nnoremap <silent> <localleader>c  :<C-u>CocList commands<cr>
 " Find symbol of current document
-nnoremap <silent> <localleader>s  :<C-u>CocList outline<cr>
+nnoremap <silent> <leader>d  :<C-u>CocList outline<cr>
 " Search workspace symbols
 " nnoremap <silent> <localleader>s  :<C-u>CocList -I symbols<cr>
 " Do default action for next item.
@@ -185,3 +189,53 @@ func! SetupAgda()
     " nnoremap <buffer> <silent> <C-y>  2h:let _s=@/<CR>? {!\\| \?<CR>:let @/=_s<CR>2l
     " inoremap <buffer> <silent> <C-y>  <C-o>2h<C-o>:let _s=@/<CR><C-o>? {!\\| \?<CR><C-o>:let @/=_s<CR><C-o>2l
 endfunc
+
+nnoremap <silent> [C :CocFirst
+nnoremap <silent> [c :CocPrev
+nnoremap <silent> ]c :CocNext
+nnoremap <silent> ]C :CocLast
+
+" <leader>d to perform a pattern match, <leader>n to fill a hole
+nnoremap <silent> <leader>w  :<C-u>set operatorfunc=<SID>WingmanDestruct<CR>g@l
+nnoremap <silent> <leader>W  :<C-u>set operatorfunc=<SID>WingmanDestructAll<CR>g@l
+nnoremap <silent> <leader>e  :<C-u>set operatorfunc=<SID>WingmanUseCtor<CR>g@l
+nnoremap <silent> <leader>R  :<C-u>set operatorfunc=<SID>WingmanFillHole<CR>g@l
+nnoremap <silent> <leader>r  :<C-u>set operatorfunc=<SID>WingmanRefine<CR>g@l
+
+
+function! s:JumpToNextHole()
+  call CocActionAsync('diagnosticNext')
+endfunction
+
+function! s:GotoNextHole()
+  " wait for the hole diagnostics to reload
+  sleep 500m
+  " and then jump to the next hole
+  normal 0
+  call <SID>JumpToNextHole()
+endfunction
+
+function! s:WingmanRefine(type)
+  call CocAction('codeAction', a:type, ['refactor.wingman.refine'])
+  call <SID>GotoNextHole()
+endfunction
+
+function! s:WingmanDestruct(type)
+  call CocAction('codeAction', a:type, ['refactor.wingman.caseSplit'])
+  call <SID>GotoNextHole()
+endfunction
+
+function! s:WingmanDestructAll(type)
+  call CocAction('codeAction', a:type, ['refactor.wingman.splitFuncArgs'])
+  call <SID>GotoNextHole()
+endfunction
+
+function! s:WingmanFillHole(type)
+  call CocAction('codeAction', a:type, ['refactor.wingman.fillHole'])
+  call <SID>GotoNextHole()
+endfunction
+
+function! s:WingmanUseCtor(type)
+  call CocAction('codeAction', a:type, ['refactor.wingman.useConstructor'])
+  call <SID>GotoNextHole()
+endfunction
