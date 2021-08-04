@@ -1,8 +1,11 @@
 " set guifont=Sauce_Code_Powerline:h13:cANSI
 
 if !has("unix")
-		" set shell=powershell shellquote=( shellpipe=\| shellredir=> shellxquote=
-		"      set shellcmdflag=-NoLogo\ -NoProfile\ -ExecutionPolicy\ RemoteSigned\ -Command
+		let &shell = has('win32') ? 'powershell' : 'pwsh'
+		let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'
+		let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+		let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+		set shellquote= shellxquote=
 endif
 colorscheme gruvbox
 

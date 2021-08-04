@@ -33,6 +33,7 @@ function! HighlightWord()
     let @/ = '\<' . expand('<cword>') . '\>'
     call feedkeys(":setlocal hls\r", 'n')
 endfunc
+nnoremap ' :Rg =expand("<cword>")<cr><cr>
 function! s:BufferConfig()
     " Remap keys for gotos
     nmap <buffer> <silent> gd <Plug>(coc-definition)
@@ -47,9 +48,10 @@ function! s:BufferConfig()
         augroup END
     endif
     inoremap <silent><expr> <TAB>
-		  \ pumvisible() ? "\<C-n>" :
-		  \ <SID>check_back_space() ? "\<TAB>" :
-		  \ coc#refresh()
+          \ pumvisible() ? "\<C-n>" :
+          \ <SID>check_back_space() ? "\<TAB>" :
+          \ coc#refresh()
+    inoremap <silent> <s-TAB> <C-p>
 endfunc
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
@@ -89,7 +91,7 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
 nnoremap <silent> <a-cr>  :<C-u>CocList actions<cr>
-nnoremap <silent> <localleader>d  :<C-u>CocList diagnostics<cr>
+nnoremap <silent> <localleader>s  :<C-u>CocList diagnostics<cr>
 " Manage extensions
 nnoremap <silent> <localleader>e  :<C-u>CocList extensions<cr>
 " Show commands
@@ -111,13 +113,13 @@ omap af <Plug>(coc-funcobj-a)
 
 
 " Use K to show documentation in preview window
-nnoremap <silent> K :call <SID>show_documentation()<CR>
+nnoremap <silent> K :call cocConfig#show_documentation()<CR>
 
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
+function! cocConfig#show_documentation()
+  if (index(['help'], &filetype) >= 0)
     execute 'h '.expand('<cword>')
   else
-    call CocAction('doHover')
+    call CocActionAsync('doHover')
   endif
 endfunction
 

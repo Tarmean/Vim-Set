@@ -1,5 +1,7 @@
 call plug#begin('~/vimfiles/plugged')
+Plug 'tpope/vim-sleuth'
 Plug 'guns/vim-sexp'
+Plug 'Tarmean/term-utils.nvim'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
@@ -22,7 +24,7 @@ if !exists('g:vscode')
         let g:python3_host_prog="C:\\Python39\\python.exe"
     else
         let g:python3_host_prog="/usr/bin/python3"
-        let g:python_host_prog="/usr/bin/python2"
+        " let g:python_host_prog="/usr/bin/python2"
     endif
     Plug 'derekelkins/agda-vim'
     Plug 'Tarmean/fzf-session.vim'

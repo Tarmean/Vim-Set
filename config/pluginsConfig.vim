@@ -1,6 +1,24 @@
 if exists(':Delete')
     delcommand Delete
 endif
+
+if (has('nvim'))
+    command! -bang PHPShell RTerm<bang> php php -a -d auto_prepend_file=bootstrap_application.php
+    nnoremap ö :call term_utils#term_toggle('insert', term_utils#guess_term_tag(), v:false)<cr>
+    noremap Ö :call term_utils#term_toggle('normal', term_utils#guess_term_tag(), v:true)<cr>
+    tnoremap ö <C-\><C-n>:call term_utils#goto_old_win(v:false)<cr>
+    tnoremap Ö <C-\><C-n>
+    cnoremap term Term
+endif
+
+let g:sleuth_automatic = 0
+let g:detect_indent_files = {'php': 1}
+augroup IndentDetect
+  au!
+  auto BufReadPost,BufNewFile *.php Sleuth
+augroup END
+
+nnoremap gx :exec "!&'C:\\Program Files\\Mozilla Firefox\\firefox.exe' " . expand("<cfile>") <cr>
 let g:textobj_comment_no_default_key_mappings = 1
 omap Ac <Plug>(textobj-comment-big-a)
 omap ac <Plug>(textobj-comment-a)
@@ -74,7 +92,7 @@ func! s:dirvish_init()
     nnoremap <buffer><silent>  l :<c-u>.call dirvish#open("edit", 0)<cr>
     xnoremap <buffer><silent>  l :call dirvish#open("edit", 0)<cr>
     noremap <buffer> <cr> :
-    nnoremap <buffer> + :e %/
+    nnoremap <buffer> + :e %
     nmap <expr><buffer> <esc> v:hlsearch?":noh\<cr>":"\<Plug>(dirvish_quit)"
     " skip both dirvish's and my mappings because \v isn't needed for file paths
     nnoremap <buffer> / /
@@ -108,8 +126,8 @@ let g:lightline = {
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'cocstatus'], ['readonly', 'gitversion', 'filename'] ],
-      \   'right': [ [ 'lineinfo', 'percent', 'modified' ],
-      \              [ 'filetype' ]]
+      \   'right': [ [ 'sleuth', 'lineinfo', 'percent', 'modified' ],
+      \              [ 'filetype']]
       \ },
       \ 'inactive': {
             \ 'left': [ ['gitversion', 'filename']],
@@ -118,9 +136,10 @@ let g:lightline = {
       \   'cocstatus': 'coc#status',
       \ },
       \ 'component': {
-      \   'gitversion': '%{LightLineGitversion()}',
+      \   'gitversion': '%{has_key(detect_indent_files, &filetype) ? LightLineGitversion() : ""}',
       \   'readonly': '%{&filetype=="help"?"":&readonly?"":""}',
-      \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}'},
+      \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
+      \   'sleuth': '%{SleuthIndicator()}'},
       \ 'component_expand': {
       \ },
       \ 'component_type': {
@@ -288,12 +307,6 @@ vnoremap do :diffget<cr>
 nnoremap <a-j> <c-e>
 nnoremap <a-k> <c-y>
 
-function! s:in_root(e)
-  let old = getcwd()
-  exec "cd " . FugitiveExtractGitDir(expand('%:p')) . "/.."
-  exec a:e
-  exec "cd " . l:old
-endfunc
 function! pluginsConfig#get_visual_selection()
     let [line_start, column_start] = getpos("'<")[1:2]
     let [line_end, column_end] = getpos("'>")[1:2]
@@ -308,7 +321,6 @@ endfunction
 vnoremap ' :Rg =pluginsConfig#get_visual_selection()<cr><cr>
 nnoremap ' :Rg =expand("<cword>")<cr><cr>
 
-command! -nargs=* InRoot call s:in_root(<q-args>)
 function! s:rg_in_root(args, bang)
       let old = getcwd()
       let pat = a:args
@@ -316,6 +328,9 @@ function! s:rg_in_root(args, bang)
       while (l:pat[0] == '-')
           let head = matchstr(l:pat, "-\\S\\+\\s*")
           let pat = pat[len(l:head):]
+          if (l:head[:3] == '-- ')
+              break
+          endif
           let cmd = l:cmd . " " . l:head
       endwhile
       let cmd = l:cmd . " -- "
