@@ -91,11 +91,8 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
 
 nnoremap <silent> <a-cr>  :<C-u>CocList actions<cr>
-nnoremap <silent> <localleader>s  :<C-u>CocList diagnostics<cr>
-" Manage extensions
-nnoremap <silent> <localleader>e  :<C-u>CocList extensions<cr>
+nnoremap <silent> <leader>s  :<C-u>CocList diagnostics<cr>
 " Show commands
-nnoremap <silent> <localleader>c  :<C-u>CocList commands<cr>
 " Find symbol of current document
 nnoremap <silent> <leader>d  :<C-u>CocList outline<cr>
 " Search workspace symbols
