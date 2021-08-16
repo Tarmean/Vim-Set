@@ -3,12 +3,13 @@ if exists(':Delete')
 endif
 
 if (has('nvim'))
-    command! -bang PHPShell RTerm<bang> php php -a -d auto_prepend_file=bootstrap_application.php
+    command! -bang PHPShell Term<bang> php psysh.bat
     nnoremap ö :call term_utils#term_toggle('insert', term_utils#guess_term_tag(), v:false)<cr>
     noremap Ö :call term_utils#term_toggle('normal', term_utils#guess_term_tag(), v:true)<cr>
-    tnoremap ö <C-\><C-n>:call term_utils#goto_old_win(v:false)<cr>
+    tnoremap ö <C-\><C-n>:call term_utils#goto_old_win(exists("b:hide_term")&&b:hide_term)<cr>
     tnoremap Ö <C-\><C-n>
     cnoremap term Term
+    command! -bang TermHide :let b:hide_term='<bang>'==''
 endif
 
 let g:sleuth_automatic = 0
@@ -136,7 +137,7 @@ let g:lightline = {
       \   'cocstatus': 'coc#status',
       \ },
       \ 'component': {
-      \   'gitversion': '%{has_key(detect_indent_files, &filetype) ? LightLineGitversion() : ""}',
+      \   'gitversion': '%{LightLineGitversion()}',
       \   'readonly': '%{&filetype=="help"?"":&readonly?"":""}',
       \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
       \   'sleuth': '%{SleuthIndicator()}'},
