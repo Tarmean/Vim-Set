@@ -1,0 +1,12 @@
+﻿diff --git a/.vimrc b/.vimrc
+index b824de1..05fdc44 100644
+--- a/.vimrc
++++ b/.vimrc
+@@ -9,7 +9,6 @@ set diffopt+=iwhiteall
+ if !exists('g:vscode')
+     source ~/vimfiles/config/cocconfig.vim
+ else
+-    set fillchars+=vert:\▏
+     let g:loaded_matchparen=1
+ endif
+ 

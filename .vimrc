@@ -8,6 +8,11 @@ source ~/vimfiles/config/pluginsconfig.vim
 set diffopt+=iwhiteall
 if !exists('g:vscode')
     source ~/vimfiles/config/cocconfig.vim
+    nmap <Leader>dK <Plug>VimspectorBalloonEval
+    " for visual mode, the visually selected text
+    xmap <Leader>dK <Plug>VimspectorBalloonEval
+    nmap <LocalLeader><F11> <Plug>VimspectorUpFrame
+    nmap <LocalLeader><F12> <Plug>VimspectorDownFrame
 else
     set fillchars+=vert:\▏
     let g:loaded_matchparen=1

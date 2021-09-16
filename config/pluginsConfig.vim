@@ -258,7 +258,7 @@ endif
 au VimEnter * let g:fzf_commits_log_options = '--all --color=always '.fzf#shellescape('--format=%C(auto)%h%d %s %C(green)%cr')
 cabbrev git Git
 nnoremap <space>ga :execute 'Git add ' . expand('%:p')<CR>
-nnoremap <space>gs :Gstatus<CR>
+nnoremap <space>gs :Git<CR>
 nnoremap <space>gc :Gcommit -v -q<CR>
 nnoremap <space>gd :Gdiff<CR>
 nnoremap <space>ge :Gedit<CR>
