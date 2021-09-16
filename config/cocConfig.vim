@@ -195,9 +195,10 @@ nnoremap <silent> ]c :CocNext
 nnoremap <silent> ]C :CocLast
 
 " <leader>d to perform a pattern match, <leader>n to fill a hole
-nnoremap <silent> <leader>w  :<C-u>set operatorfunc=<SID>WingmanDestruct<CR>g@l
-nnoremap <silent> <leader>W  :<C-u>set operatorfunc=<SID>WingmanDestructAll<CR>g@l
-nnoremap <silent> <leader>e  :<C-u>set operatorfunc=<SID>WingmanUseCtor<CR>g@l
+nnoremap <silent> <leader>W  :<C-u>set operatorfunc=<SID>WingmanDestruct<CR>g@l
+nnoremap <silent> <leader>w  :<C-u>set operatorfunc=<SID>WingmanDestructAll<CR>g@l
+nnoremap <silent> <leader>e  :<C-u>set operatorfunc=<SID>WingmanGuess<CR>g@l
+nnoremap <silent> <leader>E  :<C-u>set operatorfunc=<SID>WingmanUseCtor<CR>g@l
 nnoremap <silent> <leader>R  :<C-u>set operatorfunc=<SID>WingmanFillHole<CR>g@l
 nnoremap <silent> <leader>r  :<C-u>set operatorfunc=<SID>WingmanRefine<CR>g@l
 
@@ -237,4 +238,8 @@ endfunction
 function! s:WingmanUseCtor(type)
   call CocAction('codeAction', a:type, ['refactor.wingman.useConstructor'])
   call <SID>GotoNextHole()
+endfunction
+function! s:WingmanGuess(type)
+  call CocAction('codeAction', a:type, ['refactor.wingman.guess'])
+  " call <SID>GotoNextHole()
 endfunction
