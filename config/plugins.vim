@@ -1,4 +1,5 @@
 call plug#begin('~/vimfiles/plugged')
+Plug 'github/copilot.vim'
 Plug 'tpope/vim-sleuth'
 Plug 'guns/vim-sexp'
 Plug 'Tarmean/term-utils.nvim'

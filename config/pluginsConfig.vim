@@ -43,9 +43,6 @@ augroup DirvishMappings
   autocmd BufReadPost quickfix nnoremap <buffer> J :cnext<cr>
   autocmd BufReadPost quickfix nnoremap <buffer> K :cprev<cr>
 augroup end
-let g:snips_author= 'cyril'
-let g:snips_email='cyrilfahlenbock@outlook.com'
-let g:snips_github='https:github.com/Tarmean'
 nmap s <Plug>Ysurround
 nmap ss <Plug>Yssurround
 nnoremap <space>u :UndotreeToggle<cr>
