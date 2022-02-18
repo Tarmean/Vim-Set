@@ -80,7 +80,6 @@ func! Yank(type, ...)
     let &selection = sel_save
 endfunc
 
-nnoremap <leader>q :tab sp<CR>
 nnoremap <leader>v <C-w>v
 nnoremap <leader>V <C-w>s
 nnoremap <leader>c <C-w>c
@@ -114,6 +113,26 @@ noremap <silent> <space>O :call TabCopy(1, +1)<cr>
 noremap <silent> <space><C-I> :call TabCopy(0, -1)<cr>
 noremap <silent> <space><C-O> :call TabCopy(0, +1)<cr>
 nnoremap <silent> <space>Q :call MoveTabNew()<cr>
+nnoremap <leader>q :call FullTab()<cr>
+
+func! FullTab()
+    if (len(gettabinfo(tabpagenr())[0]['windows']) == 1)
+        tab sp
+    endif
+    let tabs = gettabinfo()
+    let bufnr = bufnr('%')
+    for tab in tabs
+        if (len(tab['windows']) != 1)
+            continue
+        endif
+        let win = getwininfo(tab['windows'][0])[0]
+        if (win['bufnr'] == bufnr)
+            exec tab['tabnr'] . " tabnext"
+            return
+        endif 
+    endfor
+    tab sp
+endfunc
 func! MoveTabNew()
     if (winnr("$") == 1)
         return
