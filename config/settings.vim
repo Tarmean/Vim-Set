@@ -46,6 +46,8 @@ set splitright
 set guioptions=e
 set fillchars+=vert:\ "█
 set backupdir=~/.vim/backups//,.
+set backup
+set writebackup
 set undodir=~/.vim/undodir//,.
 set directory=~/.vim/swaps//,.
 set foldmethod=syntax "taken care of by fast fold most of the time

@@ -242,7 +242,7 @@ if(has('nvim'))
         endif
         execute a:command
     endfunc
-    nnoremap <silent> <leader><leader> :call Git_dir('GitFiles')<cr>
+    nnoremap <silent> <leader><leader> :call Git_dir('Files')<cr>
     nnoremap <silent> <leader>fm :Marks<cr>
     nnoremap <silent> <leader>ff :Buffers<cr>
     nnoremap <silent> <leader>fl :BLines<cr>
@@ -316,8 +316,9 @@ function! pluginsConfig#get_visual_selection()
     let lines[0] = lines[0][column_start - 1:]
     return join(lines, "\n")
 endfunction
-vnoremap ' :Rg =pluginsConfig#get_visual_selection()<cr><cr>
-nnoremap ' :Rg =expand("<cword>")<cr><cr>
+vnoremap   :Rg =pluginsConfig#get_visual_selection()<cr><cr>
+nnoremap   :Rg =expand("<cword>")<cr><cr>
+nnoremap ' <C-]>
 
 function! s:rg_in_root(args, bang)
       let old = getcwd()
@@ -340,3 +341,55 @@ function! s:rg_in_root(args, bang)
 endfunc
 command!      -bang -nargs=* Rg  call s:rg_in_root(<q-args>, <bang>0)
 let g:fzf_preview_window = []
+
+nnoremap <space>fj :Jumps<cr>
+nnoremap <space>fk :Changes<cr>
+function GoTo(jumpline)
+  let values = split(a:jumpline, ":")
+  let path = join(values[0:-4], ':')
+  let g:values = values
+  execute "e ".path
+  call cursor(str2nr(values[-3]), str2nr(values[-2]))
+  execute "normal zvzz"
+endfunction
+
+function GetLine(bufnr, lnum)
+  let lines = getbufline(a:bufnr, a:lnum)
+  if len(lines)>0
+    return trim(lines[0])
+  else
+    return ''
+  endif
+endfunction
+
+function! Jumps()
+  " Get jumps with filename added
+  let jumps = map(reverse(filter(copy(getjumplist()[0]), {key,val -> bufexists(val.bufnr)})), 
+    \ { key, val -> bufexists(val.bufnr) ? extend(val, {'name': getbufinfo(val.bufnr)[0].name }) : val })
+ 
+  let jumptext = map(copy(jumps), { index, val -> 
+      \ (val.name).':'.(val.lnum).':'.(val.col+1).': '.GetLine(val.bufnr, val.lnum) })
+
+  call fzf#run(fzf#vim#with_preview(fzf#wrap({
+        \ 'source': jumptext,
+        \ 'column': 1,
+        \ 'options': ['--delimiter', ':', '--bind', 'alt-a:select-all,alt-d:deselect-all', '--preview-window', '+{2}-/2'],
+        \ 'sink': function('GoTo')})))
+endfunction
+
+command! Jumps call Jumps()
+
+function! Changes()
+  let changes  = reverse(copy(getchangelist()[0]))
+
+  let changetext = map(copy(changes), { index, val -> 
+      \ expand('%').':'.(val.lnum).':'.(val.col+1).': '.GetLine(bufnr('%'), val.lnum) })
+
+  call fzf#run(fzf#vim#with_preview(fzf#wrap({
+        \ 'source': changetext,
+        \ 'column': 1,
+        \ 'options': ['--delimiter', ':', '--bind', 'alt-a:select-all,alt-d:deselect-all', '--preview-window', '+{2}-/2'],
+        \ 'sink': function('GoTo')})))
+endfunction
+
+command! Changes call Changes()
