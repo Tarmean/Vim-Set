@@ -2,6 +2,8 @@ if exists(':Delete')
     delcommand Delete
 endif
 
+let g:gistory_format_ft = {'haskell': 0}
+
 if (has('nvim'))
     command! -bang PHPShell RTerm<bang> php php -a -d auto_prepend_file=bootstrap_application.php
     nnoremap ö :call term_utils#term_toggle('insert', term_utils#guess_term_tag(), exists("b:term_hide") && b:term_hide)<cr>
@@ -36,7 +38,6 @@ endif
 augroup DirvishMappings
   autocmd!
   autocmd filetype dirvish nmap <buffer> q <plug>(dirvish_quit)
-  autocmd filetype dirvish  exec "lcd " .expand("%:p")
     
   " autocmd bufreadpost fugitive://* set bufhidden=wipe
   autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
@@ -100,10 +101,9 @@ func! s:dirvish_init()
     sort r /[^\/]$/
 endfunc
 func! Dirvish_wrap_up(path) " au */tomatically seek the directory or file when going up
-    silent! execute "Dirvish " . a:path
     let loc = escape(substitute(expand("%:p"), '/', '\', 'g'), '\')
-    " execute "lcd ".a:path
-    call search( loc . '$')
+    silent! execute "Dirvish " . a:path
+    silent! execute "call search('" . loc . "')"
 endfunc
 func! Dirvish_append_search()
     let isSearch = !(getcmdtype() == "/" || getcmdtype() == "?")
@@ -118,6 +118,8 @@ let g:tf_workaround= 0
 noremap ]oz :Goyo!<cr>
 noremap [oz :Goyo<cr>:IndentLinesDisable<cr>
 let g:prosession_on_startup = 0
+let g:session#save_terminals = v:false
+
 
 let g:lightline = {
       \ 'colorscheme': 'gruvbox',
@@ -393,3 +395,11 @@ function! Changes()
 endfunction
 
 command! Changes call Changes()
+
+lua << EOF
+require'hop'.setup()
+vim.api.nvim_set_keymap('', 't', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true })<cr>", {})
+vim.api.nvim_set_keymap('', 'T', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true })<cr>", {})
+vim.api.nvim_set_keymap('', 'F', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true })<cr>", {})
+vim.api.nvim_set_keymap('', 'f', "<cmd>lua require'hop'.hint_char2({  })<cr>", {})
+EOF

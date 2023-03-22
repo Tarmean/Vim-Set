@@ -1,4 +1,6 @@
 call plug#begin('~/vimfiles/plugged')
+Plug 'mcchrish/zenbones.nvim'
+Plug 'rktjmp/lush.nvim'
 Plug 'github/copilot.vim'
 Plug 'tpope/vim-sleuth'
 Plug 'guns/vim-sexp'
@@ -17,7 +19,7 @@ Plug 'kana/vim-textobj-entire'
 Plug 'Julian/vim-textobj-variable-segment'
 Plug 'Tarmean/Gistory'
 if !exists('g:vscode')
-    Plug 'puremourning/vimspector'
+    " Plug 'puremourning/vimspector'
     Plug 'tpope/vim-fireplace'
     Plug 'tpope/vim-repeat'
     if has('windows')
@@ -39,6 +41,7 @@ if !exists('g:vscode')
     Plug 'chrisbra/Recover.vim'
     Plug 'rhysd/git-messenger.vim'
     Plug 'lumiliet/vim-twig'
+    Plug 'phaazon/hop.nvim'
     Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
     Plug 'idris-hackers/idris-vim'
     Plug 'equalsraf/neovim-gui-shim'

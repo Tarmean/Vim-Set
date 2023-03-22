@@ -1,4 +1,9 @@
 " Use <c-space> to trigger completion.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <silent> <s-TAB> <C-p>
 nmap gK <Plug>(coc-float-jump)
 inoremap <silent><expr> <c-space> coc#refresh()
 
@@ -58,11 +63,6 @@ function! s:BufferConfig()
             au!
         augroup END
     endif
-    " inoremap <silent><expr> <TAB>
-    "       \ pumvisible() ? "\<C-n>" :
-    "       \ <SID>check_back_space() ? "\<TAB>" :
-    "       \ coc#refresh()
-    " inoremap <silent> <s-TAB> <C-p>
 endfunc
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
