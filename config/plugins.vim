@@ -1,6 +1,4 @@
 call plug#begin('~/vimfiles/plugged')
-Plug 'kana/vim-textobj-user'
-
 Plug 'github/copilot.vim'
 Plug 'tpope/vim-sleuth'
 Plug 'guns/vim-sexp'
@@ -44,6 +42,7 @@ if !exists('g:vscode')
     Plug 'chrisbra/Recover.vim'
     Plug 'rhysd/git-messenger.vim'
     Plug 'lumiliet/vim-twig'
+    Plug 'phaazon/hop.nvim'
     Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
     Plug 'idris-hackers/idris-vim'
     Plug 'equalsraf/neovim-gui-shim'

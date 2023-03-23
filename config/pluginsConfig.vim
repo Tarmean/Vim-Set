@@ -2,6 +2,8 @@ if exists(':Delete')
     delcommand Delete
 endif
 
+let g:gistory_format_ft = {'haskell': 0}
+
 au BufNewFile,BufRead *.agda setf agda
 au BufNewFile,BufRead *.lagda.md setf agda
 
@@ -44,7 +46,6 @@ endif
 augroup DirvishMappings
   autocmd!
   autocmd filetype dirvish nmap <buffer> q <plug>(dirvish_quit)
-  autocmd filetype dirvish  exec "lcd " .expand("%:p")
     
   " autocmd bufreadpost fugitive://* set bufhidden=wipe
   autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
@@ -108,10 +109,9 @@ func! s:dirvish_init()
     sort r /[^\/]$/
 endfunc
 func! Dirvish_wrap_up(path) " au */tomatically seek the directory or file when going up
-    silent! execute "Dirvish " . a:path
     let loc = escape(substitute(expand("%:p"), '/', '\', 'g'), '\')
-    " execute "lcd ".a:path
-    call search( loc . '$')
+    silent! execute "Dirvish " . a:path
+    silent! execute "call search('" . loc . "')"
 endfunc
 func! Dirvish_append_search()
     let isSearch = !(getcmdtype() == "/" || getcmdtype() == "?")
@@ -126,6 +126,8 @@ let g:tf_workaround= 0
 noremap ]oz :Goyo!<cr>
 noremap [oz :Goyo<cr>:IndentLinesDisable<cr>
 let g:prosession_on_startup = 0
+let g:session#save_terminals = v:false
+
 
 let g:lightline = {
       \ 'colorscheme': 'gruvbox',
@@ -348,3 +350,62 @@ function! s:rg_in_root(args, bang)
 endfunc
 command!      -bang -nargs=* Rg  call s:rg_in_root(<q-args>, <bang>0)
 let g:fzf_preview_window = []
+nnoremap <space>fj :Jumps<cr>
+nnoremap <space>fk :Changes<cr>
+function GoTo(jumpline)
+  let values = split(a:jumpline, ":")
+  let path = join(values[0:-4], ':')
+  let g:values = values
+  execute "e ".path
+  call cursor(str2nr(values[-3]), str2nr(values[-2]))
+  execute "normal zvzz"
+endfunction
+
+function GetLine(bufnr, lnum)
+  let lines = getbufline(a:bufnr, a:lnum)
+  if len(lines)>0
+    return trim(lines[0])
+  else
+    return ''
+  endif
+endfunction
+
+function! Jumps()
+  " Get jumps with filename added
+  let jumps = map(reverse(filter(copy(getjumplist()[0]), {key,val -> bufexists(val.bufnr)})), 
+    \ { key, val -> bufexists(val.bufnr) ? extend(val, {'name': getbufinfo(val.bufnr)[0].name }) : val })
+ 
+  let jumptext = map(copy(jumps), { index, val -> 
+      \ (val.name).':'.(val.lnum).':'.(val.col+1).': '.GetLine(val.bufnr, val.lnum) })
+
+  call fzf#run(fzf#vim#with_preview(fzf#wrap({
+        \ 'source': jumptext,
+        \ 'column': 1,
+        \ 'options': ['--delimiter', ':', '--bind', 'alt-a:select-all,alt-d:deselect-all', '--preview-window', '+{2}-/2'],
+        \ 'sink': function('GoTo')})))
+endfunction
+
+command! Jumps call Jumps()
+
+function! Changes()
+  let changes  = reverse(copy(getchangelist()[0]))
+
+  let changetext = map(copy(changes), { index, val -> 
+      \ expand('%').':'.(val.lnum).':'.(val.col+1).': '.GetLine(bufnr('%'), val.lnum) })
+
+  call fzf#run(fzf#vim#with_preview(fzf#wrap({
+        \ 'source': changetext,
+        \ 'column': 1,
+        \ 'options': ['--delimiter', ':', '--bind', 'alt-a:select-all,alt-d:deselect-all', '--preview-window', '+{2}-/2'],
+        \ 'sink': function('GoTo')})))
+endfunction
+
+command! Changes call Changes()
+
+lua << EOF
+require'hop'.setup()
+vim.api.nvim_set_keymap('', 't', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true })<cr>", {})
+vim.api.nvim_set_keymap('', 'T', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true })<cr>", {})
+vim.api.nvim_set_keymap('', 'F', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true })<cr>", {})
+vim.api.nvim_set_keymap('', 'f', "<cmd>lua require'hop'.hint_char2({  })<cr>", {})
+EOF

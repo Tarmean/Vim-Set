@@ -1,4 +1,9 @@
 " Use <c-space> to trigger completion.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <silent> <s-TAB> <C-p>
 nmap gK <Plug>(coc-float-jump)
 inoremap <silent><expr> <c-space> coc#refresh()
 
@@ -33,7 +38,18 @@ function! HighlightWord()
     let @/ = '\<' . expand('<cword>') . '\>'
     call feedkeys(":setlocal hls\r", 'n')
 endfunc
-nnoremap ' :Rg =expand("<cword>")<cr><cr>
+function! Get_visual_selection()
+    " Why is this not a built-in Vim script function?!
+    let [line_start, column_start] = getpos("'<")[1:2]
+    let [line_end, column_end] = getpos("'>")[1:2]
+    let lines = getline(line_start, line_end)
+    if len(lines) == 0
+        return ''
+    endif
+    let lines[-1] = lines[-1][: column_end - (&selection == 'inclusive' ? 1 : 2)]
+    let lines[0] = lines[0][column_start - 1:]
+    return join(lines, "\n")
+endfunction
 function! s:BufferConfig()
     " Remap keys for gotos
     nmap <buffer> <silent> gd <Plug>(coc-definition)
@@ -47,11 +63,6 @@ function! s:BufferConfig()
             au!
         augroup END
     endif
-    " inoremap <silent><expr> <TAB>
-    "       \ pumvisible() ? "\<C-n>" :
-    "       \ <SID>check_back_space() ? "\<TAB>" :
-    "       \ coc#refresh()
-    " inoremap <silent> <s-TAB> <C-p>
 endfunc
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
