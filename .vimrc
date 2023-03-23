@@ -18,7 +18,7 @@ else
     let g:loaded_matchparen=1
 endif
 
-if (!exists('g:first_load') && argc() == 0)
+if (!exists('g:first_load') && argc() == 0 && has('nvim'))
     if v:vim_did_enter
       GuiTabline 0
       SessionLoad

@@ -26,6 +26,8 @@ if !exists('g:vscode')
     if has('windows')
         " let g:python_host_prog="C:\\Python27\\python.exe"
         let g:python3_host_prog="C:\\Python310\\python.exe"
+        let &pythonthreehome='C:\Python310'
+        let &pythonthreedll='C:\Python310\python310.dll'
     else
         let g:python3_host_prog="/usr/bin/python3"
         " let g:python_host_prog="/usr/bin/python2"
@@ -42,7 +44,9 @@ if !exists('g:vscode')
     Plug 'chrisbra/Recover.vim'
     Plug 'rhysd/git-messenger.vim'
     Plug 'lumiliet/vim-twig'
-    Plug 'phaazon/hop.nvim'
+    if has('nvim')
+        Plug 'phaazon/hop.nvim'
+    endif
     Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
     Plug 'idris-hackers/idris-vim'
     Plug 'equalsraf/neovim-gui-shim'
@@ -58,8 +62,7 @@ if !exists('g:vscode')
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-speeddating'
     Plug 'junegunn/vim-easy-align', { 'on': '<Plug>(LiveEasyAlign)' }
-    Plug 'morhetz/gruvbox'
-    Plug 'Tarmean/lightline-gruvbox.vim'
+    Plug 'gruvbox-community/gruvbox'
     Plug 'itchyny/lightline.vim'
     Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
     Plug 'junegunn/limelight.vim', { 'on':  'Goyo' }

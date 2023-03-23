@@ -1,13 +1,19 @@
 " set guifont=Sauce_Code_Powerline:h13:cANSI
 
-if !has("unix")
-		let &shell = has('win32') ? 'powershell' : 'pwsh'
-		let &shellcmdflag = '-NoLogo -ExecutionPolicy RemoteSigned -Command '
-		let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
-		let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
-		set shellquote= shellxquote=
-endif
+" if !has("unix")
+" 		let &shell = has('win32') ? 'powershell' : 'pwsh'
+" 		let &shellcmdflag = '-NoLogo -ExecutionPolicy RemoteSigned -Command '
+" 		let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+" 		let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'
+" 		set shellquote= shellxquote=
+" endif
+let g:gruvbox_contrast_dark='soft'
+set bg=dark
 colorscheme gruvbox
+
+if has('nvim')
+    set inccommand=nosplit
+endif
 
 " The haskell syntax highlighting has cError highlighting for c preprocessor
 " directives. Hashes at the start of the line error, this breaks with overloadedlabels like
@@ -16,10 +22,8 @@ let hs_allow_hash_operator=1
 
 " don't give |ins-completion-menu| messages.
 set mouse +=a
-set background=light
 set cmdheight=2
 set shortmess+=c
-set inccommand=nosplit
 set termguicolors
 set autoindent
 set lazyredraw
@@ -45,11 +49,15 @@ set splitbelow
 set splitright
 set guioptions=e
 set fillchars+=vert:\ "█
-set backupdir=~/.vim/backups//,.
 set backup
 set writebackup
-set undodir=~/.vim/undodir//,.
+set backupdir=~/.vim/backups//,.
 set directory=~/.vim/swaps//,.
+if has('nvim')
+    set undodir=~/.vim/undodir//,.
+else
+    set undodir=~/.vim/undodirvim//,.
+endif
 set foldmethod=syntax "taken care of by fast fold most of the time
 set noerrorbells visualbell t_vb=
 set foldlevel=1

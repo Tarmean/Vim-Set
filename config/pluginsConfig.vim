@@ -10,17 +10,18 @@ au BufNewFile,BufRead *.lagda.md setf agda
 
 
 
-
 let g:gistory_format_ft = {'hs': 0}
-if (has('nvim'))
-    command! -bang PHPShell RTerm<bang> php php -a -d auto_prepend_file=bootstrap_application.php
-    nnoremap ö :call term_utils#term_toggle('insert', term_utils#guess_term_tag(), exists("b:term_hide") && b:term_hide)<cr>
-    noremap Ö :call term_utils#term_toggle('normal', term_utils#guess_term_tag(), v:true)<cr>
+command! -bang PHPShell RTerm<bang> php php -a -d auto_prepend_file=bootstrap_application.php
+nnoremap ö :call term_utils#term_toggle('insert', term_utils#guess_term_tag(), exists("b:term_hide") && b:term_hide)<cr>
+noremap Ö :call term_utils#term_toggle('normal', term_utils#guess_term_tag(), v:true)<cr>
+if has('nvim')
     tnoremap ö <C-\><C-n>:call term_utils#goto_old_win(exists("b:term_hide") && b:term_hide)<cr>
     tnoremap Ö <C-\><C-n>
-    " cnoremap term Term
-    command! -bang TermHide :let b:hide_term='<bang>'==''
+else
+    tnoremap ö <c-w>:call term_utils#goto_old_win(exists("b:term_hide") && b:term_hide)<cr>
+    tnoremap <a-ö> <c-w>N
 endif
+command! -bang TermHide :let b:hide_term='<bang>'==''
 
 let g:sleuth_automatic = 0
 let g:detect_indent_files = {'php': 1}
@@ -43,6 +44,7 @@ nmap <space>_ "+_
 if exists("g:vscode")
     finish
 endif
+let g:loaded_netrwPlugin = 1
 augroup DirvishMappings
   autocmd!
   autocmd filetype dirvish nmap <buffer> q <plug>(dirvish_quit)
@@ -221,7 +223,7 @@ fun! JumpToDef()
         exe "norm! \<C-]>"
     endif
 endf
-if(has('nvim'))
+if(!exists('g:vscode'))
     command! -nargs=* Z :call Z(<f-args>)
     function! Z(...)
         let cmd = 'fasd -d -e printf'
@@ -402,10 +404,3 @@ endfunction
 
 command! Changes call Changes()
 
-lua << EOF
-require'hop'.setup()
-vim.api.nvim_set_keymap('', 't', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.AFTER_CURSOR, current_line_only = true })<cr>", {})
-vim.api.nvim_set_keymap('', 'T', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true })<cr>", {})
-vim.api.nvim_set_keymap('', 'F', "<cmd>lua require'hop'.hint_char1({ direction = require'hop.hint'.HintDirection.BEFORE_CURSOR, current_line_only = true })<cr>", {})
-vim.api.nvim_set_keymap('', 'f', "<cmd>lua require'hop'.hint_char2({  })<cr>", {})
-EOF

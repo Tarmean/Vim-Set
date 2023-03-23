@@ -192,15 +192,6 @@ fun! JumpToDef()
     exe "norm! \<C-]>"
   endif
 endf
-fun! DoAg(pat, args)
-    if a:args
-        call fzf#vim#ag(a:pat)
-    else
-        call Git_dir("call fzf#vim#ag('" .a:pat."',".a:args.')') 
-    endif
-endfun
-command!      -bang -nargs=* Ag  call DoAg(<q-args>, <bang>0)
-" command!      -bang -nargs=* Agl  call fzf#vim#ag(<q-args>, <bang>0)
 nnoremap <silent> <leader>a :ArgWrap<CR>
 function! Pulse() " {{{
     redir => old_hi
