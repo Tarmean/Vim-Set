@@ -1,8 +1,9 @@
 call plug#begin('~/vimfiles/plugged')
+Plug 'kana/vim-textobj-user'
+
 Plug 'github/copilot.vim'
 Plug 'tpope/vim-sleuth'
 Plug 'guns/vim-sexp'
-Plug 'Tarmean/term-utils.nvim'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
@@ -15,8 +16,12 @@ Plug 'kana/vim-textobj-indent'
 Plug 'kana/vim-textobj-line'
 Plug 'kana/vim-textobj-entire'
 Plug 'Julian/vim-textobj-variable-segment'
-Plug 'Tarmean/Gistory'
 if !exists('g:vscode')
+    Plug 'neovimhaskell/nvim-hs.vim'
+    Plug 'liuchengxu/vim-which-key'
+    Plug 'lervag/vimtex'
+    Plug 'Tarmean/Gistory'
+    Plug 'Tarmean/term-utils.nvim'
     Plug 'puremourning/vimspector'
     Plug 'tpope/vim-fireplace'
     Plug 'tpope/vim-repeat'
@@ -42,7 +47,6 @@ if !exists('g:vscode')
     Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
     Plug 'idris-hackers/idris-vim'
     Plug 'equalsraf/neovim-gui-shim'
-    Plug 'Tarmean/multi'
     Plug 'Tarmean/multi'
     Plug 'Shirk/vim-gas'
     Plug 'rust-lang/rust.vim'
