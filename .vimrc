@@ -29,3 +29,7 @@ if (!exists('g:first_load') && argc() == 0 && has('nvim'))
 endif
 
 let g:first_load = v:false
+
+if has('nvim')
+  let $GIT_EDITOR = 'nvr -cc split --remote-wait'
+endif

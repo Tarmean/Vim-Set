@@ -25,9 +25,12 @@ if !exists('g:vscode')
     Plug 'tpope/vim-repeat'
     if has('windows')
         " let g:python_host_prog="C:\\Python27\\python.exe"
-        let g:python3_host_prog="C:\\Python310\\python.exe"
-        let &pythonthreehome='C:\Python310'
-        let &pythonthreedll='C:\Python310\python310.dll'
+        if has('nvim')
+            let g:python3_host_prog="C:\\Python310\\python.exe"
+        else
+            let &pythonthreehome='C:\Python310'
+            let &pythonthreedll='C:\Python310\python310.dll'
+        endif
     else
         let g:python3_host_prog="/usr/bin/python3"
         " let g:python_host_prog="/usr/bin/python2"
