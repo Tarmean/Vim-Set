@@ -13,8 +13,11 @@ Plug 'glts/vim-textobj-comment'
 Plug 'kana/vim-textobj-indent'
 Plug 'kana/vim-textobj-line'
 Plug 'kana/vim-textobj-entire'
+Plug 'tpope/vim-dispatch'
 Plug 'Julian/vim-textobj-variable-segment'
 if !exists('g:vscode')
+    Plug 'vim-test/vim-test'
+    " Plug 'rcarriga/vim-ultest'
     Plug 'neovimhaskell/nvim-hs.vim'
     Plug 'liuchengxu/vim-which-key'
     Plug 'lervag/vimtex'
@@ -25,9 +28,12 @@ if !exists('g:vscode')
     Plug 'tpope/vim-repeat'
     if has('windows')
         " let g:python_host_prog="C:\\Python27\\python.exe"
-        let g:python3_host_prog="C:\\Python310\\python.exe"
-        let &pythonthreehome='C:\Python310'
-        let &pythonthreedll='C:\Python310\python310.dll'
+        if has('nvim')
+            let g:python3_host_prog="C:\\Python37\\python.exe"
+        else
+            let &pythonthreehome='C:\Python39'
+            let &pythonthreedll='C:\Python39\python39.dll'
+        endif
     else
         let g:python3_host_prog="/usr/bin/python3"
         " let g:python_host_prog="/usr/bin/python2"
