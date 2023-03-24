@@ -30,6 +30,7 @@ endif
 
 let g:first_load = v:false
 
+command! MarkAsShortlived setlocal bufhidden=wipe
 if has('nvim')
-  let $GIT_EDITOR = 'nvr -cc split --remote-wait'
+  let $GIT_EDITOR = "nvr -cc split --remote-wait +MarkAsShortlived"
 endif
