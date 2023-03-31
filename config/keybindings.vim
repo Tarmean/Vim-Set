@@ -21,7 +21,7 @@ tnoremap <c-v> <c-\><c-n>"+pi
 silent! unmap [o
 silent! unmap ]o
 nmap ü [
-nmap + ]
+nmap ä ]
 
 if (has('vim') || has ('nvim'))
     cnoremap %s/ %s/\v

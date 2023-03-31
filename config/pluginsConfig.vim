@@ -2,15 +2,31 @@ if exists(':Delete')
     delcommand Delete
 endif
 
-let g:gistory_format_ft = {'haskell': 0}
+let g:gistory_format_ft = {'haskell': 0,'hs':0}
+
+let g:textobj_comment_no_default_key_mappings = 1
+omap Ac <Plug>(textobj-comment-big-a)
+omap ac <Plug>(textobj-comment-a)
+omap ic <Plug>(textobj-comment-i)
+nmap vAc v<Plug>(textobj-comment-big-a)
+nmap vac v<Plug>(textobj-comment-a)
+nmap vic v<Plug>(textobj-comment-i)
+nmap _  <Plug>ReplaceWithRegisterOperator
+nmap __ <Plug>ReplaceWithRegisterOperatorik
+nmap <space>_ "+_
+
+if exists("g:vscode") || !has('vim')
+    finish
+endif
 
 au BufNewFile,BufRead *.agda setf agda
 au BufNewFile,BufRead *.lagda.md setf agda
 
 
+nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
+nnoremap <silent> <localleader> :WhichKey ','<CR>
 
 
-let g:gistory_format_ft = {'hs': 0}
 command! -bang PHPShell RTerm<bang> php php -a -d auto_prepend_file=bootstrap_application.php
 nnoremap ö :call term_utils#term_toggle('insert', term_utils#guess_term_tag(), exists("b:term_hide") && b:term_hide)<cr>
 noremap Ö :call term_utils#term_toggle('normal', term_utils#guess_term_tag(), v:true)<cr>
@@ -23,27 +39,8 @@ else
 endif
 command! -bang TermHide :let b:hide_term='<bang>'==''
 
-let g:sleuth_automatic = 0
-let g:detect_indent_files = {'php': 1}
-augroup IndentDetect
-  au!
-  auto BufReadPost,BufNewFile *.php Sleuth
-augroup END
-
 nnoremap gx :exec "!&'C:\\Program Files\\Mozilla Firefox\\firefox.exe' " . expand("<cfile>") <cr>
-let g:textobj_comment_no_default_key_mappings = 1
-omap Ac <Plug>(textobj-comment-big-a)
-omap ac <Plug>(textobj-comment-a)
-omap ic <Plug>(textobj-comment-i)
-nmap vAc v<Plug>(textobj-comment-big-a)
-nmap vac v<Plug>(textobj-comment-a)
-nmap vic v<Plug>(textobj-comment-i)
-nmap _  <Plug>ReplaceWithRegisterOperator
-nmap __ <Plug>ReplaceWithRegisterOperatorik
-nmap <space>_ "+_
-if exists("g:vscode")
-    finish
-endif
+
 let g:loaded_netrwPlugin = 1
 augroup DirvishMappings
   autocmd!
