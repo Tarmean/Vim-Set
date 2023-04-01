@@ -1,5 +1,6 @@
 call plug#begin('~/vimfiles/plugged')
 Plug 'github/copilot.vim'
+Plug 'tpope/vim-sleuth'
 Plug 'guns/vim-sexp'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'tpope/vim-surround'
@@ -13,7 +14,8 @@ Plug 'kana/vim-textobj-indent'
 Plug 'kana/vim-textobj-line'
 Plug 'kana/vim-textobj-entire'
 Plug 'Julian/vim-textobj-variable-segment'
-if !exists('g:vscode')
+Plug 'gruvbox-community/gruvbox'
+if IsReal()
     Plug 'glacambre/firenvim', { 'do': ':call firenvim#install(0)' }
     Plug 'neovimhaskell/nvim-hs.vim'
     Plug 'liuchengxu/vim-which-key'
@@ -65,7 +67,6 @@ if !exists('g:vscode')
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-speeddating'
     Plug 'junegunn/vim-easy-align', { 'on': '<Plug>(LiveEasyAlign)' }
-    Plug 'gruvbox-community/gruvbox'
     Plug 'itchyny/lightline.vim'
     Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
     Plug 'junegunn/limelight.vim', { 'on':  'Goyo' }

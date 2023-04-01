@@ -29,12 +29,46 @@ if (has('vim') || has ('nvim'))
 endif
 
 nnoremap j gj
+map gj <c-d>g
 nnoremap k gk
+map gk <c-u>g
 
 nnoremap <silent> <esc> :call coc#float#close_all()<cr>:noh<return><esc>
-nnoremap <Leader>ö :w<CR>
-noremap  <leader>ü :e $MYVIMRC<CR>
-noremap  <leader>ä :so $MYVIMRC<CR>
+if IsReal()
+    nnoremap <Leader>ö :w<CR>
+    noremap  <leader>ü :e $MYVIMRC<CR>
+    noremap  <leader>ä :so $MYVIMRC<CR>
+    vnoremap <Leader>y "+y
+    nnoremap <Leader>yy "+yy
+    nnoremap <silent> <Leader>y :call Prep_yank('"+')<cr>g@
+    nnoremap <Leader>p "+p
+    nnoremap <Leader>P "+P
+    vnoremap <Leader>p "+p
+    vnoremap <Leader>P "+P
+    nnoremap <silent> <Leader>yy "+yy
+    nnoremap <leader>c <C-w>c
+    nnoremap <leader>C :bd!<CR> 
+
+    noremap <silent><leader>h  : call WinMove('h')<cr>
+    noremap <silent><leader>k  : call WinMove('k')<cr>
+    noremap <silent><leader>l  : call WinMove('l')<cr>
+    noremap <silent><leader>j  : call WinMove('j')<cr>
+    noremap <silent><leader>H  : wincmd H<cr>
+    noremap <silent><leader>K  : wincmd K<cr>
+    noremap <silent><leader>L  : wincmd L<cr>
+    noremap <silent><leader>J  : wincmd J<cr>
+    noremap <silent><leader>i gT
+    nnoremap <leader>q :call FullTab()<cr>
+    nnoremap <silent> <leader>a :ArgWrap<CR>
+    nnoremap <leader>b :ClearHiddenBufs<cr>
+
+    noremap <silent> <space>o :exec "tabnext " . ((tabpagenr() + (v:count?v:count-1:0)) % (tabpagenr("$"))+1)<cr>
+    noremap <silent> <space>I :call TabCopy(1, -1)<cr>
+    noremap <silent> <space>O :call TabCopy(1, +1)<cr>
+    noremap <silent> <space><C-I> :call TabCopy(0, -1)<cr>
+    noremap <silent> <space><C-O> :call TabCopy(0, +1)<cr>
+    nnoremap <silent> <space>Q :call MoveTabNew()<cr>
+endif
 
 nnoremap <cr> :
 vnoremap <cr> :
@@ -45,19 +79,10 @@ noremap L $
 nnoremap gI `.
 
 
-nnoremap =<space>p "+]p=']
-nnoremap =<space>P "+[p=']
-vnoremap <Leader>y "+y
-nnoremap <Leader>yy "+yy
-nnoremap <silent> <Leader>y :call Prep_yank('"+')<cr>g@
-nnoremap <silent> <Leader>yy "+yy
+
 nnoremap <silent> y :call Prep_yank('')<cr>g@
 nnoremap <silent> yy yy
-nnoremap <Leader>p "+p
-nnoremap <Leader>P "+P
-vnoremap <Leader>p "+p
-vnoremap <Leader>P "+P
-nnoremap Y y$
+noremap Y y$
 
 func! Prep_yank(reg)
     let g:preyankpos = winsaveview()
@@ -80,19 +105,6 @@ func! Yank(type, ...)
     let &selection = sel_save
 endfunc
 
-nnoremap <leader>v <C-w>v
-nnoremap <leader>V <C-w>s
-nnoremap <leader>c <C-w>c
-nnoremap <leader>C :bd!<CR> 
-
-noremap <silent><leader>h  : call WinMove('h')<cr>
-noremap <silent><leader>k  : call WinMove('k')<cr>
-noremap <silent><leader>l  : call WinMove('l')<cr>
-noremap <silent><leader>j  : call WinMove('j')<cr>
-noremap <silent><leader>H  : wincmd H<cr>
-noremap <silent><leader>K  : wincmd K<cr>
-noremap <silent><leader>L  : wincmd L<cr>
-noremap <silent><leader>J  : wincmd J<cr>
 function! WinMove(key)
     let t:curwin = win_getid()
     exec "wincmd ".a:key
@@ -106,14 +118,6 @@ function! WinMove(key)
     endif
 endfunction
 
-noremap <silent><leader>i gT
-noremap <silent> <space>o :exec "tabnext " . ((tabpagenr() + (v:count?v:count-1:0)) % (tabpagenr("$"))+1)<cr>
-noremap <silent> <space>I :call TabCopy(1, -1)<cr>
-noremap <silent> <space>O :call TabCopy(1, +1)<cr>
-noremap <silent> <space><C-I> :call TabCopy(0, -1)<cr>
-noremap <silent> <space><C-O> :call TabCopy(0, +1)<cr>
-nnoremap <silent> <space>Q :call MoveTabNew()<cr>
-nnoremap <leader>q :call FullTab()<cr>
 
 func! FullTab()
     if (len(gettabinfo(tabpagenr())[0]['windows']) == 1)
@@ -192,7 +196,6 @@ fun! JumpToDef()
     exe "norm! \<C-]>"
   endif
 endf
-nnoremap <silent> <leader>a :ArgWrap<CR>
 function! Pulse() " {{{
     redir => old_hi
         silent execute 'hi CursorLine'
@@ -224,7 +227,6 @@ function! s:delete_hidden_buffers()
   echo "Closed ".closed." hidden buffers"
 endfunction
 command! ClearHiddenBufs call s:delete_hidden_buffers()
-nnoremap <leader>b :ClearHiddenBufs<cr>
 
 nnoremap <silent> g: :set opfunc=SourceVimscript<cr>g@
 vnoremap <silent> g: :<c-U>call SourceVimscript("visual")<cr>

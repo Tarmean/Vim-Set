@@ -102,8 +102,9 @@ endif
 let $MYVIMRC='~/vimfiles/.vimrc'
 
 
-nnoremap <silent><leader>/ :execute 'vimgrep /'.@/.'/g %'<cr>:copen<cr>
-nnoremap <silent><leader>? :execute "Ag '" .  substitute(substitute(substitute(@/, "\\\\<", "\\\\b", ""), "\\\\>", "\\\\b", ""), "\\\\v", "", "") . "'"<cr>
+if IsReal()
+  nnoremap <leader>b :ClearHiddenBufs<cr>
+endif
 
 
 if !exists(":DiffUnsaved")
@@ -161,7 +162,6 @@ function! s:delete_hidden_buffers()
   echo "Closed ".closed." hidden buffers"
 endfunction
 command! ClearHiddenBufs call s:delete_hidden_buffers()
-nnoremap <leader>b :ClearHiddenBufs<cr>
 function! MyFoldText() " {{{
     let line = getline(v:foldstart)
 

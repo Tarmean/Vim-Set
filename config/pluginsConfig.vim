@@ -2,7 +2,13 @@ if exists(':Delete')
     delcommand Delete
 endif
 
-let g:gistory_format_ft = {'haskell': 0,'hs':0}
+
+nmap _  <Plug>ReplaceWithRegisterOperator
+nmap __ <Plug>ReplaceWithRegisterOperatorik
+map U <c-r>
+
+if IsReal()
+nmap <space>_ "+_
 
 let g:textobj_comment_no_default_key_mappings = 1
 omap Ac <Plug>(textobj-comment-big-a)
@@ -11,13 +17,8 @@ omap ic <Plug>(textobj-comment-i)
 nmap vAc v<Plug>(textobj-comment-big-a)
 nmap vac v<Plug>(textobj-comment-a)
 nmap vic v<Plug>(textobj-comment-i)
-nmap _  <Plug>ReplaceWithRegisterOperator
-nmap __ <Plug>ReplaceWithRegisterOperatorik
-nmap <space>_ "+_
 
-if exists("g:vscode") || !has('vim')
-    finish
-endif
+let g:gistory_format_ft = {'haskell': 0,'hs':0}
 
 au BufNewFile,BufRead *.agda setf agda
 au BufNewFile,BufRead *.lagda.md setf agda
@@ -401,3 +402,4 @@ endfunction
 
 command! Changes call Changes()
 
+endif
