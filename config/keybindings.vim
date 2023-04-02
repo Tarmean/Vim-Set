@@ -35,6 +35,8 @@ map gk <c-u>g
 
 nnoremap <silent> <esc> :call coc#float#close_all()<cr>:noh<return><esc>
 if IsReal()
+    nnoremap <space>v :vsplit<cr>
+    nnoremap <space>V :split<cr>
     nnoremap <Leader>ö :w<CR>
     noremap  <leader>ü :e $MYVIMRC<CR>
     noremap  <leader>ä :so $MYVIMRC<CR>
