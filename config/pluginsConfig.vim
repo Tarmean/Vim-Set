@@ -128,44 +128,49 @@ noremap [oz :Goyo<cr>:IndentLinesDisable<cr>
 let g:prosession_on_startup = 0
 let g:session#save_terminals = v:false
 
+let g:airline_powerline_fonts = 1 
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_splits = 0
 
-let g:lightline = {
-      \ 'colorscheme': 'gruvbox',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'cocstatus'], ['readonly', 'gitversion', 'filename'] ],
-      \   'right': [ [ 'sleuth', 'lineinfo', 'percent', 'modified' ],
-      \              [ 'filetype']]
-      \ },
-      \ 'inactive': {
-            \ 'left': [ ['gitversion', 'filename']],
-            \ 'right': [ [ 'lineinfo', 'percent' ], [], [], [] ] },
-      \ 'component_function': {
-      \   'cocstatus': 'coc#status',
-      \ },
-      \ 'component': {
-      \   'gitversion': '%{LightLineGitversion()}',
-      \   'readonly': '%{&filetype=="help"?"":&readonly?"":""}',
-      \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
-      \   'sleuth': '%{SleuthIndicator()}'},
-      \ 'component_expand': {
-      \ },
-      \ 'component_type': {
-      \   'syntastic': 'error',
-      \ },
-      \ 'component_visible_condition': {
-      \   'readonly': '(&filetype!="help"&& &readonly)',
-      \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
-      \   'lineinfo': '(winwidth(0) >= 70)',
-      \ },
-      \ 'separator': { 'left': '', 'right': '' },
-      \ 'subseparator': { 'left': '', 'right': '' }
-      \ }
+
+" let g:lightline = {
+"       \ 'colorscheme': 'gruvbox',
+"       \ 'active': {
+"       \   'left': [ [ 'mode', 'paste' ],
+"       \             [ 'cocstatus'], ['readonly', 'gitversion', 'filename'] ],
+"       \   'right': [ [ 'sleuth', 'lineinfo', 'percent', 'modified' ],
+"       \              [ 'filetype']]
+"       \ },
+"       \ 'inactive': {
+"             \ 'left': [ ['gitversion', 'filename']],
+"             \ 'right': [ [ 'lineinfo', 'percent' ], [], [], [] ] },
+"       \ 'component_function': {
+"       \   'cocstatus': 'coc#status',
+"       \ },
+"       \ 'component': {
+"       \   'gitversion': '%{LightLineGitversion()}',
+"       \   'readonly': '%{&filetype=="help"?"":&readonly?"":""}',
+"       \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
+"       \   'sleuth': '%{SleuthIndicator()}'},
+"       \ 'component_expand': {
+"       \ },
+"       \ 'component_type': {
+"       \   'syntastic': 'error',
+"       \ },
+"       \ 'component_visible_condition': {
+"       \   'readonly': '(&filetype!="help"&& &readonly)',
+"       \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
+"       \   'lineinfo': '(winwidth(0) >= 70)',
+"       \ },
+"       \ 'separator': { 'left': '', 'right': '' },
+"       \ 'subseparator': { 'left': '', 'right': '' }
+"       \ }
 function! FugitiveBufferIdent(...)
   let path = a:0 > 0 ? a:1 : expand("%")
   let p = tr(path, '\', '/')
   return matchlist(p, '\c^fugitive:\%(//\)\=\(.\{-\}\)\%(//\|::\)\(\x\{40,\}\|[0-3]\)\(/.*\)\=$')
 endfunc
+
 function! LightLineGitversion()
   let l:ls = FugitiveBufferIdent()
   if len(l:ls) == 0
@@ -191,29 +196,32 @@ function! LightLineGitversion()
   endif
   return out
 endfunction
+call airline#parts#define_function('gitversion', 'LightLineGitversion')
+let g:airline_section_b = airline#section#create_left(['gitversion'])
+let g:airline_inactive_collapse=0
 augroup PluginAutocomands
     autocmd!
     autocmd User GoyoEnter Limelight
     autocmd User GoyoLeave Limelight!
     autocmd User FzfStatusLine call <SID>fzf_statusline()
-    autocmd ColorScheme * call s:lightline_update()
+    " autocmd ColorScheme * call s:lightline_update()
 augroup END
-function! s:lightline_update()
-    if !exists('g:loaded_lightline')
-        return
-    endif
-    try
-        call LoadLightlineGruvbox()
-        if g:colors_name =~# 'wombat\|solarized\|landscape\|jellybeans\|seoul256\|Tomorrow\|gruvbox'
-          let g:lightline.colorscheme =
-            \substitute(substitute(g:colors_name, '-', '_', 'g'), '256.*', '', '')
-          call lightline#init()
-          call lightline#colorscheme()
-          call lightline#update()
-    endif
-  catch
-  endtry
-endfunction
+" function! s:lightline_update()
+"     if !exists('g:loaded_lightline')
+"         return
+"     endif
+"     try
+"         call LoadLightlineGruvbox()
+"         if g:colors_name =~# 'wombat\|solarized\|landscape\|jellybeans\|seoul256\|Tomorrow\|gruvbox'
+"           let g:lightline.colorscheme =
+"             \substitute(substitute(g:colors_name, '-', '_', 'g'), '256.*', '', '')
+"           call lightline#init()
+"           call lightline#colorscheme()
+"           call lightline#update()
+"     endif
+"   catch
+"   endtry
+" endfunction
 fun! JumpToDef()
     if exists("*GotoDefinition_" . &filetype)
         call GotoDefinition_{&filetype}()

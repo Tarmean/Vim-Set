@@ -4,6 +4,8 @@ let maplocalleader = ","
 auto Filetype clojure nmap cii yaf]][[%opc!!
 auto Filetype clojure nmap K <Plug>FireplaceK
 
+nnoremap <a-o> <c-o>
+nnoremap <a-i> <c-i>
 map <f1> <esc>
 tnoremap <s-space> <space>
 nnoremap <up> <c-w>-

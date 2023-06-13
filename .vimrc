@@ -1,5 +1,4 @@
 let $NVIM_COC_LOG_LEVEL='all'
-" let $NVIM_COC_LOG_FILE='C:/Users/Cyril/vimfiles/coc.log'
 let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
 function! IsReal() 
     return !exists('g:vscode') && (has('nvim') || has('vim'))

@@ -67,7 +67,8 @@ if IsReal()
     Plug 'tpope/vim-fugitive'
     Plug 'tpope/vim-speeddating'
     Plug 'junegunn/vim-easy-align', { 'on': '<Plug>(LiveEasyAlign)' }
-    Plug 'itchyny/lightline.vim'
+    Plug 'vim-airline/vim-airline'
+    " Plug 'itchyny/lightline.vim'
     Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
     Plug 'junegunn/limelight.vim', { 'on':  'Goyo' }
     let g:limelight_conceal_ctermfg = 242

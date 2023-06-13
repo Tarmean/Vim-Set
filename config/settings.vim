@@ -8,7 +8,7 @@
 " 		set shellquote= shellxquote=
 " endif
 let g:gruvbox_contrast_dark='soft'
-set bg=dark
+set bg=light
 colorscheme gruvbox
 
 if has('nvim')
@@ -178,3 +178,17 @@ function! MyFoldText() " {{{
     return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
 endfunction " }}}
 set foldtext=MyFoldText()
+
+
+function! <SID>StripTrailingWhitespaces()
+    " Preparation: save last search, and cursor position.
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " Do the business:
+    %s/\s\+$//e
+    " Clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l, c)
+endfunction
+command! RetabTrailing call <SID>StripTrailingWhitespaces()
