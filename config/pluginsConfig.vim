@@ -40,13 +40,13 @@ else
 endif
 command! -bang TermHide :let b:hide_term='<bang>'==''
 
-nnoremap gx :exec "!&'C:\\Program Files\\Mozilla Firefox\\firefox.exe' " . expand("<cfile>") <cr>
+nnoremap gx :exec '!"C:\\Program Files\\Mozilla Firefox\\firefox.exe" ' . expand("<cfile>") <cr>
 
 let g:loaded_netrwPlugin = 1
 augroup DirvishMappings
   autocmd!
   autocmd filetype dirvish nmap <buffer> q <plug>(dirvish_quit)
-    
+
   " autocmd bufreadpost fugitive://* set bufhidden=wipe
   autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
   autocmd BufReadPost quickfix nnoremap <buffer> J :cnext<cr>
@@ -128,7 +128,7 @@ noremap [oz :Goyo<cr>:IndentLinesDisable<cr>
 let g:prosession_on_startup = 0
 let g:session#save_terminals = v:false
 
-let g:airline_powerline_fonts = 1 
+let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_splits = 0
 
@@ -197,14 +197,41 @@ function! LightLineGitversion()
   return out
 endfunction
 call airline#parts#define_function('gitversion', 'LightLineGitversion')
-let g:airline_section_b = airline#section#create_left(['gitversion'])
 let g:airline_inactive_collapse=0
+if (!exists("g:airline_symbols"))
+    let g:airline_symbols = {}
+endif
+let g:airline_symbols.maxlinenr = ''
+let g:airline_symbols.linenr = ' '
+let g:airline_symbols.colnr = ':'
 augroup PluginAutocomands
     autocmd!
     autocmd User GoyoEnter Limelight
     autocmd User GoyoLeave Limelight!
     autocmd User FzfStatusLine call <SID>fzf_statusline()
     " autocmd ColorScheme * call s:lightline_update()
+augroup END
+
+function! PatchInactiveStatusLine(...)
+  call setwinvar(a:2.winnr, 'airline_section_a', '')
+  call setwinvar(a:2.winnr, 'airline_section_y', '')
+  call setwinvar(a:2.winnr, 'airline_section_z', '')
+endfunction
+call airline#add_inactive_statusline_func('PatchInactiveStatusLine')
+
+
+function! AirlineInit()
+    " let g:airline_section_z = airline#section#create(['windowswap', 'obsession', '%3p%%', 'maxlinenr', ' :%3v'])
+    if airline#util#winwidth() > 79
+      let g:airline_section_z = airline#section#create(['windowswap', 'obsession', '%p%%', 'linenr', 'maxlinenr', 'colnr'])
+    else
+      let g:airline_section_z = airline#section#create(['%p%%', 'linenr', 'colnr'])
+    endif
+    let g:airline_section_b = airline#section#create_left(['gitversion'])
+endfunc
+augroup AIRLINE
+    au!
+    au User AirlineAfterInit  call AirlineInit()
 augroup END
 " function! s:lightline_update()
 "     if !exists('g:loaded_lightline')
@@ -316,10 +343,8 @@ function! Git_dir(command)
 endfunction
 vnoremap dp :diffput<cr>
 vnoremap do :diffget<cr>
-" vmap <leader>r <Plug>(EasyAlign)
-" nmap <leader>r <Plug>(EasyAlign)
-" nmap <leader>r <Plug>(LiveEasyAlign)
-" vmap <leader>r <Plug>(LiveEasyAlign)
+nmap ga <Plug>(LiveEasyAlign)
+vmap  ga <Plug>(LiveEasyAlign)
 nnoremap <a-j> <c-e>
 nnoremap <a-k> <c-y>
 
@@ -380,10 +405,10 @@ endfunction
 
 function! Jumps()
   " Get jumps with filename added
-  let jumps = map(reverse(filter(copy(getjumplist()[0]), {key,val -> bufexists(val.bufnr)})), 
+  let jumps = map(reverse(filter(copy(getjumplist()[0]), {key,val -> bufexists(val.bufnr)})),
     \ { key, val -> bufexists(val.bufnr) ? extend(val, {'name': getbufinfo(val.bufnr)[0].name }) : val })
- 
-  let jumptext = map(copy(jumps), { index, val -> 
+
+  let jumptext = map(copy(jumps), { index, val ->
       \ (val.name).':'.(val.lnum).':'.(val.col+1).': '.GetLine(val.bufnr, val.lnum) })
 
   call fzf#run(fzf#vim#with_preview(fzf#wrap({
@@ -398,7 +423,7 @@ command! Jumps call Jumps()
 function! Changes()
   let changes  = reverse(copy(getchangelist()[0]))
 
-  let changetext = map(copy(changes), { index, val -> 
+  let changetext = map(copy(changes), { index, val ->
       \ expand('%').':'.(val.lnum).':'.(val.col+1).': '.GetLine(bufnr('%'), val.lnum) })
 
   call fzf#run(fzf#vim#with_preview(fzf#wrap({

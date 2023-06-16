@@ -28,10 +28,10 @@ if IsReal()
     if has('windows')
         " let g:python_host_prog="C:\\Python27\\python.exe"
         if has('nvim')
-            let g:python3_host_prog="C:\\Python310\\python.exe"
+            let g:python3_host_prog="C:\\Python311\\python.exe"
         else
-            let &pythonthreehome='C:\Python310'
-            let &pythonthreedll='C:\Python310\python310.dll'
+            let &pythonthreehome='C:\Python311'
+            let &pythonthreedll='C:\Python311\python311.dll'
         endif
     else
         let g:python3_host_prog="/usr/bin/python3"
@@ -68,7 +68,6 @@ if IsReal()
     Plug 'tpope/vim-speeddating'
     Plug 'junegunn/vim-easy-align', { 'on': '<Plug>(LiveEasyAlign)' }
     Plug 'vim-airline/vim-airline'
-    " Plug 'itchyny/lightline.vim'
     Plug 'junegunn/goyo.vim', { 'on':  'Goyo' }
     Plug 'junegunn/limelight.vim', { 'on':  'Goyo' }
     let g:limelight_conceal_ctermfg = 242
