@@ -10,11 +10,7 @@ source ~/vimfiles/config/pluginsconfig.vim
 set diffopt+=iwhiteall
 if IsReal()
     source ~/vimfiles/config/cocconfig.vim
-    nmap <Leader>dK <Plug>VimspectorBalloonEval
-    " for visual mode, the visually selected text
-    xmap <Leader>dK <Plug>VimspectorBalloonEval
-    nmap <LocalLeader><F11> <Plug>VimspectorUpFrame
-    nmap <LocalLeader><F12> <Plug>VimspectorDownFrame
+    let g:vimspector_base_dir='~\vimfiles\plugged\vimspector'
 else
     set fillchars+=vert:\▏
     let g:loaded_matchparen=1

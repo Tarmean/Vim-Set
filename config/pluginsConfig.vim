@@ -288,6 +288,7 @@ if(!exists('g:vscode'))
         execute a:command
     endfunc
     nnoremap <silent> <leader><leader> :call Git_dir('GitFiles')<cr>
+    nnoremap <silent> <c-space><c-space> :Rg --count<cr>
     nnoremap <silent> <leader>fm :Marks<cr>
     nnoremap <silent> <leader>ff :Buffers<cr>
     nnoremap <silent> <leader>fl :BLines<cr>
@@ -343,8 +344,8 @@ function! Git_dir(command)
 endfunction
 vnoremap dp :diffput<cr>
 vnoremap do :diffget<cr>
-nmap ga <Plug>(LiveEasyAlign)
-vmap  ga <Plug>(LiveEasyAlign)
+" nmap ,a <Plug>(LiveEasyAlign)
+" vmap ,a <Plug>(LiveEasyAlign)
 nnoremap <a-j> <c-e>
 nnoremap <a-k> <c-y>
 
@@ -359,6 +360,33 @@ function! pluginsConfig#get_visual_selection()
     let lines[0] = lines[0][column_start - 1:]
     return join(lines, "\n")
 endfunction
+
+function! s:RgHelp()
+    let arg = ['Rg options:',
+              \ '-u --unrestricted',
+              \ '--glob -g' ,
+              \ '--ignore-case -i',
+              \ '--replace -r',
+              \ '-C --context',
+              \ '--files (list files without searching)',
+              \ '-F (no regex)',
+              \ '--no-ignore',
+              \ '-S --smart-case',
+              \ '-z --search-zip',
+              \ '--hidden',
+              \ '--text',
+              \ '--follow',
+              \ '--type -t',
+              \ '--type-not -T',
+              \ '--type-list',
+              \ '-F --fixed-strings',
+              \ '-w --word-regexp',
+              \ '-c --count',
+              \ '--sort path']
+    echo join(arg, "\n")
+endfunc
+command! RgHelp call s:RgHelp()
+    
 vnoremap ' :Rg =pluginsConfig#get_visual_selection()<cr><cr>
 nnoremap ' :Rg =expand("<cword>")<cr><cr>
 

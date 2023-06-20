@@ -34,6 +34,11 @@ vmap <localleader>f  <Plug>(coc-format-selected)
 
 let s:supported = ['php', 'haskell']
 let s:fast = ['php']
+nnoremap ga :call HighlightWord()<cr>
+function! HighlightWord()
+    let @/ = '\<' . expand('<cword>') . '\>'
+    call feedkeys(":setlocal hls\r", 'n')
+endfunc
 function! Get_visual_selection()
     " Why is this not a built-in Vim script function?!
     let [line_start, column_start] = getpos("'<")[1:2]
@@ -145,9 +150,13 @@ nnoremap <silent> ]C :CocLast
 nmap <localleader>db <Plug>VimspectorToggleBreakpoint
 nmap <localleader>dk <Plug>VimspectorStepOut
 nmap <localleader>dj <Plug>VimspectorStepIn
+nmap <localleader>dl <Plug>VimspectorStepOver
 
 nmap <localleader>dd <Plug>VimspectorBalloonEval
 xmap <localleader>dd <Plug>VimspectorBalloonEval
 
 nmap <localleader>dK <Plug>VimspectorUpFrame
 nmap <localleader>dJ <Plug>VimspectorDownFrame
+
+
+au BufNew jdt://* set noswapfile
