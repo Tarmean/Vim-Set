@@ -6,11 +6,10 @@ endfunc
 source ~/vimfiles/config/plugins.vim
 source ~/vimfiles/config/settings.vim
 source ~/vimfiles/config/keybindings.vim
-source ~/vimfiles/config/pluginsconfig.vim
+source ~/vimfiles/config/pluginsConfig.vim
 set diffopt+=iwhiteall
 if IsReal()
-    source ~/vimfiles/config/cocconfig.vim
-    let g:vimspector_base_dir='~\vimfiles\plugged\vimspector'
+    source ~/vimfiles/config/cocConfig.vim
 else
     set fillchars+=vert:\▏
     let g:loaded_matchparen=1
