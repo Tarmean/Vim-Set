@@ -1,4 +1,5 @@
 call plug#begin('~/vimfiles/plugged')
+
 Plug 'github/copilot.vim'
 Plug 'tpope/vim-sleuth'
 Plug 'guns/vim-sexp'
@@ -20,8 +21,8 @@ Plug 'kana/vim-textobj-entire'
 Plug 'Julian/vim-textobj-variable-segment'
 Plug 'gruvbox-community/gruvbox'
 if IsReal()
-    Plug 'glacambre/firenvim', { 'do': ':call firenvim#install(0)' }
     Plug 'neovimhaskell/nvim-hs.vim'
+    Plug 'tpope/vim-markdown'
     Plug 'liuchengxu/vim-which-key'
     Plug 'lervag/vimtex'
     Plug 'Tarmean/Gistory'
@@ -54,6 +55,8 @@ if IsReal()
     Plug 'rhysd/git-messenger.vim'
     Plug 'lumiliet/vim-twig'
     if has('nvim')
+
+        Plug 'tversteeg/registers.nvim', { 'branch': 'main' }
         Plug 'phaazon/hop.nvim'
     endif
     Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}

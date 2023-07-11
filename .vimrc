@@ -10,7 +10,6 @@ source ~/vimfiles/config/pluginsConfig.vim
 set diffopt+=iwhiteall
 if IsReal()
     source ~/vimfiles/config/cocConfig.vim
-    let g:vimspector_base_dir='~\vimfiles\plugged\vimspector'
 else
     set fillchars+=vert:\▏
     let g:loaded_matchparen=1

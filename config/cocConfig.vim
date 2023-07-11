@@ -56,13 +56,17 @@ function! s:BufferConfig()
     nmap <buffer> <silent> gd <Plug>(coc-definition)
     if (&filetype =~? '.*\(typescript\|javascript\).*')
       nmap <buffer> <silent> gD :CocCommand tsserver.goToSourceDefinition<cr>
+    endif
+    if (&filetype =~? '.*\.\(java\|class\)')
+        nmap <buffer> <silent> gu :CocCommand java.action.navigateToSuperImplementation<cr>
     else
-      nmap <buffer> <silent> gD <Plug>(coc-declaration)
+        nmap <buffer> <silent> gu <Plug>(coc-declaration)
     endif
 
     nmap <buffer> <silent> gy <Plug>(coc-type-definition)
     nmap <buffer> <silent> gi <Plug>(coc-implementation)
     nmap <buffer> <silent> gr <Plug>(coc-references)
+    nmap <buffer> <silent> gR <Plug>(coc-references-used)
     let l = index(s:fast, &filetype)
     if (l:l >= 0)
         augroup CursorHold
@@ -112,6 +116,7 @@ nnoremap <silent> <leader>d  :<C-u>CocList diagnostics<cr>
 " Show commands
 " Find symbol of current document
 nnoremap <silent> <leader>s  :<C-u>CocList outline<cr>
+nnoremap <silent> <leader>S  :<C-u>CocList symbols<cr>
 " Search workspace symbols
 " nnoremap <silent> <localleader>s  :<C-u>CocList -I symbols<cr>
 " Do default action for next item.
@@ -146,18 +151,31 @@ nnoremap <silent> ]C :CocLast
 
 
 
+nmap [b <Plug>VimspectorJumpToPreviousBreakpoint
+nmap ]b <Plug>VimspectorJumpToNextBreakpoint
+nmap ,dh <Plug>VimspectorJumpToProgramCounter
 
 nmap <localleader>db <Plug>VimspectorToggleBreakpoint
+nmap <localleader>dp <Plug>VimspectorPause
+nmap <localleader>dq <Plug>VimspectorClose
 nmap <localleader>dk <Plug>VimspectorStepOut
 nmap <localleader>dj <Plug>VimspectorStepInto
 nmap <localleader>df <Plug>VimspectorGotoCurrentLine
 nmap <localleader>dl <Plug>VimspectorStepOver
+nmap <localleader>dL <Plug>VimspectorRunToCursor
+nmap <localleader>da <Plug>VimspectorDisassemble
+nmap <localleader>dB <Plug>VimspectorBreakpoints
+nmap <localleader>d? <Plug>VimspectorToggleConditionalBreakpoint
+nmap <localleader>df <Plug>VimspectorAddFunctionBreakpoint
+nmap <localleader>h <Plug>VimspectorGoToCurrentLine
+nmap <localleader>dG <Plug>VimspectorContinue
+nmap <localleader>dgg <Plug>VimspectorRestart
 
 nmap <localleader>dd <Plug>VimspectorBalloonEval
 xmap <localleader>dd <Plug>VimspectorBalloonEval
 
-nmap <localleader>dK <Plug>VimspectorUpFrame
-nmap <localleader>dJ <Plug>VimspectorDownFrame
+nmap <localleader>do <Plug>VimspectorUpFrame
+nmap <localleader>di <Plug>VimspectorDownFrame
 
 
 au BufNew jdt://* set noswapfile
