@@ -25,6 +25,7 @@ nmap <silent> <localleader>a  <Plug>(coc-codeaction)
 augroup HaskellFixTab
     au!
     au BufReadPost *.hs nmap <buffer> <silent> <tab> v<Plug>(coc-codeaction-selected)
+    au UIEnter * :call GuiClipboard()<cr>
 augroup END
 
 nmap <s-tab>  <Plug>(coc-codelens-action)
@@ -149,7 +150,8 @@ nnoremap <silent> ]C :CocLast
 
 nmap <localleader>db <Plug>VimspectorToggleBreakpoint
 nmap <localleader>dk <Plug>VimspectorStepOut
-nmap <localleader>dj <Plug>VimspectorStepIn
+nmap <localleader>dj <Plug>VimspectorStepInto
+nmap <localleader>df <Plug>VimspectorGotoCurrentLine
 nmap <localleader>dl <Plug>VimspectorStepOver
 
 nmap <localleader>dd <Plug>VimspectorBalloonEval
