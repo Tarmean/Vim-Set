@@ -131,6 +131,9 @@ if has("autocmd")
       endif
 
       autocmd GUIEnter * set visualbell t_vb=
+      if (has('nvim'))
+        au GUIEnter * call GuiClipboard()
+      endif
       autocmd FileType haskell let b:coc_root_patterns = ['.git', '.cabal', 'stack.yaml']
       au BufNewFile,BufRead *.agda setf agda
   augroup END

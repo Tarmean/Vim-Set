@@ -25,7 +25,6 @@ nmap <silent> <localleader>a  <Plug>(coc-codeaction)
 augroup HaskellFixTab
     au!
     au BufReadPost *.hs nmap <buffer> <silent> <tab> v<Plug>(coc-codeaction-selected)
-    au UIEnter * :call GuiClipboard()<cr>
 augroup END
 
 nmap <s-tab>  <Plug>(coc-codelens-action)
