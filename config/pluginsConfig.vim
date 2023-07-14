@@ -2,6 +2,8 @@ if exists(':Delete')
     delcommand Delete
 endif
 
+let g:markdown_fenced_languages = ['html', 'js=javascript', 'python']
+
 
 nmap _  <Plug>ReplaceWithRegisterOperator
 nmap __ <Plug>ReplaceWithRegisterOperatorik
@@ -34,6 +36,7 @@ noremap Ö :call term_utils#term_toggle('normal', term_utils#guess_term_tag(), v
 if has('nvim')
     tnoremap ö <C-\><C-n>:call term_utils#goto_old_win(exists("b:term_hide") && b:term_hide)<cr>
     tnoremap Ö <C-\><C-n>
+    lua require("registers").setup()
 else
     tnoremap ö <c-w>:call term_utils#goto_old_win(exists("b:term_hide") && b:term_hide)<cr>
     tnoremap <a-ö> <c-w>N
