@@ -85,9 +85,7 @@ let g:coc_snippet_next = '<c-j>'
 augroup CocBufferConfig 
     au!
     au FileType * call s:BufferConfig()
-    if (&filetype != 'arduino')
-        " au CocBufferConfig CursorHold * silent! call CocActionAsync('highlight')
-    endif
+    au CocBufferConfig CursorHold * silent! call CocActionAsync('highlight')
 augroup END
 
 
@@ -162,6 +160,7 @@ nmap <localleader>dp <Plug>VimspectorPause
 nmap <localleader>dq <Plug>VimspectorClose
 nmap <localleader>dk <Plug>VimspectorStepOut
 nmap <localleader>dj <Plug>VimspectorStepInto
+nmap <localleader>df <Plug>VimspectorGotoCurrentLine
 nmap <localleader>dl <Plug>VimspectorStepOver
 nmap <localleader>dL <Plug>VimspectorRunToCursor
 nmap <localleader>da <Plug>VimspectorDisassemble

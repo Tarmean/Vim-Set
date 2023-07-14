@@ -220,7 +220,7 @@ function! PatchInactiveStatusLine(...)
   call setwinvar(a:2.winnr, 'airline_section_y', '')
   call setwinvar(a:2.winnr, 'airline_section_z', '')
 endfunction
-call airline#add_inactive_statusline_func('PatchInactiveStatusLine')
+silent! call airline#add_inactive_statusline_func('PatchInactiveStatusLine')
 
 
 function! AirlineInit()
@@ -297,7 +297,21 @@ if(!exists('g:vscode'))
     nnoremap <silent> <leader>fl :BLines<cr>
     nnoremap <silent> <leader>fd :Buffers term://<cr>
     nnoremap <silent> <leader>fw :Windows<cr>
-    nnoremap <silent> <leader>fs :History<cr>
+    if (has('unix'))
+        function! s:fasd_update() abort
+          if empty(&buftype) || &filetype ==# 'dirvish'
+            call jobstart(['fasd', '-A', expand('%:p')])
+          endif
+        endfunction
+        augroup fasd
+          autocmd!
+          autocmd BufWinEnter,BufFilePost * call s:fasd_update()
+        augroup END
+        command! FASD call fzf#run(fzf#wrap({'source': 'fasd -al', 'options': '--no-sort --tac --tiebreak=index'}))
+        nnoremap <silent> <leader>fs :FASD<cr>
+    else
+        nnoremap <silent> <leader>fs :History<cr>
+    endif
     nnoremap <silent> <leader>fc :call Git_dir("Commits")<cr>
     nnoremap <silent> <leader>fb :call Git_dir("Commits")<cr>
 endif
@@ -465,5 +479,57 @@ function! Changes()
 endfunction
 
 command! Changes call Changes()
+
+lua << EOF
+  require'nvim-treesitter.configs'.setup {
+    -- A directory to install the parsers into.
+    -- If this is excluded or nil parsers are installed
+    -- to either the package dir, or the "site" dir.
+    -- If a custom path is used (not nil) it must be added to the runtimepath.
+    parser_install_dir = "~/vimfiles/parsers",
+
+    -- A list of parser names, or "all"
+    ensure_installed = { "c", "vim" },
+
+    -- Install parsers synchronously (only applied to `ensure_installed`)
+    sync_install = false,
+
+    -- Automatically install missing parsers when entering buffer
+    auto_install = false,
+
+    -- List of parsers to ignore installing (for "all")
+    ignore_install = { "javascript" },
+
+    highlight = {
+      -- `false` will disable the whole extension
+      enable = true,
+
+      -- list of language that will be disabled
+      disable = { "c", "rust" },
+
+      -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+      -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+      -- Using this option may slow down your editor, and you may see some duplicate highlights.
+      -- Instead of true it can also be a list of languages
+      additional_vim_regex_highlighting = false,
+    },
+  }
+  vim.opt.runtimepath:append("~/vimfiles/parsers")
+    require("ssr").setup {
+      border = "rounded",
+      min_width = 50,
+      min_height = 5,
+      max_width = 120,
+      max_height = 25,
+      keymaps = {
+        close = "q",
+        next_match = "n",
+        prev_match = "N",
+        replace_confirm = "<cr>",
+        replace_all = "<leader><cr>",
+      }
+  }
+    vim.keymap.set({ "n", "x" }, "<localleader>s", function() require("ssr").open() end)
+EOF
 
 endif

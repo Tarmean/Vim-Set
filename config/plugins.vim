@@ -3,6 +3,10 @@ call plug#begin('~/vimfiles/plugged')
 Plug 'github/copilot.vim'
 Plug 'tpope/vim-sleuth'
 Plug 'guns/vim-sexp'
+
+Plug 'cshuaimin/ssr.nvim'
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
@@ -89,11 +93,24 @@ if IsReal()
     endif
     Plug 'junegunn/fzf.vim'
     if(has('unix'))
-        Plug 'nhooyr/fasd.vim'
         Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': 'yes \| ./install' }
     else
         Plug 'junegunn/fzf'
     endif
 endif
+
+" color schemes
+Plug 'yassinebridi/vim-purpura'
+Plug 'sabrinagannon/vim-garbage-oracle'
+" Plug 'kirisaki/sweet-lolita' eye-searing pink
+" Plug 'tinted-theming/base16-vim' too many themes
+Plug 'shadorain/shadotheme'
+Plug 'sts10/vim-pink-moon'
+Plug 'adigitoleo/vim-mellow'
+Plug 'adigitoleo/vim-mellow'
+Plug 'machakann/vim-colorscheme-imas'
+Plug 'ggalizzi/cake-vim'
+Plug 'vim-scripts/kaltex.vim'
+Plug 'rayes0/blossom.vim'
 call plug#end()
 silent! unmap <space>ig
