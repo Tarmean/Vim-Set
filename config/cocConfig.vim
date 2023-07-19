@@ -1,8 +1,16 @@
-" Use <c-space> to trigger completion.
 inoremap <silent><expr> <TAB>
-      \ coc#pum#visible() ? coc#pum#next(0) : "\<TAB>"
-      " \ <SID>check_back_space() ? "\<TAB>" :
-      " \ coc#refresh()
+      \ coc#pum#visible() ? coc#pum#next(0) :
+      \ (copilot#GetDisplayedSuggestion().text != "") ? copilot#Accept() :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr> <a-cr> (copilot#GetDisplayedSuggestion().text == "") ? DoCopilotSuggest() : copilot#Accept()
+
+function! DoCopilotSuggest()
+    call feedkeys("\<Plug>(copilot-suggest)")
+    return ""
+endfunc
+
+
 inoremap <silent><expr> <s-TAB> coc#pum#prev(0)
 nmap gK <Plug>(coc-float-jump)
 inoremap <silent><expr> <c-space> coc#refresh()
