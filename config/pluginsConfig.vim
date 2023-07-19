@@ -489,7 +489,7 @@ lua << EOF
     parser_install_dir = "~/vimfiles/parsers",
 
     -- A list of parser names, or "all"
-    ensure_installed = { "c", "vim" },
+    ensure_installed = { },
 
     -- Install parsers synchronously (only applied to `ensure_installed`)
     sync_install = false,
@@ -498,14 +498,14 @@ lua << EOF
     auto_install = false,
 
     -- List of parsers to ignore installing (for "all")
-    ignore_install = { "javascript" },
+    ignore_install = { },
 
     highlight = {
       -- `false` will disable the whole extension
-      enable = true,
+      enable = false,
 
       -- list of language that will be disabled
-      disable = { "c", "rust" },
+      disable = { },
 
       -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
       -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
