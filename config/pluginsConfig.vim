@@ -45,16 +45,6 @@ command! -bang TermHide :let b:hide_term='<bang>'==''
 
 nnoremap gx :exec '!"C:\\Program Files\\Mozilla Firefox\\firefox.exe" ' . expand("<cfile>") <cr>
 
-let g:loaded_netrwPlugin = 1
-augroup DirvishMappings
-  autocmd!
-  autocmd filetype dirvish nmap <buffer> q <plug>(dirvish_quit)
-
-  " autocmd bufreadpost fugitive://* set bufhidden=wipe
-  autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
-  autocmd BufReadPost quickfix nnoremap <buffer> J :cnext<cr>
-  autocmd BufReadPost quickfix nnoremap <buffer> K :cprev<cr>
-augroup end
 nmap s <Plug>Ysurround
 nmap ss <Plug>Yssurround
 nnoremap <space>u :UndotreeToggle<cr>
@@ -91,6 +81,7 @@ call textobj#user#plugin('highlight', {
 \   },
 \ })
 
+let g:loaded_netrwPlugin = 1
 noremap <silent> - :call Dirvish_wrap_up(expand('%'))<cr>
 if !exists("g:Dirvish_Added")
     let g:Dirvish_Added = 1
@@ -101,6 +92,8 @@ func! s:dirvish_init()
     noremap <buffer><silent> h :call Dirvish_wrap_up('%:h:h')<cr>
     nnoremap <buffer><silent>  l :<c-u>.call dirvish#open("edit", 0)<cr>
     xnoremap <buffer><silent>  l :call dirvish#open("edit", 0)<cr>
+    nnoremap <buffer><silent>  <right> :<c-u>.call dirvish#open("edit", 0)<cr>
+    xnoremap <buffer><silent>  <right> :call dirvish#open("edit", 0)<cr>
     noremap <buffer> <cr> :
     nnoremap <buffer> + :e %
     nmap <expr><buffer> <esc> v:hlsearch?":noh\<cr>":"\<Plug>(dirvish_quit)"
@@ -108,6 +101,12 @@ func! s:dirvish_init()
     nnoremap <buffer> / /
     nnoremap <buffer> ? ?
     cnoremap <expr><buffer> <cr> Dirvish_append_search()
+    autocmd filetype dirvish nmap <buffer> q <plug>(dirvish_quit)
+
+  " autocmd bufreadpost fugitive://* set bufhidden=wipe
+    autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
+    autocmd BufReadPost quickfix nnoremap <buffer> J :cnext<cr>
+    autocmd BufReadPost quickfix nnoremap <buffer> K :cprev<cr>
     set ma
     sort r /[^\/]$/
 endfunc
