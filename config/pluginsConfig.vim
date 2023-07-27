@@ -3,6 +3,7 @@ if exists(':Delete')
 endif
 
 let g:copilot_filetypes = {'VimspectorPrompt': v:false}
+let g:markdown_fenced_languages = ['html', 'js=javascript', 'python']
 
 nmap _  <Plug>ReplaceWithRegisterOperator
 nmap __ <Plug>ReplaceWithRegisterOperatorik
@@ -35,6 +36,7 @@ noremap Ö :call term_utils#term_toggle('normal', term_utils#guess_term_tag(), v
 if has('nvim')
     tnoremap ö <C-\><C-n>:call term_utils#goto_old_win(exists("b:term_hide") && b:term_hide)<cr>
     tnoremap Ö <C-\><C-n>
+    lua require("registers").setup()
 else
     tnoremap ö <c-w>:call term_utils#goto_old_win(exists("b:term_hide") && b:term_hide)<cr>
     tnoremap <a-ö> <c-w>N
@@ -487,7 +489,7 @@ lua << EOF
     parser_install_dir = "~/vimfiles/parsers",
 
     -- A list of parser names, or "all"
-    ensure_installed = { "c", "vim" },
+    ensure_installed = { },
 
     -- Install parsers synchronously (only applied to `ensure_installed`)
     sync_install = false,
@@ -496,14 +498,14 @@ lua << EOF
     auto_install = false,
 
     -- List of parsers to ignore installing (for "all")
-    ignore_install = { "javascript" },
+    ignore_install = { },
 
     highlight = {
       -- `false` will disable the whole extension
-      enable = true,
+      enable = false,
 
       -- list of language that will be disabled
-      disable = { "c", "rust" },
+      disable = { },
 
       -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
       -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
