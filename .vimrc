@@ -31,3 +31,35 @@ command! MarkAsShortlived setlocal bufhidden=wipe
 if has('nvim')
   let $GIT_EDITOR = "nvr -cc split --remote-wait +MarkAsShortlived"
 endif
+
+
+command! TSimulator Term sim adler-simulator run
+command! TVpa Term vpa adler-vpa run
+command! TConSim Term con-sim adler-connector-adler run
+command! TConVpa Term con-vpa adler-connector-vpa run
+function Bootstrap()
+    call feedkeys(":TSimulator\<CR>:TVpa\<CR>:TConSim\<CR>:TConVpa\<CR>:Term lohi\<CR>")
+endfunc
+silent! nunmap h
+silent! nunmap j
+silent! nunmap k
+silent! nunmap l
+silent! nunmap m
+silent! nunmap n
+silent! nunmap e
+silent! nunmap i
+function! Canary()
+    nnoremap m h
+    nnoremap n j
+    nnoremap e k
+    nnoremap i l
+    nnoremap l e
+
+    nnoremap h n
+    nnoremap j m
+    nnoremap k i
+    nmap ' ö
+    tmap ' ö
+    nmap " ö
+    tmap " ö
+endfunc

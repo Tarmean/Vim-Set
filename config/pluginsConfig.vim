@@ -2,6 +2,7 @@ if exists(':Delete')
     delcommand Delete
 endif
 
+let g:copilot_filetypes = {'VimspectorPrompt': v:false}
 
 nmap _  <Plug>ReplaceWithRegisterOperator
 nmap __ <Plug>ReplaceWithRegisterOperatorik
