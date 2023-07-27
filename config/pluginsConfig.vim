@@ -2,8 +2,8 @@ if exists(':Delete')
     delcommand Delete
 endif
 
+let g:copilot_filetypes = {'VimspectorPrompt': v:false}
 let g:markdown_fenced_languages = ['html', 'js=javascript', 'python']
-
 
 nmap _  <Plug>ReplaceWithRegisterOperator
 nmap __ <Plug>ReplaceWithRegisterOperatorik

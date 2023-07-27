@@ -65,7 +65,7 @@ function! s:BufferConfig()
     if (&filetype =~? '.*\(typescript\|javascript\).*')
       nmap <buffer> <silent> gD :CocCommand tsserver.goToSourceDefinition<cr>
     endif
-    if (&filetype =~? '.*\.\(java\|class\)')
+    if (&filetype =~? 'java\|class')
         nmap <buffer> <silent> gu :CocCommand java.action.navigateToSuperImplementation<cr>
     else
         nmap <buffer> <silent> gu <Plug>(coc-declaration)
