@@ -1,15 +1,23 @@
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
+      \ coc#pum#visible() ? coc#pum#next(0) : \ (copilot#GetDisplayedSuggestion().text != "") ? copilot#Accept() :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
-inoremap <silent> <s-TAB> <C-p>
+inoremap <expr> <a-cr> (copilot#GetDisplayedSuggestion().text == "") ? DoCopilotSuggest() : copilot#Accept()
+
+function! DoCopilotSuggest()
+    call feedkeys("\<Plug>(copilot-suggest)")
+    return ""
+endfunc
+
+
+inoremap <silent><expr> <s-TAB> coc#pum#prev(0)
 nmap gK <Plug>(coc-float-jump)
 inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
-inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>"
 
 
 nmap <localleader>r <Plug>(coc-rename)
@@ -53,10 +61,19 @@ endfunction
 function! s:BufferConfig()
     " Remap keys for gotos
     nmap <buffer> <silent> gd <Plug>(coc-definition)
-    nmap <buffer> <silent> gD <Plug>(coc-declaration)
+    if (&filetype =~? '.*\(typescript\|javascript\).*')
+      nmap <buffer> <silent> gD :CocCommand tsserver.goToSourceDefinition<cr>
+    endif
+    if (&filetype =~? 'java\|class')
+        nmap <buffer> <silent> gu :CocCommand java.action.navigateToSuperImplementation<cr>
+    else
+        nmap <buffer> <silent> gu <Plug>(coc-declaration)
+    endif
+
     nmap <buffer> <silent> gy <Plug>(coc-type-definition)
     nmap <buffer> <silent> gi <Plug>(coc-implementation)
     nmap <buffer> <silent> gr <Plug>(coc-references)
+    nmap <buffer> <silent> gR <Plug>(coc-references-used)
     let l = index(s:fast, &filetype)
     if (l:l >= 0)
         augroup CursorHold
@@ -106,6 +123,7 @@ nnoremap <silent> <leader>d  :<C-u>CocList diagnostics<cr>
 " Show commands
 " Find symbol of current document
 nnoremap <silent> <leader>s  :<C-u>CocList outline<cr>
+nnoremap <silent> <leader>S  :<C-u>CocList symbols<cr>
 " Search workspace symbols
 " nnoremap <silent> <localleader>s  :<C-u>CocList -I symbols<cr>
 " Do default action for next item.
@@ -119,7 +137,10 @@ xmap af <Plug>(coc-funcobj-a)
 omap if <Plug>(coc-funcobj-i)
 omap af <Plug>(coc-funcobj-a)
 
-
+xmap io <Plug>(coc-classobj-i)
+xmap ao <Plug>(coc-classobj-a)
+omap io <Plug>(coc-classobj-i)
+omap ao <Plug>(coc-classobj-a)
 " Use K to show documentation in preview window
 nnoremap <silent> K :call cocConfig#show_documentation()<CR>
 
@@ -135,3 +156,34 @@ nnoremap <silent> [C :CocFirst
 nnoremap <silent> [c :CocPrev
 nnoremap <silent> ]c :CocNext
 nnoremap <silent> ]C :CocLast
+
+
+
+nmap [b <Plug>VimspectorJumpToPreviousBreakpoint
+nmap ]b <Plug>VimspectorJumpToNextBreakpoint
+nmap ,dh <Plug>VimspectorJumpToProgramCounter
+
+nmap <localleader>db <Plug>VimspectorToggleBreakpoint
+nmap <localleader>dp <Plug>VimspectorPause
+nmap <localleader>dq <Plug>VimspectorClose
+nmap <localleader>dk <Plug>VimspectorStepOut
+nmap <localleader>dj <Plug>VimspectorStepInto
+nmap <localleader>df <Plug>VimspectorGotoCurrentLine
+nmap <localleader>dl <Plug>VimspectorStepOver
+nmap <localleader>dL <Plug>VimspectorRunToCursor
+nmap <localleader>da <Plug>VimspectorDisassemble
+nmap <localleader>dB <Plug>VimspectorBreakpoints
+nmap <localleader>d? <Plug>VimspectorToggleConditionalBreakpoint
+nmap <localleader>df <Plug>VimspectorAddFunctionBreakpoint
+nmap <localleader>h <Plug>VimspectorGoToCurrentLine
+nmap <localleader>dG <Plug>VimspectorContinue
+nmap <localleader>dgg <Plug>VimspectorRestart
+
+nmap <localleader>dd <Plug>VimspectorBalloonEval
+xmap <localleader>dd <Plug>VimspectorBalloonEval
+
+nmap <localleader>do <Plug>VimspectorUpFrame
+nmap <localleader>di <Plug>VimspectorDownFrame
+
+
+au BufNew jdt://* set noswapfile

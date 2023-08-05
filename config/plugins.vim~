@@ -2,10 +2,6 @@ call plug#begin('~/vimfiles/plugged')
 Plug 'github/copilot.vim'
 Plug 'tpope/vim-sleuth'
 Plug 'guns/vim-sexp'
-
-Plug 'cshuaimin/ssr.nvim'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
@@ -20,8 +16,8 @@ Plug 'kana/vim-textobj-entire'
 Plug 'Julian/vim-textobj-variable-segment'
 Plug 'gruvbox-community/gruvbox'
 if IsReal()
+    Plug 'glacambre/firenvim', { 'do': ':call firenvim#install(0)' }
     Plug 'neovimhaskell/nvim-hs.vim'
-    Plug 'tpope/vim-markdown'
     Plug 'liuchengxu/vim-which-key'
     Plug 'lervag/vimtex'
     Plug 'Tarmean/Gistory'
@@ -29,7 +25,7 @@ if IsReal()
     Plug 'puremourning/vimspector'
     Plug 'tpope/vim-fireplace'
     Plug 'tpope/vim-repeat'
-    if has('win32')
+    if has('windows')
         " let g:python_host_prog="C:\\Python27\\python.exe"
         if has('nvim')
             let g:python3_host_prog="C:\\Python311\\python.exe"
@@ -54,8 +50,6 @@ if IsReal()
     Plug 'rhysd/git-messenger.vim'
     Plug 'lumiliet/vim-twig'
     if has('nvim')
-
-        Plug 'tversteeg/registers.nvim', { 'branch': 'main' }
         Plug 'phaazon/hop.nvim'
     endif
     Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
@@ -98,19 +92,5 @@ if IsReal()
         Plug 'junegunn/fzf'
     endif
 endif
-
-" color schemes
-Plug 'yassinebridi/vim-purpura'
-Plug 'sabrinagannon/vim-garbage-oracle'
-" Plug 'kirisaki/sweet-lolita' eye-searing pink
-" Plug 'tinted-theming/base16-vim' too many themes
-Plug 'shadorain/shadotheme'
-Plug 'sts10/vim-pink-moon'
-Plug 'adigitoleo/vim-mellow'
-Plug 'adigitoleo/vim-mellow'
-Plug 'machakann/vim-colorscheme-imas'
-Plug 'ggalizzi/cake-vim'
-Plug 'vim-scripts/kaltex.vim'
-Plug 'rayes0/blossom.vim'
 call plug#end()
 silent! unmap <space>ig

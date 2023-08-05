@@ -8,7 +8,8 @@
 " 		set shellquote= shellxquote=
 " endif
 let g:gruvbox_contrast_dark='soft'
-set bg=dark
+let g:gruvbox_contrast_light='hard'
+set bg=light
 colorscheme gruvbox
 
 if has('nvim')
@@ -102,8 +103,9 @@ endif
 let $MYVIMRC='~/vimfiles/.vimrc'
 
 
-nnoremap <silent><leader>/ :execute 'vimgrep /'.@/.'/g %'<cr>:copen<cr>
-nnoremap <silent><leader>? :execute "Ag '" .  substitute(substitute(substitute(@/, "\\\\<", "\\\\b", ""), "\\\\>", "\\\\b", ""), "\\\\v", "", "") . "'"<cr>
+if IsReal()
+  nnoremap <leader>b :ClearHiddenBufs<cr>
+endif
 
 
 if !exists(":DiffUnsaved")
@@ -129,6 +131,9 @@ if has("autocmd")
       endif
 
       autocmd GUIEnter * set visualbell t_vb=
+      if (has('nvim'))
+        au GUIEnter * call GuiClipboard()
+      endif
       autocmd FileType haskell let b:coc_root_patterns = ['.git', '.cabal', 'stack.yaml']
       au BufNewFile,BufRead *.agda setf agda
   augroup END
@@ -161,7 +166,6 @@ function! s:delete_hidden_buffers()
   echo "Closed ".closed." hidden buffers"
 endfunction
 command! ClearHiddenBufs call s:delete_hidden_buffers()
-nnoremap <leader>b :ClearHiddenBufs<cr>
 function! MyFoldText() " {{{
     let line = getline(v:foldstart)
 
@@ -178,3 +182,17 @@ function! MyFoldText() " {{{
     return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
 endfunction " }}}
 set foldtext=MyFoldText()
+
+
+function! <SID>StripTrailingWhitespaces()
+    " Preparation: save last search, and cursor position.
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " Do the business:
+    %s/\s\+$//e
+    " Clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l, c)
+endfunction
+command! RetabTrailing call <SID>StripTrailingWhitespaces()

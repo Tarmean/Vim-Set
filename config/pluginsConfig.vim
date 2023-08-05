@@ -2,35 +2,16 @@ if exists(':Delete')
     delcommand Delete
 endif
 
-let g:gistory_format_ft = {'haskell': 0}
+let g:copilot_filetypes = {'VimspectorPrompt': v:false}
+let g:markdown_fenced_languages = ['html', 'js=javascript', 'python']
 
-au BufNewFile,BufRead *.agda setf agda
-au BufNewFile,BufRead *.lagda.md setf agda
+nmap _  <Plug>ReplaceWithRegisterOperator
+nmap __ <Plug>ReplaceWithRegisterOperatorik
+map U <c-r>
 
+if IsReal()
+nmap <space>_ "+_
 
-
-
-let g:gistory_format_ft = {'hs': 0}
-command! -bang PHPShell RTerm<bang> php php -a -d auto_prepend_file=bootstrap_application.php
-nnoremap ö :call term_utils#term_toggle('insert', term_utils#guess_term_tag(), exists("b:term_hide") && b:term_hide)<cr>
-noremap Ö :call term_utils#term_toggle('normal', term_utils#guess_term_tag(), v:true)<cr>
-if has('nvim')
-    tnoremap ö <C-\><C-n>:call term_utils#goto_old_win(exists("b:term_hide") && b:term_hide)<cr>
-    tnoremap Ö <C-\><C-n>
-else
-    tnoremap ö <c-w>:call term_utils#goto_old_win(exists("b:term_hide") && b:term_hide)<cr>
-    tnoremap <a-ö> <c-w>N
-endif
-command! -bang TermHide :let b:hide_term='<bang>'==''
-
-let g:sleuth_automatic = 0
-let g:detect_indent_files = {'php': 1}
-augroup IndentDetect
-  au!
-  auto BufReadPost,BufNewFile *.php Sleuth
-augroup END
-
-nnoremap gx :exec "!&'C:\\Program Files\\Mozilla Firefox\\firefox.exe' " . expand("<cfile>") <cr>
 let g:textobj_comment_no_default_key_mappings = 1
 omap Ac <Plug>(textobj-comment-big-a)
 omap ac <Plug>(textobj-comment-a)
@@ -38,22 +19,32 @@ omap ic <Plug>(textobj-comment-i)
 nmap vAc v<Plug>(textobj-comment-big-a)
 nmap vac v<Plug>(textobj-comment-a)
 nmap vic v<Plug>(textobj-comment-i)
-nmap _  <Plug>ReplaceWithRegisterOperator
-nmap __ <Plug>ReplaceWithRegisterOperatorik
-nmap <space>_ "+_
-if exists("g:vscode")
-    finish
+
+let g:gistory_format_ft = {'haskell': 0,'hs':0}
+
+au BufNewFile,BufRead *.agda setf agda
+au BufNewFile,BufRead *.lagda.md setf agda
+
+
+nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
+nnoremap <silent> <localleader> :WhichKey ','<CR>
+
+
+command! -bang PHPShell RTerm<bang> php php -a -d auto_prepend_file=bootstrap_application.php
+nnoremap ö :call term_utils#term_toggle('insert', term_utils#guess_term_tag(), exists("b:term_hide") && b:term_hide)<cr>
+noremap Ö :call term_utils#term_toggle('normal', term_utils#guess_term_tag(), v:true)<cr>
+if has('nvim')
+    tnoremap ö <C-\><C-n>:call term_utils#goto_old_win(exists("b:term_hide") && b:term_hide)<cr>
+    tnoremap Ö <C-\><C-n>
+    lua require("registers").setup()
+else
+    tnoremap ö <c-w>:call term_utils#goto_old_win(exists("b:term_hide") && b:term_hide)<cr>
+    tnoremap <a-ö> <c-w>N
 endif
-let g:loaded_netrwPlugin = 1
-augroup DirvishMappings
-  autocmd!
-  autocmd filetype dirvish nmap <buffer> q <plug>(dirvish_quit)
-    
-  " autocmd bufreadpost fugitive://* set bufhidden=wipe
-  autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
-  autocmd BufReadPost quickfix nnoremap <buffer> J :cnext<cr>
-  autocmd BufReadPost quickfix nnoremap <buffer> K :cprev<cr>
-augroup end
+command! -bang TermHide :let b:hide_term='<bang>'==''
+
+nnoremap gx :exec '!"C:\\Program Files\\Mozilla Firefox\\firefox.exe" ' . expand("<cfile>") <cr>
+
 nmap s <Plug>Ysurround
 nmap ss <Plug>Yssurround
 nnoremap <space>u :UndotreeToggle<cr>
@@ -90,6 +81,7 @@ call textobj#user#plugin('highlight', {
 \   },
 \ })
 
+let g:loaded_netrwPlugin = 1
 noremap <silent> - :call Dirvish_wrap_up(expand('%'))<cr>
 if !exists("g:Dirvish_Added")
     let g:Dirvish_Added = 1
@@ -100,6 +92,8 @@ func! s:dirvish_init()
     noremap <buffer><silent> h :call Dirvish_wrap_up('%:h:h')<cr>
     nnoremap <buffer><silent>  l :<c-u>.call dirvish#open("edit", 0)<cr>
     xnoremap <buffer><silent>  l :call dirvish#open("edit", 0)<cr>
+    nnoremap <buffer><silent>  <right> :<c-u>.call dirvish#open("edit", 0)<cr>
+    xnoremap <buffer><silent>  <right> :call dirvish#open("edit", 0)<cr>
     noremap <buffer> <cr> :
     nnoremap <buffer> + :e %
     nmap <expr><buffer> <esc> v:hlsearch?":noh\<cr>":"\<Plug>(dirvish_quit)"
@@ -107,6 +101,12 @@ func! s:dirvish_init()
     nnoremap <buffer> / /
     nnoremap <buffer> ? ?
     cnoremap <expr><buffer> <cr> Dirvish_append_search()
+    autocmd filetype dirvish nmap <buffer> q <plug>(dirvish_quit)
+
+  " autocmd bufreadpost fugitive://* set bufhidden=wipe
+    autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
+    autocmd BufReadPost quickfix nnoremap <buffer> J :cnext<cr>
+    autocmd BufReadPost quickfix nnoremap <buffer> K :cprev<cr>
     set ma
     sort r /[^\/]$/
 endfunc
@@ -130,44 +130,49 @@ noremap [oz :Goyo<cr>:IndentLinesDisable<cr>
 let g:prosession_on_startup = 0
 let g:session#save_terminals = v:false
 
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_splits = 0
 
-let g:lightline = {
-      \ 'colorscheme': 'gruvbox',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'cocstatus'], ['readonly', 'gitversion', 'filename'] ],
-      \   'right': [ [ 'sleuth', 'lineinfo', 'percent', 'modified' ],
-      \              [ 'filetype']]
-      \ },
-      \ 'inactive': {
-            \ 'left': [ ['gitversion', 'filename']],
-            \ 'right': [ [ 'lineinfo', 'percent' ], [], [], [] ] },
-      \ 'component_function': {
-      \   'cocstatus': 'coc#status',
-      \ },
-      \ 'component': {
-      \   'gitversion': '%{LightLineGitversion()}',
-      \   'readonly': '%{&filetype=="help"?"":&readonly?"":""}',
-      \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
-      \   'sleuth': '%{SleuthIndicator()}'},
-      \ 'component_expand': {
-      \ },
-      \ 'component_type': {
-      \   'syntastic': 'error',
-      \ },
-      \ 'component_visible_condition': {
-      \   'readonly': '(&filetype!="help"&& &readonly)',
-      \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
-      \   'lineinfo': '(winwidth(0) >= 70)',
-      \ },
-      \ 'separator': { 'left': '', 'right': '' },
-      \ 'subseparator': { 'left': '', 'right': '' }
-      \ }
+
+" let g:lightline = {
+"       \ 'colorscheme': 'gruvbox',
+"       \ 'active': {
+"       \   'left': [ [ 'mode', 'paste' ],
+"       \             [ 'cocstatus'], ['readonly', 'gitversion', 'filename'] ],
+"       \   'right': [ [ 'sleuth', 'lineinfo', 'percent', 'modified' ],
+"       \              [ 'filetype']]
+"       \ },
+"       \ 'inactive': {
+"             \ 'left': [ ['gitversion', 'filename']],
+"             \ 'right': [ [ 'lineinfo', 'percent' ], [], [], [] ] },
+"       \ 'component_function': {
+"       \   'cocstatus': 'coc#status',
+"       \ },
+"       \ 'component': {
+"       \   'gitversion': '%{LightLineGitversion()}',
+"       \   'readonly': '%{&filetype=="help"?"":&readonly?"":""}',
+"       \   'modified': '%{&filetype=="help"?"":&modified?"+":&modifiable?"":"-"}',
+"       \   'sleuth': '%{SleuthIndicator()}'},
+"       \ 'component_expand': {
+"       \ },
+"       \ 'component_type': {
+"       \   'syntastic': 'error',
+"       \ },
+"       \ 'component_visible_condition': {
+"       \   'readonly': '(&filetype!="help"&& &readonly)',
+"       \   'modified': '(&filetype!="help"&&(&modified||!&modifiable))',
+"       \   'lineinfo': '(winwidth(0) >= 70)',
+"       \ },
+"       \ 'separator': { 'left': '', 'right': '' },
+"       \ 'subseparator': { 'left': '', 'right': '' }
+"       \ }
 function! FugitiveBufferIdent(...)
   let path = a:0 > 0 ? a:1 : expand("%")
   let p = tr(path, '\', '/')
   return matchlist(p, '\c^fugitive:\%(//\)\=\(.\{-\}\)\%(//\|::\)\(\x\{40,\}\|[0-3]\)\(/.*\)\=$')
 endfunc
+
 function! LightLineGitversion()
   let l:ls = FugitiveBufferIdent()
   if len(l:ls) == 0
@@ -193,29 +198,59 @@ function! LightLineGitversion()
   endif
   return out
 endfunction
+call airline#parts#define_function('gitversion', 'LightLineGitversion')
+let g:airline_inactive_collapse=0
+if (!exists("g:airline_symbols"))
+    let g:airline_symbols = {}
+endif
+let g:airline_symbols.maxlinenr = ''
+let g:airline_symbols.linenr = ' '
+let g:airline_symbols.colnr = ':'
 augroup PluginAutocomands
     autocmd!
     autocmd User GoyoEnter Limelight
     autocmd User GoyoLeave Limelight!
     autocmd User FzfStatusLine call <SID>fzf_statusline()
-    autocmd ColorScheme * call s:lightline_update()
+    " autocmd ColorScheme * call s:lightline_update()
 augroup END
-function! s:lightline_update()
-    if !exists('g:loaded_lightline')
-        return
-    endif
-    try
-        call LoadLightlineGruvbox()
-        if g:colors_name =~# 'wombat\|solarized\|landscape\|jellybeans\|seoul256\|Tomorrow\|gruvbox'
-          let g:lightline.colorscheme =
-            \substitute(substitute(g:colors_name, '-', '_', 'g'), '256.*', '', '')
-          call lightline#init()
-          call lightline#colorscheme()
-          call lightline#update()
-    endif
-  catch
-  endtry
+
+function! PatchInactiveStatusLine(...)
+  call setwinvar(a:2.winnr, 'airline_section_a', '')
+  call setwinvar(a:2.winnr, 'airline_section_y', '')
+  call setwinvar(a:2.winnr, 'airline_section_z', '')
 endfunction
+silent! call airline#add_inactive_statusline_func('PatchInactiveStatusLine')
+
+
+function! AirlineInit()
+    " let g:airline_section_z = airline#section#create(['windowswap', 'obsession', '%3p%%', 'maxlinenr', ' :%3v'])
+    if airline#util#winwidth() > 79
+      let g:airline_section_z = airline#section#create(['windowswap', 'obsession', '%p%%', 'linenr', 'maxlinenr', 'colnr'])
+    else
+      let g:airline_section_z = airline#section#create(['%p%%', 'linenr', 'colnr'])
+    endif
+    let g:airline_section_b = airline#section#create_left(['gitversion'])
+endfunc
+augroup AIRLINE
+    au!
+    au User AirlineAfterInit  call AirlineInit()
+augroup END
+" function! s:lightline_update()
+"     if !exists('g:loaded_lightline')
+"         return
+"     endif
+"     try
+"         call LoadLightlineGruvbox()
+"         if g:colors_name =~# 'wombat\|solarized\|landscape\|jellybeans\|seoul256\|Tomorrow\|gruvbox'
+"           let g:lightline.colorscheme =
+"             \substitute(substitute(g:colors_name, '-', '_', 'g'), '256.*', '', '')
+"           call lightline#init()
+"           call lightline#colorscheme()
+"           call lightline#update()
+"     endif
+"   catch
+"   endtry
+" endfunction
 fun! JumpToDef()
     if exists("*GotoDefinition_" . &filetype)
         call GotoDefinition_{&filetype}()
@@ -255,12 +290,27 @@ if(!exists('g:vscode'))
         execute a:command
     endfunc
     nnoremap <silent> <leader><leader> :call Git_dir('GitFiles')<cr>
+    nnoremap <silent> <c-space><c-space> :Rg --count<cr>
     nnoremap <silent> <leader>fm :Marks<cr>
     nnoremap <silent> <leader>ff :Buffers<cr>
     nnoremap <silent> <leader>fl :BLines<cr>
     nnoremap <silent> <leader>fd :Buffers term://<cr>
     nnoremap <silent> <leader>fw :Windows<cr>
-    nnoremap <silent> <leader>fs :History<cr>
+    if (has('unix'))
+        function! s:fasd_update() abort
+          if empty(&buftype) || &filetype ==# 'dirvish'
+            call jobstart(['fasd', '-A', expand('%:p')])
+          endif
+        endfunction
+        augroup fasd
+          autocmd!
+          autocmd BufWinEnter,BufFilePost * call s:fasd_update()
+        augroup END
+        command! FASD call fzf#run(fzf#wrap({'source': 'fasd -al', 'options': '--no-sort --tac --tiebreak=index'}))
+        nnoremap <silent> <leader>fs :FASD<cr>
+    else
+        nnoremap <silent> <leader>fs :History<cr>
+    endif
     nnoremap <silent> <leader>fc :call Git_dir("Commits")<cr>
     nnoremap <silent> <leader>fb :call Git_dir("Commits")<cr>
 endif
@@ -310,10 +360,8 @@ function! Git_dir(command)
 endfunction
 vnoremap dp :diffput<cr>
 vnoremap do :diffget<cr>
-" vmap <leader>r <Plug>(EasyAlign)
-" nmap <leader>r <Plug>(EasyAlign)
-" nmap <leader>r <Plug>(LiveEasyAlign)
-" vmap <leader>r <Plug>(LiveEasyAlign)
+" nmap ,a <Plug>(LiveEasyAlign)
+" vmap ,a <Plug>(LiveEasyAlign)
 nnoremap <a-j> <c-e>
 nnoremap <a-k> <c-y>
 
@@ -328,6 +376,33 @@ function! pluginsConfig#get_visual_selection()
     let lines[0] = lines[0][column_start - 1:]
     return join(lines, "\n")
 endfunction
+
+function! s:RgHelp()
+    let arg = ['Rg options:',
+              \ '-u --unrestricted',
+              \ '--glob -g' ,
+              \ '--ignore-case -i',
+              \ '--replace -r',
+              \ '-C --context',
+              \ '--files (list files without searching)',
+              \ '-F (no regex)',
+              \ '--no-ignore',
+              \ '-S --smart-case',
+              \ '-z --search-zip',
+              \ '--hidden',
+              \ '--text',
+              \ '--follow',
+              \ '--type -t',
+              \ '--type-not -T',
+              \ '--type-list',
+              \ '-F --fixed-strings',
+              \ '-w --word-regexp',
+              \ '-c --count',
+              \ '--sort path']
+    echo join(arg, "\n")
+endfunc
+command! RgHelp call s:RgHelp()
+    
 vnoremap ' :Rg =pluginsConfig#get_visual_selection()<cr><cr>
 nnoremap ' :Rg =expand("<cword>")<cr><cr>
 
@@ -374,10 +449,10 @@ endfunction
 
 function! Jumps()
   " Get jumps with filename added
-  let jumps = map(reverse(filter(copy(getjumplist()[0]), {key,val -> bufexists(val.bufnr)})), 
+  let jumps = map(reverse(filter(copy(getjumplist()[0]), {key,val -> bufexists(val.bufnr)})),
     \ { key, val -> bufexists(val.bufnr) ? extend(val, {'name': getbufinfo(val.bufnr)[0].name }) : val })
- 
-  let jumptext = map(copy(jumps), { index, val -> 
+
+  let jumptext = map(copy(jumps), { index, val ->
       \ (val.name).':'.(val.lnum).':'.(val.col+1).': '.GetLine(val.bufnr, val.lnum) })
 
   call fzf#run(fzf#vim#with_preview(fzf#wrap({
@@ -392,7 +467,7 @@ command! Jumps call Jumps()
 function! Changes()
   let changes  = reverse(copy(getchangelist()[0]))
 
-  let changetext = map(copy(changes), { index, val -> 
+  let changetext = map(copy(changes), { index, val ->
       \ expand('%').':'.(val.lnum).':'.(val.col+1).': '.GetLine(bufnr('%'), val.lnum) })
 
   call fzf#run(fzf#vim#with_preview(fzf#wrap({
@@ -404,3 +479,56 @@ endfunction
 
 command! Changes call Changes()
 
+lua << EOF
+  require'nvim-treesitter.configs'.setup {
+    -- A directory to install the parsers into.
+    -- If this is excluded or nil parsers are installed
+    -- to either the package dir, or the "site" dir.
+    -- If a custom path is used (not nil) it must be added to the runtimepath.
+    parser_install_dir = "~/vimfiles/parsers",
+
+    -- A list of parser names, or "all"
+    ensure_installed = { },
+
+    -- Install parsers synchronously (only applied to `ensure_installed`)
+    sync_install = false,
+
+    -- Automatically install missing parsers when entering buffer
+    auto_install = false,
+
+    -- List of parsers to ignore installing (for "all")
+    ignore_install = { },
+
+    highlight = {
+      -- `false` will disable the whole extension
+      enable = false,
+
+      -- list of language that will be disabled
+      disable = { },
+
+      -- Setting this to true will run `:h syntax` and tree-sitter at the same time.
+      -- Set this to `true` if you depend on 'syntax' being enabled (like for indentation).
+      -- Using this option may slow down your editor, and you may see some duplicate highlights.
+      -- Instead of true it can also be a list of languages
+      additional_vim_regex_highlighting = false,
+    },
+  }
+  vim.opt.runtimepath:append("~/vimfiles/parsers")
+    require("ssr").setup {
+      border = "rounded",
+      min_width = 50,
+      min_height = 5,
+      max_width = 120,
+      max_height = 25,
+      keymaps = {
+        close = "q",
+        next_match = "n",
+        prev_match = "N",
+        replace_confirm = "<cr>",
+        replace_all = "<leader><cr>",
+      }
+  }
+    vim.keymap.set({ "n", "x" }, "<localleader>s", function() require("ssr").open() end)
+EOF
+
+endif
