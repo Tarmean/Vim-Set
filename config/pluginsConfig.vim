@@ -2,6 +2,7 @@ if exists(':Delete')
     delcommand Delete
 endif
 
+lua require('leap').add_default_mappings()
 let g:copilot_filetypes = {'VimspectorPrompt': v:false}
 let g:markdown_fenced_languages = ['html', 'js=javascript', 'python']
 
@@ -26,9 +27,6 @@ au BufNewFile,BufRead *.agda setf agda
 au BufNewFile,BufRead *.lagda.md setf agda
 
 
-nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
-nnoremap <silent> <localleader> :WhichKey ','<CR>
-
 
 command! -bang PHPShell RTerm<bang> php php -a -d auto_prepend_file=bootstrap_application.php
 nnoremap ö :call term_utils#term_toggle('insert', term_utils#guess_term_tag(), exists("b:term_hide") && b:term_hide)<cr>
@@ -45,8 +43,8 @@ command! -bang TermHide :let b:hide_term='<bang>'==''
 
 nnoremap gx :exec '!"C:\\Program Files\\Mozilla Firefox\\firefox.exe" ' . expand("<cfile>") <cr>
 
-nmap s <Plug>Ysurround
-nmap ss <Plug>Yssurround
+" nmap s <Plug>Ysurround
+" nmap ss <Plug>Yssurround
 nnoremap <space>u :UndotreeToggle<cr>
 let g:undotree_SetFocusWhenToggle = 1
 func! Seek(line, col, syn, dir)
@@ -511,24 +509,44 @@ lua << EOF
       -- Using this option may slow down your editor, and you may see some duplicate highlights.
       -- Instead of true it can also be a list of languages
       additional_vim_regex_highlighting = false,
-    },
+      },
   }
   vim.opt.runtimepath:append("~/vimfiles/parsers")
-    require("ssr").setup {
+  require("ssr").setup {
       border = "rounded",
       min_width = 50,
       min_height = 5,
       max_width = 120,
       max_height = 25,
       keymaps = {
-        close = "q",
-        next_match = "n",
-        prev_match = "N",
-        replace_confirm = "<cr>",
-        replace_all = "<leader><cr>",
+          close = "q",
+          next_match = "n",
+          prev_match = "N",
+          replace_confirm = "<cr>",
+          replace_all = "<leader><cr>",
       }
-  }
-    vim.keymap.set({ "n", "x" }, "<localleader>s", function() require("ssr").open() end)
+      }
+  vim.keymap.set({ "n", "x" }, "<localleader>s", function() require("ssr").open() end)
+  require('leap-spooky').setup {
+      -- Mappings will be generated corresponding to all native text objects,
+      -- like: (ir|ar|iR|aR|im|am|iM|aM){obj}.
+      -- Special line objects will also be added, by repeating the affixes.
+      -- E.g. `yrr<leap>` and `ymm<leap>` will yank a line in the current
+      -- window.
+      affixes = {
+        -- The cursor moves to the targeted object, and stays there.
+        magnetic = { window = 'm', cross_window = 'M' },
+        -- The operation is executed seemingly remotely (the cursor boomerangs
+        -- back afterwards).
+        remote = { window = 'r', cross_window = 'R' },
+      },
+      -- Defines text objects like `riw`, `raw`, etc., instead of
+      -- targets.vim-style `irw`, `arw`.
+      prefix = false,
+      -- The yanked text will automatically be pasted at the cursor position
+      -- if the unnamed register is in use.
+      paste_on_remote_yank = true, }
 EOF
 
 endif
+
