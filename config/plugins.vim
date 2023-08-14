@@ -21,10 +21,12 @@ Plug 'kana/vim-textobj-line'
 Plug 'kana/vim-textobj-entire'
 Plug 'Julian/vim-textobj-variable-segment'
 Plug 'gruvbox-community/gruvbox'
+Plug 'ggandor/leap.nvim'
+Plug 'ggandor/leap-spooky.nvim'
 if IsReal()
     Plug 'neovimhaskell/nvim-hs.vim'
     Plug 'tpope/vim-markdown'
-    Plug 'liuchengxu/vim-which-key'
+    " Plug 'folke/which-key.nvim'
     Plug 'lervag/vimtex'
     Plug 'Tarmean/Gistory'
     Plug 'Tarmean/term-utils.nvim'
@@ -34,10 +36,10 @@ if IsReal()
     if has('win32')
         " let g:python_host_prog="C:\\Python27\\python.exe"
         if has('nvim')
-            let g:python3_host_prog="C:\\Python311\\python.exe"
+            let g:python3_host_prog="C:\\Python39\\python.exe"
         else
-            let &pythonthreehome='C:\Python311'
-            let &pythonthreedll='C:\Python311\python311.dll'
+            let &pythonthreehome='C:\Python310'
+            let &pythonthreedll='C:\Python310\python310.dll'
         endif
     else
         let g:python3_host_prog="/usr/bin/python3"
