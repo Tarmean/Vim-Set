@@ -1,15 +1,17 @@
 let $NVIM_COC_LOG_LEVEL='all'
+
 let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
 function! IsReal() 
     return !exists('g:vscode') && (has('nvim') || has('vim'))
 endfunc
-source ~/vimfiles/config/plugins.vim
-source ~/vimfiles/config/settings.vim
-source ~/vimfiles/config/keybindings.vim
-source ~/vimfiles/config/pluginsConfig.vim
+source D:/Config/vimfiles/config/plugins.vim
+source D:/Config/vimfiles/config/settings.vim
+source D:/Config/vimfiles/config/keybindings.vim
+source D:/Config/vimfiles/config/pluginsConfig.vim
 set diffopt+=iwhiteall
 if IsReal()
-    source ~/vimfiles/config/cocConfig.vim
+    source D:/Config/vimfiles/config/cocConfig.vim
+    let g:vimspector_base_dir='C:\Users\cyril.etienne.fahlen\vimfiles\plugged\vimspector'
 else
     set fillchars+=vert:\▏
     let g:loaded_matchparen=1
@@ -32,34 +34,10 @@ if has('nvim')
   let $GIT_EDITOR = "nvr -cc split --remote-wait +MarkAsShortlived"
 endif
 
-
 command! TSimulator Term sim adler-simulator run
 command! TVpa Term vpa adler-vpa run
 command! TConSim Term con-sim adler-connector-adler run
 command! TConVpa Term con-vpa adler-connector-vpa run
 function Bootstrap()
     call feedkeys(":TSimulator\<CR>:TVpa\<CR>:TConSim\<CR>:TConVpa\<CR>:Term lohi\<CR>")
-endfunc
-silent! nunmap h
-silent! nunmap j
-silent! nunmap k
-silent! nunmap l
-silent! nunmap m
-silent! nunmap n
-silent! nunmap e
-silent! nunmap i
-function! Canary()
-    nnoremap m h
-    nnoremap n j
-    nnoremap e k
-    nnoremap i l
-    nnoremap l e
-
-    nnoremap h n
-    nnoremap j m
-    nnoremap k i
-    nmap ' ö
-    tmap ' ö
-    nmap " ö
-    tmap " ö
 endfunc

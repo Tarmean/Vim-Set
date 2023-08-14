@@ -53,10 +53,10 @@ if IsReal()
     nnoremap <leader>c <C-w>c
     nnoremap <leader>C :bd!<CR> 
 
-    noremap <silent><leader><left>  : call WinMove('h')<cr>
-    noremap <silent><leader><up>  : call WinMove('k')<cr>
-    noremap <silent><leader><right>  : call WinMove('l')<cr>
-    noremap <silent><leader><down>  : call WinMove('j')<cr>
+    noremap <silent><leader>h  : call WinMove('h')<cr>
+    noremap <silent><leader>k  : call WinMove('k')<cr>
+    noremap <silent><leader>l  : call WinMove('l')<cr>
+    noremap <silent><leader>j  : call WinMove('j')<cr>
     noremap <silent><leader>H  : wincmd H<cr>
     noremap <silent><leader>K  : wincmd K<cr>
     noremap <silent><leader>L  : wincmd L<cr>

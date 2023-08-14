@@ -5,6 +5,8 @@ Plug 'guns/vim-sexp'
 
 Plug 'cshuaimin/ssr.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'nvim-treesitter/playground'
+Plug 'idanarye/vim-merginal/'
 
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
 Plug 'tpope/vim-surround'
