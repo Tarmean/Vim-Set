@@ -37,7 +37,7 @@ augroup END
 
 nmap <s-tab>  <Plug>(coc-codelens-action)
 vmap <s-tab>  <Plug>(coc-codelens-action)
-nmap <localleader>f  <Plug>(coc-format-selected)
+nnoremap <localleader>f  :call CocAction('format')<cr>
 vmap <localleader>f  <Plug>(coc-format-selected)
 
 let s:supported = ['php', 'haskell']

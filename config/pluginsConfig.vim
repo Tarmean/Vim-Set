@@ -426,7 +426,7 @@ command!      -bang -nargs=* Rg  call s:rg_in_root(<q-args>, <bang>0)
 let g:fzf_preview_window = []
 nnoremap <space>fj :Jumps<cr>
 nnoremap <space>fk :Changes<cr>
-function GoTo(jumpline)
+function! GoTo(jumpline)
   let values = split(a:jumpline, ":")
   let path = join(values[0:-4], ':')
   let g:values = values
@@ -435,7 +435,7 @@ function GoTo(jumpline)
   execute "normal zvzz"
 endfunction
 
-function GetLine(bufnr, lnum)
+function! GetLine(bufnr, lnum)
   let lines = getbufline(a:bufnr, a:lnum)
   if len(lines)>0
     return trim(lines[0])
@@ -565,5 +565,6 @@ lua << EOF
       paste_on_remote_yank = true, }
   require('leap').add_default_mappings()
 EOF
+vunmap x
 
 endif
