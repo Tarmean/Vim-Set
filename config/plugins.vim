@@ -2,6 +2,10 @@ call plug#begin('~/vimfiles/plugged')
 Plug 'github/copilot.vim'
 Plug 'tpope/vim-sleuth'
 Plug 'guns/vim-sexp'
+Plug 'takac/vim-hardtime'
+Plug 'Olical/conjure'
+Plug 'Olical/aniseed'
+let g:hardmode_default_on=1
 
 Plug 'cshuaimin/ssr.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
