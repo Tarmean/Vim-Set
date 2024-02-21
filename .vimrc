@@ -17,6 +17,8 @@ else
     let g:loaded_matchparen=1
 endif
 
+map <F2> z<left>
+map <F3> z<right>
 if (!exists('g:first_load') && argc() == 0 && has('nvim'))
     if v:vim_did_enter
       GuiTabline 0

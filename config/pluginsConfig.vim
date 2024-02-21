@@ -544,27 +544,36 @@ lua << EOF
       }
   }
     vim.keymap.set({ "n", "x" }, "<localleader>s", function() require("ssr").open() end)
-  require('leap-spooky').setup {
-      -- Mappings will be generated corresponding to all native text objects,
-      -- like: (ir|ar|iR|aR|im|am|iM|aM){obj}.
-      -- Special line objects will also be added, by repeating the affixes.
-      -- E.g. `yrr<leap>` and `ymm<leap>` will yank a line in the current
-      -- window.
-      affixes = {
-        -- The cursor moves to the targeted object, and stays there.
-        magnetic = { window = 'm', cross_window = 'M' },
-        -- The operation is executed seemingly remotely (the cursor boomerangs
-        -- back afterwards).
-        remote = { window = 'r', cross_window = 'R' },
-      },
-      -- Defines text objects like `riw`, `raw`, etc., instead of
-      -- targets.vim-style `irw`, `arw`.
-      prefix = false,
-      -- The yanked text will automatically be pasted at the cursor position
-      -- if the unnamed register is in use.
-      paste_on_remote_yank = true, }
-  require('leap').add_default_mappings()
+    local hop = require('hop')
+    hop.setup()
+    local directions = require('hop.hint').HintDirection
+    vim.keymap.set('', '<a-j>', function()
+      hop.hint_lines({ direction = directions.BEFORE_CURSOR })
+    end, {remap=true})
+    vim.keymap.set('', '<a-k>', function()
+      hop.hint_lines({ direction = directions.BEFORE_CURSOR })
+    end, {remap=true})
+    vim.keymap.set('', '<a-w>', function()
+      hop.hint_words({ })
+    end, {remap=true})
+    vim.keymap.set('n', 's', function()
+      hop.hint_char2({ direction = directions.AFTER_CURSOR })
+    end, {remap=true})
+    vim.keymap.set('n', 'S', function()
+      hop.hint_char2({ direction = directions.BEFORE_CURSOR })
+    end, {remap=true})
+    vim.keymap.set('', 'f', function()
+      hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = true })
+    end, {remap=true})
+    vim.keymap.set('', 'F', function()
+      hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = true })
+    end, {remap=true})
+    vim.keymap.set('', 't', function()
+      hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = true, hint_offset = -1 })
+    end, {remap=true})
+    vim.keymap.set('', 'T', function()
+      hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = true, hint_offset = 1 })
+    end, {remap=true})
 EOF
-vunmap x
 
 endif

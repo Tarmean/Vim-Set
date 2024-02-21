@@ -1,3 +1,4 @@
+let g:conjure#mapping#doc_word = "<C-K>"
 " Use <c-space> to trigger completion.
 inoremap <silent><expr> <TAB>
       \ coc#pum#visible() ? coc#pum#next(0) :
@@ -144,6 +145,7 @@ omap io <Plug>(coc-classobj-i)
 omap ao <Plug>(coc-classobj-a)
 " Use K to show documentation in preview window
 nnoremap <silent> K :call cocConfig#show_documentation()<CR>
+nnoremap <silent> gh :call cocConfig#show_documentation()<CR>
 
 function! cocConfig#show_documentation()
   if (index(['help'], &filetype) >= 0)
