@@ -5,6 +5,7 @@ Plug 'guns/vim-sexp'
 Plug 'takac/vim-hardtime'
 Plug 'Olical/conjure'
 Plug 'Olical/aniseed'
+Plug 'stevearc/oil.nvim'
 let g:hardmode_default_on=1
 
 Plug 'cshuaimin/ssr.nvim'
@@ -67,14 +68,14 @@ if IsReal()
         Plug 'tversteeg/registers.nvim', { 'branch': 'main' }
         Plug 'phaazon/hop.nvim'
     endif
-    Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
+    " Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
     Plug 'idris-hackers/idris-vim'
-    Plug 'equalsraf/neovim-gui-shim'
+    " Plug 'equalsraf/neovim-gui-shim'
     Plug 'Tarmean/multi'
     Plug 'Shirk/vim-gas'
     Plug 'rust-lang/rust.vim'
     Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
-    Plug 'justinmk/vim-dirvish'
+    " Plug 'justinmk/vim-dirvish'
     Plug 'tpope/vim-unimpaired'
     Plug 'tpope/vim-eunuch'
     Plug 'tpope/vim-abolish', { 'on':  'S' }

@@ -78,49 +78,50 @@ call textobj#user#plugin('highlight', {
 \   },
 \ })
 
-let g:loaded_netrwPlugin = 1
-noremap <silent> - :call Dirvish_wrap_up(expand('%'))<cr>
-if !exists("g:Dirvish_Added")
-    let g:Dirvish_Added = 1
-    au FileType dirvish call s:dirvish_init()
-endif
-func! s:dirvish_init()
-    noremap <buffer><silent> - :call Dirvish_wrap_up('%:h:h')<cr>
-    noremap <buffer><silent> h :call Dirvish_wrap_up('%:h:h')<cr>
-    nnoremap <buffer><silent>  l :<c-u>.call dirvish#open("edit", 0)<cr>
-    xnoremap <buffer><silent>  l :call dirvish#open("edit", 0)<cr>
-    nnoremap <buffer><silent>  <right> :<c-u>.call dirvish#open("edit", 0)<cr>
-    xnoremap <buffer><silent>  <right> :call dirvish#open("edit", 0)<cr>
-    noremap <buffer> <cr> :
-    nnoremap <buffer> + :e %
-    nmap <expr><buffer> <esc> v:hlsearch?":noh\<cr>":"\<Plug>(dirvish_quit)"
-    " skip both dirvish's and my mappings because \v isn't needed for file paths
-    nnoremap <buffer> / /
-    nnoremap <buffer> ? ?
-    cnoremap <expr><buffer> <cr> Dirvish_append_search()
-    autocmd filetype dirvish nmap <buffer> q <plug>(dirvish_quit)
 
-  " autocmd bufreadpost fugitive://* set bufhidden=wipe
-    autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
-    autocmd BufReadPost quickfix nnoremap <buffer> J :cnext<cr>
-    autocmd BufReadPost quickfix nnoremap <buffer> K :cprev<cr>
-    set ma
-    sort r /[^\/]$/
-endfunc
-func! Dirvish_wrap_up(path) " au */tomatically seek the directory or file when going up
-    let loc = escape(substitute(expand("%:p"), '/', '\', 'g'), '\')
-    silent! execute "Dirvish " . a:path
-    silent! execute "call search('" . loc . "')"
-endfunc
-func! Dirvish_append_search()
-    let isSearch = !(getcmdtype() == "/" || getcmdtype() == "?")
-    let isEscaped = getcmdline() =~# '\ze[^\/]*[\/]\=\$$'
-    if isSearch || isEscaped
-        return "\<cr>"
-    else
-        return '\ze[^\/]*[\/]\=$'
-    endif
-endfunc
+let g:loaded_netrwPlugin = 1
+" noremap <silent> - :call Dirvish_wrap_up(expand('%'))<cr>
+" if !exists("g:Dirvish_Added")
+"     let g:Dirvish_Added = 1
+"     au FileType dirvish call s:dirvish_init()
+" endif
+" func! s:dirvish_init()
+"     noremap <buffer><silent> - :call Dirvish_wrap_up('%:h:h')<cr>
+"     noremap <buffer><silent> h :call Dirvish_wrap_up('%:h:h')<cr>
+"     nnoremap <buffer><silent>  l :<c-u>.call dirvish#open("edit", 0)<cr>
+"     xnoremap <buffer><silent>  l :call dirvish#open("edit", 0)<cr>
+"     nnoremap <buffer><silent>  <right> :<c-u>.call dirvish#open("edit", 0)<cr>
+"     xnoremap <buffer><silent>  <right> :call dirvish#open("edit", 0)<cr>
+"     noremap <buffer> <cr> :
+"     nnoremap <buffer> + :e %
+"     nmap <expr><buffer> <esc> v:hlsearch?":noh\<cr>":"\<Plug>(dirvish_quit)"
+"     " skip both dirvish's and my mappings because \v isn't needed for file paths
+"     nnoremap <buffer> / /
+"     nnoremap <buffer> ? ?
+"     cnoremap <expr><buffer> <cr> Dirvish_append_search()
+"     autocmd filetype dirvish nmap <buffer> q <plug>(dirvish_quit)
+
+"   " autocmd bufreadpost fugitive://* set bufhidden=wipe
+"     autocmd BufReadPost quickfix nnoremap <buffer> <CR> <CR>
+"     autocmd BufReadPost quickfix nnoremap <buffer> J :cnext<cr>
+"     autocmd BufReadPost quickfix nnoremap <buffer> K :cprev<cr>
+"     set ma
+"     sort r /[^\/]$/
+" endfunc
+" func! Dirvish_wrap_up(path) " au */tomatically seek the directory or file when going up
+"     let loc = escape(substitute(expand("%:p"), '/', '\', 'g'), '\')
+"     silent! execute "Dirvish " . a:path
+"     silent! execute "call search('" . loc . "')"
+" endfunc
+" func! Dirvish_append_search()
+"     let isSearch = !(getcmdtype() == "/" || getcmdtype() == "?")
+"     let isEscaped = getcmdline() =~# '\ze[^\/]*[\/]\=\$$'
+"     if isSearch || isEscaped
+"         return "\<cr>"
+"     else
+"         return '\ze[^\/]*[\/]\=$'
+"     endif
+" endfunc
 let g:tf_workaround= 0
 noremap ]oz :Goyo!<cr>
 noremap [oz :Goyo<cr>:IndentLinesDisable<cr>
@@ -574,6 +575,9 @@ lua << EOF
     vim.keymap.set('', 'T', function()
       hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = true, hint_offset = 1 })
     end, {remap=true})
+
+    require('oil').setup()
+    vim.keymap.set('n', '-', '<CMD>Oil<cr>', {desc = "Open Oil"})
 EOF
 
 endif
