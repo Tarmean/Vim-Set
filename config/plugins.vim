@@ -1,10 +1,12 @@
 call plug#begin('~/vimfiles/plugged')
 Plug 'github/copilot.vim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'olimorris/codecompanion.nvim'
 Plug 'tpope/vim-sleuth'
 Plug 'guns/vim-sexp'
 Plug 'takac/vim-hardtime'
-Plug 'Olical/conjure'
-Plug 'Olical/aniseed'
+" Plug 'Olical/conjure'
+" Plug 'Olical/aniseed'
 Plug 'stevearc/oil.nvim'
 let g:hardmode_default_on=1
 
