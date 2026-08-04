@@ -74,6 +74,10 @@ if IsReal()
         Plug 'mason-org/mason.nvim'
         Plug 'mason-org/mason-lspconfig.nvim'
         Plug 'saghen/blink.cmp', { 'tag': 'v1.*' }
+        " Both default to the `main` branch (the rewrite): no module system,
+        " configured in config/lsp.lua. Needs `npm i -g tree-sitter-cli` and a
+        " C compiler -- build-essential on unix, or zig on Windows via the
+        " shims in vimfiles/bin.
         Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
         Plug 'nvim-treesitter/nvim-treesitter-textobjects'
     endif

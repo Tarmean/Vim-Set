@@ -1,0 +1,3 @@
+# The bin/ shims are cmd.exe batch files and must keep CRLF on checkout,
+# regardless of the machine's core.autocrlf. Nothing else in the repo cares.
+*.cmd text eol=crlf
