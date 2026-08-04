@@ -39,7 +39,10 @@ else
 endif
 command! -bang TermHide :let b:hide_term='<bang>'==''
 
-nnoremap gx :exec '!"C:\\Program Files\\Mozilla Firefox\\firefox.exe" ' . expand("<cfile>") <cr>
+" gx is left to the built-in: nvim 0.10+ maps it to vim.ui.open (n and x),
+" which dispatches to start/xdg-open/open; plain vim gets netrw's version.
+" Both hand the URL to the system default browser instead of a fixed path.
+" To force a specific browser, set $BROWSER (unix) or g:netrw_browsex_viewer.
 
 " nmap s <Plug>Ysurround
 " nmap ss <Plug>Yssurround

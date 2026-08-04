@@ -9,7 +9,9 @@ source ~/vimfiles/config/pluginsConfig.vim
 set diffopt+=iwhiteall
 if IsReal()
     source ~/vimfiles/config/lspConfig.vim
-    let g:vimspector_base_dir='C:\Users\cyril.etienne.fahlen\vimfiles\plugged\vimspector'
+    " g:vimspector_base_dir dropped: vimspector already defaults it to its own
+    " install directory, which is what the old hardcoded path pointed at. Only
+    " set it if gadgets/configurations should live outside plugged/vimspector.
 else
     set fillchars+=vert:\▏
     let g:loaded_matchparen=1
