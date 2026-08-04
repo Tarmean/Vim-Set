@@ -544,36 +544,24 @@ lua << EOF
       }
   }
     vim.keymap.set({ "n", "x" }, "<localleader>s", function() require("ssr").open() end)
-    local hop = require('hop')
-    hop.setup()
-    local directions = require('hop.hint').HintDirection
-    vim.keymap.set('', '<a-j>', function()
-      hop.hint_lines({ direction = directions.BEFORE_CURSOR })
-    end, {remap=true})
-    vim.keymap.set('', '<a-k>', function()
-      hop.hint_lines({ direction = directions.BEFORE_CURSOR })
-    end, {remap=true})
-    vim.keymap.set('', '<a-w>', function()
-      hop.hint_words({ })
-    end, {remap=true})
-    vim.keymap.set('n', 's', function()
-      hop.hint_char2({ direction = directions.AFTER_CURSOR })
-    end, {remap=true})
-    vim.keymap.set('n', 'S', function()
-      hop.hint_char2({ direction = directions.BEFORE_CURSOR })
-    end, {remap=true})
-    vim.keymap.set('', 'f', function()
-      hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = true })
-    end, {remap=true})
-    vim.keymap.set('', 'F', function()
-      hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = true })
-    end, {remap=true})
-    vim.keymap.set('', 't', function()
-      hop.hint_char1({ direction = directions.AFTER_CURSOR, current_line_only = true, hint_offset = -1 })
-    end, {remap=true})
-    vim.keymap.set('', 'T', function()
-      hop.hint_char1({ direction = directions.BEFORE_CURSOR, current_line_only = true, hint_offset = 1 })
-    end, {remap=true})
+    local flash = require('flash')
+    flash.setup()
+    -- flash's char mode enhances f/F/t/T (and ;/,) with jump labels automatically.
+    -- s: jump anywhere; S: treesitter node select (flash defaults).
+    vim.keymap.set({ 'n', 'x', 'o' }, 's', function() flash.jump() end)
+    vim.keymap.set({ 'n', 'x', 'o' }, 'S', function() flash.treesitter() end)
+    -- <a-w>: general labelled jump (replaces hop hint_words).
+    vim.keymap.set('', '<a-w>', function() flash.jump() end, {remap=true})
+    -- <a-j>/<a-k>: jump to a line start (replaces hop hint_lines).
+    local function flash_line()
+      flash.jump({
+        search = { mode = 'search', max_length = 0 },
+        label = { after = { 0, 0 } },
+        pattern = '^',
+      })
+    end
+    vim.keymap.set('', '<a-j>', flash_line, {remap=true})
+    vim.keymap.set('', '<a-k>', flash_line, {remap=true})
 
     require('oil').setup()
     vim.keymap.set('n', '-', '<CMD>Oil<cr>', {desc = "Open Oil"})

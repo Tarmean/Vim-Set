@@ -27,7 +27,6 @@ set cmdheight=2
 set shortmess+=c
 set termguicolors
 set autoindent
-set lazyredraw
 set hidden
 set backspace=indent,eol,start
 set ignorecase
@@ -39,7 +38,6 @@ set undofile
 set showcmd
 set wildmenu
 set wildmode:full
-set ttyfast
 set ruler
 set laststatus=2
 set showmode

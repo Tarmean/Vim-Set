@@ -27,7 +27,7 @@ Plug 'kana/vim-textobj-line'
 Plug 'kana/vim-textobj-entire'
 Plug 'Julian/vim-textobj-variable-segment'
 Plug 'gruvbox-community/gruvbox'
-Plug 'smoka7/hop.nvim'
+Plug 'folke/flash.nvim'
 " Plug 'ggandor/leap.nvim'
 " Plug 'ggandor/leap-spooky.nvim'
 if IsReal()
@@ -67,7 +67,6 @@ if IsReal()
     if has('nvim')
 
         Plug 'tversteeg/registers.nvim', { 'branch': 'main' }
-        Plug 'phaazon/hop.nvim'
     endif
     Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'idris-hackers/idris-vim'
@@ -117,7 +116,6 @@ Plug 'sabrinagannon/vim-garbage-oracle'
 " Plug 'tinted-theming/base16-vim' too many themes
 Plug 'shadorain/shadotheme'
 Plug 'sts10/vim-pink-moon'
-Plug 'adigitoleo/vim-mellow'
 Plug 'adigitoleo/vim-mellow'
 Plug 'machakann/vim-colorscheme-imas'
 Plug 'ggalizzi/cake-vim'
