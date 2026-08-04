@@ -1,5 +1,3 @@
-let $NVIM_COC_LOG_LEVEL='all'
-
 let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
 function! IsReal() 
     return !exists('g:vscode') && (has('nvim') || has('vim'))
@@ -10,7 +8,7 @@ source ~/vimfiles/config/keybindings.vim
 source ~/vimfiles/config/pluginsConfig.vim
 set diffopt+=iwhiteall
 if IsReal()
-    source ~/vimfiles/config/cocConfig.vim
+    source ~/vimfiles/config/lspConfig.vim
     let g:vimspector_base_dir='C:\Users\cyril.etienne.fahlen\vimfiles\plugged\vimspector'
 else
     set fillchars+=vert:\▏

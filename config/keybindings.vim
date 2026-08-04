@@ -35,7 +35,12 @@ map gj <c-d>g
 nnoremap k gk
 map gk <c-u>g
 
-nnoremap <silent> <esc> :call coc#float#close_all()<cr>:noh<return><esc>
+" <esc> clears search highlight and closes any floating windows (diagnostics, hover, etc.)
+if has('nvim')
+    nnoremap <silent> <esc> <cmd>noh<cr><cmd>lua for _,w in ipairs(vim.api.nvim_list_wins()) do if vim.api.nvim_win_get_config(w).relative ~= '' then pcall(vim.api.nvim_win_close, w, false) end end<cr><esc>
+else
+    nnoremap <silent> <esc> :noh<cr><esc>
+endif
 if IsReal()
     nnoremap <space>v :vsplit<cr>
     nnoremap <space>V :split<cr>

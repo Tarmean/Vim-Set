@@ -68,7 +68,15 @@ if IsReal()
 
         Plug 'tversteeg/registers.nvim', { 'branch': 'main' }
     endif
-    Plug 'neoclide/coc.nvim', {'branch': 'release'}
+    if has('nvim')
+        " Native LSP + completion stack (replaces coc.nvim; nvim only)
+        Plug 'neovim/nvim-lspconfig'
+        Plug 'mason-org/mason.nvim'
+        Plug 'mason-org/mason-lspconfig.nvim'
+        Plug 'saghen/blink.cmp', { 'tag': 'v1.*' }
+        Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
+        Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+    endif
     Plug 'idris-hackers/idris-vim'
     " Plug 'equalsraf/neovim-gui-shim'
     Plug 'Tarmean/multi'
