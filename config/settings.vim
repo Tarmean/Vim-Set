@@ -48,7 +48,7 @@ set gdefault
 set wrap
 set splitbelow
 set splitright
-set guioptions=e
+" set guioptions=e
 set fillchars+=vert:\ "█
 set backup
 set writebackup
@@ -82,9 +82,9 @@ highlight diffRemoved ctermfg=124
 
 if has("multi_byte") && !exists("g:encodingset")
   let g:encodingset = 1
-  if &termencoding == ""
-    let &termencoding = &encoding
-  endif
+  " if &termencoding == ""
+  "   let &termencoding = &encoding
+  " endif
   set encoding=utf-8
   setglobal fileencoding=utf-8
   set fileencodings=ucs-bom,utf-8,latin1

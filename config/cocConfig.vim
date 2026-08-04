@@ -1,8 +1,8 @@
 let g:conjure#mapping#doc_word = "<C-K>"
 " Use <c-space> to trigger completion.
 " " \ coc#pum#visible() ? coc#pum#next(0) :
+      " \ (copilot#GetDisplayedSuggestion().text != "") ? copilot#Accept() :
 inoremap <silent><expr> <TAB>
-      \ (copilot#GetDisplayedSuggestion().text != "") ? copilot#Accept() :
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
 inoremap <expr> <a-cr> (copilot#GetDisplayedSuggestion().text == "") ? DoCopilotSuggest() : copilot#Accept()
@@ -19,7 +19,7 @@ inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
-" inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>"
+inoremap <expr> <cr> coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>"
 
 
 nmap <localleader>r <Plug>(coc-rename)

@@ -1,16 +1,16 @@
 call plug#begin('~/vimfiles/plugged')
-Plug 'github/copilot.vim'
+" Plug 'github/copilot.vim'
+Plug 'sindrets/diffview.nvim'
 Plug 'tpope/vim-sleuth'
 Plug 'guns/vim-sexp'
 Plug 'takac/vim-hardtime'
-Plug 'Olical/conjure'
-Plug 'Olical/aniseed'
+" Plug 'Olical/conjure'
+" Plug 'Olical/aniseed'
 Plug 'stevearc/oil.nvim'
 let g:hardmode_default_on=1
 
 Plug 'cshuaimin/ssr.nvim'
-Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-Plug 'nvim-treesitter/playground'
+" Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'idanarye/vim-merginal/'
 
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
@@ -42,7 +42,7 @@ if IsReal()
     if has('win32')
         " let g:python_host_prog="C:\\Python27\\python.exe"
         if has('nvim')
-            let g:python3_host_prog="C:\\Python39\\python.exe"
+            let g:python3_host_prog="C:\\Python311\\python.exe"
         else
             let &pythonthreehome='C:\Python310'
             let &pythonthreedll='C:\Python310\python310.dll'
@@ -57,7 +57,7 @@ if IsReal()
     Plug 'Tarmean/CsvHack.vim'
     Plug 'dhruvasagar/vim-table-mode', { 'on':  ['TableModeEnable', 'TableModeRealign'] }
     Plug 'FooSoft/vim-argwrap'
-    Plug 'jiangmiao/auto-pairs'
+    " Plug 'jiangmiao/auto-pairs'
     Plug 'yaymukund/vim-haxe'
     Plug '2072/PHP-Indenting-for-VIm'
     Plug 'chrisbra/Recover.vim'
@@ -68,7 +68,7 @@ if IsReal()
         Plug 'tversteeg/registers.nvim', { 'branch': 'main' }
         Plug 'phaazon/hop.nvim'
     endif
-    " Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'yarn install --frozen-lockfile'}
+    Plug 'neoclide/coc.nvim', {'branch': 'release'}
     Plug 'idris-hackers/idris-vim'
     " Plug 'equalsraf/neovim-gui-shim'
     Plug 'Tarmean/multi'
