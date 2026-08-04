@@ -1,17 +1,9 @@
 let g:conjure#mapping#doc_word = "<C-K>"
 " Use <c-space> to trigger completion.
 " " \ coc#pum#visible() ? coc#pum#next(0) :
-      " \ (copilot#GetDisplayedSuggestion().text != "") ? copilot#Accept() :
 inoremap <silent><expr> <TAB>
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
-inoremap <expr> <a-cr> (copilot#GetDisplayedSuggestion().text == "") ? DoCopilotSuggest() : copilot#Accept()
-
-function! DoCopilotSuggest()
-    call feedkeys("\<Plug>(copilot-suggest)")
-    return ""
-endfunc
-
 
 inoremap <silent><expr> <s-TAB> coc#pum#prev(0)
 nmap gK <Plug>(coc-float-jump)

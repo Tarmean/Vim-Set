@@ -1,6 +1,7 @@
 call plug#begin('~/vimfiles/plugged')
-" Plug 'github/copilot.vim'
 Plug 'sindrets/diffview.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'olimorris/codecompanion.nvim'
 Plug 'tpope/vim-sleuth'
 Plug 'guns/vim-sexp'
 Plug 'takac/vim-hardtime'

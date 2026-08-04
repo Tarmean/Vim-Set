@@ -2,7 +2,6 @@ if exists(':Delete')
     delcommand Delete
 endif
 
-let g:copilot_filetypes = {'VimspectorPrompt': v:false}
 let g:markdown_fenced_languages = ['html', 'js=javascript', 'python']
 
 nmap _  <Plug>ReplaceWithRegisterOperator
@@ -578,6 +577,14 @@ lua << EOF
 
     require('oil').setup()
     vim.keymap.set('n', '-', '<CMD>Oil<cr>', {desc = "Open Oil"})
+    require("codecompanion").setup({
+    adapters = {
+        copilot = function()
+        return require("codecompanion.adapters").extend("copilot", {
+            })
+        end
+        }
+    })
 EOF
 
 endif
