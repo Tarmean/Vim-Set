@@ -1,4 +1,6 @@
 call plug#begin('~/vimfiles/plugged')
+Plug 'jceb/jiejie.nvim'
+Plug 'sindrets/diffview.nvim'
 Plug 'sindrets/diffview.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'olimorris/codecompanion.nvim'
@@ -66,7 +68,7 @@ if IsReal()
     Plug 'lumiliet/vim-twig'
     if has('nvim')
 
-        Plug 'tversteeg/registers.nvim', { 'branch': 'main' }
+        " Plug 'tversteeg/registers.nvim', { 'branch': 'main' }
     endif
     if has('nvim')
         " Native LSP + completion stack (replaces coc.nvim; nvim only)

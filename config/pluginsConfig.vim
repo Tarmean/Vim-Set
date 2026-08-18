@@ -26,13 +26,14 @@ au BufNewFile,BufRead *.lagda.md setf agda
 
 
 
+
 command! -bang PHPShell RTerm<bang> php php -a -d auto_prepend_file=bootstrap_application.php
 nnoremap ö :call term_utils#term_toggle('insert', term_utils#guess_term_tag(), exists("b:term_hide") && b:term_hide)<cr>
 noremap Ö :call term_utils#term_toggle('normal', term_utils#guess_term_tag(), v:true)<cr>
 if has('nvim')
     tnoremap ö <C-\><C-n>:call term_utils#goto_old_win(exists("b:term_hide") && b:term_hide)<cr>
     tnoremap Ö <C-\><C-n>
-    lua require("registers").setup()
+    " lua require("registers").setup()
 else
     tnoremap ö <c-w>:call term_utils#goto_old_win(exists("b:term_hide") && b:term_hide)<cr>
     tnoremap <a-ö> <c-w>N
@@ -524,6 +525,16 @@ lua << EOF
         end
         }
     })
+    vim.g.jiejie_config = {
+       --   -- Excluded revset expression, see https://docs.jj-vcs.dev/latest/revsets/ for the full language
+        -- excluded_revset = 'bookmarks(glob:"renovate/*") | tracked_remote_bookmarks(glob:"renovate/*") | untracked_remote_bookmarks(glob:"renovate/*")',
+        -- default_view = 1,
+        -- dynamic_views = {
+          -- -- Dynamic view that dispalys all merges, see https://docs.jj-vcs.dev/latest/revsets/ for the full language
+          -- { revset = "merges()" }
+        -- },
+        -- log_revisions = 10,
+    }
 EOF
 
 endif
