@@ -516,14 +516,6 @@ lua << EOF
 
     require('oil').setup()
     vim.keymap.set('n', '-', '<CMD>Oil<cr>', {desc = "Open Oil"})
-    require("codecompanion").setup({
-    adapters = {
-        copilot = function()
-        return require("codecompanion.adapters").extend("copilot", {
-            })
-        end
-        }
-    })
 EOF
 
 endif

@@ -1,12 +1,12 @@
 call plug#begin('~/vimfiles/plugged')
+Plug 'MunifTanjim/nui.nvim'
+Plug 'julienvincent/hunk.nvim'
+Plug 'jceb/jiejie.nvim'
 Plug 'sindrets/diffview.nvim'
 Plug 'nvim-lua/plenary.nvim'
-Plug 'olimorris/codecompanion.nvim'
 Plug 'tpope/vim-sleuth'
 Plug 'guns/vim-sexp'
 Plug 'takac/vim-hardtime'
-" Plug 'Olical/conjure'
-" Plug 'Olical/aniseed'
 Plug 'stevearc/oil.nvim'
 let g:hardmode_default_on=1
 
@@ -28,12 +28,9 @@ Plug 'kana/vim-textobj-entire'
 Plug 'Julian/vim-textobj-variable-segment'
 Plug 'gruvbox-community/gruvbox'
 Plug 'folke/flash.nvim'
-" Plug 'ggandor/leap.nvim'
-" Plug 'ggandor/leap-spooky.nvim'
 if IsReal()
     Plug 'neovimhaskell/nvim-hs.vim'
     Plug 'tpope/vim-markdown'
-    " Plug 'folke/which-key.nvim'
     Plug 'lervag/vimtex'
     Plug 'Tarmean/Gistory'
     Plug 'Tarmean/term-utils.nvim'
@@ -41,7 +38,6 @@ if IsReal()
     Plug 'tpope/vim-fireplace'
     Plug 'tpope/vim-repeat'
     if has('win32')
-        " let g:python_host_prog="C:\\Python27\\python.exe"
         if has('nvim')
             let g:python3_host_prog="C:\\Python311\\python.exe"
         else
@@ -50,7 +46,6 @@ if IsReal()
         endif
     else
         let g:python3_host_prog="/usr/bin/python3"
-        " let g:python_host_prog="/usr/bin/python2"
     endif
     Plug 'derekelkins/agda-vim'
     Plug 'Tarmean/fzf-session.vim'
@@ -58,7 +53,6 @@ if IsReal()
     Plug 'Tarmean/CsvHack.vim'
     Plug 'dhruvasagar/vim-table-mode', { 'on':  ['TableModeEnable', 'TableModeRealign'] }
     Plug 'FooSoft/vim-argwrap'
-    " Plug 'jiangmiao/auto-pairs'
     Plug 'yaymukund/vim-haxe'
     Plug '2072/PHP-Indenting-for-VIm'
     Plug 'chrisbra/Recover.vim'
@@ -82,12 +76,10 @@ if IsReal()
         Plug 'nvim-treesitter/nvim-treesitter-textobjects'
     endif
     Plug 'idris-hackers/idris-vim'
-    " Plug 'equalsraf/neovim-gui-shim'
     Plug 'Tarmean/multi'
     Plug 'Shirk/vim-gas'
     Plug 'rust-lang/rust.vim'
     Plug 'mbbill/undotree', { 'on': 'UndotreeToggle' }
-    " Plug 'justinmk/vim-dirvish'
     Plug 'tpope/vim-unimpaired'
     Plug 'tpope/vim-eunuch'
     Plug 'tpope/vim-abolish', { 'on':  'S' }
@@ -124,8 +116,6 @@ endif
 " color schemes
 Plug 'yassinebridi/vim-purpura'
 Plug 'sabrinagannon/vim-garbage-oracle'
-" Plug 'kirisaki/sweet-lolita' eye-searing pink
-" Plug 'tinted-theming/base16-vim' too many themes
 Plug 'shadorain/shadotheme'
 Plug 'sts10/vim-pink-moon'
 Plug 'adigitoleo/vim-mellow'
