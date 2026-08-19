@@ -2,7 +2,7 @@ call plug#begin('~/vimfiles/plugged')
 Plug 'MunifTanjim/nui.nvim'
 Plug 'julienvincent/hunk.nvim'
 Plug 'jceb/jiejie.nvim'
-Plug 'sindrets/diffview.nvim'
+Plug 'dlyongemallo/diffview-plus.nvim'
 Plug 'nvim-lua/plenary.nvim'
 Plug 'tpope/vim-sleuth'
 Plug 'guns/vim-sexp'
