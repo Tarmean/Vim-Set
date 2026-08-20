@@ -516,6 +516,127 @@ lua << EOF
 
     require('oil').setup()
     vim.keymap.set('n', '-', '<CMD>Oil<cr>', {desc = "Open Oil"})
+
+    require('diffview').setup {
+      -- Colocated repos have both .jj/ and .git/. The adapter list is probed
+      -- in order (git, jj, hg, p4), so without this git wins every time.
+      preferred_adapter = "jj",
+      view = {
+        merge_tool = {
+          -- jj always passes a $base to the merge tool, and :DiffviewOpen
+          -- resolves one via fork_point(). diff4_mixed is the only merge
+          -- layout that shows that pane; the default diff3_horizontal
+          -- silently drops it.
+          -- layout = "diff4_mixed",
+        },
+      },
+    }
+
+    -- :Merigraf — run jj's `merigraf` merge tool on the file currently
+    -- selected in the diffview, then refresh the view in place. With a bang
+    -- (`:Merigraf!`) jj walks every conflicted file instead.
+    --
+    -- Refreshing keeps the selection and the cursor because diffview-plus
+    -- already does the bookkeeping: the jj adapter reports
+    -- `force_entry_refresh_on_noop` for LOCAL-side revs, so an update
+    -- replaces the FileEntry even when the path is unchanged; that makes
+    -- `_set_file` re-open the path, `file_open_pre` snapshots the outgoing
+    -- window's `winsaveview()` into `view.cursor_map[path]`, and
+    -- `file_open_new` pops it back. A file that is still conflicted after
+    -- the tool runs therefore lands on the same row and scroll offset.
+    --
+    -- NOTE: for merigraf to be able to leave *partial* resolutions behind,
+    -- its `[merge-tools.merigraf]` entry needs
+    -- `merge-tool-edits-conflict-markers = true`; without it jj treats
+    -- whatever the tool writes as a complete resolution.
+    local merigraf_tool = "merigraf"
+
+    -- Quote a repo-relative path as a jj `root-file:` fileset literal.
+    local function jj_root_file(path)
+      return 'root-file:"' .. path:gsub('[\\"]', '\\%0') .. '"'
+    end
+
+    local function merigraf_refresh()
+      -- Route through the event bus rather than calling `view:update_files()`
+      -- directly: `emit` resolves the view for the current tabpage, and
+      -- `update_files` bails out when the view isn't the focused one anyway.
+      require("diffview").emit("refresh_files")
+    end
+
+    local function run_merigraf(all)
+      local view = require("diffview.lib").get_current_view()
+
+      if not (view and view.adapter and view.adapter.ctx) then
+        vim.notify("Merigraf: no diffview open in this tab", vim.log.levels.WARN)
+        return
+      end
+
+      local cmd = { "jj", "-R", view.adapter.ctx.toplevel, "resolve", "--tool", merigraf_tool }
+
+      if not all then
+        local entry = (view.panel and view.panel.cur_file) or view.cur_entry
+
+        if not (entry and entry.path) then
+          vim.notify("Merigraf: no file selected", vim.log.levels.WARN)
+          return
+        end
+
+        if entry.kind ~= "conflicting" then
+          vim.notify(("Merigraf: %s is not conflicted"):format(entry.path), vim.log.levels.WARN)
+          return
+        end
+
+        cmd[#cmd + 1] = jj_root_file(entry.path)
+      end
+
+      local function finish(code, stderr)
+        -- Refresh regardless of exit status: the tool may have resolved some
+        -- files before failing, and "no conflicts left" is also a non-zero
+        -- exit worth reflecting in the panel.
+        merigraf_refresh()
+
+        if code ~= 0 then
+          vim.notify(
+            "Merigraf: " .. (vim.trim(stderr or "") ~= "" and vim.trim(stderr) or ("jj resolve exited " .. code)),
+            vim.log.levels.WARN
+          )
+        end
+      end
+
+      if vim.g.merigraf_terminal then
+        -- TUI merge tool: it needs a real tty, so run it in a scratch tab
+        -- that closes itself when the tool exits.
+        vim.cmd("tabnew")
+        local term_tab = vim.api.nvim_get_current_tabpage()
+
+        vim.fn.jobstart(cmd, {
+          term = true,
+          on_exit = function(_, code)
+            vim.schedule(function()
+              if vim.api.nvim_tabpage_is_valid(term_tab) then
+                vim.cmd("tabclose " .. vim.api.nvim_tabpage_get_number(term_tab))
+              end
+              if not (view.tabpage and vim.api.nvim_tabpage_is_valid(view.tabpage)) then
+                return
+              end
+              vim.api.nvim_set_current_tabpage(view.tabpage)
+              finish(code, nil)
+            end)
+          end,
+        })
+        vim.cmd("startinsert")
+      else
+        vim.system(cmd, { text = true }, function(res)
+          vim.schedule(function()
+            finish(res.code, res.stderr)
+          end)
+        end)
+      end
+    end
+
+    vim.api.nvim_create_user_command("Merigraf", function(ctx)
+      run_merigraf(ctx.bang)
+    end, { bang = true, desc = "jj resolve --tool merigraf (bang: all conflicted files)" })
 EOF
 
 endif
