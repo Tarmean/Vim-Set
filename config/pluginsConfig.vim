@@ -517,24 +517,105 @@ lua << EOF
 
     require('oil').setup()
     vim.keymap.set('n', '-', '<CMD>Oil<cr>', {desc = "Open Oil"})
-    require("codecompanion").setup({
-    adapters = {
-        copilot = function()
-        return require("codecompanion.adapters").extend("copilot", {
-            })
-        end
-        }
-    })
-    vim.g.jiejie_config = {
-       --   -- Excluded revset expression, see https://docs.jj-vcs.dev/latest/revsets/ for the full language
-        -- excluded_revset = 'bookmarks(glob:"renovate/*") | tracked_remote_bookmarks(glob:"renovate/*") | untracked_remote_bookmarks(glob:"renovate/*")',
-        -- default_view = 1,
-        -- dynamic_views = {
-          -- -- Dynamic view that dispalys all merges, see https://docs.jj-vcs.dev/latest/revsets/ for the full language
-          -- { revset = "merges()" }
-        -- },
-        -- log_revisions = 10,
+
+    require('diffview').setup {
+      -- Colocated repos have both .jj/ and .git/. The adapter list is probed
+      -- in order (git, jj, hg, p4), so without this git wins every time.
+      preferred_adapter = "jj",
+      view = {
+        merge_tool = {
+          -- jj always passes a $base to the merge tool, and :DiffviewOpen
+          -- resolves one via fork_point(). diff4_mixed is the only merge
+          -- layout that shows that pane; the default diff3_horizontal
+          -- silently drops it.
+          -- layout = "diff4_mixed",
+        },
+      },
     }
+
+    -- :Mergiraf — run jj's `mergiraf` merge tool on the file currently
+    -- selected in the diffview, then refresh the view in place. With a bang
+    -- (`:Mergiraf!`) jj walks every conflicted file instead.
+    --
+    -- Refreshing keeps the selection and the cursor because diffview-plus
+    -- already does the bookkeeping: the jj adapter reports
+    -- `force_entry_refresh_on_noop` for LOCAL-side revs, so an update
+    -- replaces the FileEntry even when the path is unchanged; that makes
+    -- `_set_file` re-open the path, `update_files` snapshots the outgoing
+    -- window's `winsaveview()` into `view.cursor_map[path]`, and
+    -- `file_open_new` pops it back. A file that is still conflicted after
+    -- mergiraf runs therefore lands on the same row and scroll offset.
+    --
+    -- jj ships `[merge-tools.mergiraf]` in its defaults, so there is nothing
+    -- to configure. Note it declares `merge-conflict-exit-codes = [1]` rather
+    -- than `merge-tool-edits-conflict-markers`: mergiraf exits 1 when it
+    -- could only resolve part of a file, and that exit code is what tells jj
+    -- to keep the remaining conflict instead of treating the output as a
+    -- finished resolution. `jj resolve` itself still exits 0 in that case.
+    --
+    -- mergiraf is a non-interactive, syntax-aware auto-merger, so this runs
+    -- it in the background rather than handing it a terminal.
+    local mergiraf_tool = "mergiraf"
+
+    -- Quote a repo-relative path as a jj `root-file:` fileset literal.
+    local function jj_root_file(path)
+      return 'root-file:"' .. path:gsub('[\\"]', '\\%0') .. '"'
+    end
+
+    local function mergiraf_refresh()
+      -- Route through the event bus rather than calling `view:update_files()`
+      -- directly: `emit` resolves the view for the current tabpage, and
+      -- `update_files` bails out when the view isn't the focused one anyway.
+      require("diffview").emit("refresh_files")
+    end
+
+    local function run_mergiraf(all)
+      local view = require("diffview.lib").get_current_view()
+
+      if not (view and view.adapter and view.adapter.ctx) then
+        vim.notify("Mergiraf: no diffview open in this tab", vim.log.levels.WARN)
+        return
+      end
+
+      local cmd = { "jj", "-R", view.adapter.ctx.toplevel, "resolve", "--tool", mergiraf_tool }
+
+      if not all then
+        local entry = (view.panel and view.panel.cur_file) or view.cur_entry
+
+        if not (entry and entry.path) then
+          vim.notify("Mergiraf: no file selected", vim.log.levels.WARN)
+          return
+        end
+
+        if entry.kind ~= "conflicting" then
+          vim.notify(("Mergiraf: %s is not conflicted"):format(entry.path), vim.log.levels.WARN)
+          return
+        end
+
+        cmd[#cmd + 1] = jj_root_file(entry.path)
+      end
+
+      vim.system(cmd, { text = true }, function(res)
+        vim.schedule(function()
+          -- Refresh regardless of exit status: jj may have resolved some
+          -- files before failing, and "no conflicts left" is also a non-zero
+          -- exit worth reflecting in the panel.
+          mergiraf_refresh()
+
+          if res.code ~= 0 then
+            local msg = vim.trim(res.stderr or "")
+            vim.notify(
+              "Mergiraf: " .. (msg ~= "" and msg or ("jj resolve exited " .. res.code)),
+              vim.log.levels.WARN
+            )
+          end
+        end)
+      end)
+    end
+
+    vim.api.nvim_create_user_command("Mergiraf", function(ctx)
+      run_mergiraf(ctx.bang)
+    end, { bang = true, desc = "jj resolve --tool mergiraf (bang: all conflicted files)" })
 EOF
 
 endif
