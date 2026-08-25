@@ -61,6 +61,10 @@ if IsReal()
         " Plug 'tversteeg/registers.nvim', { 'branch': 'main' }
     endif
     if has('nvim')
+        " Terminal-multiplexer glue: an nvim started inside a :terminal (jj's
+        " editor) opens in this session instead of nesting. Configured, along
+        " with its :cq/exit-code handling, in config/flatten.lua.
+        Plug 'willothy/flatten.nvim'
         " Native LSP + completion stack (replaces coc.nvim; nvim only)
         Plug 'neovim/nvim-lspconfig'
         Plug 'mason-org/mason.nvim'
@@ -122,4 +126,9 @@ Plug 'ggalizzi/cake-vim'
 Plug 'vim-scripts/kaltex.vim'
 Plug 'rayes0/blossom.vim'
 call plug#end()
+" Set up as early as possible: a guest session should hand off its files and
+" get out of the way before the rest of the config runs.
+if IsReal() && has('nvim')
+    luafile ~/vimfiles/config/flatten.lua
+endif
 silent! unmap <space>ig
