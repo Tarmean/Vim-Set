@@ -2,6 +2,14 @@
 " LSP + completion + treesitter live in lua; sourced here (nvim only).
 if has('nvim')
     luafile ~/vimfiles/config/lsp.lua
+    " Fuzzy symbol pickers (<leader>s / <leader>S). After lsp.lua: it builds on
+    " both the LSP and the treesitter setup there.
+    luafile ~/vimfiles/config/symbols.lua
+    " Debugger, replaces vimspector.
+    luafile ~/vimfiles/config/dap.lua
+    " Java LSP. After dap.lua: jdt.ls carries its own debug adapter and
+    " registers it with nvim-dap at attach time.
+    luafile ~/vimfiles/config/java.lua
 endif
 
 set updatetime=300
@@ -28,33 +36,3 @@ endfunction
 
 " jdtls uses a jdt:// URI scheme for classfile buffers
 au BufNew jdt://* set noswapfile
-
-
-" ---------------------------------------------------------------------------
-" Vimspector (debugger) mappings
-" ---------------------------------------------------------------------------
-nmap [b <Plug>VimspectorJumpToPreviousBreakpoint
-nmap ]b <Plug>VimspectorJumpToNextBreakpoint
-nmap ,dh <Plug>VimspectorJumpToProgramCounter
-
-nmap <localleader>db <Plug>VimspectorToggleBreakpoint
-nmap <localleader>dp <Plug>VimspectorPause
-nmap <localleader>dq <Plug>VimspectorClose
-nmap <localleader>dk <Plug>VimspectorStepOut
-nmap <localleader>dj <Plug>VimspectorStepInto
-nmap <localleader>df <Plug>VimspectorGotoCurrentLine
-nmap <localleader>dl <Plug>VimspectorStepOver
-nmap <localleader>dL <Plug>VimspectorRunToCursor
-nmap <localleader>da <Plug>VimspectorDisassemble
-nmap <localleader>dB <Plug>VimspectorBreakpoints
-nmap <localleader>d? <Plug>VimspectorToggleConditionalBreakpoint
-nmap <localleader>df <Plug>VimspectorAddFunctionBreakpoint
-nmap <localleader>h <Plug>VimspectorGoToCurrentLine
-nmap <localleader>dG <Plug>VimspectorContinue
-nmap <localleader>dgg <Plug>VimspectorRestart
-
-nmap <localleader>dd <Plug>VimspectorBalloonEval
-xmap <localleader>dd <Plug>VimspectorBalloonEval
-
-nmap <localleader>do <Plug>VimspectorUpFrame
-nmap <localleader>di <Plug>VimspectorDownFrame

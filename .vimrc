@@ -1,5 +1,4 @@
-let g:vimspector_enable_mappings = 'VISUAL_STUDIO'
-function! IsReal() 
+function! IsReal()
     return !exists('g:vscode') && (has('nvim') || has('vim'))
 endfunc
 source ~/vimfiles/config/plugins.vim
@@ -9,9 +8,6 @@ source ~/vimfiles/config/pluginsConfig.vim
 set diffopt+=iwhiteall
 if IsReal()
     source ~/vimfiles/config/lspConfig.vim
-    " g:vimspector_base_dir dropped: vimspector already defaults it to its own
-    " install directory, which is what the old hardcoded path pointed at. Only
-    " set it if gadgets/configurations should live outside plugged/vimspector.
 else
     set fillchars+=vert:\▏
     let g:loaded_matchparen=1
@@ -32,3 +28,6 @@ endif
 let g:first_load = v:false
 
 
+inoremap <m-q> @
+noremap <m-q> @
+cnoremap <m-q> @

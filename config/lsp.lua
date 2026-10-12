@@ -33,7 +33,7 @@ require('mason-lspconfig').setup({
   -- external toolchain are installed manually (:MasonInstall ...) and then
   -- auto-enabled by automatic_enable:
   --   * hls     -> install via ghcup / matching GHC, or :MasonInstall haskell-language-server
-  --   * jdtls   -> :MasonInstall jdtls  (nvim-jdtls recommended for full features)
+  --   * jdtls   -> :MasonInstall jdtls java-debug-adapter java-test
   ensure_installed = {
     'lua_ls',
     'jsonls',
@@ -44,6 +44,13 @@ require('mason-lspconfig').setup({
   },
   -- automatic_enable is true by default: installed servers are enabled via
   -- vim.lsp.enable() with the native vim.lsp.config() mechanism (nvim 0.11+).
+  automatic_enable = {
+    -- jdtls is started by nvim-jdtls instead (config/java.lua): it needs the
+    -- debug/test bundles, a per-project workspace and the lombok javaagent,
+    -- and it serves jdt.ls's non-standard requests. Letting mason enable it
+    -- here as well would attach a second, half-configured client.
+    exclude = { 'jdtls' },
+  },
 })
 
 -- Give every server blink's completion capabilities.
@@ -129,10 +136,11 @@ vim.api.nvim_create_autocmd('LspAttach', {
     map('n', '[c',    function() vim.diagnostic.jump({ count = -1, float = true }) end, 'Prev diagnostic')
     map('n', ']c',    function() vim.diagnostic.jump({ count =  1, float = true }) end, 'Next diagnostic')
 
-    -- lists / symbols
+    -- lists / symbols. <leader>s and <leader>S are global rather than
+    -- buffer-local and live in config/symbols.lua: they fuzzy-pick instead of
+    -- filling the quickfix list, and they have non-LSP fallbacks, so they need
+    -- to exist in buffers no server has attached to.
     map('n', '<leader>d', vim.diagnostic.setloclist,     'Diagnostics list')
-    map('n', '<leader>s', vim.lsp.buf.document_symbol,   'Document symbols')
-    map('n', '<leader>S', vim.lsp.buf.workspace_symbol,  'Workspace symbols')
 
     -- document highlight on CursorHold (coc did this via CocActionAsync('highlight'))
     local client = vim.lsp.get_client_by_id(args.data.client_id)

@@ -32,7 +32,6 @@ if IsReal()
     Plug 'lervag/vimtex'
     Plug 'Tarmean/Gistory'
     Plug 'Tarmean/term-utils.nvim'
-    Plug 'puremourning/vimspector'
     Plug 'tpope/vim-fireplace'
     Plug 'tpope/vim-repeat'
     if has('win32')
@@ -61,9 +60,7 @@ if IsReal()
         " Plug 'tversteeg/registers.nvim', { 'branch': 'main' }
     endif
     if has('nvim')
-        " Terminal-multiplexer glue: an nvim started inside a :terminal (jj's
-        " editor) opens in this session instead of nesting. Configured, along
-        " with its :cq/exit-code handling, in config/flatten.lua.
+        " siehe config/flatten.lua
         Plug 'willothy/flatten.nvim'
         " Native LSP + completion stack (replaces coc.nvim; nvim only)
         Plug 'neovim/nvim-lspconfig'
@@ -76,6 +73,20 @@ if IsReal()
         " shims in vimfiles/bin.
         Plug 'nvim-treesitter/nvim-treesitter', { 'do': ':TSUpdate' }
         Plug 'nvim-treesitter/nvim-treesitter-textobjects'
+        " Fuzzy symbol pickers (config/symbols.lua). Drives the same fzf
+        " binary as fzf.vim above, but talks to LSP/treesitter directly.
+        Plug 'ibhagwan/fzf-lua'
+        " Debugger (config/dap.lua), replaces vimspector. nvim-nio is a hard
+        " dependency of dap-ui, not a convenience.
+        Plug 'mfussenegger/nvim-dap'
+        Plug 'nvim-neotest/nvim-nio'
+        Plug 'rcarriga/nvim-dap-ui'
+        Plug 'theHamsta/nvim-dap-virtual-text'
+        " Java (config/java.lua). jdt.ls speaks a pile of non-standard
+        " requests -- jdt:// class files, extract/generate refactorings, test
+        " discovery -- that a generic LSP client cannot know about, so this
+        " starts the server itself instead of going through lspconfig.
+        Plug 'mfussenegger/nvim-jdtls'
     endif
     Plug 'idris-hackers/idris-vim'
     Plug 'Tarmean/multi'

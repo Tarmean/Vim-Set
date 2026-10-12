@@ -69,6 +69,7 @@ flatten.setup({
     gitrebase = true,
     jjdescription = true,
   },
+  window = { open = 'tab' },
   hooks = {
     -- Runs in the guest, before anything else. Headless/embedded invocations
     -- (`nvim --headless` in a script, `nvim -l`, a git hook) have no business
